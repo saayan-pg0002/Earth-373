@@ -1,0 +1,13 @@
+@import '../util/';
+
+.icon {
+  &.white svg path {
+    fill: $white;
+  }
+  &.baytree-navy svg path {
+    fill: $baytree-navy;
+  }
+  &.baytree-green svg path {
+    fill: $baytree-green;
+  }
+}
