@@ -4,7 +4,7 @@ import {
   Switch,
   RouteComponentProps,
 } from 'react-router-dom';
-import routes from './util/routes/routes';
+import { routeList } from './util/routes';
 import Nav from './components/Nav';
 import './stylesheets/index.scss';
 
@@ -13,7 +13,7 @@ const App: React.FC<{}> = () => {
     <BrowserRouter>
       <Nav />
       <Switch>
-        {routes.map((route, index) => {
+        {routeList.map((route, index) => {
           return (
             <Route
               key={index}

@@ -9,7 +9,7 @@
   border: 1px solid transparent;
   border-radius: 1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all $fade-duration ease;
 
   &:hover {
     background-color: $baytree-green-600;

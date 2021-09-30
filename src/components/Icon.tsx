@@ -1,3 +1,4 @@
+import React from 'react';
 import { ReactComponent as AutoComplete } from '../assets/icons/icon-autocomplete.svg';
 import { ReactComponent as Bell } from '../assets/icons/icon-bell.svg';
 import { ReactComponent as Calendar } from '../assets/icons/icon-calendar.svg';
@@ -17,7 +18,7 @@ import { ReactComponent as Settings } from '../assets/icons/icon-settings.svg';
 import { ReactComponent as Smiley } from '../assets/icons/icon-smiley.svg';
 import { ReactComponent as User } from '../assets/icons/icon-user.svg';
 
-export enum IconNames {
+export enum IconName {
   autocomplete,
   bell,
   calendar,
@@ -39,13 +40,14 @@ export enum IconNames {
 }
 
 export enum IconColors {
+  black = 'black',
   white = 'white',
   baytreeNavy = 'baytree-navy',
   baytreeGreen = 'baytree-green',
 }
 
 interface IconProps {
-  name: IconNames;
+  name: IconName;
   color?: IconColors;
 }
 
@@ -53,43 +55,61 @@ export const Icon: React.FC<IconProps> = ({ name, color }) => {
   return <div className={`icon ${color ?? ''}`}>{getIcon(name)}</div>;
 };
 
-const getIcon = (name: IconNames): JSX.Element => {
+interface ContainedIconProps {
+  name: IconName;
+  color: IconColors;
+  backgroundColor: IconColors;
+}
+
+export const ContainedIcon: React.FC<ContainedIconProps> = ({
+  name,
+  color,
+  backgroundColor,
+}) => {
+  return (
+    <div className={`contained-icon ${backgroundColor ?? ''}`}>
+      <Icon name={name} color={color} />
+    </div>
+  );
+};
+
+const getIcon = (name: IconName): JSX.Element => {
   switch (name) {
-    case IconNames.autocomplete:
+    case IconName.autocomplete:
       return <AutoComplete />;
-    case IconNames.bell:
+    case IconName.bell:
       return <Bell />;
-    case IconNames.calendar:
+    case IconName.calendar:
       return <Calendar />;
-    case IconNames.chevronDown:
+    case IconName.chevronDown:
       return <ChevronDown />;
-    case IconNames.clock:
+    case IconName.clock:
       return <Clock />;
-    case IconNames.doubleArrowRight:
+    case IconName.doubleArrowRight:
       return <DoubleArrowRight />;
-    case IconNames.edit:
+    case IconName.edit:
       return <Edit />;
-    case IconNames.exclamation:
+    case IconName.exclamation:
       return <Exclamation />;
-    case IconNames.eye:
+    case IconName.eye:
       return <Eye />;
-    case IconNames.home:
+    case IconName.home:
       return <Home />;
-    case IconNames.info:
+    case IconName.info:
       return <Info />;
-    case IconNames.link:
+    case IconName.link:
       return <Link />;
-    case IconNames.lock:
+    case IconName.lock:
       return <Lock />;
-    case IconNames.logOut:
+    case IconName.logOut:
       return <LogOut />;
-    case IconNames.plus:
+    case IconName.plus:
       return <Plus />;
-    case IconNames.settings:
+    case IconName.settings:
       return <Settings />;
-    case IconNames.smiley:
+    case IconName.smiley:
       return <Smiley />;
-    case IconNames.user:
+    case IconName.user:
       return <User />;
   }
 };

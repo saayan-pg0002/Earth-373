@@ -3,6 +3,11 @@ $gutter: 1.75rem;
 
 .container {
   max-width: $container-max-width;
+  padding-top: $gutter;
   padding-left: $gutter;
   padding-right: $gutter;
+
+  &.centered {
+    margin: auto;
+  }
 }

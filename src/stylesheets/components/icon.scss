@@ -1,13 +1,45 @@
 @import '../util/';
 
 .icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.black svg path {
+    fill: $black;
+  }
+
   &.white svg path {
     fill: $white;
   }
+
   &.baytree-navy svg path {
     fill: $baytree-navy;
   }
+
   &.baytree-green svg path {
     fill: $baytree-green;
+  }
+}
+
+.contained-icon {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all $fade-duration ease;
+
+  &.black {
+    background-color: $black;
+  }
+
+  &.white {
+    background-color: $white;
+  }
+
+  &.baytree-navy {
+    background-color: $baytree-navy;
+  }
+
+  &.baytree-green {
+    background-color: $baytree-green;
   }
 }
