@@ -1,7 +1,7 @@
 const Mentees: React.FC<{}> = () => {
   return (
-    <main>
-      <h1>Mentees</h1>
+    <main className='container'>
+      <h1 className='page-title'>Mentees</h1>
     </main>
   );
 };

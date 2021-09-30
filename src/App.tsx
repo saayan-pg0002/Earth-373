@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import routes from './util/routes/routes';
 import Nav from './components/Nav';
+import './stylesheets/index.scss';
 
 const App: React.FC<{}> = () => {
   return (
