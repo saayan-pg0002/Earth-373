@@ -1,4 +1,5 @@
 import mongoose, { Model, Schema } from "mongoose";
+import ScheduleInterface from "../Interfaces/schedule.interface";
 
 const schedSchema: Schema = new Schema({
   uid: { type: String, required: true },
@@ -6,10 +7,10 @@ const schedSchema: Schema = new Schema({
   scheduled_start_time: { type: Date, required: true },
   scheduled_end_time: { type: Date, required: true },
   day_of_the_week: { type: String, required: true },
-  mentoring_start_date: { type: Date, default: Date.now()}
+  mentoring_start_date: { type: Date, default: Date.now() }
 })
 
-const Schedule = mongoose.model('Schedule', schedSchema)
+const Schedule = mongoose.model<ScheduleInterface>('Schedule', schedSchema)
 export default Schedule
 
 
