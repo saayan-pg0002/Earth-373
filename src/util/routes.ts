@@ -3,7 +3,7 @@ import Mentees from '../apps/Mentees';
 import Notifications from '../apps/Notifications';
 import Settings from '../apps/Settings';
 
-export const routes = {
+export const Paths = {
   dashboard: '/',
   mentees: '/mentees',
   notifications: '/notifications',
@@ -17,24 +17,24 @@ export interface Route {
   props?: any;
 }
 
-export const routeList: Route[] = [
+export const routes: Route[] = [
   {
-    path: routes.dashboard,
+    path: Paths.dashboard,
     component: Dashboard,
     exact: true,
   },
   {
-    path: routes.mentees,
+    path: Paths.mentees,
     component: Mentees,
     exact: true,
   },
   {
-    path: routes.notifications,
+    path: Paths.notifications,
     component: Notifications,
     exact: true,
   },
   {
-    path: routes.settings,
+    path: Paths.settings,
     component: Settings,
     exact: true,
   },

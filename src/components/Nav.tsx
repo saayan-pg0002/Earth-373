@@ -1,5 +1,5 @@
 import { ContainedIcon, IconName, IconColors } from '../components/Icon';
-import { routes } from '../util/routes';
+import { Paths } from '../util/routes';
 import { Link, useLocation } from 'react-router-dom';
 import React from 'react';
 
@@ -8,10 +8,10 @@ const Nav: React.FC = () => {
     <nav className='nav'>
       <div className='container centered'>
         <ul className='items'>
-          <NavItem path={routes.dashboard} iconName={IconName.home} />
-          <NavItem path={routes.mentees} iconName={IconName.smiley} />
-          <NavItem path={routes.notifications} iconName={IconName.bell} />
-          <NavItem path={routes.settings} iconName={IconName.settings} />
+          <NavItem path={Paths.dashboard} iconName={IconName.home} />
+          <NavItem path={Paths.mentees} iconName={IconName.smiley} />
+          <NavItem path={Paths.notifications} iconName={IconName.bell} />
+          <NavItem path={Paths.settings} iconName={IconName.settings} />
         </ul>
       </div>
     </nav>
