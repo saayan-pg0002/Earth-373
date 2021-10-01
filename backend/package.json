@@ -12,6 +12,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+<<<<<<< HEAD
+=======
+    "@types/mongoose": "^5.11.97",
+>>>>>>> cac9d39ce4ecc8bec310c9009004c50b1c79e36c
     "express": "^4.17.1",
     "mongodb": "^4.1.2",
     "mongoose": "^6.0.8"
