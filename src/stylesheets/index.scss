@@ -1,0 +1,18 @@
+@import 'util/';
+@import 'components/';
+
+:root {
+  font-family: $font-family;
+  font-size: $font-size;
+  line-height: $line-height;
+  color: $black;
+}
+
+*,
+*::before,
+*::after,
+*:not(ul):not(li) {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
