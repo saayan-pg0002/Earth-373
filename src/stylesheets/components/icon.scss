@@ -20,6 +20,10 @@
   &.baytree-green svg path {
     fill: $baytree-green;
   }
+
+  &.transparent svg path {
+    fill: transparent;
+  }
 }
 
 .contained-icon {
@@ -41,5 +45,9 @@
 
   &.baytree-green {
     background-color: $baytree-green;
+  }
+
+  &.transparent {
+    background-color: transparent;
   }
 }
