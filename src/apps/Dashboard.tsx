@@ -1,5 +1,6 @@
-import { SessionList } from '../components/Session-List';
-import { SessionItemProps } from '../components/Session-Item';
+import { SessionList } from '../components/SessionList';
+import { SessionItemProps } from '../components/SessionItem';
+import { WeekScheduleCalendar } from '../components/WeekScheduleCalendar';
 
 const sessionList: SessionItemProps[] = [
   {
@@ -45,9 +46,12 @@ const sessionList: SessionItemProps[] = [
 
 const Dashboard: React.FC = () => {
   return (
-    <main className='container'>
-      <h1 className='page-title'>Hi, Wendy!</h1>
-      <SessionList sessions={sessionList} />
+    <main className='dashboard'>
+      <div className='container'>
+        <h1 className='page-title'>Hi, Wendy!</h1>
+        <WeekScheduleCalendar />
+        <SessionList sessions={sessionList} />
+      </div>
     </main>
   );
 };

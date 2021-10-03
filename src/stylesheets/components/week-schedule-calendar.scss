@@ -1,0 +1,37 @@
+@import '../util/';
+
+.week-schedule-calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+
+  .day-item {
+    text-align: center;
+    border-radius: $border-radius;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: all $fade-duration-fast ease;
+
+    &.active {
+      &,
+      &:active,
+      &:focus {
+        background-color: $baytree-navy;
+      }
+
+      &:hover {
+        background-color: $baytree-green;
+      }
+
+      p {
+        color: $white;
+      }
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: $grey-50;
+      }
+    }
+  }
+}
