@@ -1,0 +1,37 @@
+@import '../util/';
+
+.session-item {
+  background-color: $grey-50;
+  padding: 1rem 0.875rem 1rem 1.3125rem;
+  border-radius: $border-radius;
+  display: flex;
+  justify-content: space-between;
+  transition: all $fade-duration-fast ease;
+
+  &:hover,
+  &:focus {
+    box-shadow: $grey-200 0px 0px 0px 5px;
+    outline: $border-width solid $grey-600;
+  }
+
+  &.ongoing {
+    background-color: $baytree-green;
+
+    &:hover,
+    &:focus {
+      box-shadow: $baytree-green-600 0px 0px 0px 5px;
+      outline: none;
+    }
+
+    .body p {
+      color: $white;
+    }
+  }
+
+  .body {
+    .ongoing-tag {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+  }
+}

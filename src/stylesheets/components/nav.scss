@@ -5,14 +5,16 @@
   bottom: 0;
   width: 100%;
   border-top: $border-thin-grey;
-  height: 3.81rem;
+  height: $nav-height;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: $white;
 
   .container {
     width: 100%;
     padding-top: 0;
+    padding-bottom: 0;
 
     .items {
       list-style: none;
