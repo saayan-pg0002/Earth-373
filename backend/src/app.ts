@@ -1,5 +1,7 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 import mongoose, { Schema } from "mongoose";
+import Schedule from "./Models/schedule.model";
+import User from "./Models/user.model";
 
 const app: Application = express();
 
