@@ -1,4 +1,6 @@
-export default interface UserInterface {
+import {Document} from 'mongoose'
+
+export default interface UserInterface extends Document {
     first_name: String,
     last_name: String,
     DOB: Date,

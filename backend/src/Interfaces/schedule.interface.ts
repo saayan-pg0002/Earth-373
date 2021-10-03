@@ -1,4 +1,6 @@
-export default interface ScheduleInterface {
+import {Document} from 'mongoose'
+
+export default interface ScheduleInterface extends Document {
     uid: String,
     mentee_name: String,
     scheduled_start_time: Date,

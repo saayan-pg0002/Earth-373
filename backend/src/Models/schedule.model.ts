@@ -8,9 +8,12 @@ const schedSchema: Schema = new Schema({
   scheduled_end_time: { type: Date, required: true },
   day_of_the_week: { type: String, required: true },
   mentoring_start_date: { type: Date, default: Date.now() }
+}, {
+  timestamps: true
 })
 
 const Schedule = mongoose.model<ScheduleInterface>('Schedule', schedSchema)
+
 export default Schedule
 
 

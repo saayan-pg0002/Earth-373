@@ -10,6 +10,8 @@ const userSchema: Schema = new Schema({
     activity_status: { type: String, required: true },
     start_date: { type: Date, required: true, default: Date.now },
     user_type: { type: String, required: true }
+}, {
+    timestamps: true
 })
 
 const User = mongoose.model<UserInterface>('User', userSchema)
