@@ -1,8 +1,13 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 import mongoose, { Schema } from "mongoose";
+<<<<<<< HEAD
 import dotenv from "dotenv";
 import restaurants from "./route";
 import users from "./Routes/user.route";
+=======
+import Schedule from "./Models/schedule.model";
+import User from "./Models/user.model";
+>>>>>>> 5b335aba9b77dcba5f06715a8721fe57dd6113ed
 
 dotenv.config();
 const app: Application = express();
