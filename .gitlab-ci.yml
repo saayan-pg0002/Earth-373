@@ -1,0 +1,16 @@
+image: python:latest
+
+job1:
+  stage: build
+  script:
+    - echo "BUILDING"
+
+job2:
+  stage: test
+  script:
+    - echo "TESTING"
+
+job3:
+  stage: deploy
+  script:
+    - echo "DEPLOYING"

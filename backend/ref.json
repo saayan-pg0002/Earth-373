@@ -1,0 +1,14 @@
+{
+  "Project environment": {
+    "Error: process.env returns undefined": {
+      "solution 1": "https://stackoverflow.com/questions/64453045/how-to-use-env-file-in-a-react-js-with-typescript-project",
+      "solution 2": "https://stackoverflow.com/questions/62736961/how-do-i-load-dotenv-in-typescript"
+    }
+  },
+  "HTTPS requests with TypeScript": {
+    "URL": "https://www.section.io/engineering-education/how-to-create-a-simple-rest-api-using-typescript-and-nodejs/"
+  },
+  "TypeScript Project Template": {
+    "URL": "https://github.com/joeythelantern/Typescript-Quickstart-Projects"
+  }
+}
