@@ -1,0 +1,9 @@
+@import '../util/';
+
+.dashboard {
+  .container {
+    & > * + * {
+      margin-top: 1.5rem;
+    }
+  }
+}

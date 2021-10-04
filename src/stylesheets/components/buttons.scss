@@ -7,7 +7,7 @@
   background-color: $baytree-green;
   color: $white;
   border: 1px solid transparent;
-  border-radius: 1rem;
+  border-radius: $border-radius-button;
   cursor: pointer;
   transition: all $fade-duration ease;
 

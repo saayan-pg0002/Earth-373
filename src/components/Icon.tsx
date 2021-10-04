@@ -44,6 +44,7 @@ export enum IconColors {
   white = 'white',
   baytreeNavy = 'baytree-navy',
   baytreeGreen = 'baytree-green',
+  transparent = 'transparent',
 }
 
 interface IconProps {

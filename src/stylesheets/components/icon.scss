@@ -20,12 +20,21 @@
   &.baytree-green svg path {
     fill: $baytree-green;
   }
+
+  &.transparent svg path {
+    fill: transparent;
+  }
 }
 
 .contained-icon {
   padding: 0.5rem;
   border-radius: 0.5rem;
   transition: all $fade-duration ease;
+  height: 100%;
+
+  @supports (height: max-content) {
+    height: max-content;
+  }
 
   &.black {
     background-color: $black;
@@ -41,5 +50,9 @@
 
   &.baytree-green {
     background-color: $baytree-green;
+  }
+
+  &.transparent {
+    background-color: transparent;
   }
 }

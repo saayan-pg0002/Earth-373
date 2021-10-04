@@ -1,11 +1,13 @@
 $container-max-width: 1500px;
 $gutter: 1.75rem;
+$nav-height: 3.81rem;
 
 .container {
   max-width: $container-max-width;
   padding-top: $gutter;
   padding-left: $gutter;
   padding-right: $gutter;
+  padding-bottom: $gutter + $nav-height;
 
   &.centered {
     margin: auto;
