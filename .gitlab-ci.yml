@@ -1,0 +1,18 @@
+image: python:latest
+
+job1:
+  stage: build
+  script:
+    - echo "Hello, $GITLAB_USER_LOGIN!"
+    - echo "BUILDING"
+
+job2:
+  stage: test
+  script:
+    - echo "TESTING"
+
+job3:
+  stage: deploy
+  script:
+    - echo "The deployment is a success!"
+    - echo "DEPLOYING"
