@@ -6,14 +6,12 @@ import React from 'react';
 const Nav: React.FC = () => {
   return (
     <nav className='nav'>
-      <div className='container centered'>
-        <ul className='items'>
-          <NavItem path={Paths.dashboard} iconName={IconName.home} />
-          <NavItem path={Paths.mentees} iconName={IconName.smiley} />
-          <NavItem path={Paths.notifications} iconName={IconName.bell} />
-          <NavItem path={Paths.settings} iconName={IconName.settings} />
-        </ul>
-      </div>
+      <ul className='items'>
+        <NavItem path={Paths.dashboard} iconName={IconName.home} />
+        <NavItem path={Paths.mentees} iconName={IconName.smiley} />
+        <NavItem path={Paths.notifications} iconName={IconName.bell} />
+        <NavItem path={Paths.settings} iconName={IconName.settings} />
+      </ul>
     </nav>
   );
 };
