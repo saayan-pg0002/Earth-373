@@ -117,6 +117,6 @@ const getIcon = (name: IconName): JSX.Element => {
     case IconName.user:
       return <User />;
     default:
-      <></>;
+      return <></>;
   }
 };
