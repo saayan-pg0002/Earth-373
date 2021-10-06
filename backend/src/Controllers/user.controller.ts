@@ -2,12 +2,47 @@ import { NextFunction, Request, Response } from "express";
 import User from "../Models/user.model";
 import axios, { AxiosResponse } from "axios";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 
 dotenv.config();
 
 const addUser = (req: Request, res: Response, next: NextFunction) => {
-  // to do
-  res.send("Placeholder");
+  let {
+    first_name,
+    last_name,
+    DOB,
+    email,
+    phone_num,
+    activity_status,
+    start_date,
+    user_type,
+  } = req.body;
+
+  const user = new User({
+    _id: new mongoose.Types.ObjectId(),
+    first_name,
+    last_name,
+    DOB,
+    email,
+    phone_num,
+    activity_status,
+    start_date,
+    user_type,
+  });
+
+  return user
+    .save()
+    .then((result) => {
+      return res.status(201).json({
+        user: result,
+      });
+    })
+    .catch((error) => {
+      return res.status(500).json({
+        message: error.message,
+        error,
+      });
+    });
 };
 
 const getUsers = (req: Request, res: Response, next: NextFunction) => {
