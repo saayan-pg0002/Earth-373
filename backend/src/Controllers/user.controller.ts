@@ -144,13 +144,7 @@ const createViewUser = async (req: Request, res: Response) => {
     });
 };
 
-function foo(json: string) {
-  const test = {
-    cheese: "blue",
-  };
-  console.log(arguments[0]);
-
-  return new Response();
+function foo() {
   // console.log(JSON.stringify(data));
   // console.log(JSON.stringify({ x: "ASDA", y: "ASD" }));
 }
@@ -160,5 +154,4 @@ export default {
   getUsers,
   getViewUsers,
   createViewUser,
-  foo,
 };

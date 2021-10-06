@@ -14,7 +14,4 @@ router.route("/add/mongo").post(UserController.addUser);
 router.route("/getuser").get(UserController.getUsers);
 router.route("/view/get/:type").get(UserController.getViewUsers);
 router.route("/view/add/:type").post(UserController.createViewUser);
-
-router.route("/demo").get(UserController.foo);
-
 export default router;
