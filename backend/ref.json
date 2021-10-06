@@ -10,5 +10,8 @@
   },
   "TypeScript Project Template": {
     "URL": "https://github.com/joeythelantern/Typescript-Quickstart-Projects"
+  },
+  "axios Documentation": {
+    "URL": "https://github.com/axios/axios"
   }
 }

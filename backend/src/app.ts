@@ -2,13 +2,12 @@ import express, { Application, Request, Response, NextFunction } from "express";
 import mongoose, { Schema } from "mongoose";
 import dotenv from "dotenv";
 import UserRouter from "./Routes/user.route";
-import Schedule from "./Models/schedule.model";
-import User from "./Models/user.model";
 
 dotenv.config();
 const app: Application = express();
+const uri: string | any = process.env.MONGO_URI_LOCAL;
 
-mongoose.connect("mongodb://localhost:27017/Baytree").then(() => {
+mongoose.connect(uri).then(() => {
   console.log("Mongodb is connected... ");
 });
 

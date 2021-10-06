@@ -6,13 +6,15 @@ const router: Router = express.Router();
 
 router.route("/").get((req: Request, res: Response) => {
   User.find()
-    .then((users) => res.json(users))
+    .then((user) => res.json(user))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route("/add").post(UserController.addUser);
+router.route("/add/mongo").post(UserController.addUser);
 router.route("/getuser").get(UserController.getUsers);
+router.route("/view/get/:type").get(UserController.getViewUsers);
+router.route("/view/add/:type").post(UserController.createViewUser);
 
-router.route("/view").get(UserController.getViewUsers);
+router.route("/demo").get(UserController.foo);
 
 export default router;
