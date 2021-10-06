@@ -32,7 +32,7 @@ export const SessionItem: React.FC<SessionItemProps> = ({
 
   return (
     <Link
-      to={Paths.mentees}
+      to={isOngoing ? Paths.currentSession : Paths.newSession}
       className={`session-item ${isOngoing ? 'ongoing' : ''}`}
     >
       <div className='body'>
