@@ -12,9 +12,9 @@ export const Paths = {
   mentees: '/mentees',
   notifications: '/notifications',
   settings: '/settings',
-  newSession: '/newsession',
-  currentSession: '/currentSession',
-  editSession: '/editSession'
+  newSession: '/new-session',
+  currentSession: '/current-session',
+  editSession: '/edit-session'
 };
 
 export interface Route {

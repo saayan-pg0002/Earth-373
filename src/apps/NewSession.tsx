@@ -17,7 +17,6 @@ const NewSession: React.FC<NewSessionProps> = ({
   date,
   actualclockInTime,
   actualclockOutTime,
-  notes
 }) => {
   
   date = "2021-09-19";
@@ -42,72 +41,68 @@ const NewSession: React.FC<NewSessionProps> = ({
   }
 
   return (
-    <React.Fragment>
       <main className='container'>  
         <h1 className='page-title'>New Session</h1>
         
-        <div>
-          <form>
-            <label>Mentee</label>
-            <p>
-              <select onClick = {selectMentee}>
-                <option value='Melissa Nguyen'> Melissa Nguyen</option>
-                <option value='Dianne Russell'> Dianne Russell</option>
-                <option value='Tessa Nguyen'> Melissa Nguyen</option>
-              </select>
-            </p>
-          </form>
-        </div>
-
-        <div>
-            <label>Date</label>
-            <p>{date}</p>
-        </div>
-
-        <div>
-            <label>Start Time</label>
-            <p>{getFormattedTimeString(actualclockOutTime)}</p>
-        </div>
-
-        <div>
-            <label>End Time</label>
-            <p >
-              {getFormattedTimeString(actualclockOutTime)}
-              <button type='button' className='btn' onClick = {EndSessionClick}>
-                <ContainedIcon
-                  name={IconName.autocomplete}
-                  color={IconColors.white}
-                  backgroundColor={IconColors.transparent}
-                />
-              </button>
-            </p>
-        </div>
-
-        <div>
-          <form>
-            <label>Notes</label>
-            <p><textarea
-                    onClick={handleNotesChange}
-                    name="note"
-                    disabled
-                />
-              </p>
+        <form>
+          <div>
             
-          </form>
-        </div>
+              <label>Mentee</label>
+              <p>
+                <select onClick = {selectMentee}>
+                  <option value='Melissa Nguyen'> Melissa Nguyen</option>
+                  <option value='Dianne Russell'> Dianne Russell</option>
+                  <option value='Tessa Nguyen'> Melissa Nguyen</option>
+                </select>
+              </p>
+          </div>
 
-        <Link
-          to={Paths.currentSession}
-        >
-        <button 
-          type='button' 
-          className='btn'>
-            Start Session
-        </button>
+          <div>
+              <label>Date</label>
+              <p>{date}</p>
+          </div>
 
-        </Link>
+          <div>
+              <label>Start Time</label>
+              <p>{getFormattedTimeString(actualclockInTime)}</p>
+          </div>
+
+          <div>
+              <label>End Time</label>
+              <p >
+                  {getFormattedTimeString(actualclockOutTime)}
+                  <button type='button' className='btn' onClick = {EndSessionClick}>
+                  <ContainedIcon
+                    name={IconName.autocomplete}
+                    color={IconColors.white}
+                    backgroundColor={IconColors.transparent}
+                  />
+                </button>
+              </p>
+          </div>
+
+          <div>
+              <label>Notes</label>
+              <p><textarea
+                      onClick={handleNotesChange}
+                      name="note"
+                      disabled
+                  />
+                </p>    
+          </div>
+
+          <Link
+            to={Paths.currentSession}
+          >
+          <button 
+            type='button' 
+            className='btn'>
+              Start Session
+          </button>
+          </Link>
+
+        </form>
       </main>
-    </React.Fragment>
   );
 };
 

@@ -37,83 +37,77 @@ const CurrentSession: React.FC<NewSessionProps> = ({
   }
 
   return (
-    <React.Fragment>
       <main className='container'>
-        
+    
         <h1 className='page-title'>Current Session</h1>
         
-        <div>
-          <form>
-            <label>Mentee</label>
-              <p>
-                {menteeName}
-              </p>
-          </form>
-        </div>
+        <form>
+          
+          <div>
+              <label>Mentee</label>
+                <p>
+                  {menteeName}
+                </p>
+          </div>
 
-        <div>
-          <form>
-            <label>Date</label>
-            <p>{date}</p>
-          </form>
-        </div>
+          <div>
+              <label>Date</label>
+              <p>{date}</p>
+          </div>
 
-        <div>
-          <form>
-            <label>Start Time</label>
-              <p>
-                {getFormattedTimeString(actualclockInTime)}
-              </p>
-          </form>
-        </div>
+          <div>
+              <label>Start Time</label>
+                <p>
+                  {getFormattedTimeString(actualclockInTime)}
+                </p>
+          </div>
 
-        <div>
-            <label>End Time</label>
-              <p>
-                {getFormattedTimeString(inputEndTime)}
-                <button 
-                  type='button' 
-                  className='btn' 
-                  name='actualclockOutTime' 
-                  onClick = {EndSessionClick}>
-                  <ContainedIcon
-                    name={IconName.autocomplete}
-                    color={IconColors.white}
-                    backgroundColor={IconColors.transparent}
-                  />
-                </button>
-              </p>
-        </div>
+          <div>
+              <label>End Time</label>
+                <p>
+                  {getFormattedTimeString(inputEndTime)}
+                  <button 
+                    type='button' 
+                    className='btn' 
+                    name='actualclockOutTime' 
+                    onClick = {EndSessionClick}>
+                    <ContainedIcon
+                      name={IconName.autocomplete}
+                      color={IconColors.white}
+                      backgroundColor={IconColors.transparent}
+                      />
+                  </button>
+                </p>
+          </div>
 
-        <div>
-          <form>
-            <label>Notes</label>
-              <p><textarea
-                    name = 'notes'
-                    id = 'notes'
-                    value={inputNotes}
-                    onChange ={(e:any) => setNotes(e.target.value)}
-                  />
-              </p>  
-          </form>
-        </div>
+          <div>
+              <label>Notes</label>
+                <p><textarea
+                      name = 'notes'
+                      id = 'notes'
+                      value={inputNotes}
+                      onChange ={(e:any) => setNotes(e.target.value)}
+                      />
+                </p>  
+          </div>
 
-        <p>
-          <button type='button' className='btn'>
-            Save 
-          </button>
-        </p>
-        <p>
-          <Link
-            to={Paths.dashboard}
-          >
+          <p>
             <button type='button' className='btn'>
-              End Session
+              Save 
             </button>
-          </Link>
-        </p>
+          </p>
+          <p>
+            <Link
+              to={Paths.dashboard}
+              >
+              <button type='button' className='btn'>
+                End Session
+              </button>
+            </Link>
+          </p>
+          
+        </form>        
       </main>
-    </React.Fragment>
   );
 };
 

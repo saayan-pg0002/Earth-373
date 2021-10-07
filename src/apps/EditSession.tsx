@@ -27,18 +27,16 @@ const EditSession: React.FC<NewSessionProps> = ({
     
 
   return (
-    <React.Fragment>
-      <main className='container'>
-        
-        <h1 className='page-title'>Edit Session</h1>
-        
+    <main className='container'>
+      
+      <h1 className='page-title'>Edit Session</h1>
+      <form>
+
         <div>
-          <form>
             <label>Mentee</label>
             <p>
               {menteeName}
             </p>
-          </form>
         </div>
 
         <div>
@@ -57,7 +55,6 @@ const EditSession: React.FC<NewSessionProps> = ({
         </div>
 
         <div>
-          <form>
             <label>Notes</label>
             <p><textarea 
                   name = 'notes'
@@ -66,7 +63,6 @@ const EditSession: React.FC<NewSessionProps> = ({
                   onChange ={(e:any) => setNotes(e.target.value)}>
                     {inputNotes}
                 </textarea></p>
-          </form>
         </div>
 
         <p>
@@ -75,8 +71,8 @@ const EditSession: React.FC<NewSessionProps> = ({
           </button>
         </p>
 
-      </main>
-    </React.Fragment>
+      </form>
+    </main>
   );
 };
 
