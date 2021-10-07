@@ -5,7 +5,7 @@ import UserRouter from "./Routes/user.route";
 import Schedule from "./Models/schedule.model";
 import User from "./Models/user.model";
 
-dotenv.config();
+dotenv.config({path: __dirname + '/.env'});
 const app: Application = express();
 const URI: string | any = process.env.MONGO_URI;
 
@@ -13,7 +13,7 @@ mongoose.connect(URI).then(() => {
   console.log("Mongodb is connected... ");
 });
 
-const port: string | number = process.env.PORT || 3000;
+const port: string | number = process.env.PORT || 5000;
 
 /** Rules of our API */
 app.use(express.json());

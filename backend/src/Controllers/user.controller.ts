@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { json, NextFunction, Request, Response } from "express";
 import User from "../Models/user.model";
 import axios, { AxiosResponse } from "axios";
 import dotenv from "dotenv";
@@ -84,6 +84,25 @@ const getUsers = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
+
+const createUsersFromViews = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const viewsData = JSON.parse(await getViewUsers(req,res,next));
+
+  for (const key in viewsData){
+    const obj = viewsData[key];
+    for (const key1 in obj){
+        const obj2 = obj[key1];
+        const key2 = 'PersonID';
+        console.log(`${key2} : ${obj2[key2]} ${typeof(obj2[key2])}`)
+    }
+}
+};
+
+
 const getViewUsers = async (
   req: Request,
   res: Response,
@@ -96,11 +115,23 @@ const getViewUsers = async (
       username: process.env.VIEW_USERNAME as string,
       password: process.env.VIEW_PASSWORD as string,
     },
+    responseType: 'json',
+    transformResponse: [v => v],
   });
 
   const data = result.data;
   res.send(data);
+  return data;
 };
 
 
-export default { addUser, getUsers, getViewUsers, register, login, validateToken, getAllUsers };
+export default { 
+  addUser,
+  getUsers,
+  getViewUsers,
+  register, 
+  login, 
+  validateToken, 
+  getAllUsers,
+  createUsersFromViews,
+};
