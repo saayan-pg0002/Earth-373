@@ -10,9 +10,8 @@ router.route("/").get((req: Request, res: Response) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route("/add/mongo").post(UserController.addUser);
-router.route("/getuser").get(UserController.getUsers);
+router.route("/mongo/add").post(UserController.addUser);
+router.route("/mongo/get").get(UserController.getUsers);
 router.route("/view/get/:type").get(UserController.getViewUsers);
-router.route("/view/add/:type").post(UserController.createViewUser);
 
 export default router;
