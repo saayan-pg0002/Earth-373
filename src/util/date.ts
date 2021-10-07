@@ -8,6 +8,16 @@ const DaysOfWeek: String[] = [
   "Saturday",
 ];
 
+export const DaysOfWeekShort: string[] = [
+  "Sun",
+  "Mon",
+  "Tue",
+  "Wed",
+  "Thu",
+  "Fri",
+  "Sat",
+];
+
 const Months: String[] = [
   "January",
   "February",

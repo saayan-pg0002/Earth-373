@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { ContainedIcon, IconName, IconColors } from './Icon';
+import { useState, useEffect } from "react";
+import { ContainedIcon, IconName, IconColors } from "./Icon";
 import {
   isCurrentDateBetween,
   getStartEndFormattedTimeString,
-} from '../util/date';
-import { Link } from 'react-router-dom';
-import { Paths } from '../util/routes';
+} from "../util/date";
+import { Link } from "react-router-dom";
+import { Paths } from "../util/routes";
 
 export interface SessionItemProps {
   menteeName: string;
@@ -33,14 +33,14 @@ export const SessionItem: React.FC<SessionItemProps> = ({
   return (
     <Link
       to={Paths.mentees}
-      className={`session-item ${isOngoing ? 'ongoing' : ''}`}
+      className={`session-item ${isOngoing ? "ongoing" : ""}`}
     >
-      <div className='body'>
-        {isOngoing && <p className='subtext bold ongoing-tag'>Ongoing</p>}
-        <p className='subtext'>
+      <div className="body">
+        {isOngoing && <p className="subtext bold ongoing-tag">Ongoing</p>}
+        <p className="subtext">
           {getStartEndFormattedTimeString(clockInTime, clockOutTime)}
         </p>
-        <p className='semi-bold'>{menteeName}</p>
+        <p className="semi-bold">{menteeName}</p>
       </div>
       <ContainedIcon
         name={isOngoing ? IconName.doubleArrowRight : IconName.plus}
