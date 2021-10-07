@@ -91,15 +91,31 @@ const createUsersFromViews = async (
   next: NextFunction
 ) => {
   const viewsData = JSON.parse(await getViewUsers(req,res,next));
-
   for (const key in viewsData){
     const obj = viewsData[key];
+
     for (const key1 in obj){
         const obj2 = obj[key1];
-        const key2 = 'PersonID';
-        console.log(`${key2} : ${obj2[key2]} ${typeof(obj2[key2])}`)
+        const ViewsPersonID = obj2['PersonID'];
+
+        User.find({views_id: ViewsPersonID})
+        .exec(function (err,user) {
+          if(err){
+            console.log(err);
+          }else if (user.length == 0){
+            //TO DO ADD USERS WHICH ARE NOT FOUND
+            console.log(`User: ${obj2['Forename']}, id: ${ViewsPersonID} not found`);
+          }else{
+            console.log("user found" ,user);
+          }
+        });
     }
-}
+  }
+  
+  // const ViewsPersonID = '36';
+  // console.log(typeof ViewsPersonID);
+ 
+    res.send("Done..");
 };
 
 
@@ -120,7 +136,6 @@ const getViewUsers = async (
   });
 
   const data = result.data;
-  res.send(data);
   return data;
 };
 
