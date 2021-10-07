@@ -30,8 +30,6 @@ const getAllUsers = (req: Request, res: Response, next: NextFunction) => {
   
 }
 
-
-
 const addUser = (req: Request, res: Response, next: NextFunction) => {
   let {
     views_id,
@@ -97,16 +95,25 @@ const createUsersFromViews = async (
     for (const key1 in obj){
         const obj2 = obj[key1];
         const ViewsPersonID = obj2['PersonID'];
-
         User.find({views_id: ViewsPersonID})
         .exec(function (err,user) {
           if(err){
             console.log(err);
           }else if (user.length == 0){
             //TO DO ADD USERS WHICH ARE NOT FOUND
-            console.log(`User: ${obj2['Forename']}, id: ${ViewsPersonID} not found`);
+            const vals = 'Suspended';
+            const user = new User({
+              _id: new mongoose.Types.ObjectId(),
+              views_id: ViewsPersonID,
+              first_name: obj2['Forename'],
+              last_name: obj2['Surname'],
+              email:  obj2['Email'],
+              activity_status: vals,
+              user_type: "Mentor"
+            });   
+            console.log(`User added`, user);
           }else{
-            console.log("user found" ,user);
+            console.log(`User ${obj2['Forename']} already Present in the DataBase`);
           }
         });
     }
