@@ -4,23 +4,25 @@ import UserInterface from "../Interfaces/user.interface";
 export enum ActivityStatus {
   Active = 'Active',
   Inactive = 'Inactive',
-  TemporarilyWithdrawn = 'Temporarily Withdrawn',
-  FutureLeaver = 'Future Leaver',
-  OnHold = 'On Hold',
-  Withdrawn = 'Withdrawn',
-  Staff = 'Staff'
+  Suspended = 'Suspended'
+}
+
+export enum UserType {
+    Mentor = 'Mentor',
+    IntoSchoolMentor = 'Into School Mentor',
+    WomanMentor = 'Woman Mentor',
+    YoungMentor = 'Young Mentor',
+    Admin = 'Admin'
 }
 
 const userSchema: Schema = new Schema(
   {
+    views_id: { type: Number, required: true },
     first_name: { type: String, required: true },
     last_name: { type: String, required: true },
-    DOB: { type: Date, required: true },
-    email: { type: String, required: true },
-    phone_num: { type: String, required: true },
+    email: { type: String, required: true },    
     activity_status: { type: String, enum: Object.values(ActivityStatus), default: ActivityStatus.Active, required: true },
-    start_date: { type: Date, required: true, default: Date.now },
-    user_type: { type: String, required: true },
+    user_type: { type: String, enum: Object.values(UserType), default: UserType.Mentor, required: true },
   },
   {
     timestamps: true,

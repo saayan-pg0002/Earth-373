@@ -1,4 +1,4 @@
-import express, { Request, Response, Router } from "express";
+import express, { NextFunction, Request, Response, Router } from "express";
 import User from "../Models/user.model";
 import UserController from "../Controllers/user.controller";
 
@@ -14,5 +14,6 @@ router.route("/add").post(UserController.addUser);
 router.route("/getuser").get(UserController.getUsers);
 
 router.route("/view").get(UserController.getViewUsers);
+
 
 export default router;

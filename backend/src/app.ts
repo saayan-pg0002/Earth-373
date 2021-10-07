@@ -13,7 +13,7 @@ mongoose.connect(URI).then(() => {
   console.log("Mongodb is connected... ");
 });
 
-const port: string | number = process.env.PORT || 5000;
+const port: string | number = process.env.PORT || 3000;
 
 /** Rules of our API */
 app.use(express.json());
