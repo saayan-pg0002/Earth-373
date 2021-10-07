@@ -14,7 +14,6 @@ router.route("/add").post(UserController.addUser);
 router.route("/getuser").get(UserController.getUsers);
 
 router.route("/view").get(UserController.getViewUsers);
-
 router.route("/createdb").get(UserController.createUsersFromViews);
 
 export default router;
