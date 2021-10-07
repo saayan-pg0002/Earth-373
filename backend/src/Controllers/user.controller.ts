@@ -100,18 +100,27 @@ const createUsersFromViews = async (
           if(err){
             console.log(err);
           }else if (user.length == 0){
-            //TO DO ADD USERS WHICH ARE NOT FOUND
+
+            //TO DO CHECK USER VALUES WHICH ARE NOT PRESENT IN GETREQUEST LIKE EMAIL AND USERTYPE
             const vals = 'Suspended';
+            const dummyemail = 'dummyemail@sfu.ca';
             const user = new User({
               _id: new mongoose.Types.ObjectId(),
               views_id: ViewsPersonID,
               first_name: obj2['Forename'],
               last_name: obj2['Surname'],
-              email:  obj2['Email'],
+              email:  obj2['Email'] || <any>dummyemail,
               activity_status: vals,
               user_type: "Mentor"
-            });   
-            console.log(`User added`, user);
+            });
+            user.save()
+            .then((result) => {
+              console.log("user added!");
+            })
+            .catch((error) => {
+              return console.log("Error adding user",error);
+            });
+
           }else{
             console.log(`User ${obj2['Forename']} already Present in the DataBase`);
           }
