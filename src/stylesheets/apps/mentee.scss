@@ -1,0 +1,9 @@
+@import "../util/";
+
+.mentees {
+  .container {
+    & > * + * {
+      margin-top: 1.5rem;
+    }
+  }
+}

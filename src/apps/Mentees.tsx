@@ -42,9 +42,11 @@ const menteeList: MenteeItemProps[] = [
 
 const Mentees: React.FC<{}> = () => {
   return (
-    <main className="container">
-      <h1 className="page-title">Mentees</h1>
-      <MenteeList mentees={menteeList} />
+    <main className="mentees">
+      <div className="container">
+        <h1 className="page-title">Mentees</h1>
+        <MenteeList mentees={menteeList} />
+      </div>
     </main>
   );
 };
