@@ -1,16 +1,9 @@
 import { ContainedIcon, IconName, IconColors } from "./Icon";
-import { getStartEndFormattedTimeString } from "../util/date";
+import { getStartEndFormattedTimeString, DaysOfWeekShort } from "../util/date";
+import { Link } from "react-router-dom";
+import { Paths } from "../util/routes";
 
 import React from "react";
-
-const weekday = new Array(7);
-weekday[0] = "Sun";
-weekday[1] = "Mon";
-weekday[2] = "Tue";
-weekday[3] = "Wed";
-weekday[4] = "Thu";
-weekday[5] = "Fri";
-weekday[6] = "Sat";
 
 export const MenteeItem: React.FC<MenteeItemProps> = ({
   menteeName,
@@ -19,10 +12,10 @@ export const MenteeItem: React.FC<MenteeItemProps> = ({
   dayOfWeek,
 }) => {
   return (
-    <div className="mentee-item">
+    <Link to={Paths.dashboard} className="mentee-item">
       <div className="body">
         <p className="subtext"> </p>
-        {weekday[dayOfWeek.getDay()]}{" "}
+        {DaysOfWeekShort[dayOfWeek.getDay()]}{" "}
         {getStartEndFormattedTimeString(clockInTime, clockOutTime)}
         <p className="semi-bold">{menteeName}</p>
       </div>
@@ -31,7 +24,7 @@ export const MenteeItem: React.FC<MenteeItemProps> = ({
         color={IconColors.black}
         backgroundColor={IconColors.transparent}
       ></ContainedIcon>
-    </div>
+    </Link>
   );
 };
 
