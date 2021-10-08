@@ -101,15 +101,13 @@ const createUsersFromViews = async (
           }else if (user.length == 0){
 
             //TO DO CHECK USER VALUES WHICH ARE NOT PRESENT IN GETREQUEST LIKE EMAIL AND USERTYPE
-            const vals = 'Suspended';
-            const dummyemail = 'dummyemail@sfu.ca';
             const user = new User({
               _id: new mongoose.Types.ObjectId(),
               views_id: ViewsPersonID,
               first_name: userFields['Forename'],
               last_name: userFields['Surname'],
-              email:  userFields['Email'] | <any>dummyemail,
-              activity_status: vals,
+              email:  userFields['Email'] as string || "dummyemail@sfu.ca" as string,
+              activity_status: "Suspended",
               user_type: "Mentor"
             });
             user.save()
@@ -126,9 +124,6 @@ const createUsersFromViews = async (
         });
     }
   }
-  
-  // const ViewsPersonID = '36';
-  // console.log(typeof ViewsPersonID);
 };
 
 
