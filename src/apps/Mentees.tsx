@@ -1,5 +1,5 @@
 import { MenteeList } from "../components/MenteeList";
-import { MenteeItem, MenteeItemProps } from "../components/MenteeItem";
+import { MenteeItemProps } from "../components/MenteeItem";
 
 const menteeList: MenteeItemProps[] = [
   {

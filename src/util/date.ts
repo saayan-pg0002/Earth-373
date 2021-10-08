@@ -105,5 +105,15 @@ export const getFormatedDayMonthYearString = (date: Date): string => {
   const datenumber = date.getDate();
   const monthName = Months[date.getMonth()];
   const year = date.getFullYear(); // 2019
-  return `${dayOfWeek}, ${datenumber} ${monthName} ${year}`;
+  return `${dayOfWeek}, ${datenumber} ${monthName}, ${year}`;
+};
+
+export const getStartEndFormattedTimeStringWithDay = (
+  startDate: Date,
+  endDate: Date
+): String => {
+  const dayOfWeek = DaysOfWeek[startDate.getDay()].substring(0, 3);
+  return `${dayOfWeek} ${getFormattedTimeString(
+    startDate
+  )} - ${getFormattedTimeString(endDate)}`;
 };
