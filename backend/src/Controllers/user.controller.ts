@@ -90,11 +90,10 @@ const createUsersFromViews = async (
 ) => {
   const viewsData = JSON.parse(await getViewUsers(req,res,next));
   for (const key in viewsData){
-    const obj = viewsData[key];
-
-    for (const key1 in obj){
-        const obj2 = obj[key1];
-        const ViewsPersonID = obj2['PersonID'];
+    const viewsUsers = viewsData[key];
+    for (const key1 in viewsUsers){
+        const userFields = viewsUsers[key1];
+        const ViewsPersonID = userFields['PersonID'];
         User.find({views_id: ViewsPersonID})
         .exec(function (err,user) {
           if(err){
@@ -107,9 +106,9 @@ const createUsersFromViews = async (
             const user = new User({
               _id: new mongoose.Types.ObjectId(),
               views_id: ViewsPersonID,
-              first_name: obj2['Forename'],
-              last_name: obj2['Surname'],
-              email:  obj2['Email'] || <any>dummyemail,
+              first_name: userFields['Forename'],
+              last_name: userFields['Surname'],
+              email:  userFields['Email'] | <any>dummyemail,
               activity_status: vals,
               user_type: "Mentor"
             });
@@ -122,7 +121,7 @@ const createUsersFromViews = async (
             });
 
           }else{
-            console.log(`User ${obj2['Forename']} already Present in the DataBase`);
+            console.log(`User ${userFields['Forename']} already Present in the DataBase`);
           }
         });
     }
@@ -130,8 +129,6 @@ const createUsersFromViews = async (
   
   // const ViewsPersonID = '36';
   // console.log(typeof ViewsPersonID);
- 
-    res.send("Done..");
 };
 
 
@@ -152,6 +149,7 @@ const getViewUsers = async (
   });
 
   const data = result.data;
+  res.send(data);
   return data;
 };
 
