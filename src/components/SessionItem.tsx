@@ -35,12 +35,12 @@ export const SessionItem: React.FC<SessionItemProps> = ({
       to={isOngoing ? Paths.currentSession : Paths.newSession}
       className={`session-item ${isOngoing ? 'ongoing' : ''}`}
     >
-      <div className='body'>
-        {isOngoing && <p className='subtext bold ongoing-tag'>Ongoing</p>}
-        <p className='subtext'>
+      <div className="body">
+        {isOngoing && <p className="subtext bold ongoing-tag">Ongoing</p>}
+        <p className="subtext">
           {getStartEndFormattedTimeString(clockInTime, clockOutTime)}
         </p>
-        <p className='semi-bold'>{menteeName}</p>
+        <p className="semi-bold">{menteeName}</p>
       </div>
       <ContainedIcon
         name={isOngoing ? IconName.doubleArrowRight : IconName.plus}

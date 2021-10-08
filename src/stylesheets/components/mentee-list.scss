@@ -1,0 +1,22 @@
+@import '../util/';
+
+.mentee-list {
+  a + a {
+    margin-top: 0.75rem;
+  }
+
+  &.empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75vh;
+  }
+
+  .empty-state {
+    text-align: center;
+
+    p {
+      color: $baytree-navy;
+    }
+  }
+}
