@@ -7,20 +7,18 @@
   border-top: $border-thin-grey;
   height: $nav-height;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   background-color: $white;
+  padding-left: $gutter;
+  padding-right: $gutter;
 
-  .container {
+  .items {
+    margin: auto;
+    max-width: $container-max-width;
     width: 100%;
-    padding-top: 0;
-    padding-bottom: 0;
-
-    .items {
-      list-style: none;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }

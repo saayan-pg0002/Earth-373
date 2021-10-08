@@ -4,14 +4,15 @@ import {
   Switch,
   RouteComponentProps,
 } from 'react-router-dom';
-import { routes } from './util/routes';
+import { routes, PublicPaths } from './util/routes';
 import Nav from './components/Nav';
 import './stylesheets/index.scss';
 
 const App: React.FC<{}> = () => {
+  const isPrivatePath = (path: string): boolean => !PublicPaths.includes(path);
+
   return (
     <BrowserRouter>
-      <Nav />
       <Switch>
         {routes.map((route, index) => {
           return (
@@ -20,7 +21,10 @@ const App: React.FC<{}> = () => {
               path={route.path}
               exact={route.exact}
               render={(props: RouteComponentProps<any>) => (
-                <route.component {...props} {...route.props} />
+                <>
+                  {isPrivatePath(route.path) && <Nav />}
+                  <route.component {...props} {...route.props} />
+                </>
               )}
             />
           );

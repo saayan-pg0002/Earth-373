@@ -8,6 +8,7 @@ import { ReactComponent as DoubleArrowRight } from '../assets/icons/icon-double-
 import { ReactComponent as Edit } from '../assets/icons/icon-edit.svg';
 import { ReactComponent as Exclamation } from '../assets/icons/icon-exclamation.svg';
 import { ReactComponent as Eye } from '../assets/icons/icon-eye.svg';
+import { ReactComponent as EyeCrossed } from '../assets/icons/icon-eye-crossed.svg';
 import { ReactComponent as Home } from '../assets/icons/icon-home.svg';
 import { ReactComponent as Info } from '../assets/icons/icon-info.svg';
 import { ReactComponent as Link } from '../assets/icons/icon-link.svg';
@@ -28,6 +29,7 @@ export enum IconName {
   edit,
   exclamation,
   eye,
+  eyeCrossed,
   home,
   info,
   link,
@@ -94,6 +96,8 @@ const getIcon = (name: IconName): JSX.Element => {
       return <Exclamation />;
     case IconName.eye:
       return <Eye />;
+    case IconName.eyeCrossed:
+      return <EyeCrossed />;
     case IconName.home:
       return <Home />;
     case IconName.info:
@@ -112,5 +116,7 @@ const getIcon = (name: IconName): JSX.Element => {
       return <Smiley />;
     case IconName.user:
       return <User />;
+    default:
+      return <></>;
   }
 };
