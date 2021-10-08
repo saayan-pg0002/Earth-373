@@ -38,5 +38,4 @@ export const MenteeList: React.FC<MenteeListProps> = ({ mentees }) => {
       )}
     </div>
   );
-  return <div></div>;
 };

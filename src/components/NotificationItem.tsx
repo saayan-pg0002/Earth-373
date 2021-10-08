@@ -1,9 +1,4 @@
-import { ContainedIcon, IconName, IconColors } from "./Icon";
-import {
-  getStartEndFormattedTimeString,
-  getFormatedDayMonthYearString,
-  DaysOfWeekShort,
-} from "../util/date";
+import { getFormatedDayMonthYearString } from "../util/date";
 import React from "react";
 
 export const NotificationItem: React.FC<NotificationItemProps> = ({

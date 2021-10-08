@@ -1,9 +1,7 @@
 import { ContainedIcon, IconName, IconColors } from "./Icon";
-import { getStartEndFormattedTimeString, DaysOfWeekShort } from "../util/date";
+import { getStartEndFormattedTimeStringWithDay } from "../util/date";
 import { Link } from "react-router-dom";
 import { Paths } from "../util/routes";
-
-import React from "react";
 
 export const MenteeItem: React.FC<MenteeItemProps> = ({
   menteeName,
@@ -14,9 +12,9 @@ export const MenteeItem: React.FC<MenteeItemProps> = ({
   return (
     <Link to={Paths.dashboard} className="mentee-item">
       <div className="body">
-        <p className="subtext"> </p>
-        {DaysOfWeekShort[dayOfWeek.getDay()]}{" "}
-        {getStartEndFormattedTimeString(clockInTime, clockOutTime)}
+        <p className="subtext">
+          {getStartEndFormattedTimeStringWithDay(clockInTime, clockOutTime)}
+        </p>
         <p className="semi-bold">{menteeName}</p>
       </div>
       <ContainedIcon
