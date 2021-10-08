@@ -1,5 +1,5 @@
-import { getFormatedDayMonthYearString } from "../util/date";
-import React from "react";
+import { getFormattedDayMonthYearString } from '../util/date';
+import React from 'react';
 
 export const NotificationItem: React.FC<NotificationItemProps> = ({
   message,
@@ -8,7 +8,7 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
   return (
     <div className="notification-item">
       <div className="body">
-        <p className="subtext">{getFormatedDayMonthYearString(date)}</p>
+        <p className="subtext">{getFormattedDayMonthYearString(date)}</p>
         <p>{message}</p>
       </div>
     </div>

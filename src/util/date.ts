@@ -1,26 +1,26 @@
 const DaysOfWeek: String[] = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
 ];
 
 const Months: String[] = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
 ];
 
 export const getCurrentWeekDateObjects = (
@@ -80,26 +80,25 @@ export const getStartEndFormattedTimeString = (
 
 // e.g 10:30 AM
 export const getFormattedTimeString = (date: Date): string => {
-  
-  if(isNaN(date.getTime())){
-      return '--:--:--';
+  if (isNaN(date.getTime())) {
+    return '--:--:--';
   }
   let hour: number = date.getHours();
   hour = hour > 12 ? hour - 12 : hour;
 
   const minute: number = date.getMinutes();
-  const timePeriod: string = date.toLocaleTimeString().split(" ")[1];
+  const timePeriod: string = date.toLocaleTimeString().split(' ')[1];
 
   return `${hour}:${minute < 10 ? `0${minute}` : minute} ${timePeriod}`;
 };
 
 // e.g Monday, October 4 2021
-export const getFormatedDayMonthYearString = (date: Date): string => {
+export const getFormattedDayMonthYearString = (date: Date): string => {
   const dayOfWeek = DaysOfWeek[date.getDay()];
-  const datenumber = date.getDate();
+  const dateNumber = date.getDate();
   const monthName = Months[date.getMonth()];
   const year = date.getFullYear(); // 2019
-  return `${dayOfWeek}, ${datenumber} ${monthName}, ${year}`;
+  return `${dayOfWeek}, ${dateNumber} ${monthName}, ${year}`;
 };
 
 export const getStartEndFormattedTimeStringWithDay = (
