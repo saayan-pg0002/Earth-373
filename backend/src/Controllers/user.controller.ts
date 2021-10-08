@@ -88,7 +88,9 @@ const createUsersFromViews = async (
   res: Response,
   next: NextFunction
 ) => {
+  //Getting JSON format dtata from views
   const viewsData = JSON.parse(await getViewUsers(req,res,next));
+  //Iterating to check for new users added, if yes then adding to db collection
   for (const key in viewsData){
     const viewsUsers = viewsData[key];
     for (const key1 in viewsUsers){
@@ -99,17 +101,14 @@ const createUsersFromViews = async (
           if(err){
             console.log(err);
           }else if (user.length == 0){
-
             //TO DO CHECK USER VALUES WHICH ARE NOT PRESENT IN GETREQUEST LIKE EMAIL AND USERTYPE
-            const vals = 'Suspended';
-            const dummyemail = 'dummyemail@sfu.ca';
             const user = new User({
               _id: new mongoose.Types.ObjectId(),
               views_id: ViewsPersonID,
               first_name: userFields['Forename'],
               last_name: userFields['Surname'],
-              email:  userFields['Email'] | <any>dummyemail,
-              activity_status: vals,
+              email:  userFields['Email'] as string | "dummyemail@sfu.ca",
+              activity_status: "Suspended",
               user_type: "Mentor"
             });
             user.save()
@@ -126,9 +125,6 @@ const createUsersFromViews = async (
         });
     }
   }
-  
-  // const ViewsPersonID = '36';
-  // console.log(typeof ViewsPersonID);
 };
 
 
