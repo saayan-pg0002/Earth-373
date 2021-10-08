@@ -64,7 +64,11 @@ export const getStartEndFormattedTimeString = (
   `${getFormattedTimeString(startDate)} - ${getFormattedTimeString(endDate)}`;
 
 // e.g 10:30 AM
-const getFormattedTimeString = (date: Date): string => {
+export const getFormattedTimeString = (date: Date): string => {
+  
+  if(isNaN(date.getTime())){
+      return '--:--:--';
+  }
   let hour: number = date.getHours();
   hour = hour > 12 ? hour - 12 : hour;
 
