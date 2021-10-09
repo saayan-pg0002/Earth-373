@@ -1,5 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { DropdownMenu } from '../components/form/DropdownMenu';
+import { FormField } from '../components/form/FormField';
+import { InputNotes } from '../components/form/InputNotes';
+import { RenderAttributes } from '../components/form/RenderAttributes';
 import { ContainedIcon, IconName, IconColors } from '../components/Icon';
 import { getFormattedTimeString } from '../util/date';
 import { Paths } from '../util/routes';
@@ -25,82 +29,67 @@ const NewSession: React.FC<NewSessionProps> = ({
   actualclockInTime = temp;
   actualclockOutTime = temp;
 
-
-  const handleNotesChange = (e : any) =>{
-    alert("You first need to start the session");
-    e.preventDefault();
-  }
-
   const EndSessionClick = () =>{
     alert("You need to first start this session to record end time ");
   }
 
-  const selectMentee = (event : any) =>{
-    menteeName = event.value;
-    console.log(menteeName);
-  }
-
   return (
       <main className='container'>  
+          
         <h1 className='page-title'>New Session</h1>
         
         <form>
-          <div>
-            
-              <label>Mentee</label>
-              <p>
-                <select onClick = {selectMentee}>
-                  <option value='Melissa Nguyen'> Melissa Nguyen</option>
-                  <option value='Dianne Russell'> Dianne Russell</option>
-                  <option value='Tessa Nguyen'> Melissa Nguyen</option>
-                </select>
-              </p>
-          </div>
+          <FormField labelText='Mentee'>
+            <DropdownMenu
+              rightIconName={IconName.chevronDown}
+            />
+          </FormField>  
 
-          <div>
-              <label>Date</label>
-              <p>{date}</p>
-          </div>
+          <FormField labelText='Date'>
+            <RenderAttributes
+              attribute = {date}
+              rightIconName={IconName.calendar}
+            />
+          </FormField>
 
-          <div>
-              <label>Start Time</label>
-              <p>{getFormattedTimeString(actualclockInTime)}</p>
-          </div>
+          <FormField labelText='Start Time'>
+            <RenderAttributes
+              attribute = {getFormattedTimeString(actualclockInTime)}
+              rightIconName={IconName.clock}
+            />
+          </FormField>
 
-          <div>
-              <label>End Time</label>
-              <p >
-                  {getFormattedTimeString(actualclockOutTime)}
-                  <button type='button' className='btn' onClick = {EndSessionClick}>
-                  <ContainedIcon
-                    name={IconName.autocomplete}
-                    color={IconColors.white}
-                    backgroundColor={IconColors.transparent}
-                  />
-                </button>
-              </p>
-          </div>
-
-          <div>
-              <label>Notes</label>
-              <p><textarea
-                      onClick={handleNotesChange}
-                      name="note"
-                      disabled
-                  />
-                </p>    
-          </div>
+          <FormField labelText='End Time'>
+            <div className='clock-out-element'>
+              <RenderAttributes
+                attribute = {getFormattedTimeString(actualclockOutTime)}
+                rightIconName={IconName.clock}
+              />
+              <span id = 'actualclockOutTime' onClick = {EndSessionClick}>
+                <ContainedIcon
+                  name={IconName.autocomplete}
+                  color={IconColors.white}
+                  backgroundColor={IconColors.baytreeGreen}
+                />
+              </span>
+            </div>
+          </FormField> 
+          
+          <FormField labelText='Notes'>
+            <InputNotes
+              placeholderText = 'Your notes...'
+              name='notes'
+              isDisabled = {true}
+            />
+          </FormField>
 
           <Link
             to={Paths.currentSession}
           >
-          <button 
-            type='button' 
-            className='btn'>
-              Start Session
+          <button type='button' className='btn' style={{marginTop: '1rem'}}>
+            Start Session
           </button>
           </Link>
-
         </form>
       </main>
   );

@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { FormField } from "../components/form/FormField";
+import { InputNotes } from "../components/form/InputNotes";
+import { RenderAttributes } from "../components/form/RenderAttributes";
 import { ContainedIcon, IconColors, IconName } from "../components/Icon";
 import { getFormattedTimeString } from "../util/date";
 import { Paths } from "../util/routes";
@@ -14,7 +17,6 @@ const CurrentSession: React.FC<NewSessionProps> = ({
   notes
 }) => {
 
-  const[inputNotes, setNotes] = useState(notes? notes:"")
   const[inputEndTime, setEndTime] = useState(actualclockOutTime = (() => {
     const date = new Date();
     date.setHours(NaN);
@@ -28,7 +30,7 @@ const CurrentSession: React.FC<NewSessionProps> = ({
     return date;
   })();
   
-  const EndSessionClick = (event : any) =>{
+  const EndSessionClick = (event : any) : void =>{
     setEndTime( (() => {
       const date = new Date();
       return date;
@@ -38,64 +40,67 @@ const CurrentSession: React.FC<NewSessionProps> = ({
 
   return (
       <main className='container'>
-    
         <h1 className='page-title'>Current Session</h1>
-        
         <form>
-          
-          <div>
-              <label>Mentee</label>
-                <p>
-                  {menteeName}
-                </p>
-          </div>
+          <FormField labelText='Mentee'>
+            <RenderAttributes
+              attribute = {menteeName}
+            />
+          </FormField>
 
-          <div>
-              <label>Date</label>
-              <p>{date}</p>
-          </div>
+          <FormField labelText='Date'>
+            <RenderAttributes
+              attribute = {date}
+              rightIconName={IconName.calendar}
+            />
+          </FormField>
 
-          <div>
-              <label>Start Time</label>
-                <p>
-                  {getFormattedTimeString(actualclockInTime)}
-                </p>
-          </div>
+          <FormField labelText='Start Time'>
+            <RenderAttributes
+              attribute = {getFormattedTimeString(actualclockInTime)}
+              rightIconName={IconName.clock}
+            />
+          </FormField>
 
-          <div>
-              <label>End Time</label>
-                <p>
-                  {getFormattedTimeString(inputEndTime)}
-                  <button 
-                    type='button' 
-                    className='btn' 
-                    name='actualclockOutTime' 
-                    onClick = {EndSessionClick}>
+          <FormField labelText='End Time'>
+            <div className='clock-out-element'>
+                <RenderAttributes
+                  attribute = {getFormattedTimeString(inputEndTime)}
+                  rightIconName={IconName.clock}
+                  isClockOut = {true}
+                  />
+                  <span id = 'actualclockOutTime' onClick = {EndSessionClick}>
                     <ContainedIcon
                       name={IconName.autocomplete}
                       color={IconColors.white}
-                      backgroundColor={IconColors.transparent}
+                      backgroundColor={IconColors.baytreeGreen}
                       />
-                  </button>
-                </p>
-          </div>
+                  </span>
+              </div>
+          </FormField> 
 
-          <div>
-              <label>Notes</label>
-                <p><textarea
-                      name = 'notes'
-                      id = 'notes'
-                      value={inputNotes}
-                      onChange ={(e:any) => setNotes(e.target.value)}
-                      />
-                </p>  
-          </div>
+          <FormField labelText='Notes'>
+            <InputNotes
+              placeholderText = 'Your notes...'
+              name='notes'
+              id = 'notes'
+              isDisabled = {false}
+              notes = ''
+            />
+          </FormField>
 
           <p>
-            <button type='button' className='btn'>
+            <button 
+              type='button' 
+              className='btn-blue' 
+              style={{ 
+                marginBottom: '1rem', 
+                marginTop: '1rem' 
+              }}>
               Save 
             </button>
           </p>
+        
           <p>
             <Link
               to={Paths.dashboard}
@@ -105,7 +110,6 @@ const CurrentSession: React.FC<NewSessionProps> = ({
               </button>
             </Link>
           </p>
-          
         </form>        
       </main>
   );

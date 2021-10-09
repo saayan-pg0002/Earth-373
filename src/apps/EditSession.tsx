@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
+import { FormField } from "../components/form/FormField";
+import { InputNotes } from "../components/form/InputNotes";
+import { RenderAttributes } from "../components/form/RenderAttributes";
+import { IconName } from "../components/Icon";
 import { getFormattedTimeString } from "../util/date";
 import { NewSessionProps } from "./NewSession";
 
@@ -9,8 +13,6 @@ const EditSession: React.FC<NewSessionProps> = ({
   actualclockOutTime,
   notes
 }) => {
-
-  const[inputNotes, setNotes] = useState(notes? notes:"")
 
   menteeName = 'Melissa Nguyen';
   date =  "2021-09-19";
@@ -28,45 +30,46 @@ const EditSession: React.FC<NewSessionProps> = ({
 
   return (
     <main className='container'>
-      
       <h1 className='page-title'>Edit Session</h1>
       <form>
+        <FormField labelText='Mentee'>
+          <RenderAttributes
+            attribute = {menteeName}
+          />
+        </FormField>
 
-        <div>
-            <label>Mentee</label>
-            <p>
-              {menteeName}
-            </p>
-        </div>
+        <FormField labelText='Date'>
+          <RenderAttributes
+            attribute = {date}
+            rightIconName={IconName.calendar}
+          />
+        </FormField>
 
-        <div>
-            <label>Date</label>
-            <p>{date}</p>
-        </div>
+        <FormField labelText='Start Time'>
+          <RenderAttributes
+            attribute = {getFormattedTimeString(actualclockInTime)}
+            rightIconName={IconName.clock}
+          />
+        </FormField>
 
-        <div>
-            <label>Start Time</label>
-            <p>{getFormattedTimeString(actualclockInTime)}</p>
-        </div>
+        <FormField labelText='End Time'>
+          <RenderAttributes
+            attribute = {getFormattedTimeString(actualclockOutTime)}
+            rightIconName={IconName.clock}
+          />
+        </FormField> 
 
-        <div>
-            <label>End Time</label>
-            <p >{getFormattedTimeString(actualclockOutTime)}</p>
-        </div>
-
-        <div>
-            <label>Notes</label>
-            <p><textarea 
-                  name = 'notes'
-                  id = 'notes'
-                  value={inputNotes}
-                  onChange ={(e:any) => setNotes(e.target.value)}>
-                    {inputNotes}
-                </textarea></p>
-        </div>
-
+        <FormField labelText='Notes'>
+          <InputNotes
+            placeholderText = 'Your notes...'
+            name='notes'
+            id = 'notes'
+            isDisabled = {false}
+            notes = {notes}
+          />
+        </FormField>
         <p>
-          <button type='button' className='btn'>
+          <button type='button' className='btn' style={{marginTop: '1rem'}}>
             Save 
           </button>
         </p>
