@@ -8,6 +8,21 @@ const DaysOfWeek: String[] = [
   'Saturday',
 ];
 
+const Months: String[] = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
 export const getCurrentWeekDateObjects = (
   currentDate: Date = new Date()
 ): Date[] => {
@@ -65,9 +80,8 @@ export const getStartEndFormattedTimeString = (
 
 // e.g 10:30 AM
 export const getFormattedTimeString = (date: Date): string => {
-  
-  if(isNaN(date.getTime())){
-      return '--:--:--';
+  if (isNaN(date.getTime())) {
+    return '--:--:--';
   }
   let hour: number = date.getHours();
   hour = hour > 12 ? hour - 12 : hour;
@@ -76,4 +90,23 @@ export const getFormattedTimeString = (date: Date): string => {
   const timePeriod: string = date.toLocaleTimeString().split(' ')[1];
 
   return `${hour}:${minute < 10 ? `0${minute}` : minute} ${timePeriod}`;
+};
+
+// e.g Monday, October 4 2021
+export const getFormattedDayMonthYearString = (date: Date): string => {
+  const dayOfWeek = DaysOfWeek[date.getDay()];
+  const dateNumber = date.getDate();
+  const monthName = Months[date.getMonth()];
+  const year = date.getFullYear(); // 2019
+  return `${dayOfWeek}, ${dateNumber} ${monthName}, ${year}`;
+};
+
+export const getStartEndFormattedTimeStringWithDay = (
+  startDate: Date,
+  endDate: Date
+): String => {
+  const dayOfWeek = DaysOfWeek[startDate.getDay()].substring(0, 3);
+  return `${dayOfWeek} ${getFormattedTimeString(
+    startDate
+  )} - ${getFormattedTimeString(endDate)}`;
 };
