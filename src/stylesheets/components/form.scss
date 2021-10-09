@@ -1,4 +1,4 @@
-@import '../util/';
+@import "../util/";
 
 .form {
   display: flex;
@@ -24,7 +24,7 @@
 
     label {
       display: block;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.5rem;
     }
   }
 }
@@ -37,6 +37,7 @@
   justify-content: space-between;
   width: 100%;
   transition: all $fade-duration-fast ease;
+  margin-bottom: 20px;
 
   & > * + * {
     padding-left: 0.625rem;
@@ -53,5 +54,7 @@
     width: 100%;
     font-size: 1rem;
     font-family: $font-family;
+    color: $black;
+    background-color: white;
   }
 }

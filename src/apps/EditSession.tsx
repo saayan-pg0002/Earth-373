@@ -69,7 +69,7 @@ const EditSession: React.FC<NewSessionProps> = ({
           />
         </FormField>
         <p>
-          <button type='button' className='btn' style={{marginTop: '1rem'}}>
+          <button type='button' className='btn'>
             Save 
           </button>
         </p>

@@ -1,21 +1,30 @@
 @import '../util/';
 
 .clock-out-element{
-    display : inline-flex;
-    justify-content: space-between;
-    max-height: 100%;
-    gap:1rem;
-    
-    span{
-        
-    .contained-icon{
-        height: 100%;
-        aspect-ratio: 1/1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: auto;
-    }
-}   
+  display : flex;
+  justify-content: space-between;
+  transition: all $fade-duration ease;
+  width: 100%;
+  gap: 1rem;
 
+  span{
+    .contained-icon{
+      aspect-ratio: 1/1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+
+      &:hover {
+        background-color: $baytree-green-600;
+        border: 1px solid $baytree-green;
+      }
+
+      &:focus {
+        border-color: $baytree-green;
+        outline: none;
+        box-shadow: $baytree-green-400 0px 0px 0px 5px;
+      }
+    }
+  }       
 }

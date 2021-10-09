@@ -1,0 +1,30 @@
+@import "../util/";
+
+.box {
+  border-radius: $border-radius;
+  border: $border-thin-grey;
+  background-color:white;
+  padding: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  transition: all $fade-duration-fast ease;
+  margin-bottom: 20px;
+  resize: none;
+  
+  & > * + * {
+    padding-left: 0.625rem;
+  }
+
+  textarea {
+    border: none;
+    outline: none;
+    width: 100%;
+    min-height: 15rem;
+    font-size: 1rem;
+    font-family: $font-family;
+    color: $black;
+    background-color:white;
+    resize: vertical;
+  }
+}

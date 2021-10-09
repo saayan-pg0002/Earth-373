@@ -12,6 +12,8 @@
   transition: all $fade-duration ease;
   letter-spacing: $letter-spacing;
   width: 100%;
+  margin-top : 1rem;
+  margin-bottom: 1rem;
 
   &:hover {
     background-color: $baytree-green-600;
@@ -23,29 +25,22 @@
     outline: none;
     box-shadow: $baytree-green-400 0px 0px 0px 5px;
   }
-}
 
-.btn-blue {
-  font-family: $header-font-family;
-  font-weight: 700;
-  padding: 0.95rem 1.25rem;
-  background-color: $baytree-navy;
-  color: $white;
-  border: 1px solid transparent;
-  border-radius: $border-radius-button;
-  cursor: pointer;
-  transition: all $fade-duration ease;
-  letter-spacing: $letter-spacing;
-  width: 100%;
+  &.btn-secondary{
+    
+    background-color : $baytree-navy;
+    margin-top : 1rem;
+    margin-bottom: 1rem; 
 
-  &:hover {
-    background-color: $baytree-navy;
-    border: 1px solid $baytree-navy;
-  }
+    &:hover {
+      background-color: $grey-600;
+      border: 1px solid $baytree-navy;
+    }
 
-  &:focus {
-    border-color: $baytree-green;
-    outline: none;
-    box-shadow: $baytree-green-400 0px 0px 0px 5px;
+      &:focus {
+      border-color: $baytree-navy;
+      outline: none;
+      box-shadow: $grey-400 0px 0px 0px 5px;
+    }
   }
 }

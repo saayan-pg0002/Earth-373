@@ -86,7 +86,7 @@ const NewSession: React.FC<NewSessionProps> = ({
           <Link
             to={Paths.currentSession}
           >
-          <button type='button' className='btn' style={{marginTop: '1rem'}}>
+          <button type='button' className='btn'>
             Start Session
           </button>
           </Link>

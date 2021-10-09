@@ -92,11 +92,8 @@ const CurrentSession: React.FC<NewSessionProps> = ({
           <p>
             <button 
               type='button' 
-              className='btn-blue' 
-              style={{ 
-                marginBottom: '1rem', 
-                marginTop: '1rem' 
-              }}>
+              className='btn btn-secondary' 
+            >
               Save 
             </button>
           </p>

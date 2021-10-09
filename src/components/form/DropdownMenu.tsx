@@ -14,27 +14,26 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   rightIconName,
   menteeName
 }) => {
-     
-  const selectMentee = (event : any) =>{
-     menteeName = event.value;
-  }
 
   const [isFocused, setIsFocused] = useState<Boolean>(false);
 
   const onFocus = (): void => setIsFocused(true);
   const onBlur = (): void => setIsFocused(false);
 
+  const selectMentee = (event : any) =>{
+    menteeName = event.value;
+  }
   return (
-    <div >
+    <div>
       <select onClick = {selectMentee} 
         onFocus={onFocus}
         onBlur={onBlur}
         placeholder='Select Mentee'
-        className={`control ${isFocused ? 'focused' : ''}`}
+        className={`control ${isFocused ? 'focused' : ''} regular`}
         >
-        <option value='Melissa Nguyen'> Melissa Nguyen</option>
-        <option value='Dianne Russell'> Dianne Russell</option>
-        <option value='Tessa Pampangan'> Tessa Pampangan</option>
+        <option className = 'regular' value='Melissa Nguyen'> Melissa Nguyen</option>
+        <option className = 'regular' value='Dianne Russell'> Dianne Russell</option>
+        <option className = 'regular' value='Tessa Pampangan'> Tessa Pampangan</option>
         {rightIconName && <Icon name={rightIconName}/>}
       </select>
     </div>
