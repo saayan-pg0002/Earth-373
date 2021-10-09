@@ -1,40 +1,31 @@
-import { useState } from 'react';
-import { Icon, IconName } from '../Icon';
+import { useState } from "react";
 
 interface DropdownMenuProps {
   id?: string;
   name?: string;
-  leftIconName?: IconName;
-  rightIconName?: IconName;
-  attribute?: string;
-  menteeName?: string
+  menteeName?: string;
 }
 
-export const DropdownMenu: React.FC<DropdownMenuProps> = ({
-  rightIconName,
-  menteeName
-}) => {
-
+export const DropdownMenu: React.FC<DropdownMenuProps> = ({ menteeName }) => {
   const [isFocused, setIsFocused] = useState<Boolean>(false);
 
   const onFocus = (): void => setIsFocused(true);
   const onBlur = (): void => setIsFocused(false);
 
-  const selectMentee = (event : any) =>{
+  const selectMentee = (event: any) => {
     menteeName = event.value;
-  }
+  };
   return (
-    <div>
-      <select onClick = {selectMentee} 
+    <div className={`control ${isFocused ? "focused" : ""}`}>
+      <select
+        onClick={selectMentee}
         onFocus={onFocus}
         onBlur={onBlur}
-        placeholder='Select Mentee'
-        className={`control ${isFocused ? 'focused' : ''} regular`}
-        >
-        <option className = 'regular' value='Melissa Nguyen'> Melissa Nguyen</option>
-        <option className = 'regular' value='Dianne Russell'> Dianne Russell</option>
-        <option className = 'regular' value='Tessa Pampangan'> Tessa Pampangan</option>
-        {rightIconName && <Icon name={rightIconName}/>}
+        placeholder="Select Mentee"
+      >
+        <option value="Melissa Nguyen">Melissa Nguyen</option>
+        <option value="Dianne Russell">Dianne Russell</option>
+        <option value="Tessa Pampangan"> Tessa Pampangan</option>
       </select>
     </div>
   );

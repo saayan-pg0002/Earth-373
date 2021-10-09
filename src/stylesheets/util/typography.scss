@@ -1,49 +1,49 @@
-@import './colors.scss';
+@import "./colors.scss";
 
 @font-face {
-  font-family: 'Poppins';
-  src: url('/assets/fonts/Poppins-Medium.ttf') format('truetype');
+  font-family: "Poppins";
+  src: url("/assets/fonts/Poppins-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Poppins';
-  src: url('/assets/fonts/Poppins-MediumItalic.ttf') format('truetype');
+  font-family: "Poppins";
+  src: url("/assets/fonts/Poppins-MediumItalic.ttf") format("truetype");
   font-weight: 500;
   font-style: italic;
 }
 
 @font-face {
-  font-family: 'Inter';
-  src: url('/assets/fonts/Inter-Regular.ttf') format('truetype');
+  font-family: "Inter";
+  src: url("/assets/fonts/Inter-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Inter';
-  src: url('/assets/fonts/Inter-Medium.ttf') format('truetype');
+  font-family: "Inter";
+  src: url("/assets/fonts/Inter-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Inter';
-  src: url('/assets/fonts/Inter-SemiBold.ttf') format('truetype');
+  font-family: "Inter";
+  src: url("/assets/fonts/Inter-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Inter';
-  src: url('/assets/fonts/Inter-Bold.ttf') format('truetype');
+  font-family: "Inter";
+  src: url("/assets/fonts/Inter-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
 }
 
-$font-family: 'Inter', Helvetica, sans-serif;
-$header-font-family: 'Poppins', Helvetica, sans-serif;
+$font-family: "Inter", Helvetica, sans-serif;
+$header-font-family: "Poppins", Helvetica, sans-serif;
 $line-height: 1.5;
 $letter-spacing: 0.5px;
 $font-size: 16px;
@@ -64,6 +64,11 @@ a:active {
 
 .page-title {
   font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+
+  &.no-margin-bottom {
+    margin-bottom: 0;
+  }
 }
 
 .semi-bold {
@@ -85,16 +90,3 @@ a:active {
     font-weight: 700;
   }
 }
-
-.regular{
-  font-family: $font-family;
-  font-weight: 400;
-  font-size: 16px;
-}
-
-.notes-font-small{
-  font-family: $font-family;
-  font-weight: 400;
-  font-size: 13px;
-}
-

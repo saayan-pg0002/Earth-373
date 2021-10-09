@@ -11,69 +11,65 @@ const EditSession: React.FC<NewSessionProps> = ({
   date,
   actualclockInTime,
   actualclockOutTime,
-  notes
+  notes,
 }) => {
-
-  menteeName = 'Melissa Nguyen';
-  date =  "2021-09-19";
+  menteeName = "Melissa Nguyen";
+  date = "2021-09-19";
   actualclockInTime = (() => {
     const date = new Date();
-    date.setHours(20,0);
+    date.setHours(20, 0);
     return date;
   })();
   actualclockOutTime = (() => {
     const date = new Date();
-    date.setHours(21,0);
+    date.setHours(21, 0);
     return date;
   })();
-    
 
   return (
-    <main className='container'>
-      <h1 className='page-title'>Edit Session</h1>
-      <form>
-        <FormField labelText='Mentee'>
-          <RenderAttributes
-            attribute = {menteeName}
-          />
+    <main className="container">
+      <h1 className="page-title">Edit Session</h1>
+      <form className="form">
+        <FormField labelText="Mentee">
+          <RenderAttributes attribute={menteeName} />
         </FormField>
 
-        <FormField labelText='Date'>
+        <FormField labelText="Date">
           <RenderAttributes
-            attribute = {date}
+            attribute={date}
             rightIconName={IconName.calendar}
           />
         </FormField>
 
-        <FormField labelText='Start Time'>
+        <FormField labelText="Start Time">
           <RenderAttributes
-            attribute = {getFormattedTimeString(actualclockInTime)}
+            attribute={getFormattedTimeString(actualclockInTime)}
             rightIconName={IconName.clock}
           />
         </FormField>
 
-        <FormField labelText='End Time'>
+        <FormField labelText="End Time">
           <RenderAttributes
-            attribute = {getFormattedTimeString(actualclockOutTime)}
+            attribute={getFormattedTimeString(actualclockOutTime)}
             rightIconName={IconName.clock}
           />
-        </FormField> 
+        </FormField>
 
-        <FormField labelText='Notes'>
+        <FormField labelText="Notes">
           <InputNotes
-            placeholderText = 'Your notes...'
-            name='notes'
-            id = 'notes'
-            isDisabled = {false}
-            notes = {notes}
+            placeholderText="Your notes..."
+            name="notes"
+            id="notes"
+            isDisabled={false}
+            notes={notes}
           />
         </FormField>
-        <p>
-          <button type='button' className='btn'>
-            Save 
-          </button>
-        </p>
 
+        <div className="actions">
+          <button type="button" className="btn">
+            Save
+          </button>
+        </div>
       </form>
     </main>
   );

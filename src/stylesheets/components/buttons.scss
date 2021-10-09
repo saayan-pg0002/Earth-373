@@ -1,4 +1,4 @@
-@import '../util/';
+@import "../util/";
 
 .btn {
   font-family: $header-font-family;
@@ -12,8 +12,7 @@
   transition: all $fade-duration ease;
   letter-spacing: $letter-spacing;
   width: 100%;
-  margin-top : 1rem;
-  margin-bottom: 1rem;
+  font-size: 0.85rem;
 
   &:hover {
     background-color: $baytree-green-600;
@@ -26,21 +25,28 @@
     box-shadow: $baytree-green-400 0px 0px 0px 5px;
   }
 
-  &.btn-secondary{
-    
-    background-color : $baytree-navy;
-    margin-top : 1rem;
-    margin-bottom: 1rem; 
+  &.btn-secondary {
+    background-color: $baytree-navy;
 
     &:hover {
       background-color: $grey-600;
       border: 1px solid $baytree-navy;
     }
 
-      &:focus {
+    &:focus {
       border-color: $baytree-navy;
       outline: none;
       box-shadow: $grey-400 0px 0px 0px 5px;
     }
+  }
+}
+
+a.btn {
+  &,
+  &:hover,
+  &:focus {
+    text-align: center;
+    display: block;
+    color: $white;
   }
 }
