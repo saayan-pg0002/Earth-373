@@ -3,7 +3,7 @@
 .btn {
   font-family: $header-font-family;
   font-weight: 700;
-  padding: 0.75rem 1.25rem;
+  padding: 0.95rem 1.25rem;
   background-color: $baytree-green;
   color: $white;
   border: 1px solid transparent;
@@ -16,6 +16,31 @@
   &:hover {
     background-color: $baytree-green-600;
     border: 1px solid $baytree-green;
+  }
+
+  &:focus {
+    border-color: $baytree-green;
+    outline: none;
+    box-shadow: $baytree-green-400 0px 0px 0px 5px;
+  }
+}
+
+.btn-blue {
+  font-family: $header-font-family;
+  font-weight: 700;
+  padding: 0.95rem 1.25rem;
+  background-color: $baytree-navy;
+  color: $white;
+  border: 1px solid transparent;
+  border-radius: $border-radius-button;
+  cursor: pointer;
+  transition: all $fade-duration ease;
+  letter-spacing: $letter-spacing;
+  width: 100%;
+
+  &:hover {
+    background-color: $baytree-navy;
+    border: 1px solid $baytree-navy;
   }
 
   &:focus {
