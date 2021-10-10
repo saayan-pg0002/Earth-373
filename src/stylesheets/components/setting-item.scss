@@ -1,0 +1,86 @@
+@import '../util/';
+
+.account-setting-item {
+  margin-top: 1rem;
+  padding: 0.6rem 0.875rem 0.6rem 1.3125rem;
+  display: flex;
+  transition: all $fade-duration-fast ease;
+
+  &:hover,
+  &:focus {
+    background-color: $grey-200;
+    box-shadow: $grey-200 0px 0px 0px 5px;
+  }
+  .body {
+    p {
+      margin: 0.2rem;
+      margin-left: 1rem;
+    }
+  }
+
+  &.ongoing {
+    background-color: $baytree-green;
+
+    &:hover,
+    &:focus {
+      box-shadow: $baytree-green-600 0px 0px 0px 5px;
+      outline: none;
+    }
+
+    .body p {
+      color: $white;
+    }
+  }
+
+  .body {
+    .ongoing-tag {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.link-setting-item {
+  margin-top: 1rem;
+  padding: 0.6rem 0.875rem 0.6rem 1.3125rem;
+  display: flex;
+  transition: all $fade-duration-fast ease;
+
+  &:hover,
+  &:focus {
+    background-color: $grey-200;
+    box-shadow: $grey-200 0px 0px 0px 5px;
+  }
+  .body {
+    p {
+      margin: 0.2rem;
+      margin-left: 1rem;
+    }
+  }
+
+  &.ongoing {
+    background-color: $baytree-green;
+
+    &:hover,
+    &:focus {
+      box-shadow: $baytree-green-600 0px 0px 0px 5px;
+      outline: none;
+    }
+
+    .body p {
+      color: $white;
+    }
+  }
+
+  .body {
+    .ongoing-tag {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.separator {
+  margin-top: 0.5rem;
+  border-top: 0.1rem solid $grey-600;
+}

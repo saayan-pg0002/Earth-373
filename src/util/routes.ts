@@ -6,6 +6,7 @@ import Mentees from '../apps/Mentees';
 import NewSession from '../apps/NewSession';
 import Notifications from '../apps/Notifications';
 import Settings from '../apps/Settings';
+import Profile from '../apps/Profile';
 
 export const Paths = {
   login: '/login',
@@ -16,6 +17,7 @@ export const Paths = {
   newSession: '/new-session',
   currentSession: '/current-session',
   editSession: '/edit-session',
+  profile: '/profile',
 };
 
 export const PublicPaths: string[] = [Paths.login];
@@ -66,6 +68,11 @@ export const routes: Route[] = [
   {
     path: Paths.editSession,
     component: EditSession,
+    exact: true,
+  },
+  {
+    path: Paths.profile,
+    component: Profile,
     exact: true,
   },
 ];
