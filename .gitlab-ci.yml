@@ -1,16 +1,12 @@
-image: python:latest
+default:
+  image: node:latest
+  before_script:
+    - npm ci --cache .npm --prefer-offline
 
-job1:
-  stage: build
-  script:
-    - echo "BUILDING"
+stages:
+  - testing-backend
 
-job2:
-  stage: test
+UnitTest:
+  stage: testing-backend
   script:
-    - echo "TESTING"
-
-job3:
-  stage: deploy
-  script:
-    - echo "DEPLOYING"
+    - npm run back-test

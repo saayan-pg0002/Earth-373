@@ -1,14 +1,20 @@
 {
-  "Project environment": {
-    "Error: process.env returns undefined": {
-      "solution 1": "https://stackoverflow.com/questions/64453045/how-to-use-env-file-in-a-react-js-with-typescript-project",
-      "solution 2": "https://stackoverflow.com/questions/62736961/how-do-i-load-dotenv-in-typescript"
-    }
+  "Resolving process.env variables undefined": {
+    "solution 1": "https://stackoverflow.com/questions/64453045/how-to-use-env-file-in-a-react-js-with-typescript-project",
+    "solution 2": "https://stackoverflow.com/questions/62736961/how-do-i-load-dotenv-in-typescript"
   },
   "HTTPS requests with TypeScript": {
     "URL": "https://www.section.io/engineering-education/how-to-create-a-simple-rest-api-using-typescript-and-nodejs/"
   },
-  "TypeScript Project Template": {
+  "Project Template": {
     "URL": "https://github.com/joeythelantern/Typescript-Quickstart-Projects"
+  },
+  "Unit Tests": {
+    "Mocha with Typescript": {
+      "URL": "https://journal.artfuldev.com/write-tests-for-typescript-projects-with-mocha-and-chai-in-typescript-86e053bdb2b6"
+    },
+    "Resolving @types/mocha cannot use import statement": {
+      "URL": "https://stackoverflow.com/questions/60993812/mocha-typescript-cannot-use-import-statement-outside-a-module"
+    }
   }
 }
