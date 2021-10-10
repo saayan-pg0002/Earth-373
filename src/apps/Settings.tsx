@@ -41,7 +41,7 @@ const Settings: React.FC<{}> = () => {
           />
           <ExternalLinkSettingItem
             icon={IconName.link}
-            content='Questionair FAQ'
+            content='Questionaire FAQ'
             path='https://www.baytreecentre.org'
           />
           <ExternalLinkSettingItem
