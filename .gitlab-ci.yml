@@ -9,4 +9,4 @@ stages:
 UnitTest:
   stage: testing-backend
   script:
-    - npm run back-test
+    - npm run backend
