@@ -7,15 +7,19 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "@types/jest": "^26.0.15",
+    "@types/mocha": "^9.0.0",
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "@types/supertest": "^2.0.11",
+    "mocha": "^9.1.2",
     "mongoose": "^6.0.8",
     "node-sass": "^6.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
+    "supertest": "^6.1.6",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
   },
@@ -23,7 +27,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "backend": "env TS_NODE_PROJECT=\"./backend/test/backend.tsconfig.json\" mocha -r ts-node/register ./backend/test/test_backend.ts --exit",
+    "frontend": "NODE_ENV=test mocha -r ts-node/register ./test/test_frontend.tsx --exit"
   },
   "eslintConfig": {
     "extends": [
@@ -44,9 +50,13 @@
     ]
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.5",
     "@types/react-router-dom": "^5.3.0",
     "axios": "^0.22.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^8.5.1",
     "ts-node": "^10.2.1"
   }
 }

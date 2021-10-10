@@ -8,8 +8,9 @@ import User from "./Models/user.model";
 dotenv.config();
 const app: Application = express();
 const URI: string | any = process.env.MONGO_URI;
+const URI_LOCAL: string | any = process.env.MONGO_URI_LOCAL;
 
-mongoose.connect(URI).then(() => {
+mongoose.connect(URI_LOCAL).then(() => {
   console.log("Mongodb is connected... ");
 });
 
@@ -21,7 +22,7 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    ",Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
   if (req.method == "OPTIONS") {
     res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");

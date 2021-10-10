@@ -14,12 +14,10 @@ router.route("/").get((req: Request, res: Response) => {
 router.route("/add").post(UserController.addUser);
 router.route("/getuser").get(UserController.getUsers);
 
-router.route("/view").get(UserController.getViewUsers);
-
+router.route("/view/get/:type").get(UserController.getViewUsers);
 
 router.route("/validate").get(extractJWT, UserController.validateToken);
 router.route("/register").post(UserController.register);
 router.route("/login").post(UserController.login);
-
 
 export default router;
