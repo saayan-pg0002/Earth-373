@@ -1,32 +1,34 @@
-import { ReactComponent as BaytreeMentorPortalLogo } from '../assets/images/baytree-mentor-portal-logo.svg';
-import { FormField } from '../components/form/FormField';
-import { TextInput } from '../components/form/TextInput';
-import { PasswordInput } from '../components/form/PasswordInput';
-import { IconName } from '../components/Icon';
+import { ReactComponent as BaytreeMentorPortalLogo } from "../assets/images/baytree-mentor-portal-logo.svg";
+import { FormField } from "../components/form/FormField";
+import { TextInput } from "../components/form/TextInput";
+import { PasswordInput } from "../components/form/PasswordInput";
+import { IconName } from "../components/Icon";
 
 const Login: React.FC<{}> = () => {
   return (
-    <div className='login'>
-      <div className='container centered'>
+    <div className="login">
+      <div className="container centered">
         <BaytreeMentorPortalLogo />
-        <form className='form'>
-          <header className='header'>
-            <h1 className='page-title'>Log In</h1>
+        <form className="form">
+          <header className="header">
+            <h1 className="page-title no-margin-bottom">Log In</h1>
           </header>
-          <FormField labelText='Email'>
+          <FormField labelText="Email">
             <TextInput
-              type='email'
+              type="email"
               leftIconName={IconName.user}
-              placeholderText='Email'
+              placeholderText="Email"
             />
           </FormField>
-          <FormField labelText='Password'>
+          <FormField labelText="Password">
             <PasswordInput />
           </FormField>
-          <button type='submit' className='btn'>
-            Log In
-          </button>
-          <p>Forgot Password?</p>
+          <div className="actions">
+            <button type="submit" className="btn">
+              Log In
+            </button>
+            <p>Forgot Password?</p>
+          </div>
         </form>
       </div>
     </div>

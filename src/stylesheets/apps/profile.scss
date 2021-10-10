@@ -1,0 +1,30 @@
+@import '../util/';
+
+.profile {
+  .container {
+    & > * + * {
+      margin-top: 1.5rem;
+    }
+  }
+}
+
+input::placeholder {
+  color: black;
+}
+
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: black;
+}
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: black;
+}
+:-moz-placeholder {
+  /* Firefox 18- */
+  color: black;
+}
+:-ms-input-placeholder {
+  /* Edge/IE 10+ */
+  color: black;
+}

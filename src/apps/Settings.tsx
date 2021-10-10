@@ -7,7 +7,7 @@ import { Paths } from '../util/routes';
 
 const Settings: React.FC<{}> = () => {
   return (
-    <main className='setting'>
+    <main className='settings'>
       <div className='container'>
         <h1 className='page-title'>Settings</h1>
         <div className='account'>
