@@ -1,0 +1,8 @@
+@import "../util/";
+
+.input-notes {
+  textarea {
+    min-height: 15rem;
+    resize: vertical;
+  }
+}

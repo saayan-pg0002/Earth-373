@@ -1,4 +1,4 @@
-@import '../util/';
+@import "../util/";
 
 .form {
   display: flex;
@@ -10,12 +10,16 @@
     margin-bottom: 1.5rem;
   }
 
-  .btn {
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
+  .actions {
+    text-align: center;
+    width: 100%;
+
+    & > * + * {
+      margin-top: 1rem;
+    }
   }
 
-  & > .form-field + .form-field {
+  & > * + * {
     margin-top: 1rem;
   }
 
@@ -24,7 +28,7 @@
 
     label {
       display: block;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.5rem;
     }
   }
 }
@@ -37,6 +41,8 @@
   justify-content: space-between;
   width: 100%;
   transition: all $fade-duration-fast ease;
+  font-family: $font-family;
+  font-size: $font-size;
 
   & > * + * {
     padding-left: 0.625rem;
@@ -47,11 +53,15 @@
     box-shadow: $baytree-green-400 0px 0px 0px 3px;
   }
 
-  input {
+  input,
+  textarea,
+  select {
     border: none;
     outline: none;
     width: 100%;
     font-size: 1rem;
     font-family: $font-family;
+    color: $black;
+    background-color: white;
   }
 }

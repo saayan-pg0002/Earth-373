@@ -1,9 +1,9 @@
-@import '../util/';
+@import "../util/";
 
 .btn {
   font-family: $header-font-family;
   font-weight: 700;
-  padding: 0.75rem 1.25rem;
+  padding: 0.95rem 1.25rem;
   background-color: $baytree-green;
   color: $white;
   border: 1px solid transparent;
@@ -12,6 +12,7 @@
   transition: all $fade-duration ease;
   letter-spacing: $letter-spacing;
   width: 100%;
+  font-size: 0.85rem;
 
   &:hover {
     background-color: $baytree-green-600;
@@ -22,5 +23,30 @@
     border-color: $baytree-green;
     outline: none;
     box-shadow: $baytree-green-400 0px 0px 0px 5px;
+  }
+
+  &.btn-secondary {
+    background-color: $baytree-navy;
+
+    &:hover {
+      background-color: $grey-600;
+      border: 1px solid $baytree-navy;
+    }
+
+    &:focus {
+      border-color: $baytree-navy;
+      outline: none;
+      box-shadow: $grey-400 0px 0px 0px 5px;
+    }
+  }
+}
+
+a.btn {
+  &,
+  &:hover,
+  &:focus {
+    text-align: center;
+    display: block;
+    color: $white;
   }
 }

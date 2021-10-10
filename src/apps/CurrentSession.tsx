@@ -1,113 +1,102 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { FormField } from "../components/form/FormField";
+import { InputNotes } from "../components/form/InputNotes";
+import { RenderAttributes } from "../components/form/RenderAttributes";
 import { ContainedIcon, IconColors, IconName } from "../components/Icon";
 import { getFormattedTimeString } from "../util/date";
 import { Paths } from "../util/routes";
 import { NewSessionProps } from "./NewSession";
-
 
 const CurrentSession: React.FC<NewSessionProps> = ({
   menteeName,
   date,
   actualclockInTime,
   actualclockOutTime,
-  notes
+  notes,
 }) => {
+  const [inputEndTime, setEndTime] = useState(
+    (actualclockOutTime = (() => {
+      const date = new Date();
+      date.setHours(NaN);
+      return date;
+    })())
+  );
 
-  const[inputNotes, setNotes] = useState(notes? notes:"")
-  const[inputEndTime, setEndTime] = useState(actualclockOutTime = (() => {
-    const date = new Date();
-    date.setHours(NaN);
-    return date;
-  })());
-
-  menteeName = 'Melissa Nguyen';
-  date =  "2021-09-19";
-  actualclockInTime =  (() => {
+  menteeName = "Melissa Nguyen";
+  date = "2021-09-19";
+  actualclockInTime = (() => {
     const date = new Date();
     return date;
   })();
-  
-  const EndSessionClick = (event : any) =>{
-    setEndTime( (() => {
+
+  const EndSessionClick = (event: any): void => {
+    setEndTime(() => {
       const date = new Date();
       return date;
-    }));
+    });
     event.preventDefault();
-  }
+  };
 
   return (
-      <main className='container'>
-    
-        <h1 className='page-title'>Current Session</h1>
-        
-        <form>
-          
-          <div>
-              <label>Mentee</label>
-                <p>
-                  {menteeName}
-                </p>
-          </div>
+    <main className="container">
+      <h1 className="page-title">Current Session</h1>
+      <form className="form">
+        <FormField labelText="Mentee">
+          <RenderAttributes attribute={menteeName} />
+        </FormField>
 
-          <div>
-              <label>Date</label>
-              <p>{date}</p>
-          </div>
+        <FormField labelText="Date">
+          <RenderAttributes
+            attribute={date}
+            rightIconName={IconName.calendar}
+          />
+        </FormField>
 
-          <div>
-              <label>Start Time</label>
-                <p>
-                  {getFormattedTimeString(actualclockInTime)}
-                </p>
-          </div>
+        <FormField labelText="Start Time">
+          <RenderAttributes
+            attribute={getFormattedTimeString(actualclockInTime)}
+            rightIconName={IconName.clock}
+          />
+        </FormField>
 
-          <div>
-              <label>End Time</label>
-                <p>
-                  {getFormattedTimeString(inputEndTime)}
-                  <button 
-                    type='button' 
-                    className='btn' 
-                    name='actualclockOutTime' 
-                    onClick = {EndSessionClick}>
-                    <ContainedIcon
-                      name={IconName.autocomplete}
-                      color={IconColors.white}
-                      backgroundColor={IconColors.transparent}
-                      />
-                  </button>
-                </p>
+        <FormField labelText="End Time">
+          <div className="clock-out-element">
+            <RenderAttributes
+              attribute={getFormattedTimeString(inputEndTime)}
+              rightIconName={IconName.clock}
+              isClockOut={true}
+            />
+            <span id="actualclockOutTime" onClick={EndSessionClick}>
+              <ContainedIcon
+                name={IconName.autocomplete}
+                color={IconColors.white}
+                backgroundColor={IconColors.baytreeGreen}
+              />
+            </span>
           </div>
+        </FormField>
 
-          <div>
-              <label>Notes</label>
-                <p><textarea
-                      name = 'notes'
-                      id = 'notes'
-                      value={inputNotes}
-                      onChange ={(e:any) => setNotes(e.target.value)}
-                      />
-                </p>  
-          </div>
+        <FormField labelText="Notes">
+          <InputNotes
+            placeholderText="Your notes..."
+            name="notes"
+            id="notes"
+            isDisabled={false}
+            notes=""
+          />
+        </FormField>
 
-          <p>
-            <button type='button' className='btn'>
-              Save 
-            </button>
-          </p>
-          <p>
-            <Link
-              to={Paths.dashboard}
-              >
-              <button type='button' className='btn'>
-                End Session
-              </button>
-            </Link>
-          </p>
-          
-        </form>        
-      </main>
+        <div className="actions">
+          <button type="button" className="btn btn-secondary">
+            Save
+          </button>
+          <Link to={Paths.dashboard} className="btn">
+            End Session
+          </Link>
+        </div>
+      </form>
+    </main>
   );
 };
 
