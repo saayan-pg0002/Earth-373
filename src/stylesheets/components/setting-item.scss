@@ -1,0 +1,18 @@
+@import "../util/";
+
+.setting-item {
+  padding: 1rem 0.75rem;
+  display: flex;
+  transition: all $fade-duration-fast ease;
+  border-bottom: $border-thin-grey;
+
+  &:hover,
+  &:focus {
+    background-color: $grey-200;
+  }
+  .body {
+    p {
+      margin-left: 1rem;
+    }
+  }
+}
