@@ -9,27 +9,27 @@ const Profile: React.FC<{}> = () => {
     <main className='profile'>
       <div className='container'>
         <h1 className='page-title'>Settings</h1>
-        <h3 className='sub-title'>Profile Information</h3>
-        <FormField labelText='E-Mail'>
-          <TextInput
-            type='email'
-            placeholderText='pambeesly@gmail.com'
-            leftIconName={IconName.user}
-          ></TextInput>
-        </FormField>
-        <FormField labelText='Name'>
-          <TextInput
-            type='name'
-            placeholderText='Pamela Halbert'
-            leftIconName={IconName.smiley}
-          ></TextInput>
-        </FormField>
-        <FormField labelText='Password'>
-          <PasswordInput />
-        </FormField>
-        <FormField labelText='Mentor Type'>
-          <RenderAttributes attribute='IntoSchool Mentor' />
-        </FormField>
+        <h2 className='h2'>Profile Information</h2>
+        <form className='form'>
+          <FormField labelText='Email'>
+            <RenderAttributes
+              leftIconName={IconName.user}
+              attribute='pambeesly@gmail.com'
+            ></RenderAttributes>
+          </FormField>
+          <FormField labelText='Name'>
+            <RenderAttributes
+              attribute='Pamela Halbert'
+              leftIconName={IconName.smiley}
+            ></RenderAttributes>
+          </FormField>
+          <FormField labelText='Password'>
+            <PasswordInput value='admin123' />
+          </FormField>
+          <FormField labelText='Mentor Type'>
+            <RenderAttributes attribute='IntoSchool Mentor' />
+          </FormField>
+        </form>
       </div>
     </main>
   );

@@ -2,6 +2,7 @@ export interface GeneralInputProps {
   required?: boolean;
   id?: string;
   name?: string;
+  value?: string;
 }
 
 interface FormFieldProps {

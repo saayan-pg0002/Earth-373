@@ -23,9 +23,9 @@ const NotifcationList: NotificationItemProps[] = [
 
 const Notifications: React.FC<{}> = () => {
   return (
-    <main className="notifications">
-      <div className="container">
-        <h1 className="page-title">Notifications</h1>
+    <main className='notifications'>
+      <div className='container'>
+        <h1 className='page-title'>Notifications</h1>
         <NotificationList notifications={NotifcationList} />
       </div>
     </main>

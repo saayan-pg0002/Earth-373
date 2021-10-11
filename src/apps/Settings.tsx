@@ -22,7 +22,7 @@ const Settings: React.FC<{}> = () => {
             path={Paths.login}
           />
         </div>
-        <h3 className='section-title'>Resources</h3>
+        <h2 className='h2'>Resources</h2>
         <div className='resources'>
           <ExternalLinkSettingItem
             icon={IconName.link}

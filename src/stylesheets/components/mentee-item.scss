@@ -13,25 +13,4 @@
     box-shadow: $grey-200 0px 0px 0px 5px;
     outline: $border-width solid $grey-600;
   }
-
-  &.ongoing {
-    background-color: $baytree-green;
-
-    &:hover,
-    &:focus {
-      box-shadow: $baytree-green-600 0px 0px 0px 5px;
-      outline: none;
-    }
-
-    .body p {
-      color: $white;
-    }
-  }
-
-  .body {
-    .ongoing-tag {
-      font-size: 1rem;
-      margin-bottom: 1rem;
-    }
-  }
 }

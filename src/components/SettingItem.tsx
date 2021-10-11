@@ -1,8 +1,6 @@
 import React, { Fragment } from 'react';
-import { Router } from 'react-router';
-import { ContainedIcon, IconName, IconColors } from './Icon';
+import { Icon, IconName, IconColors } from './Icon';
 import { Link } from 'react-router-dom';
-import { routes, Route } from '../util/routes';
 
 export interface SettingItemProps {
   icon: IconName;
@@ -17,17 +15,12 @@ export const AccountSettingItem: React.FC<SettingItemProps> = ({
 }) => {
   return (
     <Fragment>
-      <Link to={path} className='account-setting-item'>
-        <ContainedIcon
-          name={icon}
-          color={IconColors.black}
-          backgroundColor={IconColors.transparent}
-        />
+      <Link to={path} className='setting-item'>
+        <Icon name={icon} color={IconColors.black} />
         <div className=' body'>
           <p>{content}</p>
         </div>
       </Link>
-      <hr className='separator' />
     </Fragment>
   );
 };
@@ -39,17 +32,12 @@ export const ExternalLinkSettingItem: React.FC<SettingItemProps> = ({
 }) => {
   return (
     <Fragment>
-      <a href={path} className='link-setting-item'>
-        <ContainedIcon
-          name={icon}
-          color={IconColors.black}
-          backgroundColor={IconColors.transparent}
-        />
+      <a href={path} className='setting-item' target='_blank' rel='noreferrer'>
+        <Icon name={icon} color={IconColors.black} />
         <div className=' body'>
           <p>{content}</p>
         </div>
       </a>
-      <hr className='separator' />
     </Fragment>
   );
 };

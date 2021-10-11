@@ -12,9 +12,9 @@ export const NotificationList: React.FC<NotificationListProps> = ({
   return (
     <div className={`notification-list ${isEmpty ? 'empty' : ''}`}>
       {isEmpty ? (
-        <div className="empty-state">
+        <div className='empty-state'>
           <BaytreeTreeGrey />
-          <h1 className="widget-title"></h1>
+          <h1 className='widget-title'>You're All Caught Up</h1>
           <p>There is no notification at the moment.</p>
         </div>
       ) : (
@@ -26,5 +26,4 @@ export const NotificationList: React.FC<NotificationListProps> = ({
       )}
     </div>
   );
-  return <div></div>;
 };
