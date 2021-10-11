@@ -180,27 +180,117 @@ const getUsers = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
-const getViewUsers = async (req: Request, res: Response) => {
-  const type: string = req.params.type;
-  let url: string =
-    "https://app.viewsapp.net/api/restful/contacts/" + type + "/search?q=";
-
-  axios({
+async function getViewsAPIRequestData(
+  url: string
+) {
+  let result = "Nan";
+  await axios({
     method: "get",
     url: url,
     auth: {
       username: process.env.VIEW_USERNAME as string,
       password: process.env.VIEW_PASSWORD as string,
     },
+    responseType: 'json',
+    transformResponse: [v => v],
   })
-    .then((response: AxiosResponse) => {
-      res.send(response.data);
-    })
-    .catch((error) => {
-      console.log(error);
-      res.send("This type of user does not exist.");
-    });
+  .then((response) => {
+    result = response.data;
+  })
+  .catch((error) => {
+    result = error;
+  });
+  return result;
 };
+
+const getViewUsers = async (req: Request, res: Response) => {
+  const type: string = req.params.type;
+  let url: string =
+    "https://app.viewsapp.net/api/restful/contacts/" + type + "/search?q=";
+  const result = await getViewsAPIRequestData(url);
+  res.send(result);
+  return result;
+};
+
+const checkAndCreateOneUserinDB = (
+  userFields: any,
+) => {
+  const ViewsPersonID = userFields['PersonID'];
+  User.find({views_id: ViewsPersonID})
+  .exec(function (err,user) {
+    if(err){
+      console.log(err); 
+    }else if (user.length == 0){
+      //This is the temporary password all users will get for first time
+      let userType = "Admin";
+      const temppass = "admin123";
+      if(userFields['TypeName'] == "volunteer"){
+        userType = "Mentor";
+      }
+      //Hashing the password using bcrypt
+      bcrypt.hash(temppass, 10, (hashError, hashedPassword) => {
+        if (hashError) {
+          return {
+            message: hashError.message,
+            error: hashError,
+          };
+        }
+
+        const newUser = new User({
+          _id: new mongoose.Types.ObjectId(),
+          views_id: ViewsPersonID,
+          first_name: userFields['Forename'],
+          last_name: userFields['Surname'],
+          email:  userFields['Email'] as string || "NO EMAIL ASSOCIATED" as string,
+          activity_status: userFields['VolunteerStatus_V_1'] || "Active" as string,
+          password: hashedPassword as string,
+          user_type: userType
+        });
+        newUser.save()
+        .catch((error) => {
+          return console.log("Error adding user",error);
+        });
+        console.log(`added user ${userFields['Forename']}`);
+      });
+    }else{
+      console.log(`User present`);
+    }
+  });
+};
+
+const iterateOnViewsData = (
+  viewsJsonData: any,
+) => {
+  for (const key in viewsJsonData){
+    const viewsUsers = viewsJsonData[key];
+    for (const key1 in viewsUsers){
+        const userFields = viewsUsers[key1];
+        checkAndCreateOneUserinDB(userFields);
+    }
+  }
+};
+
+const createUsersFromViews = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+
+  //Getting Volunteer data from Views
+  let typeOfUser: string = "volunteers";
+  let url: string = "https://app.viewsapp.net/api/restful/contacts/"+ typeOfUser +"/search?q=";
+  const viewsVolData = JSON.parse(await getViewsAPIRequestData(url));
+  iterateOnViewsData(viewsVolData);
+
+  //We have to iterate twice because Views get request to staff does not provide VolunteerStatus when we call it
+  typeOfUser = "staff";
+  url = "https://app.viewsapp.net/api/restful/contacts/"+ typeOfUser +"/search?q=";
+  const viewsStaffData = JSON.parse(await getViewsAPIRequestData(url));
+  iterateOnViewsData(viewsStaffData);
+
+  res.send("Done");
+};
+
 
 export default {
   addUser,
@@ -209,4 +299,5 @@ export default {
   register,
   login,
   validateToken,
+  createUsersFromViews
 };
