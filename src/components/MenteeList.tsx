@@ -12,8 +12,8 @@ export const MenteeList: React.FC<MenteeListProps> = ({ mentees }) => {
       {isEmpty ? (
         <div className="empty-state">
           <BaytreeTreeGrey />
-          <h1 className="widget-title"></h1>
-          <p>There is no history of sessions available.</p>
+          <h1 className="widget-title">You Currently Have No Mentees</h1>
+          <p>Contact an admin to get matched!</p>
         </div>
       ) : (
         mentees.map(

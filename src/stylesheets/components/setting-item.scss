@@ -1,8 +1,7 @@
-@import '../util/';
+@import "../util/";
 
 .setting-item {
-  margin-top: 1rem;
-  padding: 0.6rem 0.6rem;
+  padding: 1rem 0.75rem;
   display: flex;
   transition: all $fade-duration-fast ease;
   border-bottom: $border-thin-grey;
@@ -10,11 +9,9 @@
   &:hover,
   &:focus {
     background-color: $grey-200;
-    box-shadow: $grey-200 0px 0px 0px 5px;
   }
   .body {
     p {
-      margin-top: 0.3rem;
       margin-left: 1rem;
     }
   }

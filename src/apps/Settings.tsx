@@ -1,58 +1,52 @@
 import {
   AccountSettingItem,
   ExternalLinkSettingItem,
-} from '../components/SettingItem';
-import { IconName } from '../components/Icon';
-import { Paths } from '../util/routes';
+} from "../components/SettingItem";
+import { IconName } from "../components/Icon";
+import { Paths } from "../util/routes";
 
 const Settings: React.FC<{}> = () => {
   return (
-    <main className='settings'>
-      <div className='container'>
-        <h1 className='page-title'>Settings</h1>
-        <div className='account'>
+    <main className="settings">
+      <div className="container">
+        <h1 className="page-title">Settings</h1>
+        <div className="account">
           <AccountSettingItem
             icon={IconName.user}
-            content='Profile'
+            content="Profile"
             path={Paths.profile}
           />
           <AccountSettingItem
             icon={IconName.logOut}
-            content='Log Out'
+            content="Log Out"
             path={Paths.login}
           />
         </div>
-        <h2 className='h2'>Resources</h2>
-        <div className='resources'>
+        <h2 className="h2">Resources</h2>
+        <div className="resources">
           <ExternalLinkSettingItem
-            icon={IconName.link}
-            content='BayTree Centre Website'
-            path='https://www.baytreecentre.org'
+            content="BayTree Centre Website"
+            path="https://www.baytreecentre.org"
           />
           <ExternalLinkSettingItem
-            icon={IconName.link}
-            content='Microsoft SharePoint folder'
-            path='https://www.baytreecentre.org'
+            content="Microsoft SharePoint folder"
+            path="https://www.baytreecentre.org"
           />
           <ExternalLinkSettingItem
-            icon={IconName.link}
-            content='Mentee Information'
-            path='https://www.baytreecentre.org'
+            content="Mentee Information"
+            path="https://www.baytreecentre.org"
           />
           <ExternalLinkSettingItem
-            icon={IconName.link}
-            content='Questionaire FAQ'
-            path='https://www.baytreecentre.org'
+            content="Questionaire FAQ"
+            path="https://www.baytreecentre.org"
           />
           <ExternalLinkSettingItem
-            icon={IconName.link}
-            content='Director Contact Info'
-            path='https://www.baytreecentre.org'
+            content="Director Contact Info"
+            path="https://www.baytreecentre.org"
           />
           <ExternalLinkSettingItem
-            icon={IconName.info}
-            content='About the Developer'
-            path='https://www.baytreecentre.org'
+            content="About the Developer"
+            path="https://www.baytreecentre.org"
           />
         </div>
       </div>
