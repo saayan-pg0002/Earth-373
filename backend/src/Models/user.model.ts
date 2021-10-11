@@ -20,9 +20,10 @@ const userSchema: Schema = new Schema(
     views_id: { type: Number, required: true },
     first_name: { type: String, required: true },
     last_name: { type: String, required: true },
-    email: { type: String, required: true },    
-    activity_status: { type: String, enum: Object.values(ActivityStatus), default: ActivityStatus.Active, required: true },
-    user_type: { type: String, enum: Object.values(UserType), default: UserType.Mentor, required: true },
+    email: { type: String, required: true },
+    password: {type: String, required: true},    
+    activity_status: { type: String, enum: Object.values(ActivityStatus), default: ActivityStatus.Active },
+    user_type: { type: String, enum: Object.values(UserType), default: UserType.Mentor },
   },
   {
     timestamps: true,

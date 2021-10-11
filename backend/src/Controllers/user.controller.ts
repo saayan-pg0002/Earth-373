@@ -1,34 +1,130 @@
-import { json, NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import User from "../Models/user.model";
 import axios, { AxiosResponse } from "axios";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import logging from "../config/logging";
+import bcrypt from "bcryptjs";
+import { request } from "http";
+import signJWT from "../Functions/signJWT";
 
 dotenv.config();
+var router = Router();
+
+//Authentication functions
+
+const validateToken = (req: Request, res: Response, next: NextFunction) => {
+  console.log("Token validated, user authorized");
+  return res.status(200).json({
+    message: "Authorized",
+  });
+};
+
+//Note: We will not be registering users this way. Use sections of this code when changing user password.
+const register = (req: Request, res: Response, next: NextFunction) => {
+  let {
+    views_id,
+    first_name,
+    last_name,
+    email,
+    password,
+    activity_status,
+    user_type,
+  } = req.body;
+
+  bcrypt.hash(password, 10, (hashError, hash) => {
+    if (hashError) {
+      return res.status(500).json({
+        message: hashError.message,
+        error: hashError,
+      });
+    }
+
+    //CREATING NEW USER: Find way to avoid duplication here. See if you can send the req body to '/users/add'.
+    const user = new User({
+      _id: new mongoose.Types.ObjectId(),
+      views_id,
+      first_name,
+      last_name,
+      email,
+      password: hash,
+      activity_status,
+      user_type,
+    });
+
+    return user
+      .save()
+      .then((result) => {
+        return res.status(201).json({
+          user: result,
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          message: error.message,
+          error,
+        });
+      });
+    //End of creating + adding user to db code
+  });
+};
+
+const login = (req: Request, res: Response, next: NextFunction) => {
+  let { email, password } = req.body;
+
+  User.find({ email })
+    .exec()
+    .then((users) => {
+      if (users.length !== 1) {
+        return res.status(401).json({
+          message: "Authorization Failed.",
+        });
+      }
+
+      const userToLogin = users[0];
+      bcrypt.compare(
+        password,
+        <string>userToLogin.password,
+        (error, result) => {
+          if (error) {
+            console.log(error.message);
+            return res.status(401).json({
+              message: "Authentication Failed: Passwords Do Not Match.",
+            });
+          } else if (result) {
+            signJWT(userToLogin, (error, token) => {
+              if (error) {
+                console.log("Unable to sign token: ", error.message);
+                return res.status(401).json({
+                  message: "Failed To Sign JWT.",
+                });
+              } else if (token) {
+                console.log("Token signed, authentication successful.");
+                return res.status(200).json({
+                  message: "Authorization Successful.",
+                  token,
+                  user: userToLogin,
+                });
+              }
+            });
+          } else {
+            console.log("Authentication Failed.");
+            return res.status(401).json({
+              message: "Authentication Failed: Incorrect Password.",
+            });
+          }
+        }
+      );
+    })
+    .catch((error) => {
+      return res.status(500).json({
+        message: error.message,
+        error,
+      });
+    });
+};
 
 //Authentication functions
 const NAMESPACE = "User"
-
-//CHANGE/GET RID OF THIS FUNCTION
-const validateToken = (req: Request, res: Response, next: NextFunction) => {
-  logging.info(NAMESPACE, "Token validated, user authorized");
-  return res.status(200).json({
-    message: "Authorized"
-  })
-}
-
-const register = (req: Request, res: Response, next: NextFunction) => {
-  let { username, password } = req.body;
-}
-
-const login = (req: Request, res: Response, next: NextFunction) => {
-  
-}
-
-const getAllUsers = (req: Request, res: Response, next: NextFunction) => {
-  
-}
 
 const addUser = (req: Request, res: Response, next: NextFunction) => {
   let {
@@ -36,6 +132,7 @@ const addUser = (req: Request, res: Response, next: NextFunction) => {
     first_name,
     last_name,
     email,
+    password,
     activity_status,
     user_type,
   } = req.body;
@@ -46,6 +143,7 @@ const addUser = (req: Request, res: Response, next: NextFunction) => {
     first_name,
     last_name,
     email,
+    password,
     activity_status,
     user_type,
   });
@@ -67,6 +165,7 @@ const addUser = (req: Request, res: Response, next: NextFunction) => {
 
 const getUsers = (req: Request, res: Response, next: NextFunction) => {
   User.find()
+    .select("-password")
     .exec()
     .then((users) => {
       return res.status(200).json({
@@ -81,6 +180,39 @@ const getUsers = (req: Request, res: Response, next: NextFunction) => {
       });
     });
 };
+
+async function getViewsAPIRequestData(
+  url: string
+) {
+  let result = "Nan";
+  await axios({
+    method: "get",
+    url: url,
+    auth: {
+      username: process.env.VIEW_USERNAME as string,
+      password: process.env.VIEW_PASSWORD as string,
+    },
+    responseType: 'json',
+    transformResponse: [v => v],
+  })
+  .then((response) => {
+    result = response.data;
+  })
+  .catch((error) => {
+    result = error;
+  });
+  return result;
+};
+
+const getViewUsers = async (req: Request, res: Response) => {
+  const type: string = req.params.type;
+  let url: string =
+    "https://app.viewsapp.net/api/restful/contacts/" + type + "/search?q=";
+  const result = await getViewsAPIRequestData(url);
+  res.send(result);
+  return result;
+};
+
 const createUsersinDB = (
   userFields: any,
 ) => {
@@ -118,7 +250,10 @@ const createUsersFromViews = async (
   next: NextFunction
 ) => {
   //Getting JSON format data from views
-  const viewsData = JSON.parse(await getViewUsers(req,res,next));
+  const type: string = req.params.type;
+  let url: string =
+    "https://app.viewsapp.net/api/restful/contacts/" + type + "/search?q=";
+  const viewsData = JSON.parse(await getViewsAPIRequestData(url));
   //Iterating to check for new users added, if yes then adding to db collection
   for (const key in viewsData){
     const viewsUsers = viewsData[key];
@@ -127,30 +262,8 @@ const createUsersFromViews = async (
         createUsersinDB(userFields);
     }
   }
+  res.send("Done");
 };
-
-
-const getViewUsers = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const result: AxiosResponse = await axios({
-    method: "get",
-    url: "https://app.viewsapp.net/api/restful/contacts/staff/search?q=",
-    auth: {
-      username: process.env.VIEW_USERNAME as string,
-      password: process.env.VIEW_PASSWORD as string,
-    },
-    responseType: 'json',
-    transformResponse: [v => v],
-  });
-
-  const data = result.data;
-  res.send(data);
-  return data;
-};
-
 
 export default { 
   addUser,
@@ -159,6 +272,5 @@ export default {
   register, 
   login, 
   validateToken, 
-  getAllUsers,
   createUsersFromViews,
 };
