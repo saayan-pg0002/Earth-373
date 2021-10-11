@@ -81,49 +81,50 @@ const getUsers = (req: Request, res: Response, next: NextFunction) => {
       });
     });
 };
-
+const createUsersinDB = (
+  userFields: any,
+) => {
+  const ViewsPersonID = userFields['PersonID'];
+  User.find({views_id: ViewsPersonID})
+  .exec(function (err,user) {
+    if(err){
+      console.log(err);
+    }else if (user.length == 0){
+      //Volunteers have a Type 10 which are all mentors, if different we will change it.
+      let userType = "Admin";
+      if(userFields['Type'] == '10'){
+        userType = "Mentor";
+      }
+      const newUser = new User({
+        _id: new mongoose.Types.ObjectId(),
+        views_id: ViewsPersonID,
+        first_name: userFields['Forename'],
+        last_name: userFields['Surname'],
+        email:  userFields['Email'] as string || "NO EMAIL ASSOCIATED" as string,
+        activity_status: "Suspended",
+        user_type: userType
+      });
+      newUser.save()
+      .catch((error) => {
+        return console.log("Error adding user",error);
+      });
+    }
+  });
+};
 
 const createUsersFromViews = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  //Getting JSON format dtata from views
+  //Getting JSON format data from views
   const viewsData = JSON.parse(await getViewUsers(req,res,next));
   //Iterating to check for new users added, if yes then adding to db collection
   for (const key in viewsData){
     const viewsUsers = viewsData[key];
     for (const key1 in viewsUsers){
         const userFields = viewsUsers[key1];
-        const ViewsPersonID = userFields['PersonID'];
-        User.find({views_id: ViewsPersonID})
-        .exec(function (err,user) {
-          if(err){
-            console.log(err);
-          }else if (user.length == 0){
-            //TO DO CHECK USER VALUES WHICH ARE NOT PRESENT IN GETREQUEST LIKE EMAIL AND USERTYPE
-            const user = new User({
-              _id: new mongoose.Types.ObjectId(),
-              views_id: ViewsPersonID,
-              first_name: userFields['Forename'],
-              last_name: userFields['Surname'],
-              email:  userFields['Email'] as string | "dummyemail@sfu.ca",
-              email:  userFields['Email'] as string || "dummyemail@sfu.ca" as string,
-              activity_status: "Suspended",
-              user_type: "Mentor"
-            });
-            user.save()
-            .then((result) => {
-              console.log("user added!");
-            })
-            .catch((error) => {
-              return console.log("Error adding user",error);
-            });
-
-          }else{
-            console.log(`User ${userFields['Forename']} already Present in the DataBase`);
-          }
-        });
+        createUsersinDB(userFields);
     }
   }
 };
@@ -136,7 +137,7 @@ const getViewUsers = async (
 ) => {
   const result: AxiosResponse = await axios({
     method: "get",
-    url: "https://app.viewsapp.net/api/restful/contacts/staff/search?q=a",
+    url: "https://app.viewsapp.net/api/restful/contacts/staff/search?q=",
     auth: {
       username: process.env.VIEW_USERNAME as string,
       password: process.env.VIEW_PASSWORD as string,
