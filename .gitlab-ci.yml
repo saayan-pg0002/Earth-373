@@ -1,12 +1,12 @@
 default:
   image: node:latest
   before_script:
-    - npm install
+    - npm install --prefer-offline --no-audit --progress=false
 
 stages:
   - testing-backend
 
-UnitTest:
+test:
   stage: testing-backend
   script:
     - npm run backend
