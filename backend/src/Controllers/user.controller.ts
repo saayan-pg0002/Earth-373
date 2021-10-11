@@ -108,6 +108,7 @@ const createUsersFromViews = async (
               first_name: userFields['Forename'],
               last_name: userFields['Surname'],
               email:  userFields['Email'] as string | "dummyemail@sfu.ca",
+              email:  userFields['Email'] as string || "dummyemail@sfu.ca" as string,
               activity_status: "Suspended",
               user_type: "Mentor"
             });
