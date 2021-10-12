@@ -28,7 +28,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "backend": "env TS_NODE_PROJECT=\"./backend/test/backend.tsconfig.json\" mocha -r ts-node/register ./backend/test/test_backend.ts --exit",
+    "backend": "env TS_NODE_PROJECT=\"./backend/src/test/backend.tsconfig.json\" mocha -r ts-node/register ./backend/src/test/test_backend.ts --exit",
     "frontend": "NODE_ENV=test mocha -r ts-node/register ./test/test_frontend.tsx --exit"
   },
   "eslintConfig": {
