@@ -51,3 +51,53 @@ npm run build
 ```
 
 ## Backend
+
+The backend directory holds the server logic of this application. Startig point for the server is app.ts
+
+### Directory Structure
+
+```
+..
+├── backend/                        all server logic
+    ├── package.json                dependencies for the ts-node project
+    ├── src/                        src dir for serverside logic
+    │   ├── Controllers/            logic for api endpints
+    │   ├── Functions/              JWT signing functions
+    │   ├── Interfaces/             typescript model interfaces
+    │   ├── Models/                 DB models
+    │   ├── Routes/                 api endpoints
+    │   ├── app.ts                  Starting point for web server
+    │   └── middleware/             jwt extraction code
+    ├── test/                       tests for api endpoints
+    └── tsconfig.json
+..
+```
+
+### Run and Build Directions
+
+For first time cloners, install all dependencies (listed in `package.json`)
+
+```
+cd backend/
+npm install
+```
+
+To run the server application server locally on port 5000
+
+```
+npm run dev
+```
+
+To build the application for deployment
+
+```
+npm run build
+```
+
+## Tech Stack
+
+UI : Typescript/React
+
+Server : Typescript/Node
+
+Database : Mongo DB Community server
