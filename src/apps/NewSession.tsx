@@ -1,12 +1,11 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { DropdownMenu } from "../components/form/DropdownMenu";
-import { FormField } from "../components/form/FormField";
-import { InputNotes } from "../components/form/InputNotes";
-import { RenderAttributes } from "../components/form/RenderAttributes";
-import { ContainedIcon, IconName, IconColors } from "../components/Icon";
-import { getFormattedTimeString } from "../util/date";
-import { Paths } from "../util/routes";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { DropdownMenu } from '../components/form/DropdownMenu';
+import { FormField } from '../components/form/FormField';
+import { RenderAttributes } from '../components/form/RenderAttributes';
+import { IconName } from '../components/Icon';
+import { getFormattedTimeString } from '../util/date';
+import { Paths } from '../util/routes';
 
 export interface NewSessionProps {
   menteeName: string;
@@ -22,64 +21,40 @@ const NewSession: React.FC<NewSessionProps> = ({
   actualclockInTime,
   actualclockOutTime,
 }) => {
-  date = "2021-09-19";
+  date = '2021-09-19';
   const temp = new Date();
   temp.setHours(NaN);
   actualclockInTime = temp;
   actualclockOutTime = temp;
 
   const EndSessionClick = () => {
-    alert("You need to first start this session to record end time ");
+    alert('You need to first start this session to record end time ');
   };
 
   return (
-    <main className="container">
-      <h1 className="page-title">New Session</h1>
-      <form className="form">
-        <FormField labelText="Mentee">
+    <main className='container'>
+      <h1 className='page-title'>New Session</h1>
+      <form className='form'>
+        <FormField labelText='Mentee'>
           <DropdownMenu />
         </FormField>
 
-        <FormField labelText="Date">
+        <FormField labelText='Date'>
           <RenderAttributes
             attribute={date}
             rightIconName={IconName.calendar}
           />
         </FormField>
 
-        <FormField labelText="Start Time">
+        <FormField labelText='Start Time'>
           <RenderAttributes
             attribute={getFormattedTimeString(actualclockInTime)}
             rightIconName={IconName.clock}
           />
         </FormField>
 
-        <FormField labelText="End Time">
-          <div className="clock-out-element">
-            <RenderAttributes
-              attribute={getFormattedTimeString(actualclockOutTime)}
-              rightIconName={IconName.clock}
-            />
-            <span id="actualclockOutTime" onClick={EndSessionClick}>
-              <ContainedIcon
-                name={IconName.autocomplete}
-                color={IconColors.white}
-                backgroundColor={IconColors.baytreeGreen}
-              />
-            </span>
-          </div>
-        </FormField>
-
-        <FormField labelText="Notes">
-          <InputNotes
-            placeholderText="Your notes..."
-            name="notes"
-            isDisabled={true}
-          />
-        </FormField>
-
-        <div className="actions">
-          <Link to={Paths.currentSession} className="btn">
+        <div className='actions'>
+          <Link to={Paths.currentSession} className='btn'>
             Start Session
           </Link>
         </div>
