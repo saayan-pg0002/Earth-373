@@ -1,11 +1,11 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { DropdownMenu } from '../components/form/DropdownMenu';
-import { FormField } from '../components/form/FormField';
-import { RenderAttributes } from '../components/form/RenderAttributes';
-import { IconName } from '../components/Icon';
-import { getFormattedTimeString } from '../util/date';
-import { Paths } from '../util/routes';
+import React from "react";
+import { Link } from "react-router-dom";
+import { DropdownMenu } from "../components/form/DropdownMenu";
+import { FormField } from "../components/form/FormField";
+import { RenderAttributes } from "../components/form/RenderAttributes";
+import { IconName } from "../components/Icon";
+import { getFormattedTimeString } from "../util/date";
+import { Paths } from "../util/routes";
 
 export interface NewSessionProps {
   menteeName: string;
@@ -21,14 +21,14 @@ const NewSession: React.FC<NewSessionProps> = ({
   actualclockInTime,
   actualclockOutTime,
 }) => {
-  date = '2021-09-19';
+  date = "2021-09-19";
   const temp = new Date();
   temp.setHours(NaN);
   actualclockInTime = temp;
   actualclockOutTime = temp;
 
   const EndSessionClick = () => {
-    alert('You need to first start this session to record end time ');
+    alert("You need to first start this session to record end time ");
   };
 
   return (
