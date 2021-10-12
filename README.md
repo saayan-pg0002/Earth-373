@@ -52,7 +52,7 @@ npm run build
 
 ## Backend
 
-The backend directory holds the server logic of this application. Startig point for the server is app.ts
+The backend directory holds the server logic of this application. Starting point for the server is app.ts
 
 ### Directory Structure
 
