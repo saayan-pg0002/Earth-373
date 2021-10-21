@@ -1,3 +1,4 @@
+import PageHelmet from "../util/PageHelmet";
 import { ReactComponent as BaytreeMentorPortalLogo } from "../assets/images/baytree-mentor-portal-logo.svg";
 import { FormField } from "../components/form/FormField";
 import { TextInput } from "../components/form/TextInput";
@@ -7,6 +8,8 @@ import { IconName } from "../components/Icon";
 const Login: React.FC<{}> = () => {
   return (
     <div className="login">
+      <PageHelmet />
+
       <div className="container centered">
         <BaytreeMentorPortalLogo />
         <form className="form">

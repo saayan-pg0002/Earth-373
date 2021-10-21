@@ -1,4 +1,4 @@
-import React from "react";
+import PageHelmet from "../util/PageHelmet";
 import { Link } from "react-router-dom";
 import { DropdownMenu } from "../components/form/DropdownMenu";
 import { FormField } from "../components/form/FormField";
@@ -27,34 +27,32 @@ const NewSession: React.FC<NewSessionProps> = ({
   actualclockInTime = temp;
   actualclockOutTime = temp;
 
-  const EndSessionClick = () => {
-    alert("You need to first start this session to record end time ");
-  };
-
   return (
-    <main className='container'>
-      <h1 className='page-title'>New Session</h1>
-      <form className='form'>
-        <FormField labelText='Mentee'>
+    <main className="container">
+      <PageHelmet title="New Session" />
+
+      <h1 className="page-title">New Session</h1>
+      <form className="form">
+        <FormField labelText="Mentee">
           <DropdownMenu />
         </FormField>
 
-        <FormField labelText='Date'>
+        <FormField labelText="Date">
           <RenderAttributes
             attribute={date}
             rightIconName={IconName.calendar}
           />
         </FormField>
 
-        <FormField labelText='Start Time'>
+        <FormField labelText="Start Time">
           <RenderAttributes
             attribute={getFormattedTimeString(actualclockInTime)}
             rightIconName={IconName.clock}
           />
         </FormField>
 
-        <div className='actions'>
-          <Link to={Paths.currentSession} className='btn'>
+        <div className="actions">
+          <Link to={Paths.currentSession} className="btn">
             Start Session
           </Link>
         </div>

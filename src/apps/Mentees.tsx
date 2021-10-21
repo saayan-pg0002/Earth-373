@@ -1,3 +1,4 @@
+import PageHelmet from "../util/PageHelmet";
 import { MenteeList } from "../components/MenteeList";
 import { MenteeItemProps } from "../components/MenteeItem";
 
@@ -43,6 +44,8 @@ const menteeList: MenteeItemProps[] = [
 const Mentees: React.FC<{}> = () => {
   return (
     <main className="mentees">
+      <PageHelmet title="Mentees" />
+
       <div className="container">
         <h1 className="page-title">Mentees</h1>
         <MenteeList mentees={menteeList} />

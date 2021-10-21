@@ -1,3 +1,4 @@
+import PageHelmet from "../util/PageHelmet";
 import {
   AccountSettingItem,
   ExternalLinkSettingItem,
@@ -8,6 +9,8 @@ import { Paths } from "../util/routes";
 const Settings: React.FC<{}> = () => {
   return (
     <main className="settings">
+      <PageHelmet title="Settings" />
+
       <div className="container">
         <h1 className="page-title">Settings</h1>
         <div className="account">

@@ -1,3 +1,4 @@
+import PageHelmet from "../util/PageHelmet";
 import { FormField } from "../components/form/FormField";
 import { PasswordInput } from "../components/form/PasswordInput";
 import { RenderAttributes } from "../components/form/RenderAttributes";
@@ -6,6 +7,8 @@ import { IconName } from "../components/Icon";
 const Profile: React.FC<{}> = () => {
   return (
     <main className="profile">
+      <PageHelmet title="Profile" />
+
       <div className="container">
         <h1 className="page-title">Settings</h1>
         <h2 className="h2">Profile Information</h2>
