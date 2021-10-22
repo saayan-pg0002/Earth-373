@@ -3,8 +3,9 @@ import SessionInterface from "../Interfaces/session.interface";
 
 const sessionSchema: Schema = new Schema(
   {
-    clock_in_time: { type: Date, default: null },
-    clock_out_time: { type: Date, default: null },
+    mentee_profile_id: { type: String, required: true },
+    start_time: { type: Date, required: true },
+    end_time: { type: Date, required: true },
     notes: { type: String, default: "" },
   },
   {
