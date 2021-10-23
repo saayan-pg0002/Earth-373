@@ -51,24 +51,50 @@
         margin: auto;
       }
 
-      .items > li {
-        &.active {
-          background-color: $baytree-navy;
-          color: $white;
+      .items {
+        li + li {
+          margin-top: 0.5rem;
+        }
+
+        li {
           border-radius: 0.25rem;
-        }
 
-        &.primary-action {
-          display: none;
-        }
+          &:hover,
+          &:focus {
+            background-color: $grey-50;
+          }
 
-        a {
-          display: flex;
-          align-items: center;
-          padding: 0.5rem;
+          .contained-icon {
+            transition: none;
+            background: transparent;
+          }
 
-          & > * + * {
-            margin-left: 1rem;
+          &.active {
+            background-color: $baytree-navy;
+            color: $white;
+
+            &:hover,
+            &:focus {
+              background-color: $baytree-green;
+
+              .contained-icon {
+                background-color: $baytree-green;
+              }
+            }
+          }
+
+          &.primary-action {
+            display: none;
+          }
+
+          a {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+
+            & > * + * {
+              margin-left: 1rem;
+            }
           }
         }
       }
