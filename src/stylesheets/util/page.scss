@@ -2,8 +2,36 @@ $container-max-width: 1500px;
 $gutter: 1.75rem;
 $nav-height: 3.81rem;
 
-.container {
+$tablet-min-width: 768px;
+$desktop-min-width: 1025px;
+
+@mixin viewport($media) {
+  @if $media == mobile {
+    @media only screen and (max-width: $tablet-min-width - 1) {
+      @content;
+    }
+  } @else if $media == mobile-tablet {
+    @media only screen and (max-width: $desktop-min-width - 1) {
+      @content;
+    }
+  } @else if $media == tablet {
+    @media only screen and (min-width: $tablet-min-width) {
+      @content;
+    }
+  } @else if $media == desktop {
+    @media only screen and (min-width: $desktop-min-width) {
+      @content;
+    }
+  }
+}
+
+.app-container {
+  width: 100%;
   max-width: $container-max-width;
+  margin: auto;
+}
+
+.container {
   width: 100%;
   padding-top: $gutter;
   padding-left: $gutter;
