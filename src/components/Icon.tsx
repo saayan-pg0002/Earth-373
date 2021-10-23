@@ -64,15 +64,21 @@ interface ContainedIconProps {
   name: IconName;
   color: IconColors;
   backgroundColor: IconColors;
+  isCircle?: boolean;
 }
 
 export const ContainedIcon: React.FC<ContainedIconProps> = ({
   name,
   color,
   backgroundColor,
+  isCircle = false,
 }) => {
   return (
-    <div className={`contained-icon ${backgroundColor ?? ""}`}>
+    <div
+      className={`contained-icon ${backgroundColor ?? ""} ${
+        isCircle ? "circle" : ""
+      }`}
+    >
       <Icon name={name} color={color} />
     </div>
   );

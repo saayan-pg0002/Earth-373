@@ -58,6 +58,10 @@
           border-radius: 0.25rem;
         }
 
+        &.primary-action {
+          display: none;
+        }
+
         a {
           display: flex;
           align-items: center;

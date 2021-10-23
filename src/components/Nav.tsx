@@ -21,6 +21,11 @@ const Nav: React.FC = () => {
           iconName={IconName.smiley}
         />
         <NavItem
+          label="New Session"
+          path={Paths.newSession}
+          iconName={IconName.plus}
+        />
+        <NavItem
           label="Notifications"
           path={Paths.notifications}
           iconName={IconName.bell}
@@ -43,17 +48,46 @@ interface NavItemProps {
 }
 
 const NavItem: React.FC<NavItemProps> = ({ path, iconName, label }) => {
-  const isActive = useLocation().pathname === path;
-  const color = isActive ? IconColors.white : IconColors.black;
-  const backgroundColor = isActive ? IconColors.baytreeNavy : IconColors.white;
+  const isActive: boolean = useLocation().pathname === path;
+  const isPrimaryAction: boolean = path === Paths.newSession;
+
+  const getIconColor = (): IconColors =>
+    isActive || isPrimaryAction ? IconColors.white : IconColors.black;
+
+  const getIconBackgroundColor = (): IconColors => {
+    if (isActive) {
+      return IconColors.baytreeNavy;
+    } else if (isPrimaryAction) {
+      return IconColors.baytreeGreen;
+    }
+    return IconColors.white;
+  };
+
+  const getClasses = (): string => {
+    let classes = "";
+    if (isActive) {
+      classes += " active";
+    }
+
+    if (isPrimaryAction) {
+      classes += " primary-action";
+    }
+
+    return classes;
+  };
+
+  const color: IconColors = getIconColor();
+  const backgroundColor: IconColors = getIconBackgroundColor();
+  const classes = getClasses();
 
   return (
-    <li className={isActive ? "active" : ""}>
+    <li className={classes}>
       <Link to={path}>
         <ContainedIcon
           name={iconName}
           color={color}
           backgroundColor={backgroundColor}
+          isCircle={isPrimaryAction}
         />
         <span className="desktop-only">{label}</span>
       </Link>
