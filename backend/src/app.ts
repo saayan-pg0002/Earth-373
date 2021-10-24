@@ -2,6 +2,7 @@ import express, { Application } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import UserRouter from "./Routes/user.route";
+import cors from "cors";
 
 dotenv.config();
 const app: Application = express();
@@ -15,6 +16,7 @@ const port: string | number = process.env.PORT || 5000;
 
 /** Rules of our API */
 app.use(express.json());
+app.use(cors());
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
