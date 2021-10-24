@@ -10,29 +10,37 @@ const Login: React.FC<{}> = () => {
     <div className="login">
       <PageHelmet />
 
-      <div className="container centered">
-        <BaytreeMentorPortalLogo />
-        <form className="form">
-          <header className="header">
-            <h1 className="page-title no-margin-bottom">Log In</h1>
-          </header>
-          <FormField labelText="Email">
-            <TextInput
-              type="email"
-              leftIconName={IconName.user}
-              placeholderText="Email"
-            />
-          </FormField>
-          <FormField labelText="Password">
-            <PasswordInput />
-          </FormField>
-          <div className="actions">
-            <button type="submit" className="btn">
-              Log In
-            </button>
-            <p>Forgot Password?</p>
-          </div>
-        </form>
+      <div className="hero tablet-desktop-only">
+        <div className="slogan">
+          <p>Changing aspirations</p>
+          <p>into realities</p>
+        </div>
+      </div>
+      <div className="container">
+        <main>
+          <BaytreeMentorPortalLogo className="logo" />
+          <form className="form">
+            <header className="header">
+              <h1 className="page-title no-margin-bottom">Log In</h1>
+            </header>
+            <FormField labelText="Email">
+              <TextInput
+                type="email"
+                leftIconName={IconName.user}
+                placeholderText="Email"
+              />
+            </FormField>
+            <FormField labelText="Password">
+              <PasswordInput />
+            </FormField>
+            <div className="actions">
+              <button type="submit" className="btn">
+                Log In
+              </button>
+              <p>Forgot Password?</p>
+            </div>
+          </form>
+        </main>
       </div>
     </div>
   );

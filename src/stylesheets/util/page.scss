@@ -15,6 +15,10 @@ $desktop-min-width: 1025px;
       @content;
     }
   } @else if $media == tablet {
+    @media only screen and (min-width: $tablet-min-width) and (max-width: $desktop-min-width - 1) {
+      @content;
+    }
+  } @else if $media == tablet-desktop {
     @media only screen and (min-width: $tablet-min-width) {
       @content;
     }
@@ -27,6 +31,7 @@ $desktop-min-width: 1025px;
 
 .app-container {
   width: 100%;
+  height: 100%;
   max-width: $container-max-width;
   margin: auto;
 }
