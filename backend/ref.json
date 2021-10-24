@@ -16,5 +16,29 @@
     "Resolving @types/mocha cannot use import statement": {
       "URL": "https://stackoverflow.com/questions/60993812/mocha-typescript-cannot-use-import-statement-outside-a-module"
     }
+  },
+  "Prevent page refresh": {
+    "URL": "https://stackoverflow.com/questions/50193227/basic-react-form-submit-refreshes-entire-page"
+  },
+  "Get form data": {
+    "URL": "https://stackoverflow.com/questions/23427384/get-form-data-in-reactjs"
+  },
+  "Basic fronend and backend connetion": {
+    "URL": "https://www.freecodecamp.org/news/how-to-make-create-react-app-work-with-a-node-backend-api-7c5c48acb1b0/"
+  },
+  "Fetch response handling": {
+    "URL": "https://stackoverflow.com/questions/38235715/fetch-reject-promise-and-catch-the-error-if-status-is-not-ok"
+  },
+  "Typescript with passportjs": {
+    "starter template": {
+      "URL": "https://github.com/microsoft/TypeScript-Node-Starter"
+    },
+    "tutorial": {
+      "Video": "https://youtu.be/6FOq4cUdH8k",
+      "URL": "https://github.com/bradtraversy/node_passport_login"
+    },
+    "signing a cookie": {
+      "URL": "https://stackoverflow.com/questions/52285591/signing-cookies-in-express"
+    }
   }
 }
