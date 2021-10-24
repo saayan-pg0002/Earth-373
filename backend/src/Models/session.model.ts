@@ -6,6 +6,7 @@ const sessionSchema: Schema = new Schema(
     mentee_profile_id: { type: String, required: true },
     start_time: { type: Date, required: true },
     end_time: { type: Date, required: true },
+    is_cancelled: { type: Boolean, required: true, default: false },
     notes: { type: String, default: "" },
   },
   {
