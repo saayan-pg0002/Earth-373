@@ -1,13 +1,76 @@
-@import '../util';
+@import "../util";
+
+.app-container.login {
+  max-width: none;
+}
 
 .login {
   height: 100%;
 
-  .container {
+  main {
+    display: flex;
     flex-direction: column;
+    align-items: center;
+
+    .logo {
+      margin-bottom: 1rem;
+    }
   }
 
-  .form {
-    margin-top: 2.5rem;
+  @include viewport(mobile) {
+    .tablet-desktop-only {
+      display: none;
+    }
+  }
+
+  @include viewport(tablet-desktop) {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    width: 100vw;
+
+    .hero {
+      background: linear-gradient(
+          0deg,
+          rgba(44, 62, 80, 0.84),
+          rgba(44, 62, 80, 0.84)
+        ),
+        url("../../assets/images/login-hero.jpg");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      position: relative;
+
+      .slogan {
+        position: absolute;
+        top: 10%;
+        right: 15%;
+
+        p {
+          padding: 0.5rem 1rem;
+          background-color: $baytree-pink;
+          color: $white;
+          width: max-content;
+          font-family: $header-font-family;
+          font-size: clamp(1.5rem, 2vw, 2rem);
+
+          &:nth-of-type(2) {
+            margin-top: 1rem;
+            margin-left: 50%;
+          }
+        }
+      }
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      main {
+        width: 75%;
+        max-width: 40rem;
+      }
+    }
   }
 }
