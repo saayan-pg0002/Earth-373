@@ -11,7 +11,7 @@ export enum ActivityStatus {
   Staff = 'Staff'
 }
 
-export enum UserType {
+export enum Role {
   Mentor = "Mentor",
   Admin = "Admin"
 }
@@ -24,7 +24,7 @@ const userSchema: Schema = new Schema(
     email: { type: String, required: true },
     password: {type: String, required: true},    
     activity_status: { type: String, enum: Object.values(ActivityStatus), default: ActivityStatus.Active },
-    user_type: { type: String, enum: Object.values(UserType), default: UserType.Mentor },
+    role: { type: String, enum: Object.values(Role), default: Role.Mentor },
   },
   {
     timestamps: true,
