@@ -1,20 +1,20 @@
-import { NotificationItem, NotificationItemProps } from "./NotificationItem";
-import { ReactComponent as BaytreeTreeGrey } from "../assets/images/baytree-tree-grey.svg";
+import { NotificationItem, NotificationItemProps } from './NotificationItem';
+import { ReactComponent as BaytreeTreeGrey } from '../assets/images/baytree-tree-grey.svg';
 
 interface NotificationListProps {
   notifications: NotificationItemProps[];
 }
 
-export const notificationList: React.FC<NotificationListProps> = ({
+export const NotificationList: React.FC<NotificationListProps> = ({
   notifications,
 }) => {
   const isEmpty: boolean = notifications.length === 0;
   return (
-    <div className={`notification-list ${isEmpty ? "empty" : ""}`}>
+    <div className={`notification-list ${isEmpty ? 'empty' : ''}`}>
       {isEmpty ? (
-        <div className="empty-state">
+        <div className='empty-state'>
           <BaytreeTreeGrey />
-          <h1 className="widget-title"></h1>
+          <h1 className='widget-title'>You're All Caught Up</h1>
           <p>There is no notification at the moment.</p>
         </div>
       ) : (
@@ -26,5 +26,4 @@ export const notificationList: React.FC<NotificationListProps> = ({
       )}
     </div>
   );
-  return <div></div>;
 };

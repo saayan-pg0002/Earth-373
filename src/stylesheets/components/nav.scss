@@ -1,24 +1,103 @@
 @import "../util/";
 
-.nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  border-top: $border-thin-grey;
-  height: $nav-height;
-  display: flex;
-  align-items: center;
-  background-color: $white;
-  padding-left: $gutter;
-  padding-right: $gutter;
+.app-container.private-path {
+  @include viewport(desktop) {
+    display: grid;
+    grid-template-columns: 17.4375rem 1fr;
+  }
 
-  .items {
-    margin: auto;
-    max-width: $container-max-width;
-    width: 100%;
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .nav {
+    .items {
+      width: 100%;
+      list-style: none;
+    }
+
+    @include viewport(mobile-tablet) {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      border-top: $border-thin-grey;
+      height: $nav-height;
+      display: flex;
+      align-items: center;
+      background-color: $white;
+      padding-left: $gutter;
+      padding-right: $gutter;
+
+      .desktop-only {
+        display: none;
+      }
+
+      .items {
+        margin: auto;
+        max-width: $container-max-width;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    @include viewport(desktop) {
+      display: grid;
+      grid-template-rows: 0.5fr 3fr 1fr;
+      grid-template-columns: 1fr;
+      justify-content: space-between;
+      padding: 1.5rem;
+      border-right: $border-thin-grey;
+      height: 100vh;
+
+      .footer-logo {
+        max-width: 40%;
+        margin: auto;
+      }
+
+      .items {
+        li + li {
+          margin-top: 0.5rem;
+        }
+
+        li {
+          border-radius: 0.25rem;
+
+          &:hover,
+          &:focus {
+            background-color: $grey-50;
+          }
+
+          .contained-icon {
+            transition: none;
+            background: transparent;
+          }
+
+          &.active {
+            background-color: $baytree-navy;
+            color: $white;
+
+            &:hover,
+            &:focus {
+              background-color: $baytree-green;
+
+              .contained-icon {
+                background-color: $baytree-green;
+              }
+            }
+          }
+
+          &.primary-action {
+            display: none;
+          }
+
+          a {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+
+            & > * + * {
+              margin-left: 1rem;
+            }
+          }
+        }
+      }
+    }
   }
 }

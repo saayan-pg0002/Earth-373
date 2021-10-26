@@ -1,10 +1,9 @@
-import React from "react";
+import PageHelmet from "../util/PageHelmet";
 import { Link } from "react-router-dom";
 import { DropdownMenu } from "../components/form/DropdownMenu";
 import { FormField } from "../components/form/FormField";
-import { InputNotes } from "../components/form/InputNotes";
 import { RenderAttributes } from "../components/form/RenderAttributes";
-import { ContainedIcon, IconName, IconColors } from "../components/Icon";
+import { IconName } from "../components/Icon";
 import { getFormattedTimeString } from "../util/date";
 import { Paths } from "../util/routes";
 
@@ -28,12 +27,10 @@ const NewSession: React.FC<NewSessionProps> = ({
   actualclockInTime = temp;
   actualclockOutTime = temp;
 
-  const EndSessionClick = () => {
-    alert("You need to first start this session to record end time ");
-  };
-
   return (
     <main className="container">
+      <PageHelmet title="New Session" />
+
       <h1 className="page-title">New Session</h1>
       <form className="form">
         <FormField labelText="Mentee">
@@ -51,30 +48,6 @@ const NewSession: React.FC<NewSessionProps> = ({
           <RenderAttributes
             attribute={getFormattedTimeString(actualclockInTime)}
             rightIconName={IconName.clock}
-          />
-        </FormField>
-
-        <FormField labelText="End Time">
-          <div className="clock-out-element">
-            <RenderAttributes
-              attribute={getFormattedTimeString(actualclockOutTime)}
-              rightIconName={IconName.clock}
-            />
-            <span id="actualclockOutTime" onClick={EndSessionClick}>
-              <ContainedIcon
-                name={IconName.autocomplete}
-                color={IconColors.white}
-                backgroundColor={IconColors.baytreeGreen}
-              />
-            </span>
-          </div>
-        </FormField>
-
-        <FormField labelText="Notes">
-          <InputNotes
-            placeholderText="Your notes..."
-            name="notes"
-            isDisabled={true}
           />
         </FormField>
 

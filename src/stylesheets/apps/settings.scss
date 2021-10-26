@@ -1,0 +1,9 @@
+@import '../util/';
+
+.settings {
+  .container {
+    & > * + * {
+      margin-top: 1.5rem;
+    }
+  }
+}

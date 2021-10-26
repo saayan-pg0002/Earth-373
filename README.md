@@ -1,46 +1,103 @@
-# Getting Started with Create React App
+# Baytree Centre Mentor Portal App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+`A companion app for Baytree Centre mentors`
 
-## Available Scripts
+The Baytree Centre Mentor Portal is an application created for mentors to manage all of their needs involving their assigned mentee(s). Here, they can view their session history, clock in/out of sessions, complete monthly questionnaires, access Baytree Centre resources, and receive notifications from Baytree admins.
 
-In the project directory, you can run:
+## Frontend
 
-### `yarn start`
+The project repository is split into frontend and backend sections. The root directory houses the frontend while the backend code is nested inside a dedicated `backend` sub folder.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Directory Structure
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```
+...
+├── public/                   static, public assets
+├── src/
+│   ├── apps/                 components for the main pages of the application
+│   ├── assets/
+│   │   └── fonts/            font files
+│   │   └── icons/            icon SVG files
+│   │   └── images/           images used throughout the application, like logo and empty state graphics
+│   ├── components/           reusable components
+│   │   └── form/             components specifically used for building out forms
+│   ├── stylesheets/
+│   │   └── apps/             styles for page components
+│   │   └── components/       styles for components
+│   │   └── util/             various utility classes for general things like colours, typography, etc.
+│   ├── util/                 various utility variables and functions for things like date manipulation, etc.
+...
 
-### `yarn test`
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Run and Build Directions
 
-### `yarn build`
+For first time cloners, install all dependencies (listed in `package.json`)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+npm i
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+To run the application locally
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+npm run start
+```
 
-### `yarn eject`
+To build the application for deployment
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+npm run build
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Backend
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+The backend directory holds the server logic of this application. Starting point for the server is app.ts
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Directory Structure
 
-## Learn More
+```
+..
+├── backend/                        all server logic
+    ├── package.json                dependencies for the ts-node project
+    ├── src/                        src dir for serverside logic
+    │   ├── Controllers/            logic for api endpints
+    │   ├── Functions/              JWT signing functions
+    │   ├── Interfaces/             typescript model interfaces
+    │   ├── Models/                 DB models
+    │   ├── Routes/                 api endpoints
+    │   ├── app.ts                  Starting point for web server
+    │   └── middleware/             jwt extraction code
+    ├── test/                       tests for api endpoints
+    └── tsconfig.json
+..
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Run and Build Directions
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+For first time cloners, install all dependencies (listed in `package.json`)
+
+```
+cd backend/
+npm install
+```
+
+To run the server application server locally on port 5000
+
+```
+npm run dev
+```
+
+To build the application for deployment
+
+```
+npm run build
+```
+
+## Tech Stack
+
+UI : Typescript/React
+
+Server : Typescript/Node
+
+Database : Mongo DB Community server

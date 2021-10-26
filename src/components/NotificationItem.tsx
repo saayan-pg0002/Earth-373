@@ -6,9 +6,9 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
   date,
 }) => {
   return (
-    <div className="notification-item">
-      <div className="body">
-        <p className="subtext">{getFormattedDayMonthYearString(date)}</p>
+    <div className='notification-item'>
+      <div className='body'>
+        <p className='subtext'>{getFormattedDayMonthYearString(date)}</p>
         <p>{message}</p>
       </div>
     </div>

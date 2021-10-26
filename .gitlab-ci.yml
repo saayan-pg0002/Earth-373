@@ -1,16 +1,11 @@
-image: python:latest
+image: node:latest
 
-job1:
-  stage: build
-  script:
-    - echo "BUILDING"
+cache:
+  key: dependencies
+  paths:
+    - node_modules/
 
-job2:
-  stage: test
+backend:
   script:
-    - echo "TESTING"
-
-job3:
-  stage: deploy
-  script:
-    - echo "DEPLOYING"
+    - npm install --prefer-offline --no-audit
+    - npm run backend

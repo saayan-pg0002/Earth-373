@@ -63,5 +63,9 @@
     font-family: $font-family;
     color: $black;
     background-color: white;
+
+    &:disabled {
+      color: $black;
+    }
   }
 }

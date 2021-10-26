@@ -3,8 +3,10 @@ import SessionInterface from "../Interfaces/session.interface";
 
 const sessionSchema: Schema = new Schema(
   {
-    clock_in_time: { type: Date, default: null },
-    clock_out_time: { type: Date, default: null },
+    mentee_profile_id: { type: mongoose.Types.ObjectId, ref: 'MenteeProfile', required: true },
+    start_time: { type: Date },
+    end_time: { type: Date },
+    is_cancelled: { type: Boolean, required: true, default: false },
     notes: { type: String, default: "" },
   },
   {

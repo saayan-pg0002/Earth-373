@@ -1,9 +1,7 @@
-import express, { Application, Request, Response, NextFunction } from "express";
-import mongoose, { Schema } from "mongoose";
+import express, { Application } from "express";
+import mongoose from "mongoose";
 import dotenv from "dotenv";
 import UserRouter from "./Routes/user.route";
-import Schedule from "./Models/schedule.model";
-import User from "./Models/user.model";
 
 dotenv.config();
 const app: Application = express();

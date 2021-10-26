@@ -36,6 +36,10 @@
     height: max-content;
   }
 
+  &.circle {
+    border-radius: 50%;
+  }
+
   &.black {
     background-color: $black;
   }
