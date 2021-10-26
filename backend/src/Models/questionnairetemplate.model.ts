@@ -18,8 +18,8 @@ const questionnaireTemplateSchema: Schema = new Schema(
         id: { type: Number, required: true, auto: true },
         name: { type: String, required: true },
         label: { type: String, required: true },
-        required: { type: Boolean, required: true, default: false },
-        type: { type: String, enum: Object.values(FieldType), required: true, default: FieldType.Text},
+        is_required: { type: Boolean, required: true, default: false },
+        field_type: { type: String, enum: Object.values(FieldType), required: true, default: FieldType.Text},
         options: [String]
     }]
   },
