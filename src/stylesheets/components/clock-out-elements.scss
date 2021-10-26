@@ -5,19 +5,23 @@
   justify-content: space-between;
   transition: all $fade-duration ease;
   width: 100%;
-  gap: 1rem;
+  gap: 2rem;
 
   span {
+    cursor: pointer;
+
     .contained-icon {
       aspect-ratio: 1/1;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: auto;
+      border: 1px solid $baytree-green;
+      transform: translateX(-1rem);
 
       &:hover {
         background-color: $baytree-green-600;
-        border: 1px solid $baytree-green;
       }
 
       &:focus {

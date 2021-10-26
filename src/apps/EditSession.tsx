@@ -29,7 +29,7 @@ const EditSession: React.FC<NewSessionProps> = ({
   return (
     <main className="container">
       <h1 className="page-title">Edit Session</h1>
-      <form>
+      <form className="form">
         <FormField labelText="Mentee">
           <RenderAttributes attribute={menteeName} />
         </FormField>
@@ -64,11 +64,12 @@ const EditSession: React.FC<NewSessionProps> = ({
             notes={notes}
           />
         </FormField>
-        <p>
+
+        <div className="actions">
           <button type="button" className="btn">
             Save
           </button>
-        </p>
+        </div>
       </form>
     </main>
   );

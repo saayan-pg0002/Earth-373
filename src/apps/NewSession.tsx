@@ -35,10 +35,9 @@ const NewSession: React.FC<NewSessionProps> = ({
   return (
     <main className="container">
       <h1 className="page-title">New Session</h1>
-
-      <form>
+      <form className="form">
         <FormField labelText="Mentee">
-          <DropdownMenu rightIconName={IconName.chevronDown} />
+          <DropdownMenu />
         </FormField>
 
         <FormField labelText="Date">
@@ -79,11 +78,11 @@ const NewSession: React.FC<NewSessionProps> = ({
           />
         </FormField>
 
-        <Link to={Paths.currentSession}>
-          <button type="button" className="btn">
+        <div className="actions">
+          <Link to={Paths.currentSession} className="btn">
             Start Session
-          </button>
-        </Link>
+          </Link>
+        </div>
       </form>
     </main>
   );

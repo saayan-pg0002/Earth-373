@@ -22,6 +22,10 @@ export const InputNotes: React.FC<InputNotesProps> = ({
   notes,
 }) => {
   const [inputNotes, setNotes] = useState(notes ? notes : "");
+  const [isFocused, setIsFocused] = useState<Boolean>(false);
+
+  const onFocus = (): void => setIsFocused(true);
+  const onBlur = (): void => setIsFocused(false);
 
   const handleNotesChange = (e: any) => {
     if (isDisabled) {
@@ -33,15 +37,16 @@ export const InputNotes: React.FC<InputNotesProps> = ({
   };
 
   return (
-    <div className="box">
+    <div className={`input-notes control ${isFocused ? "focused" : ""}`}>
       <textarea
-        className="notes-font-small"
         id={id}
         name={name}
         placeholder={placeholderText}
         value={inputNotes}
         onChange={handleNotesChange}
         disabled={isDisabled}
+        onFocus={onFocus}
+        onBlur={onBlur}
       >
         {inputNotes}
       </textarea>

@@ -11,7 +11,7 @@ const Login: React.FC<{}> = () => {
         <BaytreeMentorPortalLogo />
         <form className="form">
           <header className="header">
-            <h1 className="page-title">Log In</h1>
+            <h1 className="page-title no-margin-bottom">Log In</h1>
           </header>
           <FormField labelText="Email">
             <TextInput
@@ -23,10 +23,12 @@ const Login: React.FC<{}> = () => {
           <FormField labelText="Password">
             <PasswordInput />
           </FormField>
-          <button type="submit" className="btn">
-            Log In
-          </button>
-          <p>Forgot Password?</p>
+          <div className="actions">
+            <button type="submit" className="btn">
+              Log In
+            </button>
+            <p>Forgot Password?</p>
+          </div>
         </form>
       </div>
     </div>

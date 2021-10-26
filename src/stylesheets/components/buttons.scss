@@ -12,8 +12,7 @@
   transition: all $fade-duration ease;
   letter-spacing: $letter-spacing;
   width: 100%;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  font-size: 0.85rem;
 
   &:hover {
     background-color: $baytree-green-600;
@@ -28,8 +27,6 @@
 
   &.btn-secondary {
     background-color: $baytree-navy;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
 
     &:hover {
       background-color: $grey-600;
@@ -41,5 +38,15 @@
       outline: none;
       box-shadow: $grey-400 0px 0px 0px 5px;
     }
+  }
+}
+
+a.btn {
+  &,
+  &:hover,
+  &:focus {
+    text-align: center;
+    display: block;
+    color: $white;
   }
 }

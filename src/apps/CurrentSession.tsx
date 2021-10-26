@@ -41,7 +41,7 @@ const CurrentSession: React.FC<NewSessionProps> = ({
   return (
     <main className="container">
       <h1 className="page-title">Current Session</h1>
-      <form>
+      <form className="form">
         <FormField labelText="Mentee">
           <RenderAttributes attribute={menteeName} />
         </FormField>
@@ -87,19 +87,14 @@ const CurrentSession: React.FC<NewSessionProps> = ({
           />
         </FormField>
 
-        <p>
+        <div className="actions">
           <button type="button" className="btn btn-secondary">
             Save
           </button>
-        </p>
-
-        <p>
-          <Link to={Paths.dashboard}>
-            <button type="button" className="btn">
-              End Session
-            </button>
+          <Link to={Paths.dashboard} className="btn">
+            End Session
           </Link>
-        </p>
+        </div>
       </form>
     </main>
   );
