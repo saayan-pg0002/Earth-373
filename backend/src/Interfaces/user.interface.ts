@@ -1,5 +1,5 @@
 import { Document } from "mongoose";
-import { ActivityStatus, UserType } from "../Models/user.model";
+import { ActivityStatus, Role } from "../Models/user.model";
 
 export default interface UserInterface extends Document {
   views_id: Number;
@@ -8,5 +8,5 @@ export default interface UserInterface extends Document {
   email: String;
   password: String;
   activity_status: ActivityStatus;
-  user_type: UserType;
+  role: Role;
 }
