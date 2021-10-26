@@ -1,12 +1,12 @@
-import { ContainedIcon, IconName, IconColors } from '../components/Icon';
-import { Paths } from '../util/routes';
-import { Link, useLocation } from 'react-router-dom';
-import React from 'react';
+import { ContainedIcon, IconName, IconColors } from "../components/Icon";
+import { Paths } from "../util/routes";
+import { Link, useLocation } from "react-router-dom";
+import React from "react";
 
 const Nav: React.FC = () => {
   return (
-    <nav className='nav'>
-      <ul className='items'>
+    <nav className="nav">
+      <ul className="items">
         <NavItem path={Paths.dashboard} iconName={IconName.home} />
         <NavItem path={Paths.mentees} iconName={IconName.smiley} />
         <NavItem path={Paths.notifications} iconName={IconName.bell} />

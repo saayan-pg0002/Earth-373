@@ -1,10 +1,10 @@
-import { SessionList } from '../components/SessionList';
-import { SessionItemProps } from '../components/SessionItem';
-import { WeekScheduleCalendar } from '../components/WeekScheduleCalendar';
+import { SessionList } from "../components/SessionList";
+import { SessionItemProps } from "../components/SessionItem";
+import { WeekScheduleCalendar } from "../components/WeekScheduleCalendar";
 
 const sessionList: SessionItemProps[] = [
   {
-    menteeName: 'Melissa Nguyen',
+    menteeName: "Melissa Nguyen",
     clockInTime: (() => {
       const date = new Date();
       date.setHours(19, 0);
@@ -17,7 +17,7 @@ const sessionList: SessionItemProps[] = [
     })(),
   },
   {
-    menteeName: 'Melissa Nguyen',
+    menteeName: "Melissa Nguyen",
     clockInTime: (() => {
       const date = new Date();
       date.setHours(20, 0);
@@ -30,7 +30,7 @@ const sessionList: SessionItemProps[] = [
     })(),
   },
   {
-    menteeName: 'Melissa Nguyen',
+    menteeName: "Melissa Nguyen",
     clockInTime: (() => {
       const date = new Date();
       date.setHours(21, 0);
@@ -46,9 +46,9 @@ const sessionList: SessionItemProps[] = [
 
 const Dashboard: React.FC = () => {
   return (
-    <main className='dashboard'>
-      <div className='container'>
-        <h1 className='page-title'>Hi, Wendy!</h1>
+    <main className="dashboard">
+      <div className="container">
+        <h1 className="page-title">Hi, Wendy!</h1>
         <WeekScheduleCalendar />
         <SessionList sessions={sessionList} />
       </div>

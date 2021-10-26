@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Icon, IconName } from '../Icon';
+import { useState } from "react";
+import { Icon, IconName } from "../Icon";
 
 interface TextInputProps {
   required?: boolean;
@@ -18,7 +18,7 @@ export const TextInput: React.FC<TextInputProps> = ({
   leftIconName,
   rightIconName,
   placeholderText,
-  type = 'text',
+  type = "text",
 }) => {
   const [isFocused, setIsFocused] = useState<Boolean>(false);
 
@@ -26,7 +26,7 @@ export const TextInput: React.FC<TextInputProps> = ({
   const onBlur = (): void => setIsFocused(false);
 
   return (
-    <div className={`control ${isFocused ? 'focused' : ''}`}>
+    <div className={`control ${isFocused ? "focused" : ""}`}>
       {leftIconName && <Icon name={leftIconName} />}
       <input
         type={type}

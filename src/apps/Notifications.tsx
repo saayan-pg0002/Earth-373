@@ -1,4 +1,4 @@
-import { NotificationItemProps } from '../components/NotificationItem';
+import { NotificationItemProps } from "../components/NotificationItem";
 
 const Notifications: React.FC<{}> = () => {
   return (

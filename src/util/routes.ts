@@ -1,21 +1,21 @@
-import Login from '../apps/Login';
-import CurrentSession from '../apps/CurrentSession';
-import Dashboard from '../apps/Dashboard';
-import EditSession from '../apps/EditSession';
-import Mentees from '../apps/Mentees';
-import NewSession from '../apps/NewSession';
-import Notifications from '../apps/Notifications';
-import Settings from '../apps/Settings';
+import Login from "../apps/Login";
+import CurrentSession from "../apps/CurrentSession";
+import Dashboard from "../apps/Dashboard";
+import EditSession from "../apps/EditSession";
+import Mentees from "../apps/Mentees";
+import NewSession from "../apps/NewSession";
+import Notifications from "../apps/Notifications";
+import Settings from "../apps/Settings";
 
 export const Paths = {
-  login: '/login',
-  dashboard: '/',
-  mentees: '/mentees',
-  notifications: '/notifications',
-  settings: '/settings',
-  newSession: '/new-session',
-  currentSession: '/current-session',
-  editSession: '/edit-session',
+  login: "/login",
+  dashboard: "/",
+  mentees: "/mentees",
+  notifications: "/notifications",
+  settings: "/settings",
+  newSession: "/new-session",
+  currentSession: "/current-session",
+  editSession: "/edit-session",
 };
 
 export const PublicPaths: string[] = [Paths.login];

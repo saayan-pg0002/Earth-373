@@ -3,10 +3,10 @@ import {
   Route,
   Switch,
   RouteComponentProps,
-} from 'react-router-dom';
-import { routes, PublicPaths } from './util/routes';
-import Nav from './components/Nav';
-import './stylesheets/index.scss';
+} from "react-router-dom";
+import { routes, PublicPaths } from "./util/routes";
+import Nav from "./components/Nav";
+import "./stylesheets/index.scss";
 
 const App: React.FC<{}> = () => {
   const isPrivatePath = (path: string): boolean => !PublicPaths.includes(path);
