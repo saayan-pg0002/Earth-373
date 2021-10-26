@@ -33,9 +33,12 @@
     "starter template": {
       "URL": "https://github.com/microsoft/TypeScript-Node-Starter"
     },
-    "tutorial": {
+    "Youtube tutorial": {
       "Video": "https://youtu.be/6FOq4cUdH8k",
       "URL": "https://github.com/bradtraversy/node_passport_login"
+    },
+    "DigitalOcean tutorial": {
+      "URL": "https://www.digitalocean.com/community/tutorials/api-authentication-with-json-web-tokensjwt-and-passport"
     },
     "signing a cookie": {
       "URL": "https://stackoverflow.com/questions/52285591/signing-cookies-in-express"

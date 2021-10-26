@@ -66,7 +66,7 @@ const register = (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
-const authenticate = (req: Request, res: Response, next: NextFunction) => {
+const signToken = (req: Request, res: Response, next: NextFunction) => {
   const user: any = req.user;
   const token = jwt.sign(user, "secret");
   res.cookie("jwt", token);
@@ -130,7 +130,18 @@ const login = (req: Request, res: Response, next: NextFunction) => {
 
 const getProfile = (req: Request, res: Response, next: NextFunction) => {
   const user: any = req.user;
-  return res.json({ email: user.email, id: user._id });
+  return res.json({ email: user.email, name: user.first_name });
+};
+
+const updateProfile = (req: Request, res: Response, next: NextFunction) => {
+  const user: any = req.user;
+  const query = { email: user.email };
+  const changes = req.body;
+
+  User.findOneAndUpdate(query, changes, { new: true }, (err, doc) => {
+    if (err) res.status(400).json(err);
+    return res.status(200).json(doc);
+  });
 };
 
 const addUser = (req: Request, res: Response, next: NextFunction) => {
@@ -309,6 +320,7 @@ export default {
   login,
   validateToken,
   createUsersFromViews,
-  authenticate,
+  signToken,
   getProfile,
+  updateProfile,
 };

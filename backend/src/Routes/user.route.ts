@@ -19,12 +19,16 @@ router.route("/view/get/:type").get(UserController.getViewUsers);
 router.route("/migrateusers").get(UserController.createUsersFromViews);
 router
   .route("/validate")
-  .get(passportConfig.verifyJWT, UserController.validateToken);
+  .get(passportConfig.authenticate, UserController.validateToken);
 router.route("/register").post(UserController.register);
 
 router
   .route("/login")
-  .post(passport.authenticate("login"), UserController.authenticate);
-router.route("/me").get(passportConfig.verifyJWT, UserController.getProfile);
+  .post(passport.authenticate("signIn"), UserController.signToken);
+router.route("/me").get(passportConfig.authenticate, UserController.getProfile);
+
+router
+  .route("/me/patch")
+  .patch(passportConfig.authenticate, UserController.updateProfile);
 
 export default router;

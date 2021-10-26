@@ -8,17 +8,17 @@ import jwt from "jsonwebtoken";
 const LocalStrategy = passportLocal.Strategy;
 
 const strategize = (passport: any) => {
-  passport.serializeUser(function (user: any, done: any) {
+  passport.serializeUser((user: any, done: any) => {
     done(undefined, user.id);
   });
 
-  passport.deserializeUser(function (id: any, done: any) {
-    User.findById(id, function (err: any, user: any) {
+  passport.deserializeUser((id: any, done: any) => {
+    User.findById(id, (err: any, user: any) => {
       done(err, user);
     });
   });
   passport.use(
-    "login",
+    "signIn",
     new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
       User.findOne({
         email: email,
@@ -45,13 +45,6 @@ const strategize = (passport: any) => {
   // More strategies go here ...
 };
 
-const ensureAuthenticated = (req: any, res: any, next: any) => {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.send("You are not logged in");
-};
-
 const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
   console.log("Validating Token...");
   // let token = req.headers.authorization?.split(" ")[1];
@@ -59,20 +52,27 @@ const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
   if (token) {
     jwt.verify(token, "secret", (error: any, decoded: any) => {
       if (error) {
-        return res.status(404).json({
+        return res.status(400).json({
           message: error.message,
           error,
         });
       } else if (decoded) {
         console.log("Validation Successful");
+        next();
       }
-      next();
     });
   } else {
     return res.status(401).json({
-      message: "JWT Authentication Failed",
+      message: "JWT is undefined",
     });
   }
 };
 
-export default { strategize, ensureAuthenticated, verifyJWT };
+const authenticate = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "You are not signed in" });
+  }
+  verifyJWT(req, res, next);
+};
+
+export default { strategize, authenticate };
