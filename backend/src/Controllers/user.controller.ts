@@ -103,7 +103,7 @@ const login = (req: Request, res: Response, next: NextFunction) => {
                   message: "Failed To Sign JWT.",
                 });
               } else if (token) {
-                console.log("Token signexd, authentication successful.");
+                console.log("Token signed, authentication successful.");
                 return res.json({
                   message: "Authorization Successful.",
                   token,
