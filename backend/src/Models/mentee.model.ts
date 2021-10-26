@@ -3,7 +3,7 @@ import MenteeInterface from "../Interfaces/mentee.interface";
 
 const menteeSchema: Schema = new Schema(
   {
-    mentor_id: {type: String, required: true},
+    mentor_id: { type: mongoose.Types.ObjectId },
     mentee_name: { type: String, required: true },
     isActive: { type: Boolean, required: true, default: true },
     goals: [{
