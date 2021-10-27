@@ -1,5 +1,5 @@
-import { getFormattedDayMonthYearString } from '../util/date';
-import React from 'react';
+import { getFormattedDayMonthYearString } from "../util/date";
+import React from "react";
 
 export const NotificationItem: React.FC<NotificationItemProps> = ({
   message,

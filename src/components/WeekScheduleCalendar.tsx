@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   formatWeekDateObjectsForCalendar,
   getCurrentWeekDateObjects,
-} from '../util/date';
+} from "../util/date";
 
 export const WeekScheduleCalendar: React.FC = () => {
   const [activeDate, setActiveDate] = useState<number>(new Date().getDate());
@@ -13,7 +13,7 @@ export const WeekScheduleCalendar: React.FC = () => {
   const onClick = (date: number): void => setActiveDate(date);
 
   return (
-    <div className='week-schedule-calendar'>
+    <div className="week-schedule-calendar">
       {currentWeekDayItems.map(({ dayOfWeek, date }, index) => (
         <DayItem
           key={index}
@@ -43,9 +43,9 @@ const DayItem: React.FC<DayItemProps> = ({
   return (
     <div
       onClick={() => onClick(date)}
-      className={`day-item ${isActive ? 'active' : ''}`}
+      className={`day-item ${isActive ? "active" : ""}`}
     >
-      <p className='subtext bold'>{dayOfWeek[0]}</p>
+      <p className="subtext bold">{dayOfWeek[0]}</p>
       <p>{date}</p>
     </div>
   );

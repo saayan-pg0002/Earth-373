@@ -16,9 +16,9 @@ export const FormField: React.FC<FormFieldProps> = ({
   children,
 }) => {
   return (
-    <div className='form-field'>
+    <div className="form-field">
       {labelText && (
-        <label htmlFor={id} className='subtext'>
+        <label htmlFor={id} className="subtext">
           {labelText}
         </label>
       )}

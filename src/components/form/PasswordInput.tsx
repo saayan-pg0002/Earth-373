@@ -1,6 +1,6 @@
-import { Icon, IconName } from '../Icon';
-import { useState } from 'react';
-import { GeneralInputProps } from './FormField';
+import { Icon, IconName } from "../Icon";
+import { useState } from "react";
+import { GeneralInputProps } from "./FormField";
 
 export const PasswordInput: React.FC<GeneralInputProps> = ({
   required = true,
@@ -19,7 +19,7 @@ export const PasswordInput: React.FC<GeneralInputProps> = ({
   const onBlur = (): void => setIsFocused(false);
 
   return (
-    <div className={`control ${isFocused ? 'focused' : ''}`}>
+    <div className={`control ${isFocused ? "focused" : ""}`}>
       <Icon name={IconName.lock} />
       <input
         value={value}
@@ -27,7 +27,7 @@ export const PasswordInput: React.FC<GeneralInputProps> = ({
         id={id}
         name={name}
         required={required}
-        placeholder='Password'
+        placeholder="Password"
         onFocus={onFocus}
         onBlur={onBlur}
       />

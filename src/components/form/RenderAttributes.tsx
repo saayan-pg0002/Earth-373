@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Icon, IconName } from '../Icon';
+import { useState } from "react";
+import { Icon, IconName } from "../Icon";
 
 interface RenderAttributesProps {
   id?: string;
@@ -7,7 +7,7 @@ interface RenderAttributesProps {
   leftIconName?: IconName;
   rightIconName?: IconName;
   attribute: string;
-  isClockOut?:boolean
+  isClockOut?: boolean;
 }
 
 export const RenderAttributes: React.FC<RenderAttributesProps> = ({
@@ -23,16 +23,17 @@ export const RenderAttributes: React.FC<RenderAttributesProps> = ({
   const onBlur = (): void => setIsFocused(false);
 
   return (
-    <div className= {`control ${isFocused ? 'focused' : ''}`}>
+    <div className={`control ${isFocused ? "focused" : ""}`}>
       {leftIconName && <Icon name={leftIconName} />}
-      <input type='text'
+      <input
+        type="text"
         id={id}
         name={name}
         onFocus={onFocus}
         onBlur={onBlur}
-        value = {attribute}
+        value={attribute}
         disabled
-      />            
+      />
       {rightIconName && <Icon name={rightIconName} />}
     </div>
   );
