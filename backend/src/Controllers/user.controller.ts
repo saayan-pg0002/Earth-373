@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import { request } from "http";
 import signJWT from "../Functions/signJWT";
+import MenteeProfile from "../Models/menteeprofile.model";
 
 dotenv.config();
 var router = Router();
@@ -291,6 +292,35 @@ const createUsersFromViews = async (
   res.send("Done");
 };
 
+const createGoalForMentee = (req: Request, res: Response, next: NextFunction) => {
+  let { 
+    mentee_id_to_match, goal_text 
+  } = req.body;
+
+  MenteeProfile.findOneAndUpdate({ 
+    _id: mentee_id_to_match
+  }, {
+    $push: {
+      goals: {
+        name: goal_text,
+        is_complete: false
+      }
+    }
+  }).then(() => {
+    MenteeProfile.find({ _id: mentee_id_to_match }).exec().then((result) => {
+      return res.status(201).json({
+        goals: result
+      });
+    });
+  })
+  .catch((error) => {
+    return res.status(500).json({
+      message: error.message,
+      error,
+    });
+  });
+
+}
 
 export default {
   addUser,
@@ -299,5 +329,6 @@ export default {
   register,
   login,
   validateToken,
-  createUsersFromViews
+  createUsersFromViews,
+  createGoalForMentee
 };
