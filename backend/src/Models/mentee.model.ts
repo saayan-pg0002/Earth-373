@@ -6,8 +6,8 @@ const menteeSchema: Schema = new Schema(
     views_id: { type: String, required: true },
     first_name: { type: String, required: true },
     last_name: { type: String, required: true },
-    age: { type: String, required: true },
-    dateOfBirth: { type: String, required: true },
+    age: { type: Number, required: true },
+    dateOfBirth: { type: Date, required: true },
   },
   {
     timestamps: true,

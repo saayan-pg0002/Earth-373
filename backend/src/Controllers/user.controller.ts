@@ -231,7 +231,7 @@ async function addUsertoDB(userFields: any, hashedPassword: string) {
   console.log(`added user ${userFields["Forename"]}`);
 }
 
-const checkAndCreateOneUserinDB = (userFields: any) => {
+const checkAndCreateUserinDB = (userFields: any) => {
   const ViewsPersonID = userFields["PersonID"];
   User.find({ views_id: ViewsPersonID }).exec(function (err, user) {
     if (err) {
@@ -260,7 +260,7 @@ const iterateOnViewsData = (viewsJsonData: any) => {
     const viewsUsers = viewsJsonData[key];
     for (const key1 in viewsUsers) {
       const userFields = viewsUsers[key1];
-      checkAndCreateOneUserinDB(userFields);
+      checkAndCreateUserinDB(userFields);
     }
   }
 };
