@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
 import User from "../Models/user.model";
+import UserInterface from "../Interfaces/user.interface";
 import passportLocal from "passport-local";
 // import passportJWT from "passport-jwt";
 import jwt from "jsonwebtoken";
@@ -50,7 +51,7 @@ const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
   // let token = req.headers.authorization?.split(" ")[1];
   const token = req.cookies.jwt;
   if (token) {
-    jwt.verify(token, "secret", (error: any, decoded: any) => {
+    jwt.verify(token, "session secret", (error: any, decoded: any) => {
       if (error) {
         return res.status(400).json({
           message: error.message,
@@ -75,4 +76,38 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
   verifyJWT(req, res, next);
 };
 
-export default { strategize, authenticate };
+const signJWT = (req: Request, res: Response, next: NextFunction) => {
+  const user: any = req.user;
+  var currentTime = new Date().getTime();
+  var expirationTimeInMS = (currentTime + 3600) * 100000;
+  var expirationTimeInSeconds = Math.floor(expirationTimeInMS / 1000);
+
+  console.log(`Attempting to sign token for ${user.email}`);
+
+  try {
+    jwt.sign(
+      {
+        email: user.email,
+        password: user.password,
+      },
+      "session secret",
+      {
+        issuer: "BayTreeDevs",
+        algorithm: "HS256",
+        expiresIn: expirationTimeInSeconds,
+      },
+      (error, token) => {
+        if (error) {
+          return res.status(400).json({ error });
+        } else if (token) {
+          res.cookie("jwt", token);
+          return res.status(200).json({ "signed token": token });
+        }
+      }
+    );
+  } catch (e) {
+    console.log("Error. Please ctrl+f to see where this is.\n");
+  }
+};
+
+export default { strategize, authenticate, signJWT };

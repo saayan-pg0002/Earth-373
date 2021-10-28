@@ -24,9 +24,9 @@ router.route("/register").post(UserController.register);
 
 router
   .route("/login")
-  .post(passport.authenticate("signIn"), UserController.signToken);
-router.route("/me").get(passportConfig.authenticate, UserController.getProfile);
+  .post(passport.authenticate("signIn"), passportConfig.signJWT);
 
+router.route("/me").get(passportConfig.authenticate, UserController.getProfile);
 router
   .route("/me/patch")
   .patch(passportConfig.authenticate, UserController.updateProfile);

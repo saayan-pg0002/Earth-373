@@ -4,8 +4,6 @@ import axios from "axios";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import signJWT from "../Functions/signJWT";
-import jwt from "jsonwebtoken";
 
 dotenv.config();
 
@@ -64,68 +62,6 @@ const register = (req: Request, res: Response, next: NextFunction) => {
       });
     //End of creating + adding user to db code
   });
-};
-
-const signToken = (req: Request, res: Response, next: NextFunction) => {
-  const user: any = req.user;
-  const token = jwt.sign(user, "secret");
-  res.cookie("jwt", token);
-  return res.json({ token });
-};
-
-const login = (req: Request, res: Response, next: NextFunction) => {
-  let { email, password } = req.body;
-  User.find({ email })
-    .exec()
-    .then((users) => {
-      if (users.length !== 1) {
-        return res.status(401).json({
-          message: "Authorization Failed.",
-        });
-      }
-
-      const userToLogin = users[0];
-      bcrypt.compare(
-        password,
-        userToLogin.password as string,
-        (error, result) => {
-          if (error) {
-            console.log(error.message);
-            return res.status(401).json({
-              message: "Authentication Failed: Something went wrong.",
-              error,
-            });
-          } else if (result) {
-            signJWT(userToLogin, (error, token) => {
-              if (error) {
-                console.log("Unable to sign token: ", error.message);
-                return res.status(401).json({
-                  message: "Failed To Sign JWT.",
-                });
-              } else if (token) {
-                console.log("Token signed, authentication successful.");
-                return res.json({
-                  message: "Authorization Successful.",
-                  token,
-                  user: userToLogin,
-                });
-              }
-            });
-          } else {
-            console.log("Authentication Failed.");
-            return res.status(401).json({
-              message: "Authentication Failed: Incorrect Password.",
-            });
-          }
-        }
-      );
-    })
-    .catch((error) => {
-      return res.status(500).json({
-        message: error.message,
-        error,
-      });
-    });
 };
 
 const getProfile = (req: Request, res: Response, next: NextFunction) => {
@@ -317,10 +253,8 @@ export default {
   getUsers,
   getViewUsers,
   register,
-  login,
   validateToken,
   createUsersFromViews,
-  signToken,
   getProfile,
   updateProfile,
 };
