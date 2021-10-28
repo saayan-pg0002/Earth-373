@@ -210,6 +210,27 @@ const getViewUsers = async (req: Request, res: Response) => {
   return result;
 };
 
+async function addUsertoDB(userFields: any, hashedPassword: string) {
+  let userType = "Admin";
+  if (userFields["TypeName"] == "volunteer") {
+    userType = "Mentor";
+  }
+  const newUser = new User({
+    _id: new mongoose.Types.ObjectId(),
+    views_id: userFields["PersonID"],
+    first_name: userFields["Forename"],
+    last_name: userFields["Surname"],
+    email: (userFields["Email"] as string) || ("NO EMAIL ASSOCIATED" as string),
+    activity_status: userFields["VolunteerStatus_V_1"] || ("Active" as string),
+    password: hashedPassword as string,
+    user_type: userType,
+  });
+  newUser.save().catch((error) => {
+    return console.log("Error adding user", error);
+  });
+  console.log(`added user ${userFields["Forename"]}`);
+}
+
 const checkAndCreateOneUserinDB = (userFields: any) => {
   const ViewsPersonID = userFields["PersonID"];
   User.find({ views_id: ViewsPersonID }).exec(function (err, user) {
@@ -217,11 +238,7 @@ const checkAndCreateOneUserinDB = (userFields: any) => {
       console.log(err);
     } else if (user.length == 0) {
       //This is the temporary password all users will get for first time
-      let userType = "Admin";
       const temppass = "admin123";
-      if (userFields["TypeName"] == "volunteer") {
-        userType = "Mentor";
-      }
       //Hashing the password using bcrypt
       bcrypt.hash(temppass, 10, (hashError, hashedPassword) => {
         if (hashError) {
@@ -230,24 +247,7 @@ const checkAndCreateOneUserinDB = (userFields: any) => {
             error: hashError,
           };
         }
-
-        const newUser = new User({
-          _id: new mongoose.Types.ObjectId(),
-          views_id: ViewsPersonID,
-          first_name: userFields["Forename"],
-          last_name: userFields["Surname"],
-          email:
-            (userFields["Email"] as string) ||
-            ("NO EMAIL ASSOCIATED" as string),
-          activity_status:
-            userFields["VolunteerStatus_V_1"] || ("Active" as string),
-          password: hashedPassword as string,
-          user_type: userType,
-        });
-        newUser.save().catch((error) => {
-          return console.log("Error adding user", error);
-        });
-        console.log(`added user ${userFields["Forename"]}`);
+        addUsertoDB(userFields, hashedPassword);
       });
     } else {
       console.log(`User present`);
@@ -288,7 +288,7 @@ const createUsersFromViews = async (
   const viewsStaffData = JSON.parse(await getViewsAPIRequestData(url));
   iterateOnViewsData(viewsStaffData);
 
-  res.send("Done");
+  res.send("Migrated Views Volunteers and Admins Successfully!");
 };
 
 export default {
