@@ -306,17 +306,13 @@ const createGoalForMentee = (req: Request, res: Response) => {
         is_complete: false
       }
     }
-  }).then(() => {
-    MenteeProfile.find({ _id: mentee_id_to_match }).exec().then((result) => {
-      return res.status(201).json({
-        goals: result
-      });
-    });
+  }, {new: true}).then((result) => {
+    return res.status(201).json({ result });
   })
   .catch((error) => {
     return res.status(500).json({
       message: error.message,
-      error,
+      error
     });
   });
 
@@ -335,6 +331,31 @@ const getMenteeProfileById = (req: Request, res: Response) => {
   });
 }
 
+const updateMenteeProfileById = (req: Request, res: Response) => {
+  const menteeId: string = req.params.id;
+  let {
+    new_mentor_id,
+    new_mentee_name,
+    new_isActive,
+  } = req.body;
+
+  MenteeProfile.findOneAndUpdate({ 
+    _id: menteeId
+  }, {
+    mentor_id: new_mentor_id,
+    mentee_name: new_mentee_name,
+    isActive: new_isActive
+  }, (error: any, data: any) => {
+    if (error) {
+      return res.status(404).json({
+        message: "Error in updating mentee profile."
+      });
+    } else if (data) {
+      return res.status(200).json({data});
+    }
+  });
+}
+
 export default {
   addUser,
   getUsers,
@@ -344,5 +365,6 @@ export default {
   validateToken,
   createUsersFromViews,
   createGoalForMentee,
-  getMenteeProfileById
+  getMenteeProfileById,
+  updateMenteeProfileById
 };
