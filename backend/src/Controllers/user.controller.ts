@@ -292,7 +292,7 @@ const createUsersFromViews = async (
   res.send("Done");
 };
 
-const createGoalForMentee = (req: Request, res: Response, next: NextFunction) => {
+const createGoalForMentee = (req: Request, res: Response) => {
   let { 
     mentee_id_to_match, goal_text 
   } = req.body;
@@ -322,6 +322,19 @@ const createGoalForMentee = (req: Request, res: Response, next: NextFunction) =>
 
 }
 
+const getMenteeProfileById = (req: Request, res: Response) => {
+  const menteeId: string = req.params.id;
+
+  MenteeProfile.findOne({_id: menteeId}).exec().then((profileObj) => {
+    return res.status(200).json({profileObj})
+  }).catch((error) => {
+    console.log({error});
+    return res.status(404).json({
+      message: "Error: Mentee id not found."
+    });
+  });
+}
+
 export default {
   addUser,
   getUsers,
@@ -330,5 +343,6 @@ export default {
   login,
   validateToken,
   createUsersFromViews,
-  createGoalForMentee
+  createGoalForMentee,
+  getMenteeProfileById
 };

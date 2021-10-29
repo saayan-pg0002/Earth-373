@@ -21,6 +21,7 @@ router.route("/register").post(UserController.register);
 router.route("/login").post(UserController.login);
 
 router.route("/me/goal").post(UserController.createGoalForMentee);
+router.route("/me/mentee_profile/:id").get(UserController.getMenteeProfileById);
 
 export default router;
 
