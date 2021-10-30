@@ -6,6 +6,8 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import { request } from "http";
 import signJWT from "../Functions/signJWT";
+import MenteeProfile from "../Models/menteeprofile.model";
+import MenteeProfileInterface from "../Interfaces/menteeprofile.interface";
 
 dotenv.config();
 var router = Router();
@@ -291,6 +293,22 @@ const createUsersFromViews = async (
   res.send("Done");
 };
 
+const getGoalsForMentee = (req: Request, res: Response) => {
+  const menteeId: string = req.params.id;
+
+  MenteeProfile.findOne({ _id: menteeId }).exec((err, mentee) => {
+    if (err) {
+      return res.status(500).json({
+        message: "Failed to find goals for mentee."
+      });
+    } else if (mentee) {
+      const menteeGoals = mentee.goals;
+      return res.status(200).json({
+        menteeGoals
+      });
+    }
+  });
+}
 
 export default {
   addUser,
@@ -299,5 +317,6 @@ export default {
   register,
   login,
   validateToken,
-  createUsersFromViews
+  createUsersFromViews,
+  getGoalsForMentee
 };
