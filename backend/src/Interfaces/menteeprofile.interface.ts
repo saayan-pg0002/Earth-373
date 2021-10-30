@@ -5,9 +5,8 @@ export default interface MenteeProfileInterface extends Document {
     mentee_name: String;
     isActive: Boolean;
     goals: [{
-        id: Number;
         name: String;
         is_complete: Boolean;
-    }],
+    }];
     questionnaire_ids: [mongoose.Types.ObjectId];
 }
