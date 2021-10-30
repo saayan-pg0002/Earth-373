@@ -2,6 +2,7 @@ import React from "react";
 import { DateInput } from "../components/form/DateInput";
 import { FormField } from "../components/form/FormField";
 import { IconName } from "../components/Icon";
+import PageHelmet from "../util/PageHelmet";
 
 interface EditMenteeProp {
   menteeName: string;
@@ -21,6 +22,8 @@ const EditMentee: React.FC<EditMenteeProp> = ({
 
   return (
     <main className="container">
+      <PageHelmet title="Edit Mentee" />
+
       <h1 className="page-title">Edit Mentee</h1>
 
       <h3 className="page-title"> {menteeName}</h3>
