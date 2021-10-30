@@ -1,18 +1,19 @@
 import { NextFunction, Request, Response, Router } from "express";
 import User from "../Models/user.model";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+<<<<<<< backend/src/Controllers/user.controller.ts
 import { request } from "http";
 import signJWT from "../Functions/signJWT";
 import MenteeProfile from "../Models/menteeprofile.model";
+=======
+>>>>>>> backend/src/Controllers/user.controller.ts
 
 dotenv.config();
-var router = Router();
 
 //Authentication functions
-
 const validateToken = (req: Request, res: Response, next: NextFunction) => {
   console.log("Token validated, user authorized");
   return res.status(200).json({
@@ -69,59 +70,20 @@ const register = (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
-const login = (req: Request, res: Response, next: NextFunction) => {
-  let { email, password } = req.body;
+const getProfile = (req: Request, res: Response, next: NextFunction) => {
+  const user: any = req.user;
+  return res.json({ email: user.email, name: user.first_name });
+};
 
-  User.find({ email })
-    .exec()
-    .then((users) => {
-      if (users.length !== 1) {
-        return res.status(401).json({
-          message: "Authorization Failed.",
-        });
-      }
+const updateProfile = (req: Request, res: Response, next: NextFunction) => {
+  const user: any = req.user;
+  const query = { email: user.email };
+  const changes = req.body;
 
-      const userToLogin = users[0];
-      bcrypt.compare(
-        password,
-        <string>userToLogin.password,
-        (error, result) => {
-          if (error) {
-            console.log(error.message);
-            return res.status(401).json({
-              message: "Authentication Failed: Passwords Do Not Match.",
-            });
-          } else if (result) {
-            signJWT(userToLogin, (error, token) => {
-              if (error) {
-                console.log("Unable to sign token: ", error.message);
-                return res.status(401).json({
-                  message: "Failed To Sign JWT.",
-                });
-              } else if (token) {
-                console.log("Token signed, authentication successful.");
-                return res.status(200).json({
-                  message: "Authorization Successful.",
-                  token,
-                  user: userToLogin,
-                });
-              }
-            });
-          } else {
-            console.log("Authentication Failed.");
-            return res.status(401).json({
-              message: "Authentication Failed: Incorrect Password.",
-            });
-          }
-        }
-      );
-    })
-    .catch((error) => {
-      return res.status(500).json({
-        message: error.message,
-        error,
-      });
-    });
+  User.findOneAndUpdate(query, changes, { new: true }, (err, doc) => {
+    if (err) res.status(400).json(err);
+    return res.status(200).json(doc);
+  });
 };
 
 const addUser = (req: Request, res: Response, next: NextFunction) => {
@@ -181,9 +143,7 @@ const getUsers = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
-async function getViewsAPIRequestData(
-  url: string
-) {
+async function getViewsAPIRequestData(url: string) {
   let result = "Nan";
   await axios({
     method: "get",
@@ -192,17 +152,17 @@ async function getViewsAPIRequestData(
       username: process.env.VIEW_USERNAME as string,
       password: process.env.VIEW_PASSWORD as string,
     },
-    responseType: 'json',
-    transformResponse: [v => v],
+    responseType: "json",
+    transformResponse: [(v) => v],
   })
-  .then((response) => {
-    result = response.data;
-  })
-  .catch((error) => {
-    result = error;
-  });
+    .then((response) => {
+      result = response.data;
+    })
+    .catch((error) => {
+      result = error;
+    });
   return result;
-};
+}
 
 const getViewUsers = async (req: Request, res: Response) => {
   const type: string = req.params.type;
@@ -213,19 +173,16 @@ const getViewUsers = async (req: Request, res: Response) => {
   return result;
 };
 
-const checkAndCreateOneUserinDB = (
-  userFields: any,
-) => {
-  const ViewsPersonID = userFields['PersonID'];
-  User.find({views_id: ViewsPersonID})
-  .exec(function (err,user) {
-    if(err){
-      console.log(err); 
-    }else if (user.length == 0){
+const checkAndCreateOneUserinDB = (userFields: any) => {
+  const ViewsPersonID = userFields["PersonID"];
+  User.find({ views_id: ViewsPersonID }).exec(function (err, user) {
+    if (err) {
+      console.log(err);
+    } else if (user.length == 0) {
       //This is the temporary password all users will get for first time
       let userType = "Admin";
       const temppass = "admin123";
-      if(userFields['TypeName'] == "volunteer"){
+      if (userFields["TypeName"] == "volunteer") {
         userType = "Mentor";
       }
       //Hashing the password using bcrypt
@@ -240,33 +197,33 @@ const checkAndCreateOneUserinDB = (
         const newUser = new User({
           _id: new mongoose.Types.ObjectId(),
           views_id: ViewsPersonID,
-          first_name: userFields['Forename'],
-          last_name: userFields['Surname'],
-          email:  userFields['Email'] as string || "NO EMAIL ASSOCIATED" as string,
-          activity_status: userFields['VolunteerStatus_V_1'] || "Active" as string,
+          first_name: userFields["Forename"],
+          last_name: userFields["Surname"],
+          email:
+            (userFields["Email"] as string) ||
+            ("NO EMAIL ASSOCIATED" as string),
+          activity_status:
+            userFields["VolunteerStatus_V_1"] || ("Active" as string),
           password: hashedPassword as string,
-          user_type: userType
+          user_type: userType,
         });
-        newUser.save()
-        .catch((error) => {
-          return console.log("Error adding user",error);
+        newUser.save().catch((error) => {
+          return console.log("Error adding user", error);
         });
-        console.log(`added user ${userFields['Forename']}`);
+        console.log(`added user ${userFields["Forename"]}`);
       });
-    }else{
+    } else {
       console.log(`User present`);
     }
   });
 };
 
-const iterateOnViewsData = (
-  viewsJsonData: any,
-) => {
-  for (const key in viewsJsonData){
+const iterateOnViewsData = (viewsJsonData: any) => {
+  for (const key in viewsJsonData) {
     const viewsUsers = viewsJsonData[key];
-    for (const key1 in viewsUsers){
-        const userFields = viewsUsers[key1];
-        checkAndCreateOneUserinDB(userFields);
+    for (const key1 in viewsUsers) {
+      const userFields = viewsUsers[key1];
+      checkAndCreateOneUserinDB(userFields);
     }
   }
 };
@@ -276,16 +233,21 @@ const createUsersFromViews = async (
   res: Response,
   next: NextFunction
 ) => {
-
   //Getting Volunteer data from Views
   let typeOfUser: string = "volunteers";
-  let url: string = "https://app.viewsapp.net/api/restful/contacts/"+ typeOfUser +"/search?q=";
+  let url: string =
+    "https://app.viewsapp.net/api/restful/contacts/" +
+    typeOfUser +
+    "/search?q=";
   const viewsVolData = JSON.parse(await getViewsAPIRequestData(url));
   iterateOnViewsData(viewsVolData);
 
   //We have to iterate twice because Views get request to staff does not provide VolunteerStatus when we call it
   typeOfUser = "staff";
-  url = "https://app.viewsapp.net/api/restful/contacts/"+ typeOfUser +"/search?q=";
+  url =
+    "https://app.viewsapp.net/api/restful/contacts/" +
+    typeOfUser +
+    "/search?q=";
   const viewsStaffData = JSON.parse(await getViewsAPIRequestData(url));
   iterateOnViewsData(viewsStaffData);
 
@@ -361,10 +323,11 @@ export default {
   getUsers,
   getViewUsers,
   register,
-  login,
   validateToken,
   createUsersFromViews,
   createGoalForMentee,
   getMenteeProfileById,
-  updateMenteeProfileById
+  updateMenteeProfileById,
+  getProfile,
+  updateProfile
 };

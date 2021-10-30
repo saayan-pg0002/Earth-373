@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { ContainedIcon, IconName, IconColors } from './Icon';
+import { useState, useEffect } from "react";
+import { ContainedIcon, IconName, IconColors } from "./Icon";
 import {
   isCurrentDateBetween,
   getStartEndFormattedTimeString,
-} from '../util/date';
-import { Link } from 'react-router-dom';
-import { Paths } from '../util/routes';
+} from "../util/date";
+import { Link } from "react-router-dom";
+import { Paths } from "../util/routes";
 
 export interface SessionItemProps {
   menteeName: string;
@@ -33,7 +33,7 @@ export const SessionItem: React.FC<SessionItemProps> = ({
   return (
     <Link
       to={isOngoing ? Paths.currentSession : Paths.newSession}
-      className={`session-item ${isOngoing ? 'ongoing' : ''}`}
+      className={`session-item ${isOngoing ? "ongoing" : ""}`}
     >
       <div className="body">
         {isOngoing && <p className="subtext bold ongoing-tag">Ongoing</p>}
