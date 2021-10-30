@@ -313,6 +313,23 @@ const updateMenteeProfileById = (req: Request, res: Response) => {
   });
 }
 
+const getGoalsForMentee = (req: Request, res: Response) => {
+  const menteeId: string = req.params.id;
+
+  MenteeProfile.findOne({ _id: menteeId }).exec((err, mentee) => {
+    if (err) {
+      return res.status(500).json({
+        message: "Failed to find goals for mentee."
+      });
+    } else if (mentee) {
+      const menteeGoals = mentee.goals;
+      return res.status(200).json({
+        menteeGoals
+      });
+    }
+  });
+}
+
 export default {
   addUser,
   getUsers,
@@ -324,5 +341,6 @@ export default {
   getMenteeProfileById,
   updateMenteeProfileById,
   getProfile,
-  updateProfile
+  updateProfile,
+  getGoalsForMentee
 };

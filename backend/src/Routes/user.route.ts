@@ -35,4 +35,6 @@ router
   .route("/me/patch")
   .patch(passportConfig.authenticate, UserController.updateProfile);
 
+  router.route("/me/mentee_profile/:id/goals").get(UserController.getGoalsForMentee);
+
 export default router;
