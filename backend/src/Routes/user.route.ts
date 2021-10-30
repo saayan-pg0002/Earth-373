@@ -24,7 +24,8 @@ router
 router.route("/register").post(UserController.register);
 
 router.route("/me/goal").post(UserController.createGoalForAssociation);
-router.route("/me/association/:id").get(UserController.getAssociationsByMentorId);
-
+router
+  .route("/me/association/:id")
+  .get(UserController.getAssociationsByMentorId);
 
 export default router;
