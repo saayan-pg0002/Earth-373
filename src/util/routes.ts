@@ -8,6 +8,10 @@ import Notifications from "../apps/Notifications";
 import Settings from "../apps/Settings";
 import Resources from "../apps/Resources";
 import Profile from "../apps/Profile";
+import MenteeGoals from "../apps/MenteeGoals";
+import EditMentee from "../apps/EditMentee";
+import MenteeQuestionnaire from "../apps/MenteeQuestionnaire";
+import MenteeSessionHistory from "../apps/MenteeSessionHistory";
 
 export const Paths = {
   login: "/login",
@@ -20,6 +24,11 @@ export const Paths = {
   editSession: "/edit-session",
   profile: "/profile",
   resources: "/resources",
+  menteeGoals: "/mentee-goals",
+  menteeSessionHistory: "/mentee-session-history",
+  menteeQuestionnaires: "/mentee-questionnaires",
+  editMentee: "/edit-mentee",
+
 };
 
 export const PublicPaths: string[] = [Paths.login];
@@ -80,6 +89,26 @@ export const routes: Route[] = [
   {
     path: Paths.resources,
     component: Resources,
+    exact: true,
+  },
+  {
+    path: Paths.menteeGoals,
+    component: MenteeGoals,
+    exact: true,
+  },
+  {
+    path: Paths.menteeSessionHistory,
+    component: MenteeSessionHistory,
+    exact: true,
+  },
+  {
+    path: Paths.editMentee,
+    component: EditMentee,
+    exact: true,
+  },
+  {
+    path: Paths.menteeQuestionnaires,
+    component: MenteeQuestionnaire,
     exact: true,
   },
 ];
