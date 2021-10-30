@@ -4,12 +4,7 @@ import axios from "axios";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-<<<<<<< backend/src/Controllers/user.controller.ts
-import { request } from "http";
-import signJWT from "../Functions/signJWT";
 import MenteeProfile from "../Models/menteeprofile.model";
-=======
->>>>>>> backend/src/Controllers/user.controller.ts
 
 dotenv.config();
 
