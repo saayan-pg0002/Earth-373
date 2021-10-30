@@ -8,8 +8,10 @@ import bcrypt from "bcryptjs";
 import Association from "../Models/association.model";
 
 dotenv.config();
+var router = Router();
 
 //Authentication functions
+
 const validateToken = (req: Request, res: Response, next: NextFunction) => {
   console.log("Token validated, user authorized");
   return res.status(200).json({
@@ -146,7 +148,9 @@ const getUsers = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
-async function getViewsAPIRequestData(url: string) {
+async function getViewsAPIRequestData(
+  url: string
+) {
   let result = "Nan";
   await axios({
     method: "get",
@@ -155,17 +159,17 @@ async function getViewsAPIRequestData(url: string) {
       username: process.env.VIEW_USERNAME as string,
       password: process.env.VIEW_PASSWORD as string,
     },
-    responseType: "json",
-    transformResponse: [(v) => v],
+    responseType: 'json',
+    transformResponse: [v => v],
   })
-    .then((response) => {
-      result = response.data;
-    })
-    .catch((error) => {
-      result = error;
-    });
+  .then((response) => {
+    result = response.data;
+  })
+  .catch((error) => {
+    result = error;
+  });
   return result;
-}
+};
 
 const getViewUsers = async (req: Request, res: Response) => {
   const type: string = req.params.type;
@@ -276,10 +280,7 @@ const iterateOnViewsData = (viewsJsonData: any, recordType: string) => {
 
 const migrateUsers = async (req: Request, res: Response) => {
   let typeOfUser: string = "volunteers";
-  let url: string =
-    "https://app.viewsapp.net/api/restful/contacts/" +
-    typeOfUser +
-    "/search?q=";
+  let url: string = "https://app.viewsapp.net/api/restful/contacts/"+ typeOfUser +"/search?q=";
   const viewsVolData = JSON.parse(await getViewsAPIRequestData(url));
   try {
     iterateOnViewsData(viewsVolData, "user");
@@ -291,10 +292,7 @@ const migrateUsers = async (req: Request, res: Response) => {
 
   //We have to iterate twice because Views get request to staff does not provide VolunteerStatus when we call it
   typeOfUser = "staff";
-  url =
-    "https://app.viewsapp.net/api/restful/contacts/" +
-    typeOfUser +
-    "/search?q=";
+  url = "https://app.viewsapp.net/api/restful/contacts/"+ typeOfUser +"/search?q=";
   const viewsStaffData = JSON.parse(await getViewsAPIRequestData(url));
   try {
     iterateOnViewsData(viewsStaffData, "user");

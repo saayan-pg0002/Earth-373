@@ -26,13 +26,5 @@ router.route("/register").post(UserController.register);
 router.route("/me/goal").post(UserController.createGoalForAssociation);
 router.route("/me/association/:id").get(UserController.getAssociationsByMentorId);
 
-router
-  .route("/login")
-  .post(passport.authenticate("signIn"), passportConfig.signJWT);
-
-router.route("/me").get(passportConfig.authenticate, UserController.getProfile);
-router
-  .route("/me/patch")
-  .patch(passportConfig.authenticate, UserController.updateProfile);
 
 export default router;
