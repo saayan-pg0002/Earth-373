@@ -13,9 +13,9 @@ export const AccountSettingItem: React.FC<SettingItemProps> = ({
   path,
 }) => {
   return (
-    <Link to={path} className='setting-item'>
+    <Link to={path} className="setting-item">
       <Icon name={icon} color={IconColors.black} />
-      <div className=' body'>
+      <div className=" body">
         <p>{content}</p>
       </div>
     </Link>

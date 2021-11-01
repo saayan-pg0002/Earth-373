@@ -5,20 +5,20 @@ import { Paths } from "../util/routes";
 
 const Settings: React.FC<{}> = () => {
   return (
-    <main className='settings'>
-      <PageHelmet title='Settings' />
+    <main className="settings">
+      <PageHelmet title="Settings" />
 
-      <div className='container'>
-        <h1 className='page-title'>Settings</h1>
-        <div className='account'>
+      <div className="container">
+        <h1 className="page-title">Settings</h1>
+        <div className="account">
           <AccountSettingItem
             icon={IconName.user}
-            content='Profile'
+            content="Profile"
             path={Paths.profile}
           />
           <AccountSettingItem
             icon={IconName.logOut}
-            content='Log Out'
+            content="Log Out"
             path={Paths.login}
           />
         </div>

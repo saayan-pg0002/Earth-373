@@ -10,9 +10,9 @@ export const ExternalLinkItem: React.FC<ExternalLinkItemProps> = ({
   path,
 }) => {
   return (
-    <a href={path} className='setting-item' target='_blank' rel='noreferrer'>
+    <a href={path} className="setting-item" target="_blank" rel="noreferrer">
       <Icon name={IconName.link} color={IconColors.black} />
-      <div className=' body'>
+      <div className=" body">
         <p>{content}</p>
       </div>
     </a>
