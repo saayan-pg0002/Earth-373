@@ -2,7 +2,6 @@ import express, { Application } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import UserRouter from "./Routes/user.route";
-import MenteeRouter from "./Routes/mentee.route";
 
 dotenv.config();
 const app: Application = express();
@@ -31,7 +30,6 @@ app.use((req, res, next) => {
 
 /** Routes go here */
 app.use("/users", UserRouter);
-app.use("/mentees", MenteeRouter);
 
 /** Error Handling */
 app.use((req, res, next) => {

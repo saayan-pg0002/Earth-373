@@ -16,9 +16,9 @@ router.route("/getuser").get(UserController.getUsers);
 
 router.route("/view/get/:type").get(UserController.getViewUsers);
 router.route("/migrateusers").get(UserController.createUsersFromViews);
+router.route("/migratementees").get(UserController.createMenteesFromViews);
 router.route("/validate").get(extractJWT, UserController.validateToken);
 router.route("/register").post(UserController.register);
 router.route("/login").post(UserController.login);
 
 export default router;
-
