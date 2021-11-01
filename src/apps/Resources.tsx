@@ -1,4 +1,4 @@
-import { ResourceItem } from "../components/ResourceItem";
+import { ExternalLinkItem } from "../components/ExternalLinkItem";
 import PageHelmet from "../util/PageHelmet";
 
 const Resources: React.FC<{}> = () => {
@@ -8,27 +8,27 @@ const Resources: React.FC<{}> = () => {
 
       <div className='container'>
         <h1 className='page-title'>Resources</h1>
-        <ResourceItem
+        <ExternalLinkItem
           content='BayTree Centre Website'
           path='https://www.baytreecentre.org'
         />
-        <ResourceItem
+        <ExternalLinkItem
           content='Microsoft SharePoint folder'
           path='https://www.baytreecentre.org'
         />
-        <ResourceItem
+        <ExternalLinkItem
           content='Mentee Information'
           path='https://www.baytreecentre.org'
         />
-        <ResourceItem
+        <ExternalLinkItem
           content='Questionaire FAQ'
           path='https://www.baytreecentre.org'
         />
-        <ResourceItem
+        <ExternalLinkItem
           content='Director Contact Info'
           path='https://www.baytreecentre.org'
         />
-        <ResourceItem
+        <ExternalLinkItem
           content='About the Developer'
           path='https://www.baytreecentre.org'
         />

@@ -1,11 +1,11 @@
 import { Icon, IconName, IconColors } from "./Icon";
 
-interface ResourceItemProps {
+interface ExternalLinkItemProps {
   content: string;
   path: string;
 }
 
-export const ResourceItem: React.FC<ResourceItemProps> = ({
+export const ExternalLinkItem: React.FC<ExternalLinkItemProps> = ({
   content,
   path,
 }) => {
