@@ -16,7 +16,6 @@ export const DateInput: React.FC<DateInputProps> = ({
   const onFocus = (): void => setIsFocused(true);
   const onBlur = (): void => setIsFocused(false);
 
-  // console.log(date)
   const [value, setValue] = useState<string>(
     !!date ? getFormattedYearMonthDayNumericString(date) : "blank"
   );

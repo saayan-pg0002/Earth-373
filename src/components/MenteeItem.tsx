@@ -10,7 +10,7 @@ export const MenteeItem: React.FC<MenteeItemProps> = ({
   dayOfWeek,
 }) => {
   return (
-    <Link to={Paths.editSession} className='mentee-item'>
+    <Link to={Paths.dashboard} className='mentee-item'>
       <div className='body'>
         <p className='subtext'>
           {getStartEndFormattedTimeStringWithDay(clockInTime, clockOutTime)}
