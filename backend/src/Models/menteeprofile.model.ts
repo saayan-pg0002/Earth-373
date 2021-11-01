@@ -7,7 +7,6 @@ const menteeProfileSchema: Schema = new Schema(
     mentee_name: { type: String, required: true },
     isActive: { type: Boolean, required: true, default: true },
     goals: [{
-        id: { type: Number, auto: true },
         name: { type: String, required: true },
         is_complete: { type: Boolean, required: true, default: false}
     }],
