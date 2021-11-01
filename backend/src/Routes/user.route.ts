@@ -1,6 +1,7 @@
 import express, { Request, Response, Router } from "express";
 import User from "../Models/user.model";
 import UserController from "../Controllers/user.controller";
+import MenteeController from "../Controllers/mentee.controller";
 import extractJWT from "../middleware/extractJWT";
 
 const router: Router = express.Router();
@@ -16,7 +17,7 @@ router.route("/getuser").get(UserController.getUsers);
 
 router.route("/view/get/:type").get(UserController.getViewUsers);
 router.route("/migrateusers").get(UserController.createUsersFromViews);
-router.route("/migratementees").get(UserController.createMenteesFromViews);
+router.route("/migratementees").get(MenteeController.createMenteesFromViews);
 router.route("/validate").get(extractJWT, UserController.validateToken);
 router.route("/register").post(UserController.register);
 router.route("/login").post(UserController.login);
