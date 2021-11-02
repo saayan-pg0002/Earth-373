@@ -5,14 +5,11 @@ import axios, { AxiosResponse } from "axios";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import { request } from "http";
-import signJWT from "../Functions/signJWT";
+import MenteeProfile from "../Models/menteeprofile.model";
 
 dotenv.config();
-var router = Router();
 
 //Authentication functions
-
 const validateToken = (req: Request, res: Response, next: NextFunction) => {
   console.log("Token validated, user authorized");
   return res.status(200).json({
@@ -69,59 +66,20 @@ const register = (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
-const login = (req: Request, res: Response, next: NextFunction) => {
-  let { email, password } = req.body;
+const getProfile = (req: Request, res: Response, next: NextFunction) => {
+  const user: any = req.user;
+  return res.json({ email: user.email, name: user.first_name });
+};
 
-  User.find({ email })
-    .exec()
-    .then((users) => {
-      if (users.length !== 1) {
-        return res.status(401).json({
-          message: "Authorization Failed.",
-        });
-      }
+const updateProfile = (req: Request, res: Response, next: NextFunction) => {
+  const user: any = req.user;
+  const query = { email: user.email };
+  const changes = req.body;
 
-      const userToLogin = users[0];
-      bcrypt.compare(
-        password,
-        <string>userToLogin.password,
-        (error, result) => {
-          if (error) {
-            console.log(error.message);
-            return res.status(401).json({
-              message: "Authentication Failed: Passwords Do Not Match.",
-            });
-          } else if (result) {
-            signJWT(userToLogin, (error, token) => {
-              if (error) {
-                console.log("Unable to sign token: ", error.message);
-                return res.status(401).json({
-                  message: "Failed To Sign JWT.",
-                });
-              } else if (token) {
-                console.log("Token signed, authentication successful.");
-                return res.status(200).json({
-                  message: "Authorization Successful.",
-                  token,
-                  user: userToLogin,
-                });
-              }
-            });
-          } else {
-            console.log("Authentication Failed.");
-            return res.status(401).json({
-              message: "Authentication Failed: Incorrect Password.",
-            });
-          }
-        }
-      );
-    })
-    .catch((error) => {
-      return res.status(500).json({
-        message: error.message,
-        error,
-      });
-    });
+  User.findOneAndUpdate(query, changes, { new: true }, (err, doc) => {
+    if (err) res.status(400).json(err);
+    return res.status(200).json(doc);
+  });
 };
 
 const addUser = (req: Request, res: Response, next: NextFunction) => {
@@ -223,7 +181,6 @@ function addUsertoDB(userFields: any) {
     let userType = "Admin";
     if (userFields["TypeName"] == "volunteer") {
       userType = "Mentor";
-    }
     const newUser = new User({
       _id: new mongoose.Types.ObjectId(),
       views_id: userFields["PersonID"],
@@ -358,14 +315,80 @@ const createMenteesFromViews = async (req: Request, res: Response) => {
   res.send("Migrated Views Mentees Successfully!");
 };
 
+const createGoalForMentee = (req: Request, res: Response) => {
+  let { 
+    mentee_id_to_match, goal_text 
+  } = req.body;
+
+  MenteeProfile.findOneAndUpdate({ 
+    _id: mentee_id_to_match
+  }, {
+    $push: {
+      goals: {
+        name: goal_text,
+        is_complete: false
+      }
+    }
+  }, {new: true}).then((result) => {
+    return res.status(201).json({ result });
+  })
+  .catch((error) => {
+    return res.status(500).json({
+      message: error.message,
+      error
+    });
+  });
+
+}
+
+const getMenteeProfileById = (req: Request, res: Response) => {
+  const menteeId: string = req.params.id;
+
+  MenteeProfile.findOne({_id: menteeId}).exec().then((profileObj) => {
+    return res.status(200).json({profileObj})
+  }).catch((error) => {
+    console.log({error});
+    return res.status(404).json({
+      message: "Error: Mentee id not found."
+    });
+  });
+}
+
+const updateMenteeProfileById = (req: Request, res: Response) => {
+  const menteeId: string = req.params.id;
+  let {
+    new_mentor_id,
+    new_mentee_name,
+    new_isActive,
+  } = req.body;
+
+  MenteeProfile.findOneAndUpdate({ 
+    _id: menteeId
+  }, {
+    mentor_id: new_mentor_id,
+    mentee_name: new_mentee_name,
+    isActive: new_isActive
+  }, (error: any, data: any) => {
+    if (error) {
+      return res.status(404).json({
+        message: "Error in updating mentee profile."
+      });
+    } else if (data) {
+      return res.status(200).json({data});
+    }
+  });
+}
 export default {
   addUser,
   getUsers,
   getViewUsers,
   register,
-  login,
   validateToken,
   createUsersFromViews,
-  getViewsAPIRequestData,
   createMenteesFromViews,
+  createGoalForMentee,
+  getMenteeProfileById,
+  updateMenteeProfileById,
+  getProfile,
+  updateProfile
 };

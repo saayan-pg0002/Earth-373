@@ -1,13 +1,15 @@
 import Login from "../apps/Login";
 import CurrentSession from "../apps/CurrentSession";
 import Dashboard from "../apps/Dashboard";
-import EditSession from "../apps/EditSession";
 import Mentees from "../apps/Mentees";
 import NewSession from "../apps/NewSession";
 import Notifications from "../apps/Notifications";
 import Settings from "../apps/Settings";
 import Resources from "../apps/Resources";
 import Profile from "../apps/Profile";
+import EditMentee from "../apps/EditMentee";
+
+
 
 export const Paths = {
   login: "/login",
@@ -17,9 +19,9 @@ export const Paths = {
   settings: "/settings",
   newSession: "/new-session",
   currentSession: "/current-session",
-  editSession: "/edit-session",
   profile: "/profile",
   resources: "/resources",
+  editMentee: "/edit-mentee",
 };
 
 export const PublicPaths: string[] = [Paths.login];
@@ -68,11 +70,6 @@ export const routes: Route[] = [
     exact: true,
   },
   {
-    path: Paths.editSession,
-    component: EditSession,
-    exact: true,
-  },
-  {
     path: Paths.profile,
     component: Profile,
     exact: true,
@@ -80,6 +77,11 @@ export const routes: Route[] = [
   {
     path: Paths.resources,
     component: Resources,
+    exact: true,
+  },
+  {
+    path: Paths.editMentee,
+    component: EditMentee,
     exact: true,
   },
 ];

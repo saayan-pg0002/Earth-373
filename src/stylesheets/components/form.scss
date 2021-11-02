@@ -68,4 +68,12 @@
       color: $black;
     }
   }
+
+  input[type="date"]::-webkit-inner-spin-button,
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    -webkit-appearance: none;
+  }
 }
