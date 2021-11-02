@@ -4,9 +4,10 @@ import { InputNotes } from "../components/form/InputNotes";
 import { RenderAttributes } from "../components/form/RenderAttributes";
 import { IconName } from "../components/Icon";
 import { getFormattedTimeString } from "../util/date";
+import PageHelmet from "../util/PageHelmet";
 import { NewSessionProps } from "./NewSession";
 
-const EditSession: React.FC<NewSessionProps> = ({
+const ViewSession: React.FC<NewSessionProps> = ({
   menteeName,
   date,
   actualclockInTime,
@@ -25,13 +26,19 @@ const EditSession: React.FC<NewSessionProps> = ({
     date.setHours(21, 0);
     return date;
   })();
+  notes = "Learn Math";
 
   return (
     <main className="container">
-      <h1 className="page-title">Edit Session</h1>
+      <PageHelmet title="View Session" />
+
+      <h1 className="page-title">View Session</h1>
       <form className="form">
         <FormField labelText="Mentee">
-          <RenderAttributes attribute={menteeName} />
+          <RenderAttributes
+            attribute={menteeName}
+            rightIconName={IconName.smiley}
+          />
         </FormField>
 
         <FormField labelText="Date">
@@ -60,19 +67,13 @@ const EditSession: React.FC<NewSessionProps> = ({
             placeholderText="Your notes..."
             name="notes"
             id="notes"
-            isDisabled={false}
+            isDisabled={true}
             notes={notes}
           />
         </FormField>
-
-        <div className="actions">
-          <button type="button" className="btn">
-            Save
-          </button>
-        </div>
       </form>
     </main>
   );
 };
 
-export default EditSession;
+export default ViewSession;
