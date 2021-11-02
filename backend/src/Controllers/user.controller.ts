@@ -354,9 +354,21 @@ const createGoalForAssociation = (req: Request, res: Response) => {
   });
 };
 
+<<<<<<< HEAD
 const getAssociationById = (req: Request, res: Response) => {
   const menteeId: string = req.params.id;
   Association.findOne({_id: menteeId}).exec().then((profileObj) => {
+=======
+}
+
+const getAssociationByMentorAndMenteeIds = (req: Request, res: Response) => {
+  let {
+    mentor_id,
+    mentee_id
+  } = req.body;
+
+  MenteeMentorAssociation.findOne({mentor_views_id: mentor_id, mentee_views_id: mentee_id}).exec().then((profileObj) => {
+>>>>>>> c130a43... Controller update again
     return res.status(200).json({profileObj})
   }).catch((error) => {
     return res.status(404).json({
