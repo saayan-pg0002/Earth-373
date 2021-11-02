@@ -4,7 +4,7 @@ import axios from "axios";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import MenteeProfile from "../Models/menteeprofile.model";
+import MenteeMentorAssociation from "../Models/menteementorassociation.model";
 
 dotenv.config();
 
@@ -251,11 +251,11 @@ const createUsersFromViews = async (
 
 const createGoalForMentee = (req: Request, res: Response) => {
   let { 
-    mentee_id_to_match, goal_text 
+    mentee_id, goal_text 
   } = req.body;
 
-  MenteeProfile.findOneAndUpdate({ 
-    _id: mentee_id_to_match
+  MenteeMentorAssociation.findOneAndUpdate({ 
+    _id: mentee_id
   }, {
     $push: {
       goals: {
@@ -275,10 +275,10 @@ const createGoalForMentee = (req: Request, res: Response) => {
 
 }
 
-const getMenteeProfileById = (req: Request, res: Response) => {
+const getMenteeMentorAssociationById = (req: Request, res: Response) => {
   const menteeId: string = req.params.id;
 
-  MenteeProfile.findOne({_id: menteeId}).exec().then((profileObj) => {
+  MenteeMentorAssociation.findOne({_id: menteeId}).exec().then((profileObj) => {
     return res.status(200).json({profileObj})
   }).catch((error) => {
     console.log({error});
@@ -288,7 +288,7 @@ const getMenteeProfileById = (req: Request, res: Response) => {
   });
 }
 
-const updateMenteeProfileById = (req: Request, res: Response) => {
+const updateMenteeMentorAssociationById = (req: Request, res: Response) => {
   const menteeId: string = req.params.id;
   let {
     new_mentor_id,
@@ -296,7 +296,7 @@ const updateMenteeProfileById = (req: Request, res: Response) => {
     new_isActive,
   } = req.body;
 
-  MenteeProfile.findOneAndUpdate({ 
+  MenteeMentorAssociation.findOneAndUpdate({ 
     _id: menteeId
   }, {
     mentor_id: new_mentor_id,
@@ -321,8 +321,8 @@ export default {
   validateToken,
   createUsersFromViews,
   createGoalForMentee,
-  getMenteeProfileById,
-  updateMenteeProfileById,
+  getMenteeMentorAssociationById,
+  updateMenteeMentorAssociationById,
   getProfile,
   updateProfile
 };

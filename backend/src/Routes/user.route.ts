@@ -23,8 +23,8 @@ router
 router.route("/register").post(UserController.register);
 
 router.route("/me/goal").post(UserController.createGoalForMentee);
-router.route("/me/mentee_profile/:id").get(UserController.getMenteeProfileById);
-router.route("/me/mentee_profile/:id").patch(UserController.updateMenteeProfileById);
+router.route("/me/mentee_profile/:id").get(UserController.getMenteeMentorAssociationById);
+router.route("/me/mentee_profile/:id").patch(UserController.updateMenteeMentorAssociationById);
 
 router
   .route("/login")
