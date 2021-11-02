@@ -294,16 +294,16 @@ const createGoalForAssociation = (req: Request, res: Response) => {
 
 const getAssociationByMentorAndMenteeIds = (req: Request, res: Response) => {
   let {
-    mentee_id,
     mentor_id
+    mentee_id,
   } = req.body;
 
   MenteeMentorAssociation.findOne({mentor_views_id: mentor_id, mentee_views_id: mentee_id}).exec().then((profileObj) => {
     return res.status(200).json({profileObj})
   }).catch((error) => {
-    console.log({error});
     return res.status(404).json({
-      message: "Error: Mentee id not found."
+      message: "Error: Mentee id not found.",
+      error
     });
   });
 }
