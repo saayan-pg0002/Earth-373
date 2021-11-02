@@ -22,9 +22,8 @@ router
   .get(passportConfig.authenticate, UserController.validateToken);
 router.route("/register").post(UserController.register);
 
-router.route("/me/goal").post(UserController.createGoalForMentee);
-router.route("/me/mentee_profile/:id").get(UserController.getMenteeMentorAssociationById);
-router.route("/me/mentee_profile/:id").patch(UserController.updateMenteeMentorAssociationById);
+router.route("/me/goal").post(UserController.createGoalForAssociation);
+router.route("/me/associations/find").get(UserController.getAssociationByMentorAndMenteeIds);
 
 router
   .route("/login")

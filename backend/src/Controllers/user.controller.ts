@@ -57,7 +57,7 @@ const register = (req: Request, res: Response, next: NextFunction) => {
       })
       .catch((error) => {
         return res.status(500).json({
-          message: error.message,
+          message: "Error saving user.",
           error,
         });
       });
@@ -76,8 +76,14 @@ const updateProfile = (req: Request, res: Response, next: NextFunction) => {
   const changes = req.body;
 
   User.findOneAndUpdate(query, changes, { new: true }, (err, doc) => {
-    if (err) res.status(400).json(err);
-    return res.status(200).json(doc);
+    if (err) res.status(400).json({
+      message: "There was an error updating the profile.",
+      err
+    });
+    return res.status(200).json({
+      message: "Successfully updated profile.",
+      doc
+    });
   });
 };
 
@@ -109,12 +115,13 @@ const addUser = (req: Request, res: Response, next: NextFunction) => {
     .save()
     .then((result) => {
       return res.status(201).json({
+        message: "Successfully saved user to the database.",
         user: result,
       });
     })
     .catch((error) => {
       return res.status(500).json({
-        message: error.message,
+        message: "Error adding user to the database.",
         error,
       });
     });
@@ -132,7 +139,7 @@ const getUsers = (req: Request, res: Response, next: NextFunction) => {
     })
     .catch((error) => {
       return res.status(500).json({
-        message: error.message,
+        message: "Error getting user from the database.",
         error,
       });
     });
@@ -249,13 +256,16 @@ const createUsersFromViews = async (
   res.send("Done");
 };
 
-const createGoalForMentee = (req: Request, res: Response) => {
+const createGoalForAssociation = (req: Request, res: Response) => {
+  //Note: the id fields here refer to the views id of the mentor & mentee, not their mongodb ids.
   let { 
-    mentee_id, goal_text 
+    mentor_id, mentee_id, goal_text 
   } = req.body;
 
   MenteeMentorAssociation.findOneAndUpdate({ 
-    _id: mentee_id
+    mentor_views_id: mentor_id,
+    mentee_views_id: mentee_id,
+    isActive: true
   }, {
     $push: {
       goals: {
@@ -264,18 +274,25 @@ const createGoalForMentee = (req: Request, res: Response) => {
       }
     }
   }, {new: true}).then((result) => {
-    return res.status(201).json({ result });
+    if (result == null) {
+      return res.status(500).json({
+        message: "Warning: Mentor/Mentee pair not found. Are they active?"
+      });
+    }
+    return res.status(201).json({ 
+      message: "Successfully created goal for mentorship.",
+      result 
+    });
   })
   .catch((error) => {
     return res.status(500).json({
-      message: error.message,
-      error
+      message: "Error creating goal for the mentee/mentor association.",
     });
   });
 
 }
 
-const getMenteeMentorAssociationById = (req: Request, res: Response) => {
+const getAssociationByMentorAndMenteeIds = (req: Request, res: Response) => {
   const menteeId: string = req.params.id;
 
   MenteeMentorAssociation.findOne({_id: menteeId}).exec().then((profileObj) => {
@@ -288,31 +305,6 @@ const getMenteeMentorAssociationById = (req: Request, res: Response) => {
   });
 }
 
-const updateMenteeMentorAssociationById = (req: Request, res: Response) => {
-  const menteeId: string = req.params.id;
-  let {
-    new_mentor_id,
-    new_mentee_name,
-    new_isActive,
-  } = req.body;
-
-  MenteeMentorAssociation.findOneAndUpdate({ 
-    _id: menteeId
-  }, {
-    mentor_id: new_mentor_id,
-    mentee_name: new_mentee_name,
-    isActive: new_isActive
-  }, (error: any, data: any) => {
-    if (error) {
-      return res.status(404).json({
-        message: "Error in updating mentee profile."
-      });
-    } else if (data) {
-      return res.status(200).json({data});
-    }
-  });
-}
-
 export default {
   addUser,
   getUsers,
@@ -320,9 +312,8 @@ export default {
   register,
   validateToken,
   createUsersFromViews,
-  createGoalForMentee,
-  getMenteeMentorAssociationById,
-  updateMenteeMentorAssociationById,
+  createGoalForAssociation,
+  getAssociationByMentorAndMenteeIds,
   getProfile,
   updateProfile
 };
