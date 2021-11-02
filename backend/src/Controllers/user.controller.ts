@@ -359,9 +359,9 @@ const getAssociationById = (req: Request, res: Response) => {
   Association.findOne({_id: menteeId}).exec().then((profileObj) => {
     return res.status(200).json({profileObj})
   }).catch((error) => {
-    console.log({error});
     return res.status(404).json({
-      message: "Error: Mentee id not found."
+      message: "Error: Mentee id not found.",
+      error
     });
   });
 };
