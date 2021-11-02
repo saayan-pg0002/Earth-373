@@ -293,9 +293,12 @@ const createGoalForAssociation = (req: Request, res: Response) => {
 }
 
 const getAssociationByMentorAndMenteeIds = (req: Request, res: Response) => {
-  const menteeId: string = req.params.id;
+  let {
+    mentee_id,
+    mentor_id
+  } = req.body;
 
-  MenteeMentorAssociation.findOne({_id: menteeId}).exec().then((profileObj) => {
+  MenteeMentorAssociation.findOne({mentor_views_id: mentor_id, mentee_views_id: mentee_id}).exec().then((profileObj) => {
     return res.status(200).json({profileObj})
   }).catch((error) => {
     console.log({error});
