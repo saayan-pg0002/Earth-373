@@ -181,6 +181,7 @@ function addUsertoDB(userFields: any) {
     let userType = "Admin";
     if (userFields["TypeName"] == "volunteer") {
       userType = "Mentor";
+    }
     const newUser = new User({
       _id: new mongoose.Types.ObjectId(),
       views_id: userFields["PersonID"],
@@ -316,68 +317,73 @@ const createMenteesFromViews = async (req: Request, res: Response) => {
 };
 
 const createGoalForMentee = (req: Request, res: Response) => {
-  let { 
-    mentee_id_to_match, goal_text 
-  } = req.body;
+  let { mentee_id_to_match, goal_text } = req.body;
 
-  MenteeProfile.findOneAndUpdate({ 
-    _id: mentee_id_to_match
-  }, {
-    $push: {
-      goals: {
-        name: goal_text,
-        is_complete: false
-      }
-    }
-  }, {new: true}).then((result) => {
-    return res.status(201).json({ result });
-  })
-  .catch((error) => {
-    return res.status(500).json({
-      message: error.message,
-      error
+  MenteeProfile.findOneAndUpdate(
+    {
+      _id: mentee_id_to_match,
+    },
+    {
+      $push: {
+        goals: {
+          name: goal_text,
+          is_complete: false,
+        },
+      },
+    },
+    { new: true }
+  )
+    .then((result) => {
+      return res.status(201).json({ result });
+    })
+    .catch((error) => {
+      return res.status(500).json({
+        message: error.message,
+        error,
+      });
     });
-  });
-
-}
+};
 
 const getMenteeProfileById = (req: Request, res: Response) => {
   const menteeId: string = req.params.id;
 
-  MenteeProfile.findOne({_id: menteeId}).exec().then((profileObj) => {
-    return res.status(200).json({profileObj})
-  }).catch((error) => {
-    console.log({error});
-    return res.status(404).json({
-      message: "Error: Mentee id not found."
+  MenteeProfile.findOne({ _id: menteeId })
+    .exec()
+    .then((profileObj) => {
+      return res.status(200).json({ profileObj });
+    })
+    .catch((error) => {
+      console.log({ error });
+      return res.status(404).json({
+        message: "Error: Mentee id not found.",
+      });
     });
-  });
-}
+};
 
 const updateMenteeProfileById = (req: Request, res: Response) => {
   const menteeId: string = req.params.id;
-  let {
-    new_mentor_id,
-    new_mentee_name,
-    new_isActive,
-  } = req.body;
+  let { new_mentor_id, new_mentee_name, new_isActive } = req.body;
 
-  MenteeProfile.findOneAndUpdate({ 
-    _id: menteeId
-  }, {
-    mentor_id: new_mentor_id,
-    mentee_name: new_mentee_name,
-    isActive: new_isActive
-  }, (error: any, data: any) => {
-    if (error) {
-      return res.status(404).json({
-        message: "Error in updating mentee profile."
-      });
-    } else if (data) {
-      return res.status(200).json({data});
+  MenteeProfile.findOneAndUpdate(
+    {
+      _id: menteeId,
+    },
+    {
+      mentor_id: new_mentor_id,
+      mentee_name: new_mentee_name,
+      isActive: new_isActive,
+    },
+    (error: any, data: any) => {
+      if (error) {
+        return res.status(404).json({
+          message: "Error in updating mentee profile.",
+        });
+      } else if (data) {
+        return res.status(200).json({ data });
+      }
     }
-  });
-}
+  );
+};
 export default {
   addUser,
   getUsers,
@@ -390,5 +396,5 @@ export default {
   getMenteeProfileById,
   updateMenteeProfileById,
   getProfile,
-  updateProfile
+  updateProfile,
 };
