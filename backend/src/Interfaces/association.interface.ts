@@ -1,6 +1,6 @@
 import mongoose, { Document } from "mongoose";
 
-export default interface MenteeMentorAssociationInterface extends Document {
+export default interface AssociationInterface extends Document {
     mentor_views_id: String;
     mentee_views_id: String;
     isActive: Boolean;

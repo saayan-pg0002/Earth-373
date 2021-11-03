@@ -23,7 +23,7 @@ router
 router.route("/register").post(UserController.register);
 
 router.route("/me/goal").post(UserController.createGoalForAssociation);
-router.route("/me/associations/find").get(UserController.getAssociationByMentorAndMenteeIds);
+router.route("/me/associations/:id").get(UserController.getAssociationByMentorAndMenteeIds);
 
 router
   .route("/login")
