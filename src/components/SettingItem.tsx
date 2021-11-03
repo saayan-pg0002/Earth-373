@@ -21,20 +21,3 @@ export const AccountSettingItem: React.FC<SettingItemProps> = ({
     </Link>
   );
 };
-
-interface ExternalLinkSettingItemProps {
-  content: string;
-  path: string;
-}
-
-export const ExternalLinkSettingItem: React.FC<ExternalLinkSettingItemProps> =
-  ({ content, path }) => {
-    return (
-      <a href={path} className="setting-item" target="_blank" rel="noreferrer">
-        <Icon name={IconName.link} color={IconColors.black} />
-        <div className=" body">
-          <p>{content}</p>
-        </div>
-      </a>
-    );
-  };
