@@ -1,10 +1,6 @@
-import {
-  BrowserRouter,
-  Route,
-  Switch,
-  RouteComponentProps,
-} from "react-router-dom";
+import { Router, Route, Switch, RouteComponentProps } from "react-router-dom";
 import { routes, PublicPaths, Paths } from "./util/routes";
+import { history } from "./util/routes";
 import Nav from "./components/Nav";
 import "./stylesheets/index.scss";
 import { Provider } from "react-redux";
@@ -15,7 +11,7 @@ const App: React.FC<{}> = () => {
 
   return (
     <Provider store={store}>
-      <BrowserRouter>
+      <Router history={history}>
         <Switch>
           {routes.map((route, index) => {
             return (
@@ -44,7 +40,7 @@ const App: React.FC<{}> = () => {
             );
           })}
         </Switch>
-      </BrowserRouter>
+      </Router>
     </Provider>
   );
 };

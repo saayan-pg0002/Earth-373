@@ -1,6 +1,6 @@
 export enum ActionType {
   STORE_TOKEN,
-  STORE_USER_STATUS,
+  UPDATE_CURRENT_PATH,
 }
 
 interface StoreToken {
@@ -8,4 +8,9 @@ interface StoreToken {
   payload: string;
 }
 
-export type Action = StoreToken;
+interface UpdateCurrentPath {
+  type: ActionType.UPDATE_CURRENT_PATH;
+  payload: string;
+}
+
+export type Action = StoreToken | UpdateCurrentPath;

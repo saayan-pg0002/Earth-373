@@ -4,10 +4,12 @@ import reducer from "./state/reducer";
 
 export interface State {
   token: string;
+  currentPath: string;
 }
 
 export const initialState: State = {
   token: "",
+  currentPath: window.location.pathname ?? "",
 };
 
 const store = createStore(reducer, initialState, applyMiddleware(thunk));
