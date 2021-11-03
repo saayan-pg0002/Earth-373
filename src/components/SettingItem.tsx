@@ -7,7 +7,7 @@ export interface SettingItemProps {
   path: string;
 }
 
-export const AccountSettingItem: React.FC<SettingItemProps> = ({
+export const SettingItem: React.FC<SettingItemProps> = ({
   icon,
   content,
   path,
