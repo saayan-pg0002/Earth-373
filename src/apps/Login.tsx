@@ -8,6 +8,7 @@ import { sendRequest, RequestType, Endpoints } from "../util/request";
 import { dispatch } from "../util/store";
 import { ActionType } from "../util/state/actions";
 import { Paths, routeTo } from "../util/routes";
+import { storeLocalStorageItem } from "../util/localStorage";
 
 const Login: React.FC<{}> = () => {
   const onSubmit = (e: React.SyntheticEvent) => {
@@ -21,8 +22,9 @@ const Login: React.FC<{}> = () => {
     const password: string = target.password.value;
 
     sendRequest(RequestType.POST, Endpoints.login, { email, password }).then(
-      ({ data }) => {
-        dispatch({ type: ActionType.STORE_TOKEN, payload: data.token });
+      ({ data: { token } }) => {
+        dispatch({ type: ActionType.STORE_TOKEN, payload: token });
+        storeLocalStorageItem("token", token);
         routeTo(Paths.dashboard);
       }
     );

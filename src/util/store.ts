@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware } from "redux";
+import { getLocalStorageItem } from "./localStorage";
 import thunk from "redux-thunk";
 import reducer from "./state/reducer";
 
@@ -8,7 +9,7 @@ export interface State {
 }
 
 export const initialState: State = {
-  token: "",
+  token: getLocalStorageItem("token") ?? "",
   currentPath: window.location.pathname ?? "",
 };
 

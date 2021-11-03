@@ -3,25 +3,24 @@ import { State } from "./store";
 import { Paths, PublicPaths } from "./routes";
 import { routeTo } from "./routes";
 
-const redirects = () => {
+const redirectActions = () => {
   const { token, currentPath }: State = getState();
-  if (!PublicPaths.includes(currentPath) && token === "") {
-    routeTo(Paths.login);
+  const isAuthenticated: boolean = !!token;
+  const isOnPublicPath: boolean = PublicPaths.includes(currentPath);
+
+  if (isOnPublicPath && isAuthenticated) {
+    routeTo(Paths.dashboard);
   }
 
-  return subscribe(() => {
-    const { token, currentPath }: State = getState();
-    const isAuthenticated = !!token;
-    const isOnPublicPath = PublicPaths.includes(currentPath);
+  if (!isOnPublicPath && !isAuthenticated) {
+    routeTo(Paths.login);
+  }
+};
 
-    if (isOnPublicPath && isAuthenticated) {
-      routeTo(Paths.dashboard);
-    }
+const redirects = () => {
+  redirectActions();
 
-    if (!isOnPublicPath && !isAuthenticated) {
-      routeTo(Paths.login);
-    }
-  });
+  return subscribe(redirectActions);
 };
 
 export default redirects;
