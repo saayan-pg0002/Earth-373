@@ -1,6 +1,6 @@
 import axios, { AxiosPromise } from "axios";
 
-const ORIGIN: string = window.location.origin;
+export const ORIGIN: string = window.location.origin;
 const BASE_URL: string = ORIGIN.split(":").slice(0, 2).join(":");
 const PORT: String = "8000";
 
