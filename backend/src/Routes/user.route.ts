@@ -16,8 +16,8 @@ router.route("/add").post(UserController.addUser);
 router.route("/getuser").get(UserController.getUsers);
 
 router.route("/view/get/:type").get(UserController.getViewUsers);
-router.route("/migrateusers").get(UserController.createUsersFromViews);
-router.route("/migratementees").get(UserController.createMenteesFromViews);
+router.route("/migrateusers").get(UserController.migrateUsers);
+router.route("/migratementees").get(UserController.migrateMentees);
 router
   .route("/validate")
   .get(passportConfig.authenticate, UserController.validateToken);
@@ -25,7 +25,9 @@ router.route("/register").post(UserController.register);
 
 router.route("/me/goal").post(UserController.createGoalForMentee);
 router.route("/me/mentee_profile/:id").get(UserController.getMenteeProfileById);
-router.route("/me/mentee_profile/:id").patch(UserController.updateMenteeProfileById);
+router
+  .route("/me/mentee_profile/:id")
+  .patch(UserController.updateMenteeProfileById);
 router
   .route("/login")
   .post(passport.authenticate("signIn"), passportConfig.signJWT);

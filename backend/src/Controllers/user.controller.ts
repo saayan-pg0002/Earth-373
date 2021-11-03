@@ -267,8 +267,7 @@ const iterateOnViewsData = (viewsJsonData: any, recordType: string) => {
   }
 };
 
-const createUsersFromViews = async (req: Request, res: Response) => {
-  //Getting Volunteer data from Views
+const migrateUsers = async (req: Request, res: Response) => {
   let typeOfUser: string = "volunteers";
   let url: string =
     "https://app.viewsapp.net/api/restful/contacts/" +
@@ -301,7 +300,7 @@ const createUsersFromViews = async (req: Request, res: Response) => {
   res.send("Migrated Views Volunteers and Admins Successfully!");
 };
 
-const createMenteesFromViews = async (req: Request, res: Response) => {
+const migrateMentees = async (req: Request, res: Response) => {
   const url: string =
     "https://app.viewsapp.net/api/restful/contacts/participants/search?q=";
   const viewsMenteeData = JSON.parse(await getViewsAPIRequestData(url));
@@ -390,8 +389,8 @@ export default {
   getViewUsers,
   register,
   validateToken,
-  createUsersFromViews,
-  createMenteesFromViews,
+  migrateUsers,
+  migrateMentees,
   createGoalForMentee,
   getMenteeProfileById,
   updateMenteeProfileById,
