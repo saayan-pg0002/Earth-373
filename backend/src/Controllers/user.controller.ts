@@ -25,7 +25,7 @@ const register = (req: Request, res: Response, next: NextFunction) => {
     email,
     password,
     activity_status,
-    user_type,
+    role,
   } = req.body;
 
   bcrypt.hash(password, 10, (hashError, hash) => {
@@ -45,7 +45,7 @@ const register = (req: Request, res: Response, next: NextFunction) => {
       email,
       password: hash,
       activity_status,
-      user_type,
+      role,
     });
 
     return user
@@ -96,7 +96,7 @@ const addUser = (req: Request, res: Response, next: NextFunction) => {
     password,
     activity_status,
     start_date,
-    user_type,
+    role,
   } = req.body;
 
   const user = new User({
@@ -108,7 +108,7 @@ const addUser = (req: Request, res: Response, next: NextFunction) => {
     password,
     activity_status,
     start_date,
-    user_type,
+    role,
   });
 
   return user
@@ -207,7 +207,7 @@ const checkAndCreateOneUserinDB = (userFields: any) => {
           activity_status:
             userFields["VolunteerStatus_V_1"] || ("Active" as string),
           password: hashedPassword as string,
-          user_type: userType,
+          role: userType,
         });
         newUser.save().catch((error) => {
           return console.log("Error adding user", error);
