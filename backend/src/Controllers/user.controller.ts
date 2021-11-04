@@ -297,7 +297,7 @@ const migrateUsers = async (req: Request, res: Response) => {
     });
   }
 
-  res.send("Migrated Views Volunteers and Admins Successfully!");
+  res.send("Migrated Views Mentors and Admins Successfully!");
 };
 
 const migrateMentees = async (req: Request, res: Response) => {
