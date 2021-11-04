@@ -26,7 +26,7 @@ const register = (req: Request, res: Response, next: NextFunction) => {
     email,
     password,
     activity_status,
-    user_type,
+    role,
   } = req.body;
 
   bcrypt.hash(password, 10, (hashError, hash) => {
@@ -46,7 +46,7 @@ const register = (req: Request, res: Response, next: NextFunction) => {
       email,
       password: hash,
       activity_status,
-      user_type,
+      role,
     });
 
     return user
@@ -97,7 +97,7 @@ const addUser = (req: Request, res: Response, next: NextFunction) => {
     password,
     activity_status,
     start_date,
-    user_type,
+    role,
   } = req.body;
 
   const user = new User({
@@ -109,7 +109,7 @@ const addUser = (req: Request, res: Response, next: NextFunction) => {
     password,
     activity_status,
     start_date,
-    user_type,
+    role,
   });
 
   return user
