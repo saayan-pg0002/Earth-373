@@ -8,8 +8,7 @@ import Settings from "../apps/Settings";
 import Resources from "../apps/Resources";
 import Profile from "../apps/Profile";
 import EditMentee from "../apps/EditMentee";
-
-
+import ViewSession from "../apps/ViewSession";
 
 export const Paths = {
   login: "/login",
@@ -19,6 +18,7 @@ export const Paths = {
   settings: "/settings",
   newSession: "/new-session",
   currentSession: "/current-session",
+  viewSession: "/view-session",
   profile: "/profile",
   resources: "/resources",
   editMentee: "/edit-mentee",
@@ -67,6 +67,11 @@ export const routes: Route[] = [
   {
     path: Paths.currentSession,
     component: CurrentSession,
+    exact: true,
+  },
+  {
+    path: Paths.viewSession,
+    component: ViewSession,
     exact: true,
   },
   {
