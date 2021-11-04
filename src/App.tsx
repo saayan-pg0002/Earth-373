@@ -5,12 +5,14 @@ import Nav from "./components/Nav";
 import "./stylesheets/index.scss";
 import { Provider } from "react-redux";
 import store from "./util/store";
+import MessageToast from "./components/MessageToast";
 
 const App: React.FC<{}> = () => {
   const isPrivatePath = (path: string): boolean => !PublicPaths.includes(path);
 
   return (
     <Provider store={store}>
+      <MessageToast />
       <Router history={history}>
         <Switch>
           {routes.map((route, index) => {

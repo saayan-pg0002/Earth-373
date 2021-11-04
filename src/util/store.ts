@@ -2,15 +2,21 @@ import { createStore, applyMiddleware } from "redux";
 import { getLocalStorageItem } from "./localStorage";
 import thunk from "redux-thunk";
 import reducer from "./state/reducer";
+import {
+  MessageToastProps,
+  MessageToastType,
+} from "../components/MessageToast";
 
 export interface State {
   token: string;
   currentPath: string;
+  messageToast: MessageToastProps;
 }
 
 export const initialState: State = {
   token: getLocalStorageItem("token") ?? "",
   currentPath: window.location.pathname ?? "",
+  messageToast: { isShown: false, type: MessageToastType.INFO, message: "" },
 };
 
 const store = createStore(reducer, initialState, applyMiddleware(thunk));

@@ -9,6 +9,7 @@ import { dispatch } from "../util/store";
 import { ActionType } from "../util/state/actions";
 import { Paths, routeTo } from "../util/routes";
 import { storeLocalStorageItem } from "../util/localStorage";
+import { MessageToastType, showMessageToast } from "../components/MessageToast";
 
 const Login: React.FC<{}> = () => {
   const onSubmit = (e: React.SyntheticEvent) => {
@@ -21,13 +22,15 @@ const Login: React.FC<{}> = () => {
     const email: string = target.email.value;
     const password: string = target.password.value;
 
-    sendRequest(RequestType.POST, Endpoints.login, { email, password }).then(
-      ({ data: { token } }) => {
+    sendRequest(RequestType.POST, Endpoints.login, { email, password })
+      .then(({ data: { token } }) => {
         dispatch({ type: ActionType.STORE_TOKEN, payload: token });
         storeLocalStorageItem("token", token);
         routeTo(Paths.dashboard);
-      }
-    );
+      })
+      .catch((err) =>
+        showMessageToast(MessageToastType.ERROR, "Unable to login")
+      );
   };
 
   return (
