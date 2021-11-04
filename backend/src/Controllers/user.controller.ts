@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router } from "express";
 import User from "../Models/user.model";
-import axios from "axios";
+import Mentee from "../Models/mentee.model";
+import axios, { AxiosResponse } from "axios";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
@@ -168,74 +169,118 @@ const getViewUsers = async (req: Request, res: Response) => {
   return result;
 };
 
-const checkAndCreateOneUserinDB = (userFields: any) => {
-  const ViewsPersonID = userFields["PersonID"];
-  User.find({ views_id: ViewsPersonID }).exec(function (err, user) {
-    if (err) {
-      console.log(err);
-    } else if (user.length == 0) {
-      //This is the temporary password all users will get for first time
-      let userType = "Admin";
-      const temppass = "admin123";
-      if (userFields["TypeName"] == "volunteer") {
-        userType = "Mentor";
-      }
-      //Hashing the password using bcrypt
-      bcrypt.hash(temppass, 10, (hashError, hashedPassword) => {
-        if (hashError) {
-          return {
-            message: hashError.message,
-            error: hashError,
-          };
-        }
-
-        const newUser = new User({
-          _id: new mongoose.Types.ObjectId(),
-          views_id: ViewsPersonID,
-          first_name: userFields["Forename"],
-          last_name: userFields["Surname"],
-          email:
-            (userFields["Email"] as string) ||
-            ("NO EMAIL ASSOCIATED" as string),
-          activity_status:
-            userFields["VolunteerStatus_V_1"] || ("Active" as string),
-          password: hashedPassword as string,
-          user_type: userType,
-        });
-        newUser.save().catch((error) => {
-          return console.log("Error adding user", error);
-        });
-        console.log(`added user ${userFields["Forename"]}`);
-      });
-    } else {
-      console.log(`User present`);
+function addUsertoDB(userFields: any) {
+  const temporaryPass: string = "admin123";
+  bcrypt.hash(temporaryPass, 10, (hashError, hashedPassword) => {
+    if (hashError) {
+      return {
+        message: hashError.message,
+        error: hashError,
+      };
     }
+    let userType = "Admin";
+    if (userFields["TypeName"] == "volunteer") {
+      userType = "Mentor";
+    }
+    const newUser = new User({
+      _id: new mongoose.Types.ObjectId(),
+      views_id: userFields["PersonID"],
+      first_name: userFields["Forename"],
+      last_name: userFields["Surname"],
+      email:
+        (userFields["Email"] as string) || ("NO EMAIL ASSOCIATED" as string),
+      activity_status:
+        userFields["VolunteerStatus_V_1"] || ("Active" as string),
+      password: hashedPassword as string,
+      role: userType,
+    });
+    newUser.save().catch((error) => {
+      return console.log("Error adding user", error);
+    });
+    console.log(`added user ${userFields["Forename"]}`);
   });
+}
+
+function addMenteetoDB(menteeFields: any) {
+  const DoB: Date = new Date(menteeFields["DateOfBirth"]);
+  const tempTimeDifference = Math.abs(Date.now() - DoB.getTime());
+  const menteeAge: Number = Math.floor(
+    tempTimeDifference / (1000 * 3600 * 24) / 365
+  );
+  const newMentee = new Mentee({
+    _id: new mongoose.Types.ObjectId(),
+    views_id: menteeFields["PersonID"],
+    first_name: menteeFields["Forename"],
+    last_name: menteeFields["Surname"],
+    age: menteeAge,
+    dateOfBirth: DoB,
+  });
+  newMentee.save().catch((error) => {
+    return console.error("Error adding Mentee to DB", error);
+  });
+  console.log(`added mentee ${menteeFields["Forename"]}`);
+}
+
+const validateAndCreateRecordsinDB = (
+  recordFields: any,
+  recordType: string
+) => {
+  const ViewsID = recordFields["PersonID"];
+  if (recordType == "user") {
+    User.find({ views_id: ViewsID }).exec(function (err, user) {
+      if (err) {
+        console.log(err);
+      } else if (user.length == 0) {
+        return addUsertoDB(recordFields);
+      } else {
+        console.log(`User data already present`);
+      }
+    });
+  } else if (recordType == "mentee") {
+    Mentee.find({ views_id: ViewsID }).exec(function (err, mentee) {
+      if (err) {
+        console.log(err);
+      } else if (mentee.length == 0) {
+        return addMenteetoDB(recordFields);
+      } else {
+        console.log("Mentee data already present");
+      }
+    });
+  } else {
+    console.error("No such recordtype exists");
+  }
 };
 
-const iterateOnViewsData = (viewsJsonData: any) => {
+const iterateOnViewsData = (viewsJsonData: any, recordType: string) => {
   for (const key in viewsJsonData) {
     const viewsUsers = viewsJsonData[key];
     for (const key1 in viewsUsers) {
       const userFields = viewsUsers[key1];
-      checkAndCreateOneUserinDB(userFields);
+      try {
+        validateAndCreateRecordsinDB(userFields, recordType);
+      } catch (error) {
+        console.log("Error adding the user ");
+        console.log(error);
+        continue;
+      }
     }
   }
 };
 
-const createUsersFromViews = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  //Getting Volunteer data from Views
+const migrateUsers = async (req: Request, res: Response) => {
   let typeOfUser: string = "volunteers";
   let url: string =
     "https://app.viewsapp.net/api/restful/contacts/" +
     typeOfUser +
     "/search?q=";
   const viewsVolData = JSON.parse(await getViewsAPIRequestData(url));
-  iterateOnViewsData(viewsVolData);
+  try {
+    iterateOnViewsData(viewsVolData, "user");
+  } catch (error) {
+    return res.status(500).json({
+      message: "Failed to add all Users from Views",
+    });
+  }
 
   //We have to iterate twice because Views get request to staff does not provide VolunteerStatus when we call it
   typeOfUser = "staff";
@@ -244,85 +289,111 @@ const createUsersFromViews = async (
     typeOfUser +
     "/search?q=";
   const viewsStaffData = JSON.parse(await getViewsAPIRequestData(url));
-  iterateOnViewsData(viewsStaffData);
+  try {
+    iterateOnViewsData(viewsStaffData, "user");
+  } catch (error) {
+    return res.status(500).json({
+      message: "Failed to add all Users from Views",
+    });
+  }
 
-  res.send("Done");
+  res.send("Migrated Views Mentors and Admins Successfully!");
+};
+
+const migrateMentees = async (req: Request, res: Response) => {
+  const url: string =
+    "https://app.viewsapp.net/api/restful/contacts/participants/search?q=";
+  const viewsMenteeData = JSON.parse(await getViewsAPIRequestData(url));
+  try {
+    iterateOnViewsData(viewsMenteeData, "mentee");
+  } catch (error) {
+    console.log("Error migrating all mentees from Views", error);
+    return res.status(500).json({
+      message: "Error migrating all mentees from Views",
+    });
+  }
+  res.send("Migrated Views Mentees Successfully!");
 };
 
 const createGoalForMentee = (req: Request, res: Response) => {
-  let { 
-    mentee_id_to_match, goal_text 
-  } = req.body;
+  let { mentee_id_to_match, goal_text } = req.body;
 
-  MenteeProfile.findOneAndUpdate({ 
-    _id: mentee_id_to_match
-  }, {
-    $push: {
-      goals: {
-        name: goal_text,
-        is_complete: false
-      }
-    }
-  }, {new: true}).then((result) => {
-    return res.status(201).json({ result });
-  })
-  .catch((error) => {
-    return res.status(500).json({
-      message: error.message,
-      error
+  MenteeProfile.findOneAndUpdate(
+    {
+      _id: mentee_id_to_match,
+    },
+    {
+      $push: {
+        goals: {
+          name: goal_text,
+          is_complete: false,
+        },
+      },
+    },
+    { new: true }
+  )
+    .then((result) => {
+      return res.status(201).json({ result });
+    })
+    .catch((error) => {
+      return res.status(500).json({
+        message: error.message,
+        error,
+      });
     });
-  });
-
-}
+};
 
 const getMenteeProfileById = (req: Request, res: Response) => {
   const menteeId: string = req.params.id;
 
-  MenteeProfile.findOne({_id: menteeId}).exec().then((profileObj) => {
-    return res.status(200).json({profileObj})
-  }).catch((error) => {
-    console.log({error});
-    return res.status(404).json({
-      message: "Error: Mentee id not found."
+  MenteeProfile.findOne({ _id: menteeId })
+    .exec()
+    .then((profileObj) => {
+      return res.status(200).json({ profileObj });
+    })
+    .catch((error) => {
+      console.log({ error });
+      return res.status(404).json({
+        message: "Error: Mentee id not found.",
+      });
     });
-  });
-}
+};
 
 const updateMenteeProfileById = (req: Request, res: Response) => {
   const menteeId: string = req.params.id;
-  let {
-    new_mentor_id,
-    new_mentee_name,
-    new_isActive,
-  } = req.body;
+  let { new_mentor_id, new_mentee_name, new_isActive } = req.body;
 
-  MenteeProfile.findOneAndUpdate({ 
-    _id: menteeId
-  }, {
-    mentor_id: new_mentor_id,
-    mentee_name: new_mentee_name,
-    isActive: new_isActive
-  }, (error: any, data: any) => {
-    if (error) {
-      return res.status(404).json({
-        message: "Error in updating mentee profile."
-      });
-    } else if (data) {
-      return res.status(200).json({data});
+  MenteeProfile.findOneAndUpdate(
+    {
+      _id: menteeId,
+    },
+    {
+      mentor_id: new_mentor_id,
+      mentee_name: new_mentee_name,
+      isActive: new_isActive,
+    },
+    (error: any, data: any) => {
+      if (error) {
+        return res.status(404).json({
+          message: "Error in updating mentee profile.",
+        });
+      } else if (data) {
+        return res.status(200).json({ data });
+      }
     }
-  });
-}
-
+  );
+};
 export default {
   addUser,
   getUsers,
   getViewUsers,
   register,
   validateToken,
-  createUsersFromViews,
+  migrateUsers,
+  migrateMentees,
   createGoalForMentee,
   getMenteeProfileById,
   updateMenteeProfileById,
   getProfile,
-  updateProfile
+  updateProfile,
 };
