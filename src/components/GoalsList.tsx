@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { GoalsProp as Props } from "../apps/MenteeGoals";
 
 interface GoalsIProp {
@@ -13,12 +14,17 @@ const GoalsList: React.FC<GoalsIProp> = ({
   addGoal,
 }) => {
 
+  const [checked, setChecked] = useState(isCompleted)
+
   const onCheckingGoal = (event: any): void => {
     if (isCompleted === true) {
       addGoal(event.target.defaultValue);
+      setChecked(true);
     } else {
       addToCompletedList(event.target.defaultValue);
+      setChecked(false);
     }
+
   };
 
   const renderList = (): JSX.Element[] => {
@@ -28,7 +34,7 @@ const GoalsList: React.FC<GoalsIProp> = ({
           <p className={`goal ${isCompleted ? "completed" : ""}`}>
             <input
               type="checkbox"
-              defaultChecked={isCompleted}
+              defaultChecked={checked}
               onChange={onCheckingGoal}
               value={g.name}
             />
