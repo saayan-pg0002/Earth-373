@@ -292,10 +292,10 @@ const createGoalForAssociation = (req: Request, res: Response) => {
 
 }
 
-const getAssociationByMentorAndMenteeIds = (req: Request, res: Response) => {
+const getAssociationByMentorId = (req: Request, res: Response) => {
   const mentorId: string = req.params.id;
 
-  Association.find({mentor_views_id: mentorId}).exec().then((profileObj) => {
+  Association.find({mentor_id: mentorId}).exec().then((profileObj) => {
     return res.status(200).json({profileObj})
   }).catch((error) => {
     return res.status(404).json({
@@ -313,7 +313,7 @@ export default {
   validateToken,
   createUsersFromViews,
   createGoalForAssociation,
-  getAssociationByMentorAndMenteeIds,
+  getAssociationByMentorId,
   getProfile,
   updateProfile
 };
