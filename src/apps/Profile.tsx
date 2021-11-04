@@ -6,6 +6,13 @@ import { IconName } from "../components/Icon";
 import { TextInput } from "../components/form/TextInput";
 import { Link } from "react-router-dom";
 import { Paths } from "../util/routes";
+import { DropdownMenu } from "../components/form/DropdownMenu";
+
+const mentorTypes: string[] = [
+  "Into School Mentor",
+  "Youth Mentor",
+  "Women Mentor",
+];
 
 const Profile: React.FC<{}> = () => {
   return (
@@ -21,7 +28,7 @@ const Profile: React.FC<{}> = () => {
         </div>
         <form className="form">
           <FormField labelText="Mentor Type">
-            <RenderAttributes attribute="IntoSchool Mentor" />
+            <DropdownMenu options={mentorTypes} />
           </FormField>
           <FormField labelText="Email">
             <TextInput

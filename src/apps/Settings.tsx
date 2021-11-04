@@ -25,7 +25,7 @@ const Settings: React.FC<{}> = () => {
           <SettingItem
             icon={IconName.info}
             content="About"
-            path={Paths.profile}
+            path={Paths.settings}
           />
         </div>
         <BaytreeMentorPortalLogo className="logo" />
