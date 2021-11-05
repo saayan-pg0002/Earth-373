@@ -5,7 +5,7 @@ import axios, { AxiosResponse } from "axios";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import MenteeProfile from "../Models/menteeprofile.model";
+import Association from "../Models/association.model";
 
 dotenv.config();
 
@@ -311,14 +311,33 @@ const migrateMentees = async (req: Request, res: Response) => {
     return res.status(500).json({
       message: "Error migrating all mentees from Views",
     });
-  }
+  };
   res.send("Migrated Views Mentees Successfully!");
 };
 
 const createGoalForMentee = (req: Request, res: Response) => {
+  let { 
+    mentee_id, goal_text 
+  } = req.body;
+
+  Association.findOneAndUpdate({ 
+    _id: mentee_id
+  }, {
+    $push: {
+      goals: {
+        name: goal_text,
+        is_complete: false
+      }
+    }
+  }, {new: true}).then((result) => {
+    return res.status(201).json({ result });
+  })
+};
+
+const createGoalForAssociation = (req: Request, res: Response) => {
   let { mentee_id_to_match, goal_text } = req.body;
 
-  MenteeProfile.findOneAndUpdate(
+  Association.findOneAndUpdate(
     {
       _id: mentee_id_to_match,
     },
@@ -331,8 +350,7 @@ const createGoalForMentee = (req: Request, res: Response) => {
       },
     },
     { new: true }
-  )
-    .then((result) => {
+  ).then((result) => {
       return res.status(201).json({ result });
     })
     .catch((error) => {
@@ -343,45 +361,37 @@ const createGoalForMentee = (req: Request, res: Response) => {
     });
 };
 
-const getMenteeProfileById = (req: Request, res: Response) => {
+const getAssociationById = (req: Request, res: Response) => {
   const menteeId: string = req.params.id;
-
-  MenteeProfile.findOne({ _id: menteeId })
-    .exec()
-    .then((profileObj) => {
-      return res.status(200).json({ profileObj });
-    })
-    .catch((error) => {
-      console.log({ error });
-      return res.status(404).json({
-        message: "Error: Mentee id not found.",
-      });
+  Association.findOne({_id: menteeId}).exec().then((profileObj) => {
+    return res.status(200).json({profileObj})
+  }).catch((error) => {
+    console.log({error});
+    return res.status(404).json({
+      message: "Error: Mentee id not found."
     });
+  });
 };
 
-const updateMenteeProfileById = (req: Request, res: Response) => {
+const updateAssociationById = (req: Request, res: Response) => {
   const menteeId: string = req.params.id;
   let { new_mentor_id, new_mentee_name, new_isActive } = req.body;
 
-  MenteeProfile.findOneAndUpdate(
-    {
-      _id: menteeId,
-    },
-    {
-      mentor_id: new_mentor_id,
-      mentee_name: new_mentee_name,
-      isActive: new_isActive,
-    },
-    (error: any, data: any) => {
-      if (error) {
-        return res.status(404).json({
-          message: "Error in updating mentee profile.",
-        });
-      } else if (data) {
-        return res.status(200).json({ data });
-      }
+  Association.findOneAndUpdate({ 
+    _id: menteeId
+  }, {
+    mentor_id: new_mentor_id,
+    mentee_name: new_mentee_name,
+    isActive: new_isActive
+  }, (error: any, data: any) => {
+    if (error) {
+      return res.status(404).json({
+        message: "Error in updating mentee profile."
+      });
+    } else if (data) {
+      return res.status(200).json({data});
     }
-  );
+  });
 };
 export default {
   addUser,
@@ -391,9 +401,9 @@ export default {
   validateToken,
   migrateUsers,
   migrateMentees,
-  createGoalForMentee,
-  getMenteeProfileById,
-  updateMenteeProfileById,
+  createGoalForAssociation,
+  getAssociationById,
+  updateAssociationById,
   getProfile,
   updateProfile,
 };

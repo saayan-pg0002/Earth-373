@@ -1,8 +1,8 @@
 import mongoose, { Document } from "mongoose";
 
-export default interface MenteeProfileInterface extends Document {
-    mentor_id: mongoose.Types.ObjectId;
-    mentee_name: String;
+export default interface MenteeMentorAssociationInterface extends Document {
+    mentor_views_id: String;
+    mentee_views_id: String;
     isActive: Boolean;
     goals: [{
         name: String;
