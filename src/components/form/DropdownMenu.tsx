@@ -17,12 +17,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({ options }) => {
   };
   return (
     <div className={`control ${isFocused ? "focused" : ""}`}>
-      <select
-        onClick={selectOption}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        placeholder="Select Mentee"
-      >
+      <select onClick={selectOption} onFocus={onFocus} onBlur={onBlur}>
         {options.map((item: string) => (
           <option value={item}>{item}</option>
         ))}
