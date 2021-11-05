@@ -4,8 +4,36 @@ import { FormField } from "../components/form/FormField";
 import { TextInput } from "../components/form/TextInput";
 import { PasswordInput } from "../components/form/PasswordInput";
 import { IconName } from "../components/Icon";
+import { sendRequest, RequestType, Endpoints } from "../util/request";
+import { dispatch } from "../util/store";
+import { ActionType } from "../util/state/actions";
+import { Paths, routeTo } from "../util/routes";
+import { storeLocalStorageItem } from "../util/localStorage";
+import { MessageToastType, showMessageToast } from "../components/MessageToast";
 
 const Login: React.FC<{}> = () => {
+  const onSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    const target = e.target as typeof e.target & {
+      email: { value: string };
+      password: { value: string };
+    };
+
+    const email: string = target.email.value;
+    const password: string = target.password.value;
+
+    sendRequest(RequestType.POST, Endpoints.login, { email, password })
+      .then(({ data }) => {
+        const token: string = data?.["signed token"];
+        dispatch({ type: ActionType.STORE_TOKEN, payload: token });
+        storeLocalStorageItem("token", token);
+        routeTo(Paths.dashboard);
+      })
+      .catch((err) =>
+        showMessageToast(MessageToastType.ERROR, "Unable to login")
+      );
+  };
+
   return (
     <div className="login">
       <PageHelmet />
@@ -19,19 +47,20 @@ const Login: React.FC<{}> = () => {
       <div className="container">
         <main>
           <BaytreeMentorPortalLogo className="logo" />
-          <form className="form">
+          <form onSubmit={onSubmit} className="form">
             <header className="header">
               <h1 className="page-title no-margin-bottom">Log In</h1>
             </header>
             <FormField labelText="Email">
               <TextInput
+                name="email"
                 type="email"
                 leftIconName={IconName.user}
                 placeholderText="Email"
               />
             </FormField>
             <FormField labelText="Password">
-              <PasswordInput />
+              <PasswordInput name="password" />
             </FormField>
             <div className="actions">
               <button type="submit" className="btn">

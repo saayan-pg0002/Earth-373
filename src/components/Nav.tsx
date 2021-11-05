@@ -2,7 +2,8 @@ import { ReactComponent as BaytreeMentorPortalWordLogo } from "../assets/images/
 import { ReactComponent as BaytreeMentorPortalLogo } from "../assets/images/baytree-mentor-portal-logo.svg";
 import { ContainedIcon, IconName, IconColors } from "../components/Icon";
 import { Paths } from "../util/routes";
-import { Link, useLocation } from "react-router-dom";
+import Link from "./Link";
+import { useLocation } from "react-router-dom";
 import React from "react";
 
 const Nav: React.FC = () => {

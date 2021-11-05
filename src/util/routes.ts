@@ -1,3 +1,7 @@
+import { ActionType } from "./state/actions";
+import { dispatch } from "./store";
+import { createBrowserHistory } from "history";
+
 import Login from "../apps/Login";
 import CurrentSession from "../apps/CurrentSession";
 import Dashboard from "../apps/Dashboard";
@@ -9,6 +13,13 @@ import Resources from "../apps/Resources";
 import Profile from "../apps/Profile";
 import EditMentee from "../apps/EditMentee";
 import ViewSession from "../apps/ViewSession";
+
+export const history = createBrowserHistory();
+
+export const routeTo = (path: string) => {
+  dispatch({ type: ActionType.UPDATE_CURRENT_PATH, payload: path });
+  history.push(path);
+};
 
 export const Paths = {
   login: "/login",
