@@ -1,6 +1,7 @@
 import PageHelmet from "../util/PageHelmet";
 import { NotificationItemProps } from "../components/NotificationItem";
 import { NotificationList } from "../components/NotificationList";
+import { AvatarHeader } from "../components/AvatarHeader";
 
 const NotifcationList: NotificationItemProps[] = [
   {
@@ -28,7 +29,10 @@ const Notifications: React.FC<{}> = () => {
       <PageHelmet title="Notifications" />
 
       <div className="container">
-        <h1 className="page-title">Notifications</h1>
+        <div className="header">
+          <h1 className="page-title">Notifications</h1>
+          <AvatarHeader userName="Wendy Evans" />
+        </div>
         <NotificationList notifications={NotifcationList} />
       </div>
     </main>
