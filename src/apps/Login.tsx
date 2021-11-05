@@ -23,7 +23,8 @@ const Login: React.FC<{}> = () => {
     const password: string = target.password.value;
 
     sendRequest(RequestType.POST, Endpoints.login, { email, password })
-      .then(({ data: { token } }) => {
+      .then(({ data }) => {
+        const token: string = data?.["signed token"];
         dispatch({ type: ActionType.STORE_TOKEN, payload: token });
         storeLocalStorageItem("token", token);
         routeTo(Paths.dashboard);
