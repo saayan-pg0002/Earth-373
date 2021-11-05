@@ -25,7 +25,6 @@ router.route("/register").post(UserController.register);
 
 router.route("/me/goal").post(UserController.createGoalForAssociation);
 router.route("/me/association/:id").get(UserController.getAssociationById);
-router.route("/me/association/:id").patch(UserController.updateAssociationById);
 
 router
   .route("/login")
