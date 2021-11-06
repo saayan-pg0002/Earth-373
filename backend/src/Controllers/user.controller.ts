@@ -383,14 +383,19 @@ const getGoalsForAssociation = (req: Request, res: Response) => {
   const user: any = req.user;
   const mentor_id: string = user._id;
 
+  console.log(mentor_id);
+
   Association.findOne({ mentee_id: mentee_id, mentor_id: mentor_id })
     .exec()
-    .then((result: any) => {
-      result
+    .then((result) => {
+      return res.status(200).json({
+        message: "hi",
+      });
+      /*result
         .find()
         .exec()
         .then((result2: any) => {
-          res.status(200).json({
+          return res.status(200).json({
             result2,
           });
         })
@@ -399,7 +404,7 @@ const getGoalsForAssociation = (req: Request, res: Response) => {
             message: "Unable to find goals for the mentor/mentee association.",
             error,
           });
-        });
+        });*/
     })
     .catch((error) => {
       return res.status(400).json({
