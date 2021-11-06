@@ -323,17 +323,20 @@ const migrateMentees = async (req: Request, res: Response) => {
 };
 
 const createGoalForAssociation = (req: Request, res: Response) => {
-  //Note: the id fields here refer to the views id of the mentor & mentee, not their mongodb ids.
   let { 
-    mentor_id, mentee_id, goal_text 
+    mentee_id, goal
   } = req.body;
 
+  const user: any = req.user;
+  const mentor_id: string = user._id as string;
+
   Association.findOneAndUpdate({ 
-    _id: mentee_id
+    mentor_id: mentor_id,
+    mentee_id: mentee_id
   }, {
     $push: {
       goals: {
-        name: goal_text,
+        name: goal,
         is_complete: false
       }
     }
@@ -354,10 +357,11 @@ const createGoalForAssociation = (req: Request, res: Response) => {
   });
 };
 
-const getAssociationsByMentorId = (req: Request, res: Response) => {
-  const mentorId: string = req.params.id;
+const getAssociationsFromMentor = (req: Request, res: Response) => {
+  const user: any = req.user;
+  const mentor_id: string = user._id as string;
 
-  Association.findOne({mentor_id: mentorId}).exec().then((profileObj) => {
+  Association.find({mentor_id: mentor_id}).exec().then((profileObj) => {
     return res.status(200).json({profileObj})
   }).catch((error) => {
     return res.status(404).json({
@@ -376,7 +380,7 @@ export default {
   migrateUsers,
   migrateMentees,
   createGoalForAssociation,
-  getAssociationsByMentorId,
+  getAssociationsFromMentor,
   getProfile,
   updateProfile,
 };
