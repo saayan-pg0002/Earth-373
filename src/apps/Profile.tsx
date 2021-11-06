@@ -33,17 +33,19 @@ const Profile: React.FC<{}> = () => {
           <FormField labelText="Email">
             <TextInput
               leftIconName={IconName.user}
-              placeholderText="pambeesly@gmail.com"
+              placeholderText="Email"
+              defaultValue="wendy.389@gmail.com"
             ></TextInput>
           </FormField>
           <FormField labelText="Name">
             <TextInput
-              placeholderText="Pamela Halbert"
+              placeholderText="Name"
               leftIconName={IconName.smiley}
+              defaultValue="Wendy Stuart"
             ></TextInput>
           </FormField>
           <FormField labelText="Password">
-            <PasswordInput value="admin123" />
+            <PasswordInput />
           </FormField>
           <div className="actions">
             <button type="button" className="btn">
