@@ -324,7 +324,7 @@ const migrateMentees = async (req: Request, res: Response) => {
 
 const createGoalForAssociation = (req: Request, res: Response) => {
   let { 
-    mentee_id, goal_text 
+    mentee_id, goal
   } = req.body;
 
   const user: any = req.user;
@@ -336,7 +336,7 @@ const createGoalForAssociation = (req: Request, res: Response) => {
   }, {
     $push: {
       goals: {
-        name: goal_text,
+        name: goal,
         is_complete: false
       }
     }
