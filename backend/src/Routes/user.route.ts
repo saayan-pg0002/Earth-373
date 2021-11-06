@@ -29,7 +29,7 @@ router
   .get(UserController.getAssociationsByMentorId);
 router
   .route("/me/association/goals")
-  .get(UserController.getGoalsForAssociation);
+  .post(UserController.getGoalsForAssociation);
 
 router
   .route("/login")
