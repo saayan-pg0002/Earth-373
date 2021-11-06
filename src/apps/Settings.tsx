@@ -10,8 +10,11 @@ const Settings: React.FC<{}> = () => {
       <PageHelmet title="Settings" />
 
       <div className="container">
-        <h1 className="page-title">Settings</h1>
-        <div className="setting-options">
+        <div className="header">
+          <h1 className="page-title">Setting</h1>
+        </div>
+
+        <div className="setting-list">
           <SettingItem
             icon={IconName.user}
             content="Profile"
