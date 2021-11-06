@@ -1,7 +1,6 @@
 import PageHelmet from "../util/PageHelmet";
 import { FormField } from "../components/form/FormField";
 import { PasswordInput } from "../components/form/PasswordInput";
-import { RenderAttributes } from "../components/form/RenderAttributes";
 import { IconName } from "../components/Icon";
 import { TextInput } from "../components/form/TextInput";
 import { Link } from "react-router-dom";
