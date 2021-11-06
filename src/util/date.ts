@@ -114,9 +114,25 @@ export const getStartEndFormattedTimeStringWithDay = (
 const getDoubleDigitString = (value: number): string => {
   return `${value < 10 ? `0${value}` : value}`;
 };
+
 export const getFormattedYearMonthDayNumericString = (date: Date): string => {
   const dateNumber: number = date.getDate();
   const monthName: number = date.getMonth();
   const year: number = date.getFullYear(); // 2019
-  return `${getDoubleDigitString(year)}-${getDoubleDigitString(monthName)}-${getDoubleDigitString(dateNumber)}`;
+  return `${getDoubleDigitString(year)}-${getDoubleDigitString(
+    monthName
+  )}-${getDoubleDigitString(dateNumber)}`;
+};
+
+export const getFormattedMonthDateyearString = (date: Date): string => {
+  const dateNumber: number = date.getDate();
+  const monthName = Months[date.getMonth()];
+  const year: number = date.getFullYear(); // 2019
+  return `${monthName} ${getDoubleDigitString(dateNumber)}, ${year}`;
+};
+
+export const getFormattedMonthYearString = (date: Date): string => {
+  const monthName = Months[date.getMonth()];
+  const year: number = date.getFullYear(); // 2019
+  return `${monthName} ${year}`;
 };
