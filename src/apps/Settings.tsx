@@ -3,7 +3,6 @@ import { SettingItem } from "../components/SettingItem";
 import { IconName } from "../components/Icon";
 import { Paths } from "../util/routes";
 import { ReactComponent as BaytreeMentorPortalLogo } from "../assets/images/baytree-mentor-portal-logo.svg";
-import { AvatarHeader } from "../components/AvatarHeader";
 
 const Settings: React.FC<{}> = () => {
   return (
@@ -13,11 +12,10 @@ const Settings: React.FC<{}> = () => {
       <div className="container">
         <div className="header">
           <h1 className="page-title">Setting</h1>
-          <AvatarHeader userName="Wendy Evans" />
         </div>
 
         <div className="setting-list">
-          <AccountSettingItem
+          <SettingItem
             icon={IconName.user}
             content="Profile"
             path={Paths.profile}

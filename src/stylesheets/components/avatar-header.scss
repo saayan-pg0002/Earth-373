@@ -2,4 +2,8 @@
 
 .avatar {
   display: inline-block;
+
+  a > div {
+    background-color: $baytree-navy;
+  }
 }

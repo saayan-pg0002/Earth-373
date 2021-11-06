@@ -1,5 +1,5 @@
 import { Icon, IconName, IconColors } from "./Icon";
-import { Link } from "react-router-dom";
+import Link from "./Link";
 
 export interface SettingItemProps {
   icon: IconName;

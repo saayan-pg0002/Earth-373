@@ -50,7 +50,7 @@ const Mentees: React.FC<{}> = () => {
       <div className="container">
         <div className="header">
           <h1 className="page-title">Mentees</h1>
-          <AvatarHeader userName="Wendy Evans" />
+          <AvatarHeader name="Wendy Evans" />
         </div>{" "}
         <MenteeList mentees={menteeList} />
       </div>
