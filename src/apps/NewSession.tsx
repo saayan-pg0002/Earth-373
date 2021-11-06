@@ -15,6 +15,12 @@ export interface NewSessionProps {
   notes?: string;
 }
 
+const menteeNameList: string[] = [
+  "Melissa Nguyen",
+  "Dianne Russell",
+  "Tessa Pampangan",
+];
+
 const NewSession: React.FC<NewSessionProps> = ({
   menteeName,
   date,
@@ -34,7 +40,7 @@ const NewSession: React.FC<NewSessionProps> = ({
       <h1 className="page-title">New Session</h1>
       <form className="form">
         <FormField labelText="Mentee">
-          <DropdownMenu />
+          <DropdownMenu options={menteeNameList} />
         </FormField>
 
         <FormField labelText="Date">
