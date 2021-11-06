@@ -1,10 +1,10 @@
 import mongoose, { Model, Schema } from "mongoose";
-import MenteeProfileInterface from "../Interfaces/menteeprofile.interface";
+import AssociationInterface from "../Interfaces/association.interface";
 
-const menteeProfileSchema: Schema = new Schema(
+const associationSchema: Schema = new Schema(
   {
-    mentor_id: { type: mongoose.Types.ObjectId, ref: 'User' },
-    mentee_name: { type: String, required: true },
+    mentor_id: { type: String, ref: 'User', required: true},
+    mentee_id: { type: String, ref: 'Mentee', required: true },
     isActive: { type: Boolean, required: true, default: true },
     goals: [{
         name: { type: String, required: true },
@@ -17,5 +17,5 @@ const menteeProfileSchema: Schema = new Schema(
   }
 );
 
-const MenteeProfile = mongoose.model<MenteeProfileInterface>("Mentee Profile", menteeProfileSchema);
-export default MenteeProfile;
+const Association = mongoose.model<AssociationInterface>("Mentee Mentor Association", associationSchema);
+export default Association;

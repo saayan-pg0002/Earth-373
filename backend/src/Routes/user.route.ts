@@ -23,11 +23,9 @@ router
   .get(passportConfig.authenticate, UserController.validateToken);
 router.route("/register").post(UserController.register);
 
-router.route("/me/goal").post(UserController.createGoalForMentee);
-router.route("/me/mentee_profile/:id").get(UserController.getMenteeProfileById);
-router
-  .route("/me/mentee_profile/:id")
-  .patch(UserController.updateMenteeProfileById);
+router.route("/me/goal").post(UserController.createGoalForAssociation);
+router.route("/me/association/:id").get(UserController.getAssociationsByMentorId);
+
 router
   .route("/login")
   .post(passport.authenticate("signIn"), passportConfig.signJWT);
