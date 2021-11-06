@@ -1,7 +1,7 @@
 @import "../util/";
 
 .mentee-list {
-  a + a {
+  .mentee-item + .mentee-item {
     margin-top: 0.75rem;
   }
 
