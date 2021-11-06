@@ -233,5 +233,7 @@ export default {
   getViewUsers,
   getAssociationsFromMentor,
   migrateViewUsers,
+  createGoalForAssociation,
+  getAssociationsByMentorId,
   getProfile,
 };
