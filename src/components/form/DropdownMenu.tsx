@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Icon, IconColors, IconName } from "../Icon";
 
 interface DropdownMenuProps {
   id?: string;
@@ -24,6 +25,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({ options }) => {
           </option>
         ))}
       </select>
+      <Icon name={IconName.chevronDown} color={IconColors.black} />
     </div>
   );
 };

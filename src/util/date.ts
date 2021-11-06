@@ -1,4 +1,4 @@
-const DaysOfWeek: String[] = [
+export const DaysOfWeek: string[] = [
   "Sunday",
   "Monday",
   "Tuesday",
@@ -8,7 +8,7 @@ const DaysOfWeek: String[] = [
   "Saturday",
 ];
 
-const Months: String[] = [
+const Months: string[] = [
   "January",
   "February",
   "March",
@@ -46,7 +46,7 @@ export const getCurrentWeekDateObjects = (
 };
 
 interface CalendarDayItemInterface {
-  dayOfWeek: String;
+  dayOfWeek: string;
   date: number;
 }
 
