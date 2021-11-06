@@ -377,20 +377,35 @@ const getAssociationsByMentorId = (req: Request, res: Response) => {
     });
 };
 
-const getGoalsForMentee = (req: Request, res: Response) => {
-  const menteeId: string = req.params.id;
+//UNTESTED: Need /login in this branch to test.
+const getGoalsForAssociation = (req: Request, res: Response) => {
+  let { mentee_id } = req.body;
+  const user: any = req.user;
+  const mentor_id: string = user._id;
 
-  Association.findOne({ _id: menteeId }).exec((err, mentee) => {
-    if (err) {
-      return res.status(500).json({
-        message: "Failed to find goals for mentee.",
+  Association.findOne({ mentee_id: mentee_id, mentor_id: mentor_id })
+    .exec()
+    .then((result: any) => {
+      result
+        .find()
+        .exec()
+        .then((result2: any) => {
+          res.status(200).json({
+            result2,
+          });
+        })
+        .catch((error: any) => {
+          return res.status(400).json({
+            message: "Unable to find goals for the mentor/mentee association.",
+            error,
+          });
+        });
+    })
+    .catch((error) => {
+      return res.status(400).json({
+        message: "Error: Unable to find mentor/mentee association.",
       });
-    } else if (mentee) {
-      return res.status(200).json({
-        mentee,
-      });
-    }
-  });
+    });
 };
 
 export default {
@@ -405,5 +420,5 @@ export default {
   getAssociationsByMentorId,
   getProfile,
   updateProfile,
-  getGoalsForMentee,
+  getGoalsForAssociation,
 };
