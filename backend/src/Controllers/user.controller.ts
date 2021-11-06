@@ -367,6 +367,22 @@ const getAssociationsByMentorId = (req: Request, res: Response) => {
   });
 };
 
+const getGoalsForMentee = (req: Request, res: Response) => {
+  const menteeId: string = req.params.id;
+
+  Association.findOne({ _id: menteeId }).exec((err, mentee) => {
+    if (err) {
+      return res.status(500).json({
+        message: "Failed to find goals for mentee."
+      });
+    } else if (mentee) {
+      return res.status(200).json({
+        mentee
+      });
+    }
+  });
+}
+
 export default {
   addUser,
   getUsers,
@@ -379,4 +395,5 @@ export default {
   getAssociationsByMentorId,
   getProfile,
   updateProfile,
+  getGoalsForMentee
 };
