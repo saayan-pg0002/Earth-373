@@ -3,8 +3,8 @@ import AssociationInterface from "../Interfaces/association.interface";
 
 const associationSchema: Schema = new Schema(
   {
-    mentor_views_id: { type: String, ref: 'User', required: true},
-    mentee_views_id: { type: String, ref: 'Mentee', required: true },
+    mentor_id: { type: String, ref: 'User', required: true},
+    mentee_id: { type: String, ref: 'Mentee', required: true },
     isActive: { type: Boolean, required: true, default: true },
     goals: [{
         name: { type: String, required: true },

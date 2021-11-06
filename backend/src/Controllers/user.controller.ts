@@ -354,9 +354,10 @@ const createGoalForAssociation = (req: Request, res: Response) => {
   });
 };
 
-const getAssociationById = (req: Request, res: Response) => {
-  const menteeId: string = req.params.id;
-  Association.findOne({_id: menteeId}).exec().then((profileObj) => {
+const getAssociationsByMentorId = (req: Request, res: Response) => {
+  const mentorId: string = req.params.id;
+
+  Association.findOne({mentor_id: mentorId}).exec().then((profileObj) => {
     return res.status(200).json({profileObj})
   }).catch((error) => {
     return res.status(404).json({
@@ -375,7 +376,7 @@ export default {
   migrateUsers,
   migrateMentees,
   createGoalForAssociation,
-  getAssociationById,
+  getAssociationsByMentorId,
   getProfile,
   updateProfile,
 };
