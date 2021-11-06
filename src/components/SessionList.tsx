@@ -1,8 +1,8 @@
 import { ReactComponent as BaytreeTreeGrey } from "../assets/images/baytree-tree-grey.svg";
-import { SessionItem, SessionItemProps } from "./SessionItem";
+import { ItemProps, SessionItem } from "./SessionItem";
 
 interface SessionListProps {
-  sessions: SessionItemProps[];
+  sessions: ItemProps[];
 }
 
 export const SessionList: React.FC<SessionListProps> = ({ sessions }) => {
@@ -22,12 +22,12 @@ export const SessionList: React.FC<SessionListProps> = ({ sessions }) => {
       ) : (
         sessions.map(
           (
-            { menteeName, clockInTime, clockOutTime }: SessionItemProps,
+            { value, clockInTime, clockOutTime }: ItemProps,
             index: number
           ) => (
             <SessionItem
               key={index}
-              menteeName={menteeName}
+              value={value}
               clockInTime={clockInTime}
               clockOutTime={clockOutTime}
             />
