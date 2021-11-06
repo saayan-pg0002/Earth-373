@@ -18,21 +18,6 @@
       & > * + * {
         margin-top: 1rem;
       }
-      //Change default color of placeholder text to black
-      ::placeholder {
-        color: black;
-        opacity: 1; /* Firefox */
-      }
-
-      :-ms-input-placeholder {
-        /* Internet Explorer 10-11 */
-        color: black;
-      }
-
-      ::-ms-input-placeholder {
-        /* Microsoft Edge */
-        color: black;
-      }
     }
   }
 }
