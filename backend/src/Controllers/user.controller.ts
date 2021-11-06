@@ -8,7 +8,6 @@ import bcrypt from "bcryptjs";
 import Association from "../Models/association.model";
 
 dotenv.config();
-var router = Router();
 
 //Authentication functions
 
