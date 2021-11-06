@@ -377,7 +377,6 @@ const getAssociationsByMentorId = (req: Request, res: Response) => {
     });
 };
 
-//UNTESTED: Need /login in this branch to test.
 const getGoalsForAssociation = (req: Request, res: Response) => {
   let { mentee_id } = req.body;
   const user: any = req.user;
