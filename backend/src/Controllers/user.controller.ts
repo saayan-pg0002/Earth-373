@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import Association from "../Models/association.model";
+import AssociationInterface from "../Interfaces/association.interface"
 
 dotenv.config();
 
@@ -367,6 +368,31 @@ const getAssociationsByMentorId = (req: Request, res: Response) => {
   });
 };
 
+const createAssociation = (req: Request, res: Response) => {
+  let {
+    mentor_id,
+    mentee_id
+  } = req.body;
+
+  const newAssociation: AssociationInterface = new Association({
+    mentor_id: mentor_id,
+    mentee_id: mentee_id,
+    isActive: true
+  });
+
+  newAssociation.save().then((result) => {
+    return res.status(200).json({
+      message: "Successfully created association.",
+      result
+    });
+  }).catch((err) => {
+    return res.status(400).json({
+      message: "Error creating association.",
+      err
+    });
+  });
+}
+
 export default {
   addUser,
   getUsers,
@@ -377,6 +403,7 @@ export default {
   migrateMentees,
   createGoalForAssociation,
   getAssociationsByMentorId,
+  createAssociation,
   getProfile,
   updateProfile,
 };
