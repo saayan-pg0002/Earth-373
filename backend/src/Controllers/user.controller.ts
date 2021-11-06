@@ -326,30 +326,35 @@ const migrateMentees = async (req: Request, res: Response) => {
 };
 
 const createGoalForAssociation = (req: Request, res: Response) => {
-  let { 
-    mentee_id, goal
-  } = req.body;
+  let { mentee_id, goal } = req.body;
 
   const user: any = req.user;
   const mentor_id: string = user._id as string;
 
-  Association.findOneAndUpdate({ 
-    mentor_id: mentor_id,
-    mentee_id: mentee_id
-  }, {
-    $push: {
-      goals: {
-        name: goal,
-        is_complete: false
-      }
+  Association.findOneAndUpdate(
+    {
+      mentor_id: mentor_id,
+      mentee_id: mentee_id,
+    },
+    {
+      $push: {
+        goals: {
+          name: goal,
+          is_complete: false,
+        },
+      },
+    }
+  )
+    .then((result: any) => {
       return res.status(201).json({
         message: "Successfully created goal for mentorship.",
         result,
       });
     })
-    .catch((error) => {
+    .catch((error: any) => {
       return res.status(500).json({
         message: "Error creating goal for the mentee/mentor association.",
+        error,
       });
     });
 };
@@ -358,10 +363,13 @@ const getAssociationsFromMentor = (req: Request, res: Response) => {
   const user: any = req.user;
   const mentor_id: string = user._id as string;
 
-  Association.find({mentor_id: mentor_id}).exec().then((profileObj) => {
-    return res.status(200).json({profileObj})
-  }).catch((error) => {
-    return res.status(404).json({
+  Association.find({ mentor_id: mentor_id })
+    .exec()
+    .then((associations) => {
+      return res.status(200).json({ associations });
+    })
+    .catch((error) => {
+      return res.status(404).json({
         message: "Error: Mentee id not found.",
         error,
       });
