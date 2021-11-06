@@ -36,16 +36,17 @@ export const AddNewGoal: React.FC<GoalIProps> = ({
 
   return (
     <div>
-      {isAddNewGoalVisible ? (
-        <div>
+      {isAddNewGoalVisible ? (  
+        <div className="add-goal">
           <input
-            type="text"
-            placeholder="enter your new goal"
+            type="text checkbox"
+            placeholder="Enter your new goal"
             value={input.name}
             onKeyPress={handleChange}
             onChange={setChange}
             name="name"
           />
+
           <span onClick={hideNewGoal}>
             <ContainedIcon
               name={IconName.x}
