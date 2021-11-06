@@ -20,6 +20,8 @@ import { ReactComponent as Smiley } from "../assets/icons/icon-smiley.svg";
 import { ReactComponent as User } from "../assets/icons/icon-user.svg";
 import { ReactComponent as Folders } from "../assets/icons/icon-folders.svg";
 import { ReactComponent as CircledCheckmark } from "../assets/icons/icon-circled-checkmark.svg";
+import { ReactComponent as Gift } from "../assets/icons/icon-gift.svg";
+import { ReactComponent as X } from "../assets/icons/icon-x.svg";
 
 export enum IconName {
   autocomplete,
@@ -43,6 +45,8 @@ export enum IconName {
   user,
   folders,
   circledCheckMark,
+  gift,
+  x,
 }
 
 export enum IconColors {
@@ -130,6 +134,10 @@ const getIcon = (name: IconName): JSX.Element => {
       return <Folders />;
     case IconName.circledCheckMark:
       return <CircledCheckmark />;
+    case IconName.gift:
+      return <Gift />;
+    case IconName.x:
+      return <X />;
     default:
       return <></>;
   }
