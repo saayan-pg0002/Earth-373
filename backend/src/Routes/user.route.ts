@@ -31,6 +31,9 @@ router
   .route("/me/association/goals")
   .post(UserController.getGoalsForAssociation);
 
+router.route("/creategoal").post(UserController.createGoalForAssociation);
+router.route("/me/associations").get(UserController.getAssociationsFromMentor);
+
 router
   .route("/login")
   .post(passport.authenticate("signIn"), passportConfig.signJWT);

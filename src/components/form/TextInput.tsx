@@ -10,6 +10,7 @@ interface TextInputProps {
   placeholderText: string;
   type?: string;
   value?: string;
+  defaultValue?: string;
 }
 
 export const TextInput: React.FC<TextInputProps> = ({
@@ -19,8 +20,9 @@ export const TextInput: React.FC<TextInputProps> = ({
   leftIconName,
   rightIconName,
   placeholderText,
-  type = 'text',
+  type = "text",
   value,
+  defaultValue,
 }) => {
   const [isFocused, setIsFocused] = useState<Boolean>(false);
 
@@ -39,6 +41,7 @@ export const TextInput: React.FC<TextInputProps> = ({
         onFocus={onFocus}
         onBlur={onBlur}
         value={value}
+        defaultValue={defaultValue}
       />
       {rightIconName && <Icon name={rightIconName} />}
     </div>

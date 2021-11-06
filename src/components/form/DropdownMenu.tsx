@@ -3,29 +3,26 @@ import { useState } from "react";
 interface DropdownMenuProps {
   id?: string;
   name?: string;
-  menteeName?: string;
+  options: string[];
 }
 
-export const DropdownMenu: React.FC<DropdownMenuProps> = ({ menteeName }) => {
+export const DropdownMenu: React.FC<DropdownMenuProps> = ({ options }) => {
   const [isFocused, setIsFocused] = useState<Boolean>(false);
 
   const onFocus = (): void => setIsFocused(true);
   const onBlur = (): void => setIsFocused(false);
 
-  const selectMentee = (event: any) => {
-    menteeName = event.value;
+  const selectOption = (event: any) => {
+    options = event.value;
   };
   return (
     <div className={`control ${isFocused ? "focused" : ""}`}>
-      <select
-        onClick={selectMentee}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        placeholder="Select Mentee"
-      >
-        <option value="Melissa Nguyen">Melissa Nguyen</option>
-        <option value="Dianne Russell">Dianne Russell</option>
-        <option value="Tessa Pampangan"> Tessa Pampangan</option>
+      <select onClick={selectOption} onFocus={onFocus} onBlur={onBlur}>
+        {options.map((item: string, index: number) => (
+          <option key={index} value={item}>
+            {item}
+          </option>
+        ))}
       </select>
     </div>
   );
