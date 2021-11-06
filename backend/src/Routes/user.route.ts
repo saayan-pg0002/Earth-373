@@ -23,8 +23,8 @@ router
   .get(passportConfig.authenticate, UserController.validateToken);
 router.route("/register").post(UserController.register);
 
-router.route("/me/goal").post(UserController.createGoalForAssociation);
-router.route("/me/association/:id").get(UserController.getAssociationsByMentorId);
+router.route("/creategoal").post(UserController.createGoalForAssociation);
+router.route("/me/associations").get(UserController.getAssociationsFromMentor);
 
 router
   .route("/login")
