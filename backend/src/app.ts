@@ -6,8 +6,9 @@ import passport from "passport";
 import session from "express-session";
 import passportConfig from "./Middleware/middleWare";
 import cookie from "cookie-parser";
+import cors from "cors";
 
-dotenv.config();
+dotenv.config({ path: __dirname + "/.env" });
 const app: Application = express();
 const URI: string | any = process.env.MONGO_URI;
 
@@ -36,18 +37,7 @@ app.use(passport.session());
 
 /** Rules of our API */
 app.use(express.json());
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  if (req.method == "OPTIONS") {
-    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
-    return res.status(200).json({});
-  }
-  next();
-});
+app.use(cors());
 
 /** Routes go here */
 app.use("/users", UserRouter);

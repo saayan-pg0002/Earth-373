@@ -20,4 +20,6 @@ router
 
 router.route("/me").get(passportConfig.authenticate, UserController.getProfile);
 
+router.route("/forget-password").post(UserController.forgetPassword);
+
 export default router;

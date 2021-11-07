@@ -3,11 +3,12 @@ import User from "../Models/user.model";
 import Mentee from "../Models/mentee.model";
 import axios from "axios";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
+import mongoose, { Error, Model } from "mongoose";
 import bcrypt from "bcryptjs";
 import Association from "../Models/association.model";
+import jwt from "jsonwebtoken";
 
-dotenv.config();
+dotenv.config({ path: __dirname + "../.env" });
 
 const addMongoUser = (req: Request, res: Response) => {
   let {
@@ -256,6 +257,40 @@ const getAssociationsFromMentor = (req: Request, res: Response) => {
     });
 };
 
+// const emailTransporter = nodemailer.createTransport({
+//   host: "smtp.mail.yahoo.com",
+//   port: 465,
+//   service: "yahoo",
+//   secure: false,
+//   auth: {
+//     user: "baytree.earth@yahoo.com",
+//     pass: "zbzkakphalidoobl",
+//   },
+//   debug: false,
+//   logger: true,
+// });
+
+const forgetPassword = (req: Request, res: Response) => {
+  console.log("Change Password");
+  const mail = req.body.email;
+  console.log(mail);
+  User.findOne({ email: mail }).exec((err, user) => {
+    if (err || !user) {
+      return res
+        .status(400)
+        .json({ error: "User with this email does not exist" });
+    }
+    const token = jwt.sign({ _id: user._id }, "secret", { expiresIn: "20m" });
+    const data = {
+      from: "baytree.earth@yahoo.com",
+      to: mail,
+      subject: "Reset Password Link",
+      html: ` <h2>Please click on the link below to rest your password</h2>
+              <p>${process.env.URL}/resetpassword/${token}</p>`,
+    };
+  });
+};
+
 const getProfile = (req: Request, res: Response) => {
   const user: any = req.user;
   return res.json({
@@ -265,7 +300,7 @@ const getProfile = (req: Request, res: Response) => {
   });
 };
 
-export default {
+const UserController = {
   addMongoUser,
   getMongoUsers,
   getViewUsers,
@@ -273,4 +308,7 @@ export default {
   createGoalForAssociation,
   getAssociationsFromMentor,
   getProfile,
+  forgetPassword,
 };
+
+export default UserController;
