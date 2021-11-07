@@ -1,5 +1,5 @@
 import PageHelmet from "../util/PageHelmet";
-import { Link } from "react-router-dom";
+import Link from "../components/Link";
 import { DropdownMenu } from "../components/form/DropdownMenu";
 import { FormField } from "../components/form/FormField";
 import { RenderAttributes } from "../components/form/RenderAttributes";

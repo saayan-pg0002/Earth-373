@@ -3,7 +3,7 @@ import { FormField } from "../components/form/FormField";
 import { PasswordInput } from "../components/form/PasswordInput";
 import { IconName } from "../components/Icon";
 import { TextInput } from "../components/form/TextInput";
-import { Link } from "react-router-dom";
+import Link from "../components/Link";
 import { Paths } from "../util/routes";
 import { DropdownMenu } from "../components/form/DropdownMenu";
 
