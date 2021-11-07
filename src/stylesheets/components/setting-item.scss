@@ -6,8 +6,7 @@
   transition: all $fade-duration-fast ease;
   border-bottom: $border-thin-grey;
 
-  &:hover,
-  &:focus {
+  &:hover {
     background-color: $grey-200;
   }
   .body {

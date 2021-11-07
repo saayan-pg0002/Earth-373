@@ -1,0 +1,20 @@
+@import "../util/";
+
+.mentee-goals {
+  .goal-section + .goal-section {
+    margin-top: 2rem;
+  }
+
+  .goal-section {
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .goal-item + .goal-item {
+      margin-top: 0.5rem;
+    }
+  }
+}

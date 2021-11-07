@@ -1,5 +1,5 @@
-import { ReactComponent as BaytreeTreeGrey } from "../assets/images/baytree-tree-grey.svg";
 import { ItemProps, SessionItem } from "./SessionItem";
+import { EmptyState } from "../components/EmptyState";
 
 interface SessionListProps {
   sessions: ItemProps[];
@@ -11,14 +11,10 @@ export const SessionList: React.FC<SessionListProps> = ({ sessions }) => {
   return (
     <div className={`session-list ${isEmpty ? "empty" : ""}`}>
       {isEmpty ? (
-        <div className="empty-state">
-          <BaytreeTreeGrey />
-          <h1 className="widget-title">You Have No Upcoming Sessions</h1>
-          <p>
-            Contact a staff member to get your schedule or to get matched with a
-            mentee
-          </p>
-        </div>
+        <EmptyState
+          title="You Have No Upcoming Sessions"
+          message="Contact a staff member to get matched with a mentee"
+        />
       ) : (
         sessions.map(
           (

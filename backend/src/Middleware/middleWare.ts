@@ -33,7 +33,11 @@ const strategize = (passport: any) => {
         bcrypt.compare(password, user.password as string, (err, isMatch) => {
           if (err) throw err;
           if (isMatch) {
-            const result = { id: user._id, email: user.email };
+            const result = {
+              id: user._id,
+              views_id: user.views_id,
+              email: user.email,
+            };
             return done(null, result, { message: "login successful" });
           } else {
             return done(null, false, { message: "Password incorrect" });
@@ -101,6 +105,7 @@ const signJWT = (req: Request, res: Response, next: NextFunction) => {
           return res.status(400).json({ error });
         } else if (token) {
           res.cookie("jwt", token);
+          console.log("Signing successful");
           return res.status(200).json({ "signed token": token });
         }
       }

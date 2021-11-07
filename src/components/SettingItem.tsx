@@ -1,5 +1,5 @@
 import { Icon, IconName, IconColors } from "./Icon";
-import { Link } from "react-router-dom";
+import Link from "./Link";
 
 export interface SettingItemProps {
   icon: IconName;
@@ -7,7 +7,7 @@ export interface SettingItemProps {
   path: string;
 }
 
-export const AccountSettingItem: React.FC<SettingItemProps> = ({
+export const SettingItem: React.FC<SettingItemProps> = ({
   icon,
   content,
   path,

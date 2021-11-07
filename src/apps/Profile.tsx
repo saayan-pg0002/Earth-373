@@ -1,8 +1,17 @@
 import PageHelmet from "../util/PageHelmet";
 import { FormField } from "../components/form/FormField";
 import { PasswordInput } from "../components/form/PasswordInput";
-import { RenderAttributes } from "../components/form/RenderAttributes";
 import { IconName } from "../components/Icon";
+import { TextInput } from "../components/form/TextInput";
+import { Link } from "react-router-dom";
+import { Paths } from "../util/routes";
+import { DropdownMenu } from "../components/form/DropdownMenu";
+
+const mentorTypes: string[] = [
+  "Into School Mentor",
+  "Youth Mentor",
+  "Women Mentor",
+];
 
 const Profile: React.FC<{}> = () => {
   return (
@@ -10,27 +19,38 @@ const Profile: React.FC<{}> = () => {
       <PageHelmet title="Profile" />
 
       <div className="container">
-        <h1 className="page-title">Settings</h1>
-        <h2 className="h2">Profile Information</h2>
+        <div className="header">
+          <h1 className="page-title">Profile</h1>
+          <Link to={Paths.settings} className="back-btn">
+            Go Back
+          </Link>
+        </div>
         <form className="form">
+          <FormField labelText="Mentor Type">
+            <DropdownMenu options={mentorTypes} />
+          </FormField>
           <FormField labelText="Email">
-            <RenderAttributes
+            <TextInput
               leftIconName={IconName.user}
-              attribute="pambeesly@gmail.com"
-            ></RenderAttributes>
+              placeholderText="Email"
+              defaultValue="wendy.389@gmail.com"
+            ></TextInput>
           </FormField>
           <FormField labelText="Name">
-            <RenderAttributes
-              attribute="Pamela Halbert"
+            <TextInput
+              placeholderText="Name"
               leftIconName={IconName.smiley}
-            ></RenderAttributes>
+              defaultValue="Wendy Stuart"
+            ></TextInput>
           </FormField>
           <FormField labelText="Password">
-            <PasswordInput value="admin123" />
+            <PasswordInput />
           </FormField>
-          <FormField labelText="Mentor Type">
-            <RenderAttributes attribute="IntoSchool Mentor" />
-          </FormField>
+          <div className="actions">
+            <button type="button" className="btn">
+              Save Changes
+            </button>
+          </div>
         </form>
       </div>
     </main>

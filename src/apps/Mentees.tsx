@@ -1,6 +1,7 @@
 import PageHelmet from "../util/PageHelmet";
 import { MenteeList } from "../components/MenteeList";
 import { MenteeItemProps } from "../components/MenteeItem";
+import { AvatarHeader } from "../components/AvatarHeader";
 
 const menteeList: MenteeItemProps[] = [
   {
@@ -32,7 +33,10 @@ const Mentees: React.FC<{}> = () => {
       <PageHelmet title="Mentees" />
 
       <div className="container">
-        <h1 className="page-title">Mentees</h1>
+        <div className="header">
+          <h1 className="page-title">Mentees</h1>
+          <AvatarHeader name="Wendy Evans" />
+        </div>{" "}
         <MenteeList mentees={menteeList} />
         <p className="subtext">Past Mentees</p>
         <MenteeList mentees={pastMenteeList} />
