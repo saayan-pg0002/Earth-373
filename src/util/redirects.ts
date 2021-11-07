@@ -18,9 +18,9 @@ const redirectActions = () => {
 };
 
 const redirects = () => {
-  // redirectActions();
+  redirectActions();
 
-  // return subscribe(redirectActions);
+  return subscribe(redirectActions);
 };
 
 export default redirects;
