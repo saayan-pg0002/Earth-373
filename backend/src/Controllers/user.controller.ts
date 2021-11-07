@@ -342,7 +342,7 @@ const createGoalForAssociation = (req: Request, res: Response) => {
           is_complete: false,
         },
       },
-    }
+    }, {new: true}
   )
     .then((result: any) => {
       return res.status(201).json({
