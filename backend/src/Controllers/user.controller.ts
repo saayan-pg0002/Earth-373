@@ -7,8 +7,9 @@ import mongoose, { Error, Model } from "mongoose";
 import bcrypt from "bcryptjs";
 import Association from "../Models/association.model";
 import jwt from "jsonwebtoken";
+import path from "path";
 
-dotenv.config({ path: __dirname + "../.env" });
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 const addMongoUser = (req: Request, res: Response) => {
   let {
@@ -280,7 +281,11 @@ const forgetPassword = (req: Request, res: Response) => {
         .status(400)
         .json({ error: "User with this email does not exist" });
     }
-    const token = jwt.sign({ _id: user._id }, "secret", { expiresIn: "20m" });
+
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_KEY as string, {
+      expiresIn: "20m",
+    });
+
     const data = {
       from: "baytree.earth@yahoo.com",
       to: mail,
