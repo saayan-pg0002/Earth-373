@@ -24,6 +24,10 @@
   &.transparent svg path {
     fill: transparent;
   }
+
+  &.action {
+    cursor: pointer;
+  }
 }
 
 .contained-icon {
@@ -58,5 +62,9 @@
 
   &.transparent {
     background-color: transparent;
+  }
+
+  &.action {
+    cursor: pointer;
   }
 }

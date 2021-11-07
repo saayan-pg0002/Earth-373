@@ -1,0 +1,20 @@
+@import "../util/";
+
+.add-goal {
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-bottom: $border-thin-grey;
+  justify-content: space-between;
+
+  input {
+    border: none;
+    outline: none;
+    font-family: $font-family;
+    font-size: $font-size;
+  }
+
+  .icon {
+    margin-left: 0.5rem;
+  }
+}
