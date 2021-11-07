@@ -2,6 +2,7 @@ import PageHelmet from "../util/PageHelmet";
 import { SessionList } from "../components/SessionList";
 import { SessionItemProps } from "../components/SessionItem";
 import { WeekScheduleCalendar } from "../components/WeekScheduleCalendar";
+import { AvatarHeader } from "../components/AvatarHeader";
 
 const sessionList: SessionItemProps[] = [
   {
@@ -51,7 +52,10 @@ const Dashboard: React.FC = () => {
       <PageHelmet title="Dashboard" />
 
       <div className="container">
-        <h1 className="page-title">Hi, Wendy!</h1>
+        <div className="header">
+          <h1 className="page-title">Hi, Wendy!</h1>
+          <AvatarHeader name="Wendy Evans" />
+        </div>
         <WeekScheduleCalendar />
         <SessionList sessions={sessionList} />
       </div>

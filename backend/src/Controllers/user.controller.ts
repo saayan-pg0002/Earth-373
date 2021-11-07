@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response, Router } from "express";
+import { NextFunction, Request, response, Response, Router } from "express";
 import User from "../Models/user.model";
 import Mentee from "../Models/mentee.model";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import dotenv from "dotenv";
 import mongoose, { Error, Model } from "mongoose";
 import bcrypt from "bcryptjs";
@@ -10,87 +10,7 @@ import jwt from "jsonwebtoken";
 
 dotenv.config();
 
-//Authentication functions
-const validateToken = (req: Request, res: Response, next: NextFunction) => {
-  console.log("Token validated, user authorized");
-  return res.status(200).json({
-    message: "Authorized",
-  });
-};
-
-//Note: We will not be registering users this way. Use sections of this code when changing user password.
-const register = (req: Request, res: Response, next: NextFunction) => {
-  let {
-    views_id,
-    first_name,
-    last_name,
-    email,
-    password,
-    activity_status,
-    role,
-  } = req.body;
-
-  bcrypt.hash(password, 10, (hashError, hash) => {
-    if (hashError) {
-      return res.status(500).json({
-        message: hashError.message,
-        error: hashError,
-      });
-    }
-
-    //CREATING NEW USER: Find way to avoid duplication here. See if you can send the req body to '/users/add'.
-    const user = new User({
-      _id: new mongoose.Types.ObjectId(),
-      views_id,
-      first_name,
-      last_name,
-      email,
-      password: hash,
-      activity_status,
-      role,
-    });
-
-    return user
-      .save()
-      .then((result) => {
-        return res.status(201).json({
-          user: result,
-        });
-      })
-      .catch((error) => {
-        return res.status(500).json({
-          message: "Error saving user.",
-          error,
-        });
-      });
-    //End of creating + adding user to db code
-  });
-};
-
-const getProfile = (req: Request, res: Response, next: NextFunction) => {
-  const user: any = req.user;
-  return res.json({ email: user.email, name: user.first_name });
-};
-
-const updateProfile = (req: Request, res: Response, next: NextFunction) => {
-  const user: any = req.user;
-  const query = { email: user.email };
-  const changes = req.body;
-
-  User.findOneAndUpdate(query, changes, { new: true }, (err, doc) => {
-    if (err)
-      res.status(400).json({
-        message: "There was an error updating the profile.",
-        err,
-      });
-    return res.status(200).json({
-      message: "Successfully updated profile.",
-      doc,
-    });
-  });
-};
-
-const addUser = (req: Request, res: Response, next: NextFunction) => {
+const addMongoUser = (req: Request, res: Response) => {
   let {
     first_name,
     last_name,
@@ -130,7 +50,7 @@ const addUser = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
-const getUsers = (req: Request, res: Response, next: NextFunction) => {
+const getMongoUsers = (req: Request, res: Response) => {
   User.find()
     .select("-password")
     .exec()
@@ -148,8 +68,19 @@ const getUsers = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
-async function getViewsAPIRequestData(url: string) {
-  let result = "Nan";
+const getViewUsers = async (req: Request, res: Response) => {
+  const result = await getViewUserType(req.params.type as string);
+  if (result) {
+    return res.status(200).json(result);
+  }
+  return res.status(400).json({ error: "unable to find users" });
+};
+
+const getViewUserType = async (userType: string) => {
+  let url: string =
+    "https://app.viewsapp.net/api/restful/contacts/" + userType + "/search?q=";
+
+  let result: string = "";
   await axios({
     method: "get",
     url: url,
@@ -161,181 +92,130 @@ async function getViewsAPIRequestData(url: string) {
     transformResponse: [(v) => v],
   })
     .then((response) => {
-      result = response.data;
+      result = JSON.parse(response.data);
     })
     .catch((error) => {
       result = error;
     });
   return result;
-}
-
-const getViewUsers = async (req: Request, res: Response) => {
-  const type: string = req.params.type;
-  let url: string =
-    "https://app.viewsapp.net/api/restful/contacts/" + type + "/search?q=";
-  const result = await getViewsAPIRequestData(url);
-  res.send(result);
-  return result;
 };
 
-function addUsertoDB(userFields: any) {
-  const temporaryPass: string = "admin123";
-  bcrypt.hash(temporaryPass, 10, (hashError, hashedPassword) => {
-    if (hashError) {
-      return {
-        message: hashError.message,
-        error: hashError,
-      };
-    }
-    let userType = "Admin";
-    if (userFields["TypeName"] == "volunteer") {
-      userType = "Mentor";
-    }
-    const newUser = new User({
-      _id: new mongoose.Types.ObjectId(),
-      views_id: userFields["PersonID"],
-      first_name: userFields["Forename"],
-      last_name: userFields["Surname"],
-      email:
-        (userFields["Email"] as string) || ("NO EMAIL ASSOCIATED" as string),
-      activity_status:
-        userFields["VolunteerStatus_V_1"] || ("Active" as string),
-      password: hashedPassword as string,
-      role: userType,
-    });
-    newUser.save().catch((error) => {
-      return console.log("Error adding user", error);
-    });
-    console.log(`added user ${userFields["Forename"]}`);
-  });
-}
+const migrateViewUsers = async (req: Request, res: Response) => {
+  try {
+    // admins
+    const staffs: any = await getViewUserType("staff");
+    await createUsers(staffs);
 
-function addMenteetoDB(menteeFields: any) {
-  const DoB: Date = new Date(menteeFields["DateOfBirth"]);
-  const tempTimeDifference = Math.abs(Date.now() - DoB.getTime());
-  const menteeAge: Number = Math.floor(
-    tempTimeDifference / (1000 * 3600 * 24) / 365
-  );
-  const newMentee = new Mentee({
-    _id: new mongoose.Types.ObjectId(),
-    views_id: menteeFields["PersonID"],
-    first_name: menteeFields["Forename"],
-    last_name: menteeFields["Surname"],
-    age: menteeAge,
-    dateOfBirth: DoB,
-  });
-  newMentee.save().catch((error) => {
-    return console.error("Error adding Mentee to DB", error);
-  });
-  console.log(`added mentee ${menteeFields["Forename"]}`);
-}
+    // mentors
+    const mentors: any = await getViewUserType("volunteers");
+    await createUsers(mentors);
 
-const validateAndCreateRecordsinDB = (
-  recordFields: any,
-  recordType: string
-) => {
-  const ViewsID = recordFields["PersonID"];
-  if (recordType == "user") {
-    User.find({ views_id: ViewsID }).exec(function (err, user) {
-      if (err) {
-        console.log(err);
-      } else if (user.length == 0) {
-        return addUsertoDB(recordFields);
-      } else {
-        console.log(`User data already present`);
-      }
-    });
-  } else if (recordType == "mentee") {
-    Mentee.find({ views_id: ViewsID }).exec(function (err, mentee) {
-      if (err) {
-        console.log(err);
-      } else if (mentee.length == 0) {
-        return addMenteetoDB(recordFields);
-      } else {
-        console.log("Mentee data already present");
-      }
-    });
-  } else {
-    console.error("No such recordtype exists");
+    // mentees
+    const mentees: any = await getViewUserType("participants");
+    await createMentees(mentees);
+  } catch (error) {
+    throw error;
   }
+  res.status(200).json({ response: "All View entries migrated" });
 };
 
-const iterateOnViewsData = (viewsJsonData: any, recordType: string) => {
-  for (const key in viewsJsonData) {
-    const viewsUsers = viewsJsonData[key];
+async function createUsers(data: any) {
+  for (const key in data) {
+    const viewsUsers = data[key];
     for (const key1 in viewsUsers) {
       const userFields = viewsUsers[key1];
-      try {
-        validateAndCreateRecordsinDB(userFields, recordType);
-      } catch (error) {
-        console.log("Error adding the user ");
-        console.log(error);
-        continue;
-      }
+      await User.find({ views_id: userFields["PersonID"] })
+        .exec()
+        .then((user) => {
+          if (user.length === 0) {
+            const temporaryPass: string = "admin123";
+            bcrypt.hash(temporaryPass, 10, (hashError, hashedPassword) => {
+              if (hashError) {
+                return {
+                  message: hashError.message,
+                  error: hashError,
+                };
+              }
+              let userType = "Admin";
+              if (userFields["TypeName"] === "volunteer") {
+                userType = "Mentor";
+              }
+              const newUser = new User({
+                _id: new mongoose.Types.ObjectId(),
+                views_id: userFields["PersonID"],
+                first_name: userFields["Forename"],
+                last_name: userFields["Surname"],
+                email:
+                  (userFields["Email"] as string) ||
+                  ("NO EMAIL ASSOCIATED" as string),
+                activity_status:
+                  userFields["VolunteerStatus_V_1"] || ("Active" as string),
+                password: hashedPassword as string,
+                role: userType,
+              });
+              newUser.save().catch((error) => {
+                return console.log("Error adding user", error);
+              });
+              return console.log(`added user ${userFields["Forename"]}`);
+            });
+          } else {
+            return console.log(`User ${userFields["Forename"]} already exists`);
+          }
+        });
     }
   }
-};
+}
 
-const migrateUsers = async (req: Request, res: Response) => {
-  let typeOfUser: string = "volunteers";
-  let url: string =
-    "https://app.viewsapp.net/api/restful/contacts/" +
-    typeOfUser +
-    "/search?q=";
-  const viewsVolData = JSON.parse(await getViewsAPIRequestData(url));
-  try {
-    iterateOnViewsData(viewsVolData, "user");
-  } catch (error) {
-    return res.status(500).json({
-      message: "Failed to add all Users from Views",
-    });
+async function createMentees(data: any) {
+  for (const key in data) {
+    const mentees = data[key];
+    for (const key1 in mentees) {
+      const menteeFields = mentees[key1];
+      await Mentee.find({ views_id: menteeFields["PersonID"] })
+        .exec()
+        .then((user) => {
+          if (user.length === 0) {
+            const DoB: Date = new Date(menteeFields["DateOfBirth"]);
+            const tempTimeDifference = Math.abs(Date.now() - DoB.getTime());
+            const menteeAge: Number = Math.floor(
+              tempTimeDifference / (1000 * 3600 * 24) / 365
+            );
+            const newMentee = new Mentee({
+              _id: new mongoose.Types.ObjectId(),
+              views_id: menteeFields["PersonID"],
+              first_name: menteeFields["Forename"],
+              last_name: menteeFields["Surname"],
+              age: menteeAge,
+              dateOfBirth: DoB,
+            });
+            newMentee.save().catch((error) => {
+              return console.error("Error adding Mentee to DB", error);
+            });
+            return console.log(`added mentee ${menteeFields["Forename"]}`);
+          } else {
+            return console.log(
+              `mentee ${menteeFields["Forename"]} already exists`
+            );
+          }
+        });
+    }
   }
-
-  //We have to iterate twice because Views get request to staff does not provide VolunteerStatus when we call it
-  typeOfUser = "staff";
-  url =
-    "https://app.viewsapp.net/api/restful/contacts/" +
-    typeOfUser +
-    "/search?q=";
-  const viewsStaffData = JSON.parse(await getViewsAPIRequestData(url));
-  try {
-    iterateOnViewsData(viewsStaffData, "user");
-  } catch (error) {
-    return res.status(500).json({
-      message: "Failed to add all Users from Views",
-    });
-  }
-
-  res.send("Migrated Views Mentors and Admins Successfully!");
-};
-
-const migrateMentees = async (req: Request, res: Response) => {
-  const url: string =
-    "https://app.viewsapp.net/api/restful/contacts/participants/search?q=";
-  const viewsMenteeData = JSON.parse(await getViewsAPIRequestData(url));
-  try {
-    iterateOnViewsData(viewsMenteeData, "mentee");
-  } catch (error) {
-    console.log("Error migrating all mentees from Views", error);
-    return res.status(500).json({
-      message: "Error migrating all mentees from Views",
-    });
-  }
-  res.send("Migrated Views Mentees Successfully!");
-};
-
+}
 const createGoalForAssociation = (req: Request, res: Response) => {
-  //Note: the id fields here refer to the views id of the mentor & mentee, not their mongodb ids.
-  let { mentor_id, mentee_id, goal_text } = req.body;
+  let { mentee_id, goal } = req.body;
+
+  const user: any = req.user;
+  const mentor_id: string = user._id as string;
 
   Association.findOneAndUpdate(
     {
-      _id: mentee_id,
+      mentor_id: mentor_id,
+      mentee_id: mentee_id,
     },
     {
       $push: {
         goals: {
-          name: goal_text,
+          name: goal,
           is_complete: false,
         },
       },
@@ -360,10 +240,11 @@ const createGoalForAssociation = (req: Request, res: Response) => {
     });
 };
 
-const getAssociationsByMentorId = (req: Request, res: Response) => {
-  const mentorId: string = req.params.id;
+const getAssociationsFromMentor = (req: Request, res: Response) => {
+  const user: any = req.user;
+  const mentor_id: string = user._id as string;
 
-  Association.findOne({ mentor_id: mentorId })
+  Association.find({ mentor_id: mentor_id })
     .exec()
     .then((profileObj) => {
       return res.status(200).json({ profileObj });
@@ -410,18 +291,23 @@ const forgetPassword = (req: Request, res: Response) => {
   });
 };
 
+const getProfile = (req: Request, res: Response) => {
+  const user: any = req.user;
+  return res.json({
+    email: user.email,
+    _id: user._id,
+    views_id: user.views_id,
+  });
+};
+
 const UserController = {
-  addUser,
-  getUsers,
+  addMongoUser,
+  getMongoUsers,
   getViewUsers,
-  register,
-  validateToken,
-  migrateUsers,
-  migrateMentees,
+  migrateViewUsers,
   createGoalForAssociation,
-  getAssociationsByMentorId,
+  getAssociationsFromMentor,
   getProfile,
-  updateProfile,
   forgetPassword,
 };
 

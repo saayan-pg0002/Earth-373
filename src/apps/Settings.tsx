@@ -1,7 +1,8 @@
 import PageHelmet from "../util/PageHelmet";
-import { AccountSettingItem } from "../components/SettingItem";
+import { SettingItem } from "../components/SettingItem";
 import { IconName } from "../components/Icon";
 import { Paths } from "../util/routes";
+import { ReactComponent as BaytreeMentorPortalLogo } from "../assets/images/baytree-mentor-portal-logo.svg";
 
 const Settings: React.FC<{}> = () => {
   return (
@@ -9,19 +10,28 @@ const Settings: React.FC<{}> = () => {
       <PageHelmet title="Settings" />
 
       <div className="container">
-        <h1 className="page-title">Settings</h1>
-        <div className="account">
-          <AccountSettingItem
+        <div className="header">
+          <h1 className="page-title">Setting</h1>
+        </div>
+
+        <div className="setting-list">
+          <SettingItem
             icon={IconName.user}
             content="Profile"
             path={Paths.profile}
           />
-          <AccountSettingItem
+          <SettingItem
             icon={IconName.logOut}
             content="Log Out"
             path={Paths.login}
           />
+          <SettingItem
+            icon={IconName.info}
+            content="About"
+            path={Paths.settings}
+          />
         </div>
+        <BaytreeMentorPortalLogo className="logo" />
       </div>
     </main>
   );
