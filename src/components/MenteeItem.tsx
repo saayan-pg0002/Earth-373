@@ -1,6 +1,6 @@
 import { ContainedIcon, IconName, IconColors } from './Icon';
 import { getStartEndFormattedTimeStringWithDay } from '../util/date';
-import { Link } from 'react-router-dom';
+import Link from "./Link";
 import { Paths } from '../util/routes';
 
 export const MenteeItem: React.FC<MenteeItemProps> = ({
