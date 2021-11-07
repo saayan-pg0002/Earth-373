@@ -4,6 +4,7 @@ import { Icon, IconColors, IconName } from "../components/Icon";
 import { MenteeProfileHeader } from "../components/MenteeProfileHeader";
 import PageHelmet from "../util/PageHelmet";
 import { GoalItem } from "../components/GoalItem";
+import { EmptyState } from "../components/EmptyState";
 
 export interface MenteeInfoProps {
   menteeName: string;
@@ -135,6 +136,17 @@ const MenteeGoals: React.FC<MenteeInfoProps> = ({
             onClick={showAddNewGoal}
           ></Icon>
         </div>
+        {!isAddingGoal && ongoingGoals.length === 0 && (
+          <EmptyState
+            title={
+              completedGoals.length > 0
+                ? "All Goals Complete!"
+                : "No Ongoing Goals"
+            }
+            message="Click the + to create a new goal"
+            showGraphic={false}
+          />
+        )}
         {ongoingGoals.length > 0 &&
           ongoingGoals.map((goal) => (
             <GoalItem
