@@ -1,0 +1,37 @@
+@import "../util/";
+
+label.checkbox {
+  input {
+    display: none;
+  }
+
+  .checkmark {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: inline-block;
+    border: 1.5px solid $grey-400;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all $fade-duration-fast $fade-cubic-bezier;
+
+    &::after {
+      content: "";
+      background-image: url("../../assets/icons/icon-checkmark.svg");
+      background-size: contain;
+      background-repeat: no-repeat;
+      display: none;
+      filter: invert(1);
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  input:checked + .checkmark {
+    background-color: $baytree-green;
+    border-color: $baytree-green;
+
+    &::after {
+      display: inline-block;
+    }
+  }
+}
