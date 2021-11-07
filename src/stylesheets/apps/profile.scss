@@ -1,0 +1,23 @@
+@import "../util/";
+
+.profile {
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .back-btn {
+      padding-top: 0.6rem;
+      &:hover,
+      &:focus {
+        font-weight: bold;
+      }
+    }
+  }
+  .container {
+    .form {
+      & > * + * {
+        margin-top: 1rem;
+      }
+    }
+  }
+}
