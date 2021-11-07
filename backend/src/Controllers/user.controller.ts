@@ -8,7 +8,7 @@ import bcrypt from "bcryptjs";
 import Association from "../Models/association.model";
 import jwt from "jsonwebtoken";
 
-dotenv.config();
+dotenv.config({ path: __dirname + "../.env" });
 
 const addMongoUser = (req: Request, res: Response) => {
   let {

@@ -8,7 +8,7 @@ import passportConfig from "./Middleware/middleWare";
 import cookie from "cookie-parser";
 import cors from "cors";
 
-dotenv.config();
+dotenv.config({ path: __dirname + "/.env" });
 const app: Application = express();
 const URI: string | any = process.env.MONGO_URI;
 
