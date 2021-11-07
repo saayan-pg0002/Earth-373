@@ -24,7 +24,9 @@ router
 router.route("/register").post(UserController.register);
 
 router.route("/me/goal").post(UserController.createGoalForAssociation);
-router.route("/me/association/:id").get(UserController.getAssociationsByMentorId);
+router
+  .route("/me/association/:id")
+  .get(UserController.getAssociationsByMentorId);
 
 router
   .route("/login")
@@ -34,5 +36,7 @@ router.route("/me").get(passportConfig.authenticate, UserController.getProfile);
 router
   .route("/me/patch")
   .patch(passportConfig.authenticate, UserController.updateProfile);
+
+router.route("/forget-password").post(UserController.forgetPassword);
 
 export default router;
