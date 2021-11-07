@@ -200,6 +200,44 @@ async function createMentees(data: any) {
     }
   }
 }
+const createGoalForAssociation = (req: Request, res: Response) => {
+  let { mentee_id, goal } = req.body;
+
+  const user: any = req.user;
+  const mentor_id: string = user._id as string;
+
+  Association.findOneAndUpdate(
+    {
+      mentor_id: mentor_id,
+      mentee_id: mentee_id,
+    },
+    {
+      $push: {
+        goals: {
+          name: goal,
+          is_complete: false,
+        },
+      },
+    },
+    { new: true }
+  )
+    .then((result) => {
+      if (result == null) {
+        return res.status(500).json({
+          message: "Warning: Mentor/Mentee pair not found. Are they active?",
+        });
+      }
+      return res.status(201).json({
+        message: "Successfully created goal for mentorship.",
+        result,
+      });
+    })
+    .catch((error) => {
+      return res.status(500).json({
+        message: "Error creating goal for the mentee/mentor association.",
+      });
+    });
+};
 
 const getAssociationsFromMentor = (req: Request, res: Response) => {
   const user: any = req.user;
@@ -231,9 +269,8 @@ export default {
   addMongoUser,
   getMongoUsers,
   getViewUsers,
-  getAssociationsFromMentor,
   migrateViewUsers,
   createGoalForAssociation,
-  getAssociationsByMentorId,
+  getAssociationsFromMentor,
   getProfile,
 };
