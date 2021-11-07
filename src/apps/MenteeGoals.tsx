@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { AddNewGoal } from "../components/AddNewGoal";
-import GoalsList from "../components/GoalsList";
-import { ContainedIcon, IconColors, IconName } from "../components/Icon";
+import { Icon, IconColors, IconName } from "../components/Icon";
 import { MenteeProfileHeader } from "../components/MenteeProfileHeader";
 import PageHelmet from "../util/PageHelmet";
+import { GoalItem } from "../components/GoalItem";
 
 export interface MenteeInfoProps {
   menteeName: string;
@@ -11,13 +11,13 @@ export interface MenteeInfoProps {
   birthday: String;
 }
 
-export interface GoalsProp {
-  goals: {
-    name: string;
-  }[];
+export interface GoalProp {
+  id: number;
+  name: string;
+  isComplete: boolean;
 }
 
-const MenteeGoals: React.FC<MenteeInfoProps & GoalsProp> = ({
+const MenteeGoals: React.FC<MenteeInfoProps> = ({
   menteeName,
   startDate,
   birthday,
@@ -26,62 +26,97 @@ const MenteeGoals: React.FC<MenteeInfoProps & GoalsProp> = ({
   startDate = "September 2021";
   birthday = "Aug 2, 2010";
 
-  const [ongoingGoal, setOngoingGoal] = useState<GoalsProp["goals"]>([
+  const [ongoingGoals, setOngoingGoals] = useState<GoalProp[]>([
     {
+      id: 1,
       name: "Learn Math",
+      isComplete: false,
     },
   ]);
 
-  const [completedGoals, addCompletedGoals] = useState<GoalsProp["goals"]>([
+  const [completedGoals, setCompletedGoals] = useState<GoalProp[]>([
     {
+      id: 2,
       name: "Learn History",
+      isComplete: true,
     },
   ]);
 
-  const [isAddNewGoalVisible, setIsAddNewGoalVisible] = useState(false);
+  const [isAddingGoal, setIsAddingGoal] = useState(false);
 
-  const hideNewGoal = () => setIsAddNewGoalVisible(false);
+  const showAddNewGoal = () => setIsAddingGoal(true);
+  const hideAddNewGoal = () => setIsAddingGoal(false);
 
-  const isAddingGoal = (event: any): void => {
-    event.preventDefault();
-    setIsAddNewGoalVisible(true);
+  const addNewGoal = (newGoal: GoalProp): void => {
+    setOngoingGoals([...ongoingGoals, newGoal]);
+    hideAddNewGoal();
+    showAddNewGoal();
   };
 
-  const addToCompletedList = (addnewCompletedGoals: string): void => {
-    addCompletedGoals([
-      ...completedGoals,
-      {
-        name: addnewCompletedGoals,
-      },
-    ]);
+  const updateGoal = (editedGoal: GoalProp): void => {
+    const { isComplete } = editedGoal;
+    const targetGoalsList: GoalProp[] = isComplete
+      ? completedGoals
+      : ongoingGoals;
+    const index: number = targetGoalsList.findIndex(
+      (goal) => goal.id === editedGoal.id
+    );
 
-    setOngoingGoal([
-      ...ongoingGoal.filter(
-        (ongoingGoal) => ongoingGoal.name !== addnewCompletedGoals,
-        ongoingGoal
+    if (index !== -1) {
+      if (isComplete) {
+        setCompletedGoals([
+          ...completedGoals.slice(0, index),
+          editedGoal,
+          ...completedGoals.slice(index + 1),
+        ]);
+      } else {
+        setOngoingGoals([
+          ...ongoingGoals.slice(0, index),
+          editedGoal,
+          ...ongoingGoals.slice(index + 1),
+        ]);
+      }
+    }
+  };
+
+  const deleteGoal = (deletedGoal: GoalProp): void => {
+    const { isComplete } = deletedGoal;
+    if (isComplete) {
+      setCompletedGoals([
+        ...completedGoals.filter((goal) => goal.id !== deletedGoal.id),
+      ]);
+    } else {
+      setOngoingGoals([
+        ...ongoingGoals.filter((goal) => goal.id !== deletedGoal.id),
+      ]);
+    }
+  };
+
+  const completeGoal = (goal: GoalProp): void => {
+    setCompletedGoals([...completedGoals, { ...goal, isComplete: true }]);
+
+    setOngoingGoals([
+      ...ongoingGoals.filter(
+        (ongoingGoals) => ongoingGoals.name !== goal.name,
+        ongoingGoals
       ),
     ]);
   };
 
-  const addGoal = (newGoal: string): void => {
-    setOngoingGoal([
-      ...ongoingGoal,
-      {
-        name: newGoal,
-      },
-    ]);
+  const uncheckGoal = (goal: GoalProp): void => {
+    setOngoingGoals([...ongoingGoals, { ...goal, isComplete: false }]);
 
-    addCompletedGoals([
+    setCompletedGoals([
       ...completedGoals.filter(
-        (completedGoals) => completedGoals.name !== newGoal,
+        (completedGoals) => completedGoals.name !== goal.name,
         completedGoals
       ),
     ]);
-    setIsAddNewGoalVisible(false);
+    hideAddNewGoal();
   };
 
   return (
-    <main className="container">
+    <main className="container mentee-goals">
       <PageHelmet title="Mentee Goals" />
 
       <MenteeProfileHeader
@@ -91,44 +126,46 @@ const MenteeGoals: React.FC<MenteeInfoProps & GoalsProp> = ({
       />
       {/* TODO: tab component*/}
 
-      <div>
-        <div className="subtext statusTag">
-          ongoing
-          <span onClick={isAddingGoal}>
-            <ContainedIcon
-              name={IconName.plus}
-              color={IconColors.black}
-              backgroundColor={IconColors.white}
-            ></ContainedIcon>
-          </span>
+      <div className="goal-section">
+        <div className="header">
+          <h2 className="subtext">Ongoing</h2>
+          <Icon
+            name={IconName.plus}
+            color={IconColors.black}
+            onClick={showAddNewGoal}
+          ></Icon>
         </div>
-
-        <GoalsList
-          goals={ongoingGoal}
-          addToCompletedList={addToCompletedList}
-          isCompleted={false}
-          addGoal={addGoal}
-        />
-
-        {isAddNewGoalVisible && (
-          <AddNewGoal
-            goal={ongoingGoal}
-            addGoal={addGoal}
-            isAddNewGoalVisible={isAddNewGoalVisible}
-            hideNewGoal={hideNewGoal}
-          />
+        {ongoingGoals.length > 0 &&
+          ongoingGoals.map((goal) => (
+            <GoalItem
+              onClickCheckbox={completeGoal}
+              key={goal.id}
+              initialGoal={goal}
+              updateGoal={updateGoal}
+              deleteGoal={deleteGoal}
+            />
+          ))}
+        {isAddingGoal && (
+          <AddNewGoal addNewGoal={addNewGoal} hideAddNewGoal={hideAddNewGoal} />
         )}
       </div>
 
-      <div>
-        <p className="subtext statusTag"> Complete </p>
-        <GoalsList
-          goals={completedGoals}
-          addToCompletedList={addToCompletedList}
-          isCompleted={true}
-          addGoal={addGoal}
-        />
-      </div>
+      {completedGoals.length > 0 && (
+        <div className="goal-section">
+          <div className="header">
+            <h2 className="subtext">Complete</h2>
+          </div>
+          {completedGoals.map((goal) => (
+            <GoalItem
+              onClickCheckbox={uncheckGoal}
+              key={goal.id}
+              initialGoal={goal}
+              updateGoal={updateGoal}
+              deleteGoal={deleteGoal}
+            />
+          ))}
+        </div>
+      )}
     </main>
   );
 };
