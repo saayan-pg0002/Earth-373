@@ -7,8 +7,10 @@ import session from "express-session";
 import passportConfig from "./Middleware/middleWare";
 import cookie from "cookie-parser";
 import cors from "cors";
+import path from "path";
 
-dotenv.config({ path: __dirname + "/.env" });
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
+
 const app: Application = express();
 const URI: string | any = process.env.MONGO_URI;
 
