@@ -205,6 +205,7 @@ async function createMentees(data: any) {
     }
   }
 }
+
 const createGoalForAssociation = (req: Request, res: Response) => {
   let { mentee_id, goal } = req.body;
 
@@ -293,7 +294,7 @@ const forgotPassword = (req: Request, res: Response) => {
     const mailOptions = {
       from: "baytree.earth@yahoo.com",
       to: mail,
-      subject: "Reset Password Link",
+      subject: "Password Reset Link",
       html: ` <h2>Please click on the link below to reset your password</h2>
               <br>
               <a href="http://${process.env.URL}/users/resetpassword/${token}">http://${process.env.URL}/users/resetpassword/${token}</a>`,
