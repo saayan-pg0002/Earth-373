@@ -86,7 +86,7 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
   verifyJWT(req, res, next);
 };
 
-const signJWT = (req: Request, res: Response, next: NextFunction) => {
+const signJWT = (req: Request, res: Response) => {
   const user: any = req.user;
   var currentTime = new Date().getTime();
   var expirationTimeInMS = (currentTime + 3600) * 100000;

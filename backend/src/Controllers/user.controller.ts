@@ -262,13 +262,33 @@ const getAssociationsFromMentor = (req: Request, res: Response) => {
 
   Association.find({ mentor_id: mentor_id })
     .exec()
-    .then((profileObj) => {
-      return res.status(200).json({ profileObj });
+    .then((associations) => {
+      return res.status(200).json({ associations });
     })
     .catch((error) => {
       return res.status(404).json({
         message: "Error: Mentee id not found.",
         error,
+      });
+    });
+};
+
+const getGoalsForAssociation = (req: Request, res: Response) => {
+  let { mentee_id } = req.body;
+  const user: any = req.user;
+  const mentor_id: string = user._id;
+
+  Association.findOne({ mentee_id: mentee_id, mentor_id: mentor_id })
+    .exec()
+    .then((result: any) => {
+      return res.status(200).json({
+        goals: result.goals,
+      });
+    })
+    .catch((error) => {
+      return res.status(400).json({
+        message: "Error: Unable to find mentor/mentee association.",
+        error: error.message,
       });
     });
 };
@@ -410,6 +430,7 @@ const UserController = {
   createAssociation,
   getAssociationsFromMentor,
   getProfile,
+  getGoalsForAssociation,
   forgotPassword,
   resetPassword,
 };

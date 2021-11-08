@@ -11,6 +11,12 @@ router.route("/getusers").get(UserController.getMongoUsers);
 router.route("/view/get/:type").get(UserController.getViewUsers);
 router.route("/view/migrate").get(UserController.migrateViewUsers);
 
+router.route("/me/goal").post(UserController.createGoalForAssociation);
+
+router
+  .route("/me/association/goals")
+  .post(UserController.getGoalsForAssociation);
+
 router.route("/creategoal").post(UserController.createGoalForAssociation);
 router.route("/me/associations").get(UserController.getAssociationsFromMentor);
 
