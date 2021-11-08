@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import mongoose, { Error, Model } from "mongoose";
 import bcrypt from "bcryptjs";
 import Association from "../Models/association.model";
+import AssociationInterface from "../Interfaces/association.interface";
 import jwt from "jsonwebtoken";
 import path from "path";
 import nodemailer from "nodemailer";
@@ -332,6 +333,31 @@ const forgotPassword = (req: Request, res: Response) => {
   });
 };
 
+const createAssociation = (req: Request, res: Response) => {
+  let { mentor_id, mentee_id } = req.body;
+
+  const newAssociation: AssociationInterface = new Association({
+    mentor_id: mentor_id,
+    mentee_id: mentee_id,
+    isActive: true,
+  });
+
+  newAssociation
+    .save()
+    .then((result) => {
+      return res.status(200).json({
+        message: "Successfully created association.",
+        result,
+      });
+    })
+    .catch((err) => {
+      return res.status(400).json({
+        message: "Error creating association.",
+        err,
+      });
+    });
+};
+
 const getProfile = (req: Request, res: Response) => {
   return res.json(req.user);
 };
@@ -358,7 +384,7 @@ const resetPassword = (req: Request, res: Response) => {
           };
 
           user = _.extend(user, obj);
-          user.save((err, result) => {
+          user!.save((err, result) => {
             if (err) {
               return res.status(400).json({ error: "Reset password error" });
             } else {
@@ -381,6 +407,7 @@ const UserController = {
   getViewUsers,
   migrateViewUsers,
   createGoalForAssociation,
+  createAssociation,
   getAssociationsFromMentor,
   getProfile,
   forgotPassword,
