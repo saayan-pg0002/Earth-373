@@ -307,7 +307,7 @@ const forgotPassword = (req: Request, res: Response) => {
           return res.status(400).json({ error: "Reset password link error" });
         } else {
           // send email to user
-          emailTransporter.sendMail(mailOptions, (error, info) => {
+          emailTransporter.sendMail(mailOptions, (error: any, info: any) => {
             if (error) {
               return console.log(error);
             }
