@@ -13,6 +13,16 @@ import _ from "lodash";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
+const getHashedPassword = (password: string) => {
+  bcrypt.hash(password, 10, (hashError, hash) => {
+    if (hashError) {
+      throw hashError;
+    } else {
+      return hash;
+    }
+  });
+};
+
 const addMongoUser = (req: Request, res: Response) => {
   let {
     first_name,
