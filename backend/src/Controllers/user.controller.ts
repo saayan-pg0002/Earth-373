@@ -212,6 +212,7 @@ async function createMentees(data: any) {
     }
   }
 }
+
 const createGoalForAssociation = (req: Request, res: Response) => {
   let { mentee_id, goal } = req.body;
 
