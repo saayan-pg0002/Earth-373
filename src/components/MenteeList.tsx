@@ -18,20 +18,14 @@ export const MenteeList: React.FC<MenteeListProps> = ({ mentees }) => {
       ) : (
         mentees.map(
           (
-            {
-              menteeName,
-              clockInTime,
-              clockOutTime,
-              dayOfWeek,
-            }: MenteeItemProps,
+            { menteeName, startDate, endDate }: MenteeItemProps,
             index: number
           ) => (
             <MenteeItem
               key={index}
               menteeName={menteeName}
-              clockInTime={clockInTime}
-              clockOutTime={clockOutTime}
-              dayOfWeek={dayOfWeek}
+              startDate={startDate}
+              endDate={endDate}
             />
           )
         )
