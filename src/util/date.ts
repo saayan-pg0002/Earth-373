@@ -1,4 +1,4 @@
-const DaysOfWeek: String[] = [
+export const DaysOfWeek: string[] = [
   "Sunday",
   "Monday",
   "Tuesday",
@@ -8,7 +8,7 @@ const DaysOfWeek: String[] = [
   "Saturday",
 ];
 
-const Months: String[] = [
+const Months: string[] = [
   "January",
   "February",
   "March",
@@ -46,7 +46,7 @@ export const getCurrentWeekDateObjects = (
 };
 
 interface CalendarDayItemInterface {
-  dayOfWeek: String;
+  dayOfWeek: string;
   date: number;
 }
 
@@ -135,4 +135,10 @@ export const getFormattedMonthYearString = (date: Date): string => {
   const monthName = Months[date.getMonth()];
   const year: number = date.getFullYear(); // 2019
   return `${monthName} ${year}`;
+};
+
+export const getFormattedHourMinuteString = (date: Date): string => {
+  const hour: string = getDoubleDigitString(date.getHours());
+  const minutes: string = getDoubleDigitString(date.getMinutes());
+  return `${hour}:${minutes}`;
 };

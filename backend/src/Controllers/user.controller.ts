@@ -8,6 +8,8 @@ import bcrypt from "bcryptjs";
 import Association from "../Models/association.model";
 import jwt from "jsonwebtoken";
 import path from "path";
+import nodemailer from "nodemailer";
+import _ from "lodash";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
@@ -153,6 +155,7 @@ async function createUsers(data: any) {
                   userFields["VolunteerStatus_V_1"] || ("Active" as string),
                 password: hashedPassword as string,
                 role: userType,
+                resetLink: "",
               });
               newUser.save().catch((error) => {
                 return console.log("Error adding user", error);
@@ -202,6 +205,7 @@ async function createMentees(data: any) {
     }
   }
 }
+
 const createGoalForAssociation = (req: Request, res: Response) => {
   let { mentee_id, goal } = req.body;
 
@@ -258,20 +262,21 @@ const getAssociationsFromMentor = (req: Request, res: Response) => {
     });
 };
 
-// const emailTransporter = nodemailer.createTransport({
-//   host: "smtp.mail.yahoo.com",
-//   port: 465,
-//   service: "yahoo",
-//   secure: false,
-//   auth: {
-//     user: "baytree.earth@yahoo.com",
-//     pass: "zbzkakphalidoobl",
-//   },
-//   debug: false,
-//   logger: true,
-// });
+const emailTransporter = nodemailer.createTransport({
+  host: "smtp.mail.yahoo.com",
+  port: 465,
+  service: "yahoo",
+  secure: false,
+  auth: {
+    user: "baytree.earth@yahoo.com",
+    pass: "zbzkakphalidoobl",
+  },
+  tls: { rejectUnauthorized: false },
+  debug: false,
+  logger: true,
+});
 
-const forgetPassword = (req: Request, res: Response) => {
+const forgotPassword = (req: Request, res: Response) => {
   console.log("Change Password");
   const mail = req.body.email;
   console.log(mail);
@@ -286,23 +291,78 @@ const forgetPassword = (req: Request, res: Response) => {
       expiresIn: "20m",
     });
 
-    const data = {
+    const mailOptions = {
       from: "baytree.earth@yahoo.com",
       to: mail,
-      subject: "Reset Password Link",
-      html: ` <h2>Please click on the link below to rest your password</h2>
-              <p>${process.env.URL}/resetpassword/${token}</p>`,
+      subject: "Password Reset Link",
+      html: ` <h2>Please click on the link below to reset your password</h2>
+              <br>
+              <a href="http://${process.env.URL}/users/resetpassword/${token}">http://${process.env.URL}/users/resetpassword/${token}</a>`,
     };
+
+    return user.updateOne(
+      { resetLink: token },
+      function (err: any, success: any) {
+        if (err) {
+          return res.status(400).json({ error: "Reset password link error" });
+        } else {
+          // send email to user
+          emailTransporter.sendMail(mailOptions, (error: any, info: any) => {
+            if (error) {
+              return console.log(error);
+            }
+            console.log("Message sent: %s", info.messageId);
+          });
+          return res.json({
+            message: "Email has been sent, kindly follow the instructions",
+          });
+        }
+      }
+    );
   });
 };
 
 const getProfile = (req: Request, res: Response) => {
-  const user: any = req.user;
-  return res.json({
-    email: user.email,
-    _id: user._id,
-    views_id: user.views_id,
-  });
+  return res.json(req.user);
+};
+
+const resetPassword = (req: Request, res: Response) => {
+  const { resetLink, newPass } = req.body;
+  if (resetLink) {
+    jwt.verify(
+      resetLink,
+      process.env.JWT_KEY as string,
+      (err: any, decodedData: any) => {
+        if (err) {
+          return res.status(401).json({ error: "Incorrect or expired token." });
+        }
+        User.findOne({ resetLink }).exec((err, user) => {
+          if (err || !user) {
+            return res
+              .status(400)
+              .json({ error: "User with this token does not exist." });
+          }
+          const obj = {
+            password: newPass,
+            resetLink: "",
+          };
+
+          user = _.extend(user, obj);
+          user.save((err, result) => {
+            if (err) {
+              return res.status(400).json({ error: "Reset password error" });
+            } else {
+              return res
+                .status(200)
+                .json({ message: "Your password has been changed" });
+            }
+          });
+        });
+      }
+    );
+  } else {
+    return res.status(401).json({ error: "Authentication Error ..." });
+  }
 };
 
 const UserController = {
@@ -313,7 +373,8 @@ const UserController = {
   createGoalForAssociation,
   getAssociationsFromMentor,
   getProfile,
-  forgetPassword,
+  forgotPassword,
+  resetPassword,
 };
 
 export default UserController;

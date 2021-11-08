@@ -13,11 +13,9 @@ import Resources from "../apps/Resources";
 import Profile from "../apps/Profile";
 import EditMentee from "../apps/EditMentee";
 import ViewSession from "../apps/ViewSession";
-import MenteeGoals from "../apps/MenteeGoals";
-import MenteeQuestionnaire from "../apps/MenteeQuestionnaire";
-import MenteeSessionHistory from "../apps/MenteeSessionHistory";
 import ForgotPassword from "../apps/ForgotPassword";
 import ResetPassword from "../apps/ResetPassword";
+import MenteeProfile from "../apps/MenteeProfile";
 
 export const history = createBrowserHistory();
 
@@ -38,11 +36,12 @@ export const Paths = {
   profile: "/profile",
   resources: "/resources",
   editMentee: "/edit-mentee",
-  menteeGoals: "/mentee-goals",
-  menteeSessionHistory: "/mentee-session-history",
-  menteeQuestionnaires: "/mentee-questionnaires",
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password",
+  menteeProfile: "/mentee/*",
+  menteeProfileGoals: "/mentee/goals",
+  menteeProfileSessions: "/mentee/sessions",
+  menteeProfileQuestionnaires: "/mentee/questionnaires",
 };
 
 export const PublicPaths: string[] = [Paths.login, Paths.forgotPassword, Paths.resetPassword];
@@ -111,18 +110,8 @@ export const routes: Route[] = [
     exact: true,
   },
   {
-    path: Paths.menteeGoals,
-    component: MenteeGoals,
-    exact: true,
-  },
-  {
-    path: Paths.menteeSessionHistory,
-    component: MenteeSessionHistory,
-    exact: true,
-  },
-  {
-    path: Paths.menteeQuestionnaires,
-    component: MenteeQuestionnaire,
+    path: Paths.menteeProfile,
+    component: MenteeProfile,
     exact: true,
   },
   {

@@ -9,4 +9,5 @@ export default interface UserInterface extends Document {
   password: String;
   activity_status: ActivityStatus;
   role: Role;
+  resetLink: any;
 }

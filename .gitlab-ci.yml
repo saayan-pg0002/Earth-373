@@ -7,5 +7,6 @@ cache:
 
 backend:
   script:
+    - cd ./backend
     - npm install --prefer-offline --no-audit
-    - npm run backend
+    - npm run test
