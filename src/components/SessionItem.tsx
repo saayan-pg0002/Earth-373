@@ -4,7 +4,7 @@ import {
   isCurrentDateBetween,
   getStartEndFormattedTimeString,
 } from "../util/date";
-import { Link } from "react-router-dom";
+import Link from "./Link";
 import { Paths } from "../util/routes";
 
 export interface ItemProps {

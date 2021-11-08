@@ -1,13 +1,7 @@
-import { ContainedIcon, IconName, IconColors } from "./Icon";
-import { getFormattedMonthYearString } from "../util/date";
-import { Link } from "react-router-dom";
-import { Paths } from "../util/routes";
-
-export interface MenteeItemProps {
-  menteeName: string;
-  startDate: Date;
-  endDate?: Date;
-}
+import { ContainedIcon, IconName, IconColors } from './Icon';
+import { getStartEndFormattedTimeStringWithDay } from '../util/date';
+import Link from "./Link";
+import { Paths } from '../util/routes';
 
 export const MenteeItem: React.FC<MenteeItemProps> = ({
   menteeName,
