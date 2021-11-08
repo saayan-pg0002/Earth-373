@@ -1,7 +1,7 @@
 import React, { FC, useState, useRef, useEffect } from "react";
-import { Checkbox } from "./form/Checkbox";
-import { GoalProp } from "../apps/MenteeGoals";
-import { Icon, IconName, IconColors } from "./Icon";
+import { Checkbox } from "../form/Checkbox";
+import { GoalProp } from "../../apps/MenteeGoals";
+import { Icon, IconName, IconColors } from "../Icon";
 
 interface AddNewGoalProps {
   addNewGoal: (newGoal: GoalProp) => void;

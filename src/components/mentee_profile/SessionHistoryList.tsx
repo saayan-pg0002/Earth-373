@@ -1,5 +1,5 @@
-import { ReactComponent as BaytreeTreeGrey } from "../assets/images/baytree-tree-grey.svg";
-import { SessionItem, ItemProps } from "./SessionItem";
+import { ReactComponent as BaytreeTreeGrey } from "../../assets/images/baytree-tree-grey.svg";
+import { SessionItem, ItemProps } from "../SessionItem";
 
 interface SessionHistoryListProps {
   sessions: ItemProps[];

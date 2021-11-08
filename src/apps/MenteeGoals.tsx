@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { AddNewGoal } from "../components/AddNewGoal";
+import { AddNewGoal } from "../components/mentee_profile/AddNewGoal";
 import { Icon, IconColors, IconName } from "../components/Icon";
-import { MenteeProfileHeader } from "../components/MenteeProfileHeader";
+import { MenteeProfileHeader } from "../components/mentee_profile/MenteeProfileHeader";
 import PageHelmet from "../util/PageHelmet";
-import { GoalItem } from "../components/GoalItem";
+import { GoalItem } from "../components/mentee_profile/GoalItem";
 import { EmptyState } from "../components/EmptyState";
 
 export interface MenteeInfoProps {

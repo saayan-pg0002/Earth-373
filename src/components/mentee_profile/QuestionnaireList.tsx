@@ -1,4 +1,4 @@
-import { ReactComponent as BaytreeTreeGrey } from "../assets/images/baytree-tree-grey.svg";
+import { ReactComponent as BaytreeTreeGrey } from "../../assets/images/baytree-tree-grey.svg";
 import { QuestionnaireItem, QuestionnaireItemProps } from "./QuestionnaireItem";
 
 interface QuestionnaireListProps {
@@ -20,11 +20,9 @@ export const QuestionnaireList: React.FC<QuestionnaireListProps> = ({
           <p>Contact an admin to get matched!</p>
         </div>
       ) : (
-        quationnaires.map(
-          ({ month, year }: QuestionnaireItemProps) => (
-            <QuestionnaireItem month={month} year={year} />
-          )
-        )
+        quationnaires.map(({ month, year }: QuestionnaireItemProps) => (
+          <QuestionnaireItem month={month} year={year} />
+        ))
       )}
     </div>
   );

@@ -1,7 +1,7 @@
 import { Icon, IconColors, IconName } from "../components/Icon";
-import { MenteeProfileHeader } from "../components/MenteeProfileHeader";
-import { QuestionnaireItemProps } from "../components/QuestionnaireItem";
-import { QuestionnaireList } from "../components/QuestionnaireList";
+import { MenteeProfileHeader } from "../components/mentee_profile/MenteeProfileHeader";
+import { QuestionnaireItemProps } from "../components/mentee_profile/QuestionnaireItem";
+import { QuestionnaireList } from "../components/mentee_profile/QuestionnaireList";
 import PageHelmet from "../util/PageHelmet";
 import { MenteeInfoProps } from "./MenteeGoals";
 

@@ -1,6 +1,6 @@
-import { MenteeProfileHeader } from "../components/MenteeProfileHeader";
+import { MenteeProfileHeader } from "../components/mentee_profile/MenteeProfileHeader";
 import { ItemProps } from "../components/SessionItem";
-import { SessionHistoryList } from "../components/SessionHistoryList";
+import { SessionHistoryList } from "../components/mentee_profile/SessionHistoryList";
 import { getFormattedMonthDateyearString } from "../util/date";
 import PageHelmet from "../util/PageHelmet";
 import { MenteeInfoProps } from "./MenteeGoals";

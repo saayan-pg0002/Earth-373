@@ -1,6 +1,6 @@
-import { MenteeInfoProps } from "../apps/MenteeGoals";
-import { Icon, IconName } from "./Icon";
-import { Paths, routeTo } from "../util/routes";
+import { MenteeInfoProps } from "../../apps/MenteeGoals";
+import { Icon, IconName } from "../Icon";
+import { Paths, routeTo } from "../../util/routes";
 
 export const MenteeProfileHeader: React.FC<MenteeInfoProps> = ({
   menteeName,
