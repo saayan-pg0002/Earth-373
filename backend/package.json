@@ -7,7 +7,7 @@
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts",
     "build": "tsc -p .",
-    "test": "TS_NODE_PROJECT=\"./src/test/backend.tsconfig.json\" mocha -r ts-node/register ./src/test/test_backend.ts --exit"
+    "test": "TS_NODE_PROJECT=\"./src/test/backend.tsconfig.json\" mocha --timeout 20000 -r ts-node/register ./src/test/test_backend.ts --exit"
   },
   "keywords": [],
   "author": "",
