@@ -1,8 +1,13 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { DateInput } from "../components/form/DateInput";
+import { DropdownMenu } from "../components/form/DropdownMenu";
 import { FormField } from "../components/form/FormField";
+import { TimeInput } from "../components/form/TimeInput";
 import { IconName } from "../components/Icon";
+import { DaysOfWeek } from "../util/date";
 import PageHelmet from "../util/PageHelmet";
+import { Paths } from "../util/routes";
 
 interface EditMenteeProp {
   menteeName: string;
@@ -24,10 +29,14 @@ const EditMentee: React.FC<EditMenteeProp> = ({
     <main className="container">
       <PageHelmet title="Edit Mentee" />
 
-      <h1 className="page-title">Edit Mentee</h1>
+      <div className="header">
+        <h1 className="page-title">Edit Mentee</h1>
+        <Link to={Paths.dashboard} className="back-btn">
+          Go Back
+        </Link>
+      </div>
 
-      <h3 className="page-title"> {menteeName}</h3>
-
+      <h2 className="h2"> {menteeName}</h2>
       <form className="form">
         <FormField labelText="Start Date">
           <DateInput date={StartDate} rightIconName={IconName.calendar} />
@@ -39,6 +48,17 @@ const EditMentee: React.FC<EditMenteeProp> = ({
 
         <FormField labelText="Birthday">
           <DateInput date={BirthDate} rightIconName={IconName.calendar} />
+        </FormField>
+      </form>
+
+      <h2 className="h2"> Schedule</h2>
+      <form className="form">
+        <FormField labelText="Day">
+          <DropdownMenu options={DaysOfWeek} />
+        </FormField>
+
+        <FormField labelText="Start Time">
+          <TimeInput date={EndDate} rightIconName={IconName.clock} />
         </FormField>
 
         <div className="actions">

@@ -76,4 +76,18 @@
     width: 100%;
     -webkit-appearance: none;
   }
+
+  input[type="time"]::-webkit-inner-spin-button,
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    -webkit-appearance: none;
+  }
+
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+  }
 }
