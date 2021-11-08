@@ -1,5 +1,6 @@
 import { MenteeInfoProps } from "../apps/MenteeGoals";
 import { Icon, IconName } from "./Icon";
+import { Paths, routeTo } from "../util/routes";
 
 export const MenteeProfileHeader: React.FC<MenteeInfoProps> = ({
   menteeName,
@@ -10,7 +11,7 @@ export const MenteeProfileHeader: React.FC<MenteeInfoProps> = ({
     <div className="mentee-profile-header">
       <div className="heading">
         <h1 className="page-title">{menteeName}</h1>
-        <Icon name={IconName.edit} />
+        <Icon name={IconName.edit} onClick={() => routeTo(Paths.editMentee)} />
       </div>
 
       <div className="subtext">
