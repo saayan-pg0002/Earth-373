@@ -11,6 +11,7 @@ import { Paths, routeTo } from "../util/routes";
 import { storeLocalStorageItem } from "../util/localStorage";
 import { MessageToastType, showMessageToast } from "../components/MessageToast";
 import { TabletDesktopView } from "../components/TabletDesktopView";
+import Link from "../components/Link";
 
 const Login: React.FC<{}> = () => {
   const onSubmit = (e: React.SyntheticEvent) => {
@@ -40,7 +41,7 @@ const Login: React.FC<{}> = () => {
       <PageHelmet />
 
       <TabletDesktopView />
-      
+
       <div className="container">
         <main>
           <BaytreeMentorPortalLogo className="logo" />
@@ -63,7 +64,9 @@ const Login: React.FC<{}> = () => {
               <button type="submit" className="btn">
                 Log In
               </button>
-              <p>Forgot Password?</p>
+              <Link to={Paths.forgotPassword}>
+                <p>Forgot Password?</p>
+              </Link>
             </div>
           </form>
         </main>

@@ -4,6 +4,7 @@ import { TabletDesktopView } from "../components/TabletDesktopView";
 import PageHelmet from "../util/PageHelmet";
 import { PasswordInput } from "../components/form/PasswordInput";
 import { MessageToastType, showMessageToast } from "../components/MessageToast";
+import { Paths, routeTo } from "../util/routes";
 
 const ResetPassword: React.FC<{}> = () => {
   const onSubmit = (e: React.SyntheticEvent) => {
@@ -16,6 +17,7 @@ const ResetPassword: React.FC<{}> = () => {
     if (target.password.value === target.confirmPassword.value){
       const password: string = target.password.value;
       console.log(password);
+      routeTo(Paths.login);
     }
     else{
       showMessageToast(MessageToastType.ERROR, "Password Unmatched, Please re-enter");
