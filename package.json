@@ -49,7 +49,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "backend": "TS_NODE_PROJECT=\"./backend/src/test/backend.tsconfig.json\" cd ./backend && mocha -r ts-node/register ./backend/src/test/test_backend.ts --exit",
     "frontend": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}'  mocha -r ts-node/register -r jsdom-global/register ./src/test/test_frontend.tsx --exit"
   },
   "eslintConfig": {
