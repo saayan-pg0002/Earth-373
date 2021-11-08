@@ -59,16 +59,21 @@ export enum IconColors {
   transparent = "transparent",
 }
 
+export enum IconSizes {
+  xsmall = "x-small",
+  default = "default",
+}
 interface IconProps {
   name: IconName;
   color?: IconColors;
   onClick?: any;
+  size?: IconSizes;
 }
 
-export const Icon: React.FC<IconProps> = ({ name, color, onClick }) => {
+export const Icon: React.FC<IconProps> = ({ name, color, onClick, size }) => {
   return (
     <div
-      className={`icon ${color ?? ""} ${onClick ? "action" : ""}`}
+      className={`icon ${color ?? ""} ${onClick ? "action" : ""} ${size ?? ""}`}
       onClick={onClick}
     >
       {getIcon(name)}
