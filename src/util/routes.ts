@@ -13,6 +13,8 @@ import Resources from "../apps/Resources";
 import Profile from "../apps/Profile";
 import EditMentee from "../apps/EditMentee";
 import ViewSession from "../apps/ViewSession";
+import ForgotPassword from "../apps/ForgotPassword";
+import ResetPassword from "../apps/ResetPassword";
 import MenteeProfile from "../apps/MenteeProfile";
 
 export const history = createBrowserHistory();
@@ -34,13 +36,15 @@ export const Paths = {
   profile: "/profile",
   resources: "/resources",
   editMentee: "/edit-mentee",
+  forgotPassword: "/forgot-password",
+  resetPassword: "/reset-password",
   menteeProfile: "/mentee/*",
   menteeProfileGoals: "/mentee/goals",
   menteeProfileSessions: "/mentee/sessions",
   menteeProfileQuestionnaires: "/mentee/questionnaires",
 };
 
-export const PublicPaths: string[] = [Paths.login];
+export const PublicPaths: string[] = [Paths.login, Paths.forgotPassword, Paths.resetPassword];
 
 export interface Route {
   path: string;
@@ -108,6 +112,16 @@ export const routes: Route[] = [
   {
     path: Paths.menteeProfile,
     component: MenteeProfile,
+    exact: true,
+  },
+  {
+    path: Paths.forgotPassword,
+    component: ForgotPassword,
+    exact: true,
+  },
+  {
+    path: Paths.resetPassword,
+    component: ResetPassword,
     exact: true,
   },
 ];
