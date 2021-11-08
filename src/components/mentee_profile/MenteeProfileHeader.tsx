@@ -1,6 +1,6 @@
-import { MenteeInfoProps } from "../apps/MenteeGoals";
-import { Icon, IconName } from "./Icon";
-import { Paths, routeTo } from "../util/routes";
+import { MenteeInfoProps } from "./MenteeGoals";
+import { Icon, IconName, IconColors, IconSizes } from "../Icon";
+import { Paths, routeTo } from "../../util/routes";
 
 export const MenteeProfileHeader: React.FC<MenteeInfoProps> = ({
   menteeName,
@@ -15,11 +15,19 @@ export const MenteeProfileHeader: React.FC<MenteeInfoProps> = ({
       </div>
 
       <div className="subtext">
-        <Icon name={IconName.calendar} />
+        <Icon
+          name={IconName.calendar}
+          color={IconColors.baytreeNavy}
+          size={IconSizes.xsmall}
+        />
         {`Started ${startDate}`}
       </div>
       <div className="subtext">
-        <Icon name={IconName.gift} />
+        <Icon
+          name={IconName.gift}
+          color={IconColors.baytreeNavy}
+          size={IconSizes.xsmall}
+        />
         {birthday}
       </div>
     </div>

@@ -5,6 +5,16 @@
   justify-content: center;
   align-items: center;
 
+  &.x-small {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &.default {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
   &.black svg path {
     fill: $black;
   }

@@ -11,14 +11,14 @@ export interface ItemProps {
   value: string;
   clockInTime: Date;
   clockOutTime: Date;
-  isContainedImage?: boolean;
+  viewOnly?: boolean;
 }
 
 export const SessionItem: React.FC<ItemProps> = ({
   value,
   clockInTime,
   clockOutTime,
-  isContainedImage = true,
+  viewOnly = false,
 }) => {
   const [isOngoing, setIsOngoing] = useState<Boolean>(
     isCurrentDateBetween(clockInTime, clockOutTime)
@@ -34,7 +34,7 @@ export const SessionItem: React.FC<ItemProps> = ({
 
   return (
     <Link
-      to={isOngoing ? Paths.currentSession : Paths.newSession}
+      to={viewOnly ? Paths.viewSession : Paths.newSession}
       className={`session-item ${isOngoing ? "ongoing" : ""}`}
     >
       <div className="body">
@@ -44,11 +44,15 @@ export const SessionItem: React.FC<ItemProps> = ({
         </p>
         <p className="semi-bold">{value}</p>
       </div>
-      {isContainedImage && (<ContainedIcon
-        name={isOngoing ? IconName.doubleArrowRight : IconName.plus}
-        color={isOngoing ? IconColors.baytreeGreen : IconColors.black}
-        backgroundColor={isOngoing ? IconColors.white : IconColors.transparent}
-      />)}
+      {!viewOnly && (
+        <ContainedIcon
+          name={isOngoing ? IconName.doubleArrowRight : IconName.plus}
+          color={isOngoing ? IconColors.baytreeGreen : IconColors.black}
+          backgroundColor={
+            isOngoing ? IconColors.white : IconColors.transparent
+          }
+        />
+      )}
     </Link>
   );
 };
