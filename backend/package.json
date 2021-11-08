@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/app.js",
+    "start": "node dist/app.js --exit",
     "dev": "nodemon src/app.ts",
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "test": "TS_NODE_PROJECT=\"./src/test/backend.tsconfig.json\" mocha -r ts-node/register ./src/test/test_backend.ts --exit"
   },
   "keywords": [],
   "author": "",
