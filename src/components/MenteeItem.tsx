@@ -1,25 +1,35 @@
 import { ContainedIcon, IconName, IconColors } from './Icon';
-import { getStartEndFormattedTimeStringWithDay } from '../util/date';
+import { getFormattedMonthYearString } from '../util/date';
 import Link from "./Link";
 import { Paths } from '../util/routes';
 
+
+export interface MenteeItemProps {
+  menteeName: string;
+  startDate: Date;
+  endDate?: Date;
+}
+
+
 export const MenteeItem: React.FC<MenteeItemProps> = ({
   menteeName,
-  clockInTime,
-  clockOutTime,
-  dayOfWeek,
+  startDate,
+  endDate,
 }) => {
   return (
-    <Link to={Paths.dashboard} className='mentee-item'>
-      <div className='body'>
-        <p className='subtext'>
-          {getStartEndFormattedTimeStringWithDay(clockInTime, clockOutTime)}
+    <Link to={Paths.menteeGoals} className="mentee-item">
+      <div className="body">
+        <p className="subtext">
+          {endDate
+            ? `${getFormattedMonthYearString(startDate)} - ${getFormattedMonthYearString(endDate)}`
+            : `${getFormattedMonthYearString(startDate)}`
+            }
         </p>
-        <p className='semi-bold'>{menteeName}</p>
+        <p className="semi-bold">{menteeName}</p>
       </div>
-      <div className='icon'>
+      <div className="icon">
         <ContainedIcon
-          name={IconName.edit}
+          name={IconName.user}
           color={IconColors.black}
           backgroundColor={IconColors.transparent}
         ></ContainedIcon>
@@ -27,10 +37,3 @@ export const MenteeItem: React.FC<MenteeItemProps> = ({
     </Link>
   );
 };
-
-export interface MenteeItemProps {
-  menteeName: string;
-  clockInTime: Date;
-  clockOutTime: Date;
-  dayOfWeek: Date;
-}

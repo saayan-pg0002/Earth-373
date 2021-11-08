@@ -7,16 +7,18 @@ import {
 import Link from "./Link";
 import { Paths } from "../util/routes";
 
-export interface SessionItemProps {
-  menteeName: string;
+export interface ItemProps {
+  value: string;
   clockInTime: Date;
   clockOutTime: Date;
+  isContainedImage?: boolean;
 }
 
-export const SessionItem: React.FC<SessionItemProps> = ({
-  menteeName,
+export const SessionItem: React.FC<ItemProps> = ({
+  value,
   clockInTime,
   clockOutTime,
+  isContainedImage = true,
 }) => {
   const [isOngoing, setIsOngoing] = useState<Boolean>(
     isCurrentDateBetween(clockInTime, clockOutTime)
@@ -40,13 +42,13 @@ export const SessionItem: React.FC<SessionItemProps> = ({
         <p className="subtext">
           {getStartEndFormattedTimeString(clockInTime, clockOutTime)}
         </p>
-        <p className="semi-bold">{menteeName}</p>
+        <p className="semi-bold">{value}</p>
       </div>
-      <ContainedIcon
+      {isContainedImage && (<ContainedIcon
         name={isOngoing ? IconName.doubleArrowRight : IconName.plus}
         color={isOngoing ? IconColors.baytreeGreen : IconColors.black}
         backgroundColor={isOngoing ? IconColors.white : IconColors.transparent}
-      />
+      />)}
     </Link>
   );
 };
