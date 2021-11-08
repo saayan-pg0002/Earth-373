@@ -1,11 +1,12 @@
 import PageHelmet from "../util/PageHelmet";
 import { SessionList } from "../components/SessionList";
-import { SessionItemProps } from "../components/SessionItem";
 import { WeekScheduleCalendar } from "../components/WeekScheduleCalendar";
+import { ItemProps } from "../components/SessionItem";
+import { AvatarHeader } from "../components/AvatarHeader";
 
-const sessionList: SessionItemProps[] = [
+const sessionList: ItemProps[] = [
   {
-    menteeName: "Melissa Nguyen",
+    value: "Melissa Nguyen",
     clockInTime: (() => {
       const date = new Date();
       date.setHours(19, 0);
@@ -18,7 +19,7 @@ const sessionList: SessionItemProps[] = [
     })(),
   },
   {
-    menteeName: "Melissa Nguyen",
+    value: "Melissa Nguyen",
     clockInTime: (() => {
       const date = new Date();
       date.setHours(20, 0);
@@ -31,7 +32,7 @@ const sessionList: SessionItemProps[] = [
     })(),
   },
   {
-    menteeName: "Melissa Nguyen",
+    value: "Melissa Nguyen",
     clockInTime: (() => {
       const date = new Date();
       date.setHours(21, 0);
@@ -51,7 +52,10 @@ const Dashboard: React.FC = () => {
       <PageHelmet title="Dashboard" />
 
       <div className="container">
-        <h1 className="page-title">Hi, Wendy!</h1>
+        <div className="header">
+          <h1 className="page-title">Hi, Wendy!</h1>
+          <AvatarHeader name="Wendy Evans" />
+        </div>
         <WeekScheduleCalendar />
         <SessionList sessions={sessionList} />
       </div>

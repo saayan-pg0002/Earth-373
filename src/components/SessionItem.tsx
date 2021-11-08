@@ -4,19 +4,21 @@ import {
   isCurrentDateBetween,
   getStartEndFormattedTimeString,
 } from "../util/date";
-import { Link } from "react-router-dom";
+import Link from "./Link";
 import { Paths } from "../util/routes";
 
-export interface SessionItemProps {
-  menteeName: string;
+export interface ItemProps {
+  value: string;
   clockInTime: Date;
   clockOutTime: Date;
+  viewOnly?: boolean;
 }
 
-export const SessionItem: React.FC<SessionItemProps> = ({
-  menteeName,
+export const SessionItem: React.FC<ItemProps> = ({
+  value,
   clockInTime,
   clockOutTime,
+  viewOnly = false,
 }) => {
   const [isOngoing, setIsOngoing] = useState<Boolean>(
     isCurrentDateBetween(clockInTime, clockOutTime)
@@ -32,7 +34,7 @@ export const SessionItem: React.FC<SessionItemProps> = ({
 
   return (
     <Link
-      to={isOngoing ? Paths.currentSession : Paths.newSession}
+      to={viewOnly ? Paths.viewSession : Paths.newSession}
       className={`session-item ${isOngoing ? "ongoing" : ""}`}
     >
       <div className="body">
@@ -40,13 +42,17 @@ export const SessionItem: React.FC<SessionItemProps> = ({
         <p className="subtext">
           {getStartEndFormattedTimeString(clockInTime, clockOutTime)}
         </p>
-        <p className="semi-bold">{menteeName}</p>
+        <p className="semi-bold">{value}</p>
       </div>
-      <ContainedIcon
-        name={isOngoing ? IconName.doubleArrowRight : IconName.plus}
-        color={isOngoing ? IconColors.baytreeGreen : IconColors.black}
-        backgroundColor={isOngoing ? IconColors.white : IconColors.transparent}
-      />
+      {!viewOnly && (
+        <ContainedIcon
+          name={isOngoing ? IconName.doubleArrowRight : IconName.plus}
+          color={isOngoing ? IconColors.baytreeGreen : IconColors.black}
+          backgroundColor={
+            isOngoing ? IconColors.white : IconColors.transparent
+          }
+        />
+      )}
     </Link>
   );
 };

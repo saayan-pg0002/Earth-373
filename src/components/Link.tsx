@@ -4,9 +4,10 @@ import { ORIGIN } from "../util/request";
 
 interface LinkProps {
   to: string;
+  className?: string;
 }
 
-const Link: FC<LinkProps> = ({ to: path, children }) => {
+const Link: FC<LinkProps> = ({ to: path, className = "", children }) => {
   const href: string = `${ORIGIN}/${path}`;
 
   const onClick = (e: React.SyntheticEvent) => {
@@ -15,7 +16,7 @@ const Link: FC<LinkProps> = ({ to: path, children }) => {
   };
 
   return (
-    <a onClick={onClick} href={href}>
+    <a onClick={onClick} href={href} className={className}>
       {children}
     </a>
   );

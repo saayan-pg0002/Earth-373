@@ -5,5 +5,12 @@
     & > * + * {
       margin-top: 1.5rem;
     }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      .page-title {
+        margin: 0;
+      }
+    }
   }
 }

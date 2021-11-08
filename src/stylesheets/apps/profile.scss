@@ -1,0 +1,25 @@
+@import "../util/";
+
+.profile {
+  .container {
+    .form {
+      & > * + * {
+        margin-top: 1rem;
+      }
+    }
+  }
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .back-btn {
+      padding-top: 0.6rem;
+      &:hover,
+      &:focus {
+        font-weight: bold;
+      }
+    }
+  }
+  
