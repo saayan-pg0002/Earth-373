@@ -3,21 +3,27 @@ import { ReactComponent as BaytreeMentorPortalLogo } from "../assets/images/bayt
 import { TabletDesktopView } from "../components/TabletDesktopView";
 import PageHelmet from "../util/PageHelmet";
 import { PasswordInput } from "../components/form/PasswordInput";
+import { MessageToastType, showMessageToast } from "../components/MessageToast";
 
 const ResetPassword: React.FC<{}> = () => {
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     const target = e.target as typeof e.target & {
       password: { value: string };
+      confirmPassword: {value: string};
     };
 
-    const password: string = target.password.value;
-
-    console.log(password);
+    if (target.password.value === target.confirmPassword.value){
+      const password: string = target.password.value;
+      console.log(password);
+    }
+    else{
+      showMessageToast(MessageToastType.ERROR, "Password Unmatched, Please re-enter");
+    }
   };
   return (
     <div className="login">
-      <PageHelmet title="Reset Password"/>
+      <PageHelmet title="Reset Password" />
 
       <TabletDesktopView />
 
@@ -33,6 +39,9 @@ const ResetPassword: React.FC<{}> = () => {
             </header>
             <FormField labelText="Password">
               <PasswordInput name="password" />
+            </FormField>
+            <FormField labelText="Re-Enter New Password">
+              <PasswordInput name="confirmPassword" />
             </FormField>
             <div className="actions">
               <button type="submit" className="btn">

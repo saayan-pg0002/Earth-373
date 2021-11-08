@@ -43,7 +43,7 @@ const ForgotPassword: React.FC<{}> = () => {
             </FormField>
             <div className="actions">
               <button type="submit" className="btn">
-                Send Link
+                Reset Password
               </button>
             </div>
           </form>
