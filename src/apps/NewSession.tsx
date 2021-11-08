@@ -1,66 +1,100 @@
 import PageHelmet from "../util/PageHelmet";
-import Link from "../components/Link";
 import { DropdownMenu } from "../components/form/DropdownMenu";
 import { FormField } from "../components/form/FormField";
-import { RenderAttributes } from "../components/form/RenderAttributes";
 import { IconName } from "../components/Icon";
-import { getFormattedTimeString } from "../util/date";
-import { Paths } from "../util/routes";
+import { DateInput } from "../components/form/DateInput";
+import { InputNotes } from "../components/form/InputNotes";
+import { TimeInput } from "../components/form/TimeInput";
+
+const AciveMenteeList: string[] = ["Melissa Nguyen", "Dianne Russell"];
 
 export interface NewSessionProps {
   menteeName: string;
   date: string;
   actualclockInTime: Date;
   actualclockOutTime: Date;
-  notes?: string;
+  notes: string;
 }
-
-const menteeNameList: string[] = [
-  "Melissa Nguyen",
-  "Dianne Russell",
-  "Tessa Pampangan",
-];
 
 const NewSession: React.FC<NewSessionProps> = ({
   menteeName,
   date,
   actualclockInTime,
   actualclockOutTime,
+  notes,
 }) => {
-  date = "2021-09-19";
-  const temp = new Date();
-  temp.setHours(NaN);
-  actualclockInTime = temp;
-  actualclockOutTime = temp;
+
+  const onSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+
+    const target = e.target as typeof e.target & {
+      inputMenteeName: { value: string };
+      inputDate: { value: string };
+      inputActualclockInTime: { value: Date };
+      inputActualclockOutTime: { value: Date };
+      inputNotes: { value: string };
+    };
+
+    menteeName = target.inputMenteeName.value;
+    date = target.inputDate.value;
+    actualclockInTime = target.inputActualclockInTime.value;
+    actualclockOutTime = target.inputActualclockOutTime.value;
+    notes = target.inputNotes.value;
+
+  };
 
   return (
     <main className="container">
       <PageHelmet title="New Session" />
 
       <h1 className="page-title">New Session</h1>
-      <form className="form">
+      <form onSubmit={onSubmit} className="form">
         <FormField labelText="Mentee">
-          <DropdownMenu options={menteeNameList} />
+          <DropdownMenu
+            options={AciveMenteeList}
+            name="inputMenteeName"
+            id="inputMenteeName"
+          />
         </FormField>
 
         <FormField labelText="Date">
-          <RenderAttributes
-            attribute={date}
+          <DateInput
             rightIconName={IconName.calendar}
+            name="inputDate"
+            id="inputDate"
           />
         </FormField>
 
         <FormField labelText="Start Time">
-          <RenderAttributes
-            attribute={getFormattedTimeString(actualclockInTime)}
+          <TimeInput
+            name="inputActualclockInTime"
+            id="inputActualclockInTime"
             rightIconName={IconName.clock}
           />
         </FormField>
 
+        <FormField labelText="End Time">
+          <TimeInput
+            name="inputActualclockOutTime"
+            id="inputActualclockOutTime"
+            rightIconName={IconName.clock}
+          />
+        </FormField>
+
+        <FormField labelText="Notes">
+          <InputNotes
+            placeholderText="Your notes..."
+            name="inputNotes"
+            id="inputNotes"
+            isDisabled={false}
+            notes=""
+          />
+        </FormField>
+
         <div className="actions">
-          <Link to={Paths.currentSession} className="btn">
-            Start Session
-          </Link>
+          <button type="submit" className="btn">
+            Log Session
+          </button>
         </div>
       </form>
     </main>

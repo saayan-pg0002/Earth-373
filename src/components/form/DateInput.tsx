@@ -5,11 +5,15 @@ import { Icon, IconName } from "../Icon";
 interface DateInputProps {
   date?: Date;
   rightIconName?: IconName;
+  name?: string;
+  id?: string;
 }
 
 export const DateInput: React.FC<DateInputProps> = ({
   date,
   rightIconName,
+  name,
+  id,
 }) => {
   const [isFocused, setIsFocused] = useState<Boolean>(false);
 
@@ -33,6 +37,8 @@ export const DateInput: React.FC<DateInputProps> = ({
         max="2030-12-31"
         value={value}
         onChange={onChange}
+        name={name}
+        id={id}
       />
       {rightIconName && <Icon name={rightIconName} />}
     </div>

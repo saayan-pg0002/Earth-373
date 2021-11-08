@@ -58,7 +58,7 @@ const EditMentee: React.FC<EditMenteeProp> = ({
         </FormField>
 
         <FormField labelText="Start Time">
-          <TimeInput date={EndDate} rightIconName={IconName.clock} />
+          <TimeInput time={EndDate} rightIconName={IconName.clock} />
         </FormField>
 
         <div className="actions">
