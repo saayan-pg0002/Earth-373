@@ -1,7 +1,6 @@
 import PageHelmet from "../util/PageHelmet";
 import { DropdownMenu } from "../components/form/DropdownMenu";
 import { FormField } from "../components/form/FormField";
-import { IconName } from "../components/Icon";
 import { DateInput } from "../components/form/DateInput";
 import { InputNotes } from "../components/form/InputNotes";
 import { TimeInput } from "../components/form/TimeInput";
@@ -23,24 +22,22 @@ const NewSession: React.FC<NewSessionProps> = ({
   actualclockOutTime,
   notes,
 }) => {
-
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
 
     const target = e.target as typeof e.target & {
-      inputMenteeName: { value: string };
-      inputDate: { value: string };
-      inputActualclockInTime: { value: Date };
-      inputActualclockOutTime: { value: Date };
-      inputNotes: { value: string };
+      mentee_name: { value: string };
+      date: { value: string };
+      start_time: { value: Date };
+      end_time: { value: Date };
+      notes: { value: string };
     };
 
-    menteeName = target.inputMenteeName.value;
-    date = target.inputDate.value;
-    actualclockInTime = target.inputActualclockInTime.value;
-    actualclockOutTime = target.inputActualclockOutTime.value;
-    notes = target.inputNotes.value;
-
+    const mentee_name = target.mentee_name.value;
+    const date = target.date.value;
+    const start_time = target.start_time.value;
+    const end_time = target.end_time.value;
+    const notes = target.notes.value;
   };
 
   return (
@@ -50,44 +47,25 @@ const NewSession: React.FC<NewSessionProps> = ({
       <h1 className="page-title">New Session</h1>
       <form onSubmit={onSubmit} className="form">
         <FormField labelText="Mentee">
-          <DropdownMenu
-            options={AciveMenteeList}
-            name="inputMenteeName"
-            id="inputMenteeName"
-          />
+          <DropdownMenu options={AciveMenteeList} name="mentee_name" />
         </FormField>
 
         <FormField labelText="Date">
-          <DateInput
-            rightIconName={IconName.calendar}
-            name="inputDate"
-            id="inputDate"
-          />
+          <DateInput name="date" id="inputDate" />
         </FormField>
 
         <FormField labelText="Start Time">
-          <TimeInput
-            name="inputActualclockInTime"
-            id="inputActualclockInTime"
-            rightIconName={IconName.clock}
-          />
+          <TimeInput name="start_time" />
         </FormField>
 
         <FormField labelText="End Time">
-          <TimeInput
-            name="inputActualclockOutTime"
-            id="inputActualclockOutTime"
-            rightIconName={IconName.clock}
-          />
+          <TimeInput name="end_time" />
         </FormField>
 
         <FormField labelText="Notes">
           <InputNotes
-            placeholderText="Your notes..."
-            name="inputNotes"
-            id="inputNotes"
-            isDisabled={false}
-            notes=""
+            placeholderText="Add notes about your session..."
+            name="notes"
           />
         </FormField>
 

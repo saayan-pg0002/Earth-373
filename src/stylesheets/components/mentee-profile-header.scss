@@ -22,7 +22,7 @@
     display: flex;
     width: 100%;
 
-    .icon {
+    &.subtext .icon {
       margin-right: 0.5rem;
     }
   }

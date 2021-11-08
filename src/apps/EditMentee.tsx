@@ -4,7 +4,6 @@ import { DateInput } from "../components/form/DateInput";
 import { DropdownMenu } from "../components/form/DropdownMenu";
 import { FormField } from "../components/form/FormField";
 import { TimeInput } from "../components/form/TimeInput";
-import { IconName } from "../components/Icon";
 import { DaysOfWeek } from "../util/date";
 import PageHelmet from "../util/PageHelmet";
 import { Paths } from "../util/routes";
@@ -39,15 +38,15 @@ const EditMentee: React.FC<EditMenteeProp> = ({
       <h2 className="h2"> {menteeName}</h2>
       <form className="form">
         <FormField labelText="Start Date">
-          <DateInput date={StartDate} rightIconName={IconName.calendar} />
+          <DateInput date={StartDate} />
         </FormField>
 
         <FormField labelText="End Date">
-          <DateInput date={EndDate} rightIconName={IconName.calendar} />
+          <DateInput date={EndDate} />
         </FormField>
 
         <FormField labelText="Birthday">
-          <DateInput date={BirthDate} rightIconName={IconName.calendar} />
+          <DateInput date={BirthDate} />
         </FormField>
       </form>
 
@@ -58,7 +57,7 @@ const EditMentee: React.FC<EditMenteeProp> = ({
         </FormField>
 
         <FormField labelText="Start Time">
-          <TimeInput time={EndDate} rightIconName={IconName.clock} />
+          <TimeInput time={EndDate} />
         </FormField>
 
         <div className="actions">

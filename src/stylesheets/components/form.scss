@@ -70,18 +70,13 @@
   }
 
   input[type="date"]::-webkit-inner-spin-button,
-  input[type="date"]::-webkit-calendar-picker-indicator {
-    opacity: 0;
-    position: absolute;
-    width: 100%;
-    -webkit-appearance: none;
-  }
-
+  input[type="date"]::-webkit-calendar-picker-indicator,
   input[type="time"]::-webkit-inner-spin-button,
   input[type="time"]::-webkit-calendar-picker-indicator {
     opacity: 0;
     position: absolute;
-    width: 100%;
+    left: 0;
+    width: 75%;
     -webkit-appearance: none;
   }
 

@@ -1,17 +1,14 @@
 import { useState } from "react";
 import { getFormattedYearMonthDayNumericString } from "../../util/date";
 import { Icon, IconName } from "../Icon";
+import { GeneralInputProps } from "./FormField";
 
 interface DateInputProps {
   date?: Date;
-  rightIconName?: IconName;
-  name?: string;
-  id?: string;
 }
 
-export const DateInput: React.FC<DateInputProps> = ({
+export const DateInput: React.FC<GeneralInputProps & DateInputProps> = ({
   date,
-  rightIconName,
   name,
   id,
 }) => {
@@ -21,7 +18,7 @@ export const DateInput: React.FC<DateInputProps> = ({
   const onBlur = (): void => setIsFocused(false);
 
   const [value, setValue] = useState<string>(
-    !!date ? getFormattedYearMonthDayNumericString(date) : "blank"
+    !!date ? getFormattedYearMonthDayNumericString(date) : ""
   );
 
   const onChange = (event: any) => {
@@ -40,7 +37,7 @@ export const DateInput: React.FC<DateInputProps> = ({
         name={name}
         id={id}
       />
-      {rightIconName && <Icon name={rightIconName} />}
+      <Icon name={IconName.calendar} />
     </div>
   );
 };

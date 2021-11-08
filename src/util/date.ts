@@ -136,3 +136,9 @@ export const getFormattedMonthYearString = (date: Date): string => {
   const year: number = date.getFullYear(); // 2019
   return `${monthName} ${year}`;
 };
+
+export const getFormattedHourMinuteString = (date: Date): string => {
+  const hour: string = getDoubleDigitString(date.getHours());
+  const minutes: string = getDoubleDigitString(date.getMinutes());
+  return `${hour}:${minutes}`;
+};

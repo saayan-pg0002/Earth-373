@@ -1,17 +1,14 @@
 import { useState } from "react";
-import { getFormattedYearMonthDayNumericString } from "../../util/date";
+import { getFormattedHourMinuteString } from "../../util/date";
 import { Icon, IconName } from "../Icon";
+import { GeneralInputProps } from "./FormField";
 
 interface TimeInputProps {
   time?: Date;
-  rightIconName?: IconName;
-  name?: string;
-  id?: string;
 }
 
-export const TimeInput: React.FC<TimeInputProps> = ({
+export const TimeInput: React.FC<GeneralInputProps & TimeInputProps> = ({
   time,
-  rightIconName,
   name,
   id,
 }) => {
@@ -21,7 +18,7 @@ export const TimeInput: React.FC<TimeInputProps> = ({
   const onBlur = (): void => setIsFocused(false);
 
   const [value, setValue] = useState<string>(
-    !!time ? getFormattedYearMonthDayNumericString(time) : "blank"
+    !!time ? getFormattedHourMinuteString(time) : ""
   );
 
   const onChange = (event: any) => {
@@ -38,7 +35,7 @@ export const TimeInput: React.FC<TimeInputProps> = ({
         name={name}
         id={id}
       />
-      {rightIconName && <Icon name={rightIconName} />}
+      <Icon name={IconName.clock} />
     </div>
   );
 };
