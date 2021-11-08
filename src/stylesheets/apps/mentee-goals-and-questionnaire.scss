@@ -1,11 +1,11 @@
 @import "../util/";
 
-.mentee-goals {
+.mentee-goals, .mentee-questionnaire {
   .goal-section + .goal-section {
     margin-top: 2rem;
   }
 
-  .goal-section {
+  .goal-section, .questionnaire-section {
     .header {
       display: flex;
       justify-content: space-between;

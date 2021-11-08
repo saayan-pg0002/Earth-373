@@ -1,4 +1,4 @@
-import { ContainedIcon, IconColors, IconName } from "../components/Icon";
+import { Icon, IconColors, IconName } from "../components/Icon";
 import { MenteeProfileHeader } from "../components/MenteeProfileHeader";
 import { QuestionnaireItemProps } from "../components/QuestionnaireItem";
 import { QuestionnaireList } from "../components/QuestionnaireList";
@@ -31,7 +31,7 @@ const MenteeQuestionnaire: React.FC<MenteeInfoProps> = ({
 
   const AddQuestionnare = () => {};
   return (
-    <main className="container">
+    <main className="container mentee-questionnaire">
       <PageHelmet title="Mentee Questionnaire" />
       <MenteeProfileHeader
         menteeName={menteeName}
@@ -40,16 +40,14 @@ const MenteeQuestionnaire: React.FC<MenteeInfoProps> = ({
       />
       {/* TODO: tab component*/}
 
-      <div>
-        <div className="subtext statusTag ">
-          Complete
-          <span onClick={AddQuestionnare}>
-            <ContainedIcon
-              name={IconName.plus}
-              color={IconColors.black}
-              backgroundColor={IconColors.white}
-            ></ContainedIcon>
-          </span>
+      <div className="questionnaire-section">
+        <div className="header">
+          <h2 className="subtext">Complete</h2>
+          <Icon
+            name={IconName.plus}
+            color={IconColors.black}
+            onClick={AddQuestionnare}
+          />
         </div>
       </div>
 
