@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "../components/Link";
 import { FormField } from "../components/form/FormField";
 import { InputNotes } from "../components/form/InputNotes";
 import { RenderAttributes } from "../components/form/RenderAttributes";

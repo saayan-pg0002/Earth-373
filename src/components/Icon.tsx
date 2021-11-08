@@ -20,6 +20,9 @@ import { ReactComponent as Smiley } from "../assets/icons/icon-smiley.svg";
 import { ReactComponent as User } from "../assets/icons/icon-user.svg";
 import { ReactComponent as Folders } from "../assets/icons/icon-folders.svg";
 import { ReactComponent as CircledCheckmark } from "../assets/icons/icon-circled-checkmark.svg";
+import { ReactComponent as Gift } from "../assets/icons/icon-gift.svg";
+import { ReactComponent as X } from "../assets/icons/icon-x.svg";
+import { ReactComponent as Checkmark } from "../assets/icons/icon-checkmark.svg";
 
 export enum IconName {
   autocomplete,
@@ -43,6 +46,9 @@ export enum IconName {
   user,
   folders,
   circledCheckMark,
+  gift,
+  x,
+  checkmark,
 }
 
 export enum IconColors {
@@ -56,22 +62,29 @@ export enum IconColors {
 interface IconProps {
   name: IconName;
   color?: IconColors;
+  onClick?: any;
 }
 
-export const Icon: React.FC<IconProps> = ({ name, color }) => {
-  return <div className={`icon ${color ?? ""}`}>{getIcon(name)}</div>;
+export const Icon: React.FC<IconProps> = ({ name, color, onClick }) => {
+  return (
+    <div
+      className={`icon ${color ?? ""} ${onClick ? "action" : ""}`}
+      onClick={onClick}
+    >
+      {getIcon(name)}
+    </div>
+  );
 };
 
 interface ContainedIconProps {
-  name: IconName;
-  color: IconColors;
   backgroundColor: IconColors;
   isCircle?: boolean;
 }
 
-export const ContainedIcon: React.FC<ContainedIconProps> = ({
+export const ContainedIcon: React.FC<IconProps & ContainedIconProps> = ({
   name,
   color,
+  onClick,
   backgroundColor,
   isCircle = false,
 }) => {
@@ -79,7 +92,7 @@ export const ContainedIcon: React.FC<ContainedIconProps> = ({
     <div
       className={`contained-icon ${backgroundColor ?? ""} ${
         isCircle ? "circle" : ""
-      }`}
+      } ${onClick ? "action" : ""}`}
     >
       <Icon name={name} color={color} />
     </div>
@@ -130,6 +143,12 @@ const getIcon = (name: IconName): JSX.Element => {
       return <Folders />;
     case IconName.circledCheckMark:
       return <CircledCheckmark />;
+    case IconName.gift:
+      return <Gift />;
+    case IconName.x:
+      return <X />;
+    case IconName.checkmark:
+      return <Checkmark />;
     default:
       return <></>;
   }
