@@ -16,6 +16,8 @@ import ViewSession from "../apps/ViewSession";
 import MenteeGoals from "../apps/MenteeGoals";
 import MenteeQuestionnaire from "../apps/MenteeQuestionnaire";
 import MenteeSessionHistory from "../apps/MenteeSessionHistory";
+import ForgotPassword from "../apps/ForgotPassword";
+import ResetPassword from "../apps/ResetPassword";
 
 export const history = createBrowserHistory();
 
@@ -39,9 +41,11 @@ export const Paths = {
   menteeGoals: "/mentee-goals",
   menteeSessionHistory: "/mentee-session-history",
   menteeQuestionnaires: "/mentee-questionnaires",
+  forgotPassword: "/forgot-password",
+  resetPassword: "/reset-password",
 };
 
-export const PublicPaths: string[] = [Paths.login];
+export const PublicPaths: string[] = [Paths.login, Paths.forgotPassword, Paths.resetPassword];
 
 export interface Route {
   path: string;
@@ -119,6 +123,16 @@ export const routes: Route[] = [
   {
     path: Paths.menteeQuestionnaires,
     component: MenteeQuestionnaire,
+    exact: true,
+  },
+  {
+    path: Paths.forgotPassword,
+    component: ForgotPassword,
+    exact: true,
+  },
+  {
+    path: Paths.resetPassword,
+    component: ResetPassword,
     exact: true,
   },
 ];
