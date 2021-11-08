@@ -27,7 +27,11 @@ const App: React.FC<{}> = () => {
                     classes += " private-path";
                   }
 
-                  if (route.path === Paths.login) {
+                  if (
+                    route.path === Paths.login ||
+                    route.path === Paths.forgotPassword ||
+                    route.path === Paths.resetPassword
+                  ) {
                     classes += " login";
                   }
 
