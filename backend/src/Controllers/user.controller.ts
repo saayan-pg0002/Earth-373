@@ -17,6 +17,16 @@ const validateToken = (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
+const getHashedPassword = (password: string) => {
+  bcrypt.hash(password, 10, (hashError, hash) => {
+    if (hashError) {
+      throw hashError;
+    } else {
+      return hash;
+    }
+  });
+};
+
 //Note: We will not be registering users this way. Use sections of this code when changing user password.
 const register = (req: Request, res: Response, next: NextFunction) => {
   let {
@@ -77,13 +87,14 @@ const updateProfile = (req: Request, res: Response, next: NextFunction) => {
   const changes = req.body;
 
   User.findOneAndUpdate(query, changes, { new: true }, (err, doc) => {
-    if (err) res.status(400).json({
-      message: "There was an error updating the profile.",
-      err
-    });
+    if (err)
+      res.status(400).json({
+        message: "There was an error updating the profile.",
+        err,
+      });
     return res.status(200).json({
       message: "Successfully updated profile.",
-      doc
+      doc,
     });
   });
 };
@@ -318,57 +329,64 @@ const migrateMentees = async (req: Request, res: Response) => {
     return res.status(500).json({
       message: "Error migrating all mentees from Views",
     });
-  };
+  }
   res.send("Migrated Views Mentees Successfully!");
 };
 
 const createGoalForAssociation = (req: Request, res: Response) => {
-  let { 
-    mentee_id, goal
-  } = req.body;
+  let { mentee_id, goal } = req.body;
 
   const user: any = req.user;
   const mentor_id: string = user._id as string;
 
-  Association.findOneAndUpdate({ 
-    mentor_id: mentor_id,
-    mentee_id: mentee_id
-  }, {
-    $push: {
-      goals: {
-        name: goal,
-        is_complete: false
+  Association.findOneAndUpdate(
+    {
+      mentor_id: mentor_id,
+      mentee_id: mentee_id,
+    },
+    {
+      $push: {
+        goals: {
+          name: goal,
+          is_complete: false,
+        },
+      },
+    },
+    { new: true }
+  )
+    .then((result) => {
+      if (result == null) {
+        return res.status(500).json({
+          message: "Warning: Mentor/Mentee pair not found. Are they active?",
+        });
       }
-    }
-  }, {new: true}).then((result) => {
-    if (result == null) {
-      return res.status(500).json({
-        message: "Warning: Mentor/Mentee pair not found. Are they active?"
+      return res.status(201).json({
+        message: "Successfully created goal for mentorship.",
+        result,
       });
-    }
-    return res.status(201).json({ 
-      message: "Successfully created goal for mentorship.",
-      result 
+    })
+    .catch((error) => {
+      return res.status(500).json({
+        message: "Error creating goal for the mentee/mentor association.",
+      });
     });
-  }).catch((error) => {
-    return res.status(500).json({
-      message: "Error creating goal for the mentee/mentor association.",
-    });
-  });
 };
 
 const getAssociationsFromMentor = (req: Request, res: Response) => {
   const user: any = req.user;
   const mentor_id: string = user._id as string;
 
-  Association.find({mentor_id: mentor_id}).exec().then((profileObj) => {
-    return res.status(200).json({profileObj})
-  }).catch((error) => {
-    return res.status(404).json({
-      message: "Error: Mentee id not found.",
-      error
+  Association.find({ mentor_id: mentor_id })
+    .exec()
+    .then((profileObj) => {
+      return res.status(200).json({ profileObj });
+    })
+    .catch((error) => {
+      return res.status(404).json({
+        message: "Error: Mentee id not found.",
+        error,
+      });
     });
-  });
 };
 
 export default {
