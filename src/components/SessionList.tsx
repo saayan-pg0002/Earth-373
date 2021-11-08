@@ -1,8 +1,8 @@
-import { ReactComponent as BaytreeTreeGrey } from "../assets/images/baytree-tree-grey.svg";
-import { SessionItem, SessionItemProps } from "./SessionItem";
+import { ItemProps, SessionItem } from "./SessionItem";
+import { EmptyState } from "../components/EmptyState";
 
 interface SessionListProps {
-  sessions: SessionItemProps[];
+  sessions: ItemProps[];
 }
 
 export const SessionList: React.FC<SessionListProps> = ({ sessions }) => {
@@ -11,23 +11,19 @@ export const SessionList: React.FC<SessionListProps> = ({ sessions }) => {
   return (
     <div className={`session-list ${isEmpty ? "empty" : ""}`}>
       {isEmpty ? (
-        <div className="empty-state">
-          <BaytreeTreeGrey />
-          <h1 className="widget-title">You Have No Upcoming Sessions</h1>
-          <p>
-            Contact a staff member to get your schedule or to get matched with a
-            mentee
-          </p>
-        </div>
+        <EmptyState
+          title="You Have No Upcoming Sessions"
+          message="Contact a staff member to get matched with a mentee"
+        />
       ) : (
         sessions.map(
           (
-            { menteeName, clockInTime, clockOutTime }: SessionItemProps,
+            { value, clockInTime, clockOutTime }: ItemProps,
             index: number
           ) => (
             <SessionItem
               key={index}
-              menteeName={menteeName}
+              value={value}
               clockInTime={clockInTime}
               clockOutTime={clockOutTime}
             />

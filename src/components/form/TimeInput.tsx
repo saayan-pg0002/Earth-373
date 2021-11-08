@@ -7,7 +7,7 @@ interface DateInputProps {
   rightIconName?: IconName;
 }
 
-export const DateInput: React.FC<DateInputProps> = ({
+export const TimeInput: React.FC<DateInputProps> = ({
   date,
   rightIconName,
 }) => {
@@ -26,11 +26,9 @@ export const DateInput: React.FC<DateInputProps> = ({
   return (
     <div className={`control ${isFocused ? "focused" : ""}`}>
       <input
-        type="date"
+        type="time"
         onFocus={onFocus}
         onBlur={onBlur}
-        min="1960-01-01"
-        max="2030-12-31"
         value={value}
         onChange={onChange}
       />

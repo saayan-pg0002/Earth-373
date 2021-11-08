@@ -323,12 +323,7 @@ const forgotPassword = (req: Request, res: Response) => {
 };
 
 const getProfile = (req: Request, res: Response) => {
-  const user: any = req.user;
-  return res.json({
-    email: user.email,
-    _id: user._id,
-    views_id: user.views_id,
-  });
+  return res.json(req.user);
 };
 
 const resetPassword = (req: Request, res: Response) => {

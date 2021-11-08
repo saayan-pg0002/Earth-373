@@ -1,0 +1,44 @@
+@import "../util/";
+
+.goal-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  .checkbox {
+    margin-right: 0.25rem;
+  }
+
+  .input {
+    width: 100%;
+    input {
+      cursor: pointer;
+      font-family: $font-family;
+      font-size: $font-size;
+      width: 100%;
+      border: none;
+      background-color: $white;
+      padding: 0 0.5rem 0.5rem 0.5rem;
+      border-bottom: 1px solid transparent;
+
+      &:disabled {
+        color: $black;
+      }
+    }
+  }
+
+  &.editing {
+    input {
+      &:focus,
+      &:active {
+        outline: none;
+        border-bottom: 1px solid $baytree-green;
+      }
+    }
+  }
+
+  .icon {
+    cursor: pointer;
+    margin-left: 0.5rem;
+  }
+}
