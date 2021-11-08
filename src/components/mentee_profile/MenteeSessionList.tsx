@@ -29,7 +29,7 @@ export const MenteeSessionList: React.FC<MenteeSessionListProps> = ({
               value={value}
               clockInTime={clockInTime}
               clockOutTime={clockOutTime}
-              isContainedImage={false}
+              viewOnly={true}
             />
           )
         )
