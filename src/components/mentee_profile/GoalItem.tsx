@@ -1,6 +1,6 @@
 import React, { FC, useState, useRef, useEffect } from "react";
 import { Checkbox } from "../form/Checkbox";
-import { GoalProp } from "../../apps/MenteeGoals";
+import { GoalProp } from "./MenteeGoals";
 import { Icon, IconName, IconColors } from "../Icon";
 
 interface GoalItemProps {

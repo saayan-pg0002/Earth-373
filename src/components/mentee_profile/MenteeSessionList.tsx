@@ -1,11 +1,11 @@
 import { ReactComponent as BaytreeTreeGrey } from "../../assets/images/baytree-tree-grey.svg";
 import { SessionItem, ItemProps } from "../SessionItem";
 
-interface SessionHistoryListProps {
+interface MenteeSessionListProps {
   sessions: ItemProps[];
 }
 
-export const SessionHistoryList: React.FC<SessionHistoryListProps> = ({
+export const MenteeSessionList: React.FC<MenteeSessionListProps> = ({
   sessions,
 }) => {
   const isEmpty: boolean = sessions.length === 0;

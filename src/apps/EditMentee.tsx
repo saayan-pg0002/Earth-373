@@ -30,7 +30,7 @@ const EditMentee: React.FC<EditMenteeProp> = ({
 
       <div className="header">
         <h1 className="page-title">Edit Mentee</h1>
-        <Link to={Paths.dashboard} className="back-btn">
+        <Link to={Paths.menteeProfileGoals} className="back-btn">
           Go Back
         </Link>
       </div>

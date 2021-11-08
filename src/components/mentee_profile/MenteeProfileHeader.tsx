@@ -1,4 +1,4 @@
-import { MenteeInfoProps } from "../../apps/MenteeGoals";
+import { MenteeInfoProps } from "./MenteeGoals";
 import { Icon, IconName } from "../Icon";
 import { Paths, routeTo } from "../../util/routes";
 

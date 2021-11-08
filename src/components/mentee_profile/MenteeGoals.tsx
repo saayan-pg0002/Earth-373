@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { AddNewGoal } from "../components/mentee_profile/AddNewGoal";
-import { Icon, IconColors, IconName } from "../components/Icon";
-import { MenteeProfileHeader } from "../components/mentee_profile/MenteeProfileHeader";
-import PageHelmet from "../util/PageHelmet";
-import { GoalItem } from "../components/mentee_profile/GoalItem";
-import { EmptyState } from "../components/EmptyState";
+import { AddNewGoal } from "./AddNewGoal";
+import { Icon, IconColors, IconName } from "../Icon";
+import { GoalItem } from "./GoalItem";
+import { EmptyState } from "../EmptyState";
 
 export interface MenteeInfoProps {
   menteeName: string;
@@ -117,16 +115,7 @@ const MenteeGoals: React.FC<MenteeInfoProps> = ({
   };
 
   return (
-    <main className="container mentee-goals">
-      <PageHelmet title="Mentee Goals" />
-
-      <MenteeProfileHeader
-        menteeName={menteeName}
-        startDate={startDate}
-        birthday={birthday}
-      />
-      {/* TODO: tab component*/}
-
+    <main className="mentee-goals">
       <div className="goal-section">
         <div className="header">
           <h2 className="subtext">Ongoing</h2>
