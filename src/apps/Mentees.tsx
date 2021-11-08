@@ -6,39 +6,24 @@ import { AvatarHeader } from "../components/AvatarHeader";
 const menteeList: MenteeItemProps[] = [
   {
     menteeName: "Melisa Nguyen",
-    clockInTime: (() => {
-      const date: Date = new Date();
-      date.setHours(9, 0);
-      return date;
-    })(),
-    clockOutTime: (() => {
-      const date: Date = new Date();
-      date.setHours(10, 0);
-      return date;
-    })(),
-    dayOfWeek: (() => {
-      const date: Date = new Date();
-      date.setUTCDate(5);
-      return date;
-    })(),
+    startDate: new Date("8/8/2018"),
   },
   {
     menteeName: "Dianne Russell",
-    clockInTime: (() => {
-      const date: Date = new Date();
-      date.setHours(19, 0);
-      return date;
-    })(),
-    clockOutTime: (() => {
-      const date: Date = new Date();
-      date.setHours(20, 0);
-      return date;
-    })(),
-    dayOfWeek: (() => {
-      const date: Date = new Date();
-      date.setUTCDate(5);
-      return date;
-    })(),
+    startDate: new Date("1/6/2020"),
+  },
+];
+
+const pastMenteeList: MenteeItemProps[] = [
+  {
+    menteeName: "Tessa Pampangan",
+    startDate: new Date("1/20/2020"),
+    endDate: new Date("3/12/2020")
+  },
+  {
+    menteeName: "Lila Singh",
+    startDate: new Date("1/4/2018"),
+    endDate: new Date("1/6/2018"),
   },
 ];
 
@@ -53,6 +38,8 @@ const Mentees: React.FC<{}> = () => {
           <AvatarHeader name="Wendy Evans" />
         </div>{" "}
         <MenteeList mentees={menteeList} />
+        <p className="subtext">Past Mentees</p>
+        <MenteeList mentees={pastMenteeList} />
       </div>
     </main>
   );

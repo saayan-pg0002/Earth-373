@@ -1,27 +1,15 @@
 import express, { Request, Response, Router } from "express";
-import User from "../Models/user.model";
 import UserController from "../Controllers/user.controller";
 import passportConfig from "../Middleware/middleWare";
 import passport from "passport";
 
 const router: Router = express.Router();
 
-router.route("/").get((req: Request, res: Response) => {
-  User.find()
-    .then((users) => res.json(users))
-    .catch((err) => res.status(400).json("Error: " + err));
-});
-
-router.route("/add").post(UserController.addUser);
-router.route("/getuser").get(UserController.getUsers);
+router.route("/mongo/add").post(UserController.addMongoUser);
+router.route("/getusers").get(UserController.getMongoUsers);
 
 router.route("/view/get/:type").get(UserController.getViewUsers);
-router.route("/migrateusers").get(UserController.migrateUsers);
-router.route("/migratementees").get(UserController.migrateMentees);
-router
-  .route("/validate")
-  .get(passportConfig.authenticate, UserController.validateToken);
-router.route("/register").post(UserController.register);
+router.route("/view/migrate").get(UserController.migrateViewUsers);
 
 router.route("/me/goal").post(UserController.createGoalForAssociation);
 
@@ -37,8 +25,7 @@ router
   .post(passport.authenticate("signIn"), passportConfig.signJWT);
 
 router.route("/me").get(passportConfig.authenticate, UserController.getProfile);
-router
-  .route("/me/patch")
-  .patch(passportConfig.authenticate, UserController.updateProfile);
 
+router.route("/forgot-password").post(UserController.forgotPassword);
+router.route("/reset-password").post(UserController.resetPassword);
 export default router;
