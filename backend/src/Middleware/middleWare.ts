@@ -15,7 +15,16 @@ const strategize = (passport: any) => {
 
   passport.deserializeUser((id: any, done: any) => {
     User.findById(id, (err: any, user: any) => {
-      done(err, user);
+      const info = {
+        _id: user._id,
+        email: user.email,
+        views_id: user.views_id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        activity_status: user.activity_status,
+        role: user.role,
+      };
+      done(err, info);
     });
   });
   passport.use(
@@ -26,19 +35,16 @@ const strategize = (passport: any) => {
       }).then((user) => {
         //if email is not found
         if (!user) {
-          return done(null, false, { message: "That email is not registered" });
+          return done(null, false, {
+            message: "That email is not registered",
+          });
         }
 
         // otherwise, compare password
         bcrypt.compare(password, user.password as string, (err, isMatch) => {
           if (err) throw err;
           if (isMatch) {
-            const result = {
-              id: user._id,
-              views_id: user.views_id,
-              email: user.email,
-            };
-            return done(null, result, { message: "login successful" });
+            return done(null, user, { message: "login successful" });
           } else {
             return done(null, false, { message: "Password incorrect" });
           }
