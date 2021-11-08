@@ -33,7 +33,7 @@ const ResetPassword: React.FC<{}> = () => {
         <main>
           <BaytreeMentorPortalLogo className="logo" />
           <form onSubmit={onSubmit} className="form">
-            <header className="header">
+            <header>
               <h1 className="page-title no-margin-bottom">Reset Password</h1>
               <p className="page-title text-center">
                 Enter your new password below

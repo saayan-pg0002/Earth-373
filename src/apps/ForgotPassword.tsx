@@ -18,7 +18,7 @@ const ForgotPassword: React.FC<{}> = () => {
   };
   return (
     <div className="login">
-      <PageHelmet title="Forgot Password"/>
+      <PageHelmet title="Forgot Password" />
 
       <TabletDesktopView />
 
@@ -26,13 +26,14 @@ const ForgotPassword: React.FC<{}> = () => {
         <main>
           <BaytreeMentorPortalLogo className="logo" />
           <form onSubmit={onSubmit} className="form">
-            <header className="header">
+            <header>
               <h1 className="page-title no-margin-bottom">Forgot Password</h1>
               <p className="page-title text-center">
                 Enter your email and we will share a link to create a new
                 password
               </p>
             </header>
+
             <FormField labelText="Email">
               <TextInput
                 name="email"
