@@ -1,7 +1,15 @@
 import { ContainedIcon, IconName, IconColors } from './Icon';
-import { getStartEndFormattedTimeStringWithDay } from '../util/date';
+import { getFormattedMonthYearString } from '../util/date';
 import Link from "./Link";
 import { Paths } from '../util/routes';
+
+
+export interface MenteeItemProps {
+  menteeName: string;
+  startDate: Date;
+  endDate?: Date;
+}
+
 
 export const MenteeItem: React.FC<MenteeItemProps> = ({
   menteeName,
@@ -9,7 +17,7 @@ export const MenteeItem: React.FC<MenteeItemProps> = ({
   endDate,
 }) => {
   return (
-    <Link to={Paths.dashboard} className="mentee-item">
+    <Link to={Paths.menteeGoals} className="mentee-item">
       <div className="body">
         <p className="subtext">
           {endDate
