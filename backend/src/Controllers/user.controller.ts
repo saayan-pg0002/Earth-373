@@ -14,12 +14,15 @@ import _ from "lodash";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
-const getHashedPassword = (password: string) => {
+const getHashedPassword = async (
+  password: string,
+  callback: (hash: string) => void
+) => {
   bcrypt.hash(password, 10, (hashError, hash) => {
     if (hashError) {
       throw hashError;
     } else {
-      return hash;
+      callback(hash);
     }
   });
 };
@@ -433,6 +436,7 @@ const UserController = {
   getGoalsForAssociation,
   forgotPassword,
   resetPassword,
+  getHashedPassword,
 };
 
 export default UserController;
