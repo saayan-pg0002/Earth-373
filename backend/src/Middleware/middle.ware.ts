@@ -5,6 +5,10 @@ import UserInterface from "../Interfaces/user.interface";
 import passportLocal from "passport-local";
 // import passportJWT from "passport-jwt";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import path from "path";
+
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 const LocalStrategy = passportLocal.Strategy;
 
@@ -61,7 +65,7 @@ const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
   // let token = req.headers.authorization?.split(" ")[1];
   const token = req.cookies.jwt;
   if (token) {
-    jwt.verify(token, "session secret", (error: any, decoded: any) => {
+    jwt.verify(token, "TOKEN_SECRET", (error: any, decoded: any) => {
       if (error) {
         return res.status(400).json({
           message: error.message,
@@ -83,7 +87,7 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
   if (!req.user) {
     return res.status(401).json({ message: "You are not signed in" });
   }
-  verifyJWT(req, res, next);
+  return next();
 };
 
 const signJWT = (req: Request, res: Response) => {
@@ -100,7 +104,7 @@ const signJWT = (req: Request, res: Response) => {
         email: user.email,
         password: user.password,
       },
-      "session secret",
+      "TOKEN_SECRET",
       {
         issuer: "BayTreeDevs",
         algorithm: "HS256",

@@ -1,13 +1,60 @@
 {
-  "Resolving process.env variables undefined": {
-    "solution 1": "https://stackoverflow.com/questions/64453045/how-to-use-env-file-in-a-react-js-with-typescript-project",
-    "solution 2": "https://stackoverflow.com/questions/62736961/how-do-i-load-dotenv-in-typescript"
+  "General": {
+    "Project Template": {
+      "URL": "https://github.com/joeythelantern/Typescript-Quickstart-Projects"
+    }
   },
-  "HTTPS requests with TypeScript": {
-    "URL": "https://www.section.io/engineering-education/how-to-create-a-simple-rest-api-using-typescript-and-nodejs/"
+  "Typescript": {
+    "HTTPS requests with TypeScript": {
+      "URL": "https://www.section.io/engineering-education/how-to-create-a-simple-rest-api-using-typescript-and-nodejs/"
+    },
+    "Typescript with passportjs": {
+      "starter template": {
+        "URL": "https://github.com/microsoft/TypeScript-Node-Starter"
+      },
+      "Youtube tutorial": {
+        "Video": "https://youtu.be/6FOq4cUdH8k",
+        "URL": "https://github.com/bradtraversy/node_passport_login"
+      },
+      "DigitalOcean tutorial": {
+        "URL": "https://www.digitalocean.com/community/tutorials/api-authentication-with-json-web-tokensjwt-and-passport"
+      },
+      "signing a cookie": {
+        "URL": "https://stackoverflow.com/questions/52285591/signing-cookies-in-express"
+      }
+    },
+    "Error handling with Express": {
+      "URL": "https://stackoverflow.com/questions/64452484/how-can-i-safely-access-caught-error-properties-in-typescript"
+    }
   },
-  "Project Template": {
-    "URL": "https://github.com/joeythelantern/Typescript-Quickstart-Projects"
+  "NodeJS": {
+    "expressjs route regex": {
+      "URL": "https://stackoverflow.com/questions/41736413/multiple-optional-route-parameters-in-express/41748728"
+    },
+    "Resolving process.env variables undefined": {
+      "solution 1": "https://stackoverflow.com/questions/64453045/how-to-use-env-file-in-a-react-js-with-typescript-project",
+      "solution 2": "https://stackoverflow.com/questions/62736961/how-do-i-load-dotenv-in-typescript"
+    },
+    "express can't res.send number": {
+      "URL": "https://stackoverflow.com/questions/39498601/unable-to-send-numbers-using-res-send-using-express-with-node"
+    },
+    "bcrypt returns undefined": {
+      "URL": "https://stackoverflow.com/questions/48799894/trying-to-hash-a-password-using-bcrypt-inside-an-async-function"
+    }
+  },
+  "ReactJS": {
+    "Prevent page refresh": {
+      "URL": "https://stackoverflow.com/questions/50193227/basic-react-form-submit-refreshes-entire-page"
+    },
+    "Get form data": {
+      "URL": "https://stackoverflow.com/questions/23427384/get-form-data-in-reactjs"
+    },
+    "Basic fronend and backend connetion": {
+      "URL": "https://www.freecodecamp.org/news/how-to-make-create-react-app-work-with-a-node-backend-api-7c5c48acb1b0/"
+    },
+    "Fetch response handling": {
+      "URL": "https://stackoverflow.com/questions/38235715/fetch-reject-promise-and-catch-the-error-if-status-is-not-ok"
+    }
   },
   "Unit Tests": {
     "Mocha with Typescript": {
@@ -15,33 +62,6 @@
     },
     "Resolving @types/mocha cannot use import statement": {
       "URL": "https://stackoverflow.com/questions/60993812/mocha-typescript-cannot-use-import-statement-outside-a-module"
-    }
-  },
-  "Prevent page refresh": {
-    "URL": "https://stackoverflow.com/questions/50193227/basic-react-form-submit-refreshes-entire-page"
-  },
-  "Get form data": {
-    "URL": "https://stackoverflow.com/questions/23427384/get-form-data-in-reactjs"
-  },
-  "Basic fronend and backend connetion": {
-    "URL": "https://www.freecodecamp.org/news/how-to-make-create-react-app-work-with-a-node-backend-api-7c5c48acb1b0/"
-  },
-  "Fetch response handling": {
-    "URL": "https://stackoverflow.com/questions/38235715/fetch-reject-promise-and-catch-the-error-if-status-is-not-ok"
-  },
-  "Typescript with passportjs": {
-    "starter template": {
-      "URL": "https://github.com/microsoft/TypeScript-Node-Starter"
-    },
-    "Youtube tutorial": {
-      "Video": "https://youtu.be/6FOq4cUdH8k",
-      "URL": "https://github.com/bradtraversy/node_passport_login"
-    },
-    "DigitalOcean tutorial": {
-      "URL": "https://www.digitalocean.com/community/tutorials/api-authentication-with-json-web-tokensjwt-and-passport"
-    },
-    "signing a cookie": {
-      "URL": "https://stackoverflow.com/questions/52285591/signing-cookies-in-express"
     }
   }
 }

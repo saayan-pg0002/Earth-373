@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import UserController from "../Controllers/user.controller";
-import passportConfig from "../Middleware/middleWare";
+import passportConfig from "../Middleware/middle.ware";
 import passport from "passport";
 
 const router: Router = express.Router();
@@ -26,4 +26,5 @@ router.route("/me").get(passportConfig.authenticate, UserController.getProfile);
 
 router.route("/forgot-password").post(UserController.forgotPassword);
 router.route("/reset-password").post(UserController.resetPassword);
+
 export default router;

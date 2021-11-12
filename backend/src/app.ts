@@ -2,9 +2,10 @@ import express, { Application } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import UserRouter from "./Routes/user.route";
+import SessionRouter from "./Routes/session.route";
 import passport from "passport";
 import session from "express-session";
-import passportConfig from "./Middleware/middleWare";
+import Passport from "./Middleware/middle.ware";
 import cookie from "cookie-parser";
 import cors from "cors";
 import path from "path";
@@ -14,9 +15,14 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") });
 const app: Application = express();
 const URI: string | any = process.env.MONGO_URI;
 
-mongoose.connect(URI).then(() => {
-  console.log("Mongodb is connected... ");
-});
+mongoose
+  .connect(URI)
+  .then(() => {
+    console.log("Mongodb is connected... ");
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 
 const port: string | number = process.env.PORT || 5000;
 
@@ -26,14 +32,14 @@ app.use(cookie());
 /** use sessions */
 app.use(
   session({
-    secret: "session secret",
+    secret: "SESSION_SECRET",
     resave: true,
     saveUninitialized: true,
   })
 );
 
 /** Initialize passports */
-passportConfig.strategize(passport);
+Passport.strategize(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -43,6 +49,7 @@ app.use(cors());
 
 /** Routes go here */
 app.use("/users", UserRouter);
+app.use("/sessions", Passport.authenticate, SessionRouter);
 
 /** Error Handling */
 app.use((req, res, next) => {
