@@ -2,6 +2,9 @@
   "General": {
     "Project Template": {
       "URL": "https://github.com/joeythelantern/Typescript-Quickstart-Projects"
+    },
+    "JavaScript regex": {
+      "URL": "https://stackoverflow.com/questions/10003683/how-can-i-extract-a-number-from-a-string-in-javascript"
     }
   },
   "Typescript": {

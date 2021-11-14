@@ -1,41 +1,8 @@
 import { Request, Response } from "express";
-import axios, { Method } from "axios";
+import { sendViewRequests, errorHandler } from "../util";
+import getCurrentLine from "get-current-line";
 
-const sendViewRequests = async (url: string, method: string, body: any) => {
-  let sessions: any;
-  await axios({
-    method: method as Method,
-    url: url,
-    auth: {
-      username: process.env.VIEW_USERNAME as string,
-      password: process.env.VIEW_PASSWORD as string,
-    },
-    data: body,
-    responseType: "json",
-  })
-    .then((response) => {
-      sessions = response.data;
-    })
-    .catch((error) => {
-      return error;
-    });
-  return sessions;
-};
-
-const errorHandler = (error: unknown, scope: string, block: any) => {
-  if (error instanceof Error) {
-    return {
-      ERROR: `${error}`,
-      SCOPE: "getSessions",
-      BLOCK: block,
-      STACK: error.stack,
-    };
-  } else {
-    return { ERROR: "An unidentified error has occurred" };
-  }
-};
-
-const getSessions = async (req: Request, res: Response) => {
+export const getSessions = async (req: Request, res: Response) => {
   const groupID = req.params.groupID;
   const sessionID = req.params.sessionID;
   const user: any = req.user;
@@ -53,6 +20,7 @@ const getSessions = async (req: Request, res: Response) => {
         "/sessions/";
       break;
     default:
+      // get sessions by groupID or sessionID
       url =
         sessionID === undefined
           ? "https://app.viewsapp.net/api/restful/work/sessiongroups/" +
@@ -63,22 +31,28 @@ const getSessions = async (req: Request, res: Response) => {
   }
 
   try {
-    const data: any = await sendViewRequests(url, "GET", undefined);
-    const length = Object.keys(data).length;
+    const response: any = await sendViewRequests(url, "GET", undefined);
+    const length = Object.keys(response.data).length;
     return res.json({
-      counts: `${length}`,
-      data: data,
+      session_counts: `${length}`,
+      data: response.data,
     });
   } catch (error: unknown) {
-    res.status(400);
-    return res.json(errorHandler(error, "getSessions", undefined));
+    return res
+      .status(400)
+      .json(
+        errorHandler(error, "getSessions", `line ${getCurrentLine().line}`)
+      );
   }
 };
 
-const createSessions = async (req: Request, res: Response) => {
+export const createSessions = async (req: Request, res: Response) => {
+  const groupID: string = req.params.groupID;
   const user: any = req.user;
   let url =
-    "https://app.viewsapp.net/api/restful/work/sessiongroups/14/sessions";
+    "https://app.viewsapp.net/api/restful/work/sessiongroups/" +
+    groupID +
+    "/sessions";
   var body: {
     Name: string;
     StartDate: string;
@@ -86,44 +60,73 @@ const createSessions = async (req: Request, res: Response) => {
     Duration: string;
     LeadStaff: string;
     VenueID: string;
-  };
-  body = req.body;
+  } = req.body;
 
-  let data: any;
+  let response: any;
   try {
-    data = await sendViewRequests(url, "POST", body);
+    response = await sendViewRequests(url, "POST", body);
+    if (Object.keys(response.data)[0] === "errors") {
+      return res.status(400).json(response.data);
+    }
   } catch (error: unknown) {
-    res.status(400);
-    return res.json(
-      errorHandler(error, "createSessions", "POST sendViewRequests")
-    );
+    return res
+      .status(400)
+      .json(
+        errorHandler(error, "createSessions", `line ${getCurrentLine().line}`)
+      );
   }
 
-  const SessionID: string = data.SessionID;
+  const sessionID: string = response.data.SessionID;
   url =
     "https://app.viewsapp.net/api/restful/work/sessiongroups/sessions/" +
-    SessionID +
+    sessionID +
     "/staff/";
 
   try {
     await sendViewRequests(url, "PUT", { ContactID: user.views_id });
     return res.json({
-      message: `created session ${SessionID}`,
+      success: `created session ${sessionID} under session group ${groupID}`,
     });
   } catch (error: unknown) {
-    res.status(400);
-    return res.json(
-      errorHandler(error, "createSessions", "PUT sendViewRequests")
-    );
+    return res
+      .status(400)
+      .json(
+        errorHandler(error, "createSessions", `line ${getCurrentLine().line}`)
+      );
   }
 };
 
-const requestNotes = async (req: Request, res: Response) => {
+export const getAttendees = async (req: Request, res: Response) => {
+  const sessionID: string = req.params.sessionID;
+  const type: string = req.params.type;
+  let url: string =
+    "https://app.viewsapp.net/api/restful/work/sessiongroups/sessions/" +
+    sessionID;
+  switch (type) {
+    case "participants":
+      url += "/participants";
+      break;
+    default:
+      url += "/staff";
+  }
+  try {
+    const response: any = await sendViewRequests(url, "GET", undefined);
+    return res.json(response.data);
+  } catch (error: unknown) {
+    return res
+      .status(400)
+      .json(
+        errorHandler(error, "getAttendees", `line ${getCurrentLine().line}`)
+      );
+  }
+};
+
+export const requestNotes = async (req: Request, res: Response) => {
   const method: string = req.params.method as string;
-  const SessionID: string = req.params.id as string;
+  const sessionID: string = req.params.id as string;
   let url =
     "https://app.viewsapp.net/api/restful/work/sessiongroups/sessions/" +
-    SessionID +
+    sessionID +
     "/notes";
   var body: {
     Note: string;
@@ -131,16 +134,13 @@ const requestNotes = async (req: Request, res: Response) => {
   };
   body = req.body;
   try {
-    const data = await sendViewRequests(url, method, body);
-    return res.json(data);
+    const response = await sendViewRequests(url, method, body);
+    return res.json(response.data);
   } catch (error: unknown) {
-    res.status(400);
-    return res.json(errorHandler(error, "requestNotes", undefined));
+    return res
+      .status(400)
+      .json(
+        errorHandler(error, "requestNotes", `line ${getCurrentLine().line}`)
+      );
   }
-};
-
-export default {
-  getSessions,
-  createSessions,
-  requestNotes,
 };
