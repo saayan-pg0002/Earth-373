@@ -302,8 +302,8 @@ const emailTransporter = nodemailer.createTransport({
   service: "yahoo",
   secure: false,
   auth: {
-    user: "baytree.earth@yahoo.com",
-    pass: "zbzkakphalidoobl",
+    user: process.env.BAYTREE_EMAIL as string,
+    pass: process.env.BAYTREE_EMAIL_SECRET as string,
   },
   tls: { rejectUnauthorized: false },
   debug: false,
