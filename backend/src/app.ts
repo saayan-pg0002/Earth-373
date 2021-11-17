@@ -5,7 +5,7 @@ import UserRouter from "./Routes/user.route";
 import SessionRouter from "./Routes/session.route";
 import passport from "passport";
 import session from "express-session";
-import Passport from "./Middleware/middle.ware";
+import * as Passport from "./Middleware/middle.ware";
 import cookie from "cookie-parser";
 import cors from "cors";
 import path from "path";
@@ -49,7 +49,7 @@ app.use(cors());
 
 /** Routes go here */
 app.use("/users", UserRouter);
-app.use("/sessions", Passport.authenticate, SessionRouter);
+app.use("/sessions", SessionRouter);
 
 /** Error Handling */
 app.use((req, res, next) => {

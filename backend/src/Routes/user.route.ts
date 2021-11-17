@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import UserController from "../Controllers/user.controller";
-import passportConfig from "../Middleware/middle.ware";
+import * as Passport from "../Middleware/middle.ware";
 import passport from "passport";
 
 const router: Router = express.Router();
@@ -19,11 +19,9 @@ router.route("/creategoal").post(UserController.createGoalForAssociation);
 router.route("/me/associations").get(UserController.getAssociationsFromMentor);
 router.route("/createassociation").post(UserController.createAssociation);
 
-router
-  .route("/login")
-  .post(passport.authenticate("signIn"), passportConfig.signJWT);
+router.route("/login").post(passport.authenticate("signIn"), Passport.signJWT);
 
-router.route("/me").get(passportConfig.authenticate, UserController.getProfile);
+router.route("/me").get(UserController.getProfile);
 
 router.route("/forgot-password").post(UserController.forgotPassword);
 router.route("/reset-password").post(UserController.resetPassword);

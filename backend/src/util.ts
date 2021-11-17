@@ -1,10 +1,18 @@
-import axios, { Method } from "axios";
+import axios, { AxiosPromise, Method } from "axios";
+
+export enum http {
+  get = "GET",
+  post = "POST",
+  put = "PUT",
+  patch = "PATCH",
+  delete = "DELETE",
+}
 
 export const sendViewRequests = async (
   url: string,
   method: string,
   body: any
-): Promise<any> => {
+): Promise<AxiosPromise<never> | any> => {
   let data: any;
   await axios({
     method: method as Method,

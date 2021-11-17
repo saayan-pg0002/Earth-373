@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
-import User from "../Models/user.model";
-import UserInterface from "../Interfaces/user.interface";
+import User, { Role } from "../Models/user.model";
 import passportLocal from "passport-local";
-// import passportJWT from "passport-jwt";
+import { errorHandler } from "../util";
+import getCurrentLine from "get-current-line";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import path from "path";
@@ -12,7 +12,7 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 const LocalStrategy = passportLocal.Strategy;
 
-const strategize = (passport: any) => {
+export const strategize = (passport: any) => {
   passport.serializeUser((user: any, done: any) => {
     done(undefined, user.id);
   });
@@ -60,37 +60,59 @@ const strategize = (passport: any) => {
   // More strategies go here ...
 };
 
-const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
-  console.log("Validating Token...");
-  // let token = req.headers.authorization?.split(" ")[1];
-  const token = req.cookies.jwt;
-  if (token) {
-    jwt.verify(token, "TOKEN_SECRET", (error: any, decoded: any) => {
+const verifyJWT = (
+  req: Request,
+  callback: (error: Error | any, role: Role | undefined) => void
+) => {
+  console.log("Validating Token...", req.headers.authorization);
+  let token = (req.headers.authorization as string).split(" ")[1];
+  // const token = req.cookies.jwt;
+  try {
+    jwt.verify(token, "TOKEN_SECRET", (error: any, payload: any) => {
       if (error) {
-        return res.status(400).json({
-          message: error.message,
-          error,
-        });
-      } else if (decoded) {
+        return callback(error, undefined);
+      } else if (payload) {
         console.log("Validation Successful");
-        next();
+        return callback(undefined, payload.role);
       }
     });
-  } else {
-    return res.status(401).json({
-      message: "JWT is undefined",
-    });
+  } catch (error) {
+    return callback(error, undefined);
   }
 };
 
-const authenticate = (req: Request, res: Response, next: NextFunction) => {
-  if (!req.user) {
-    return res.status(401).json({ message: "You are not signed in" });
-  }
-  return next();
+export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+  verifyJWT(req, (error, role) => {
+    if (error) {
+      return res
+        .status(400)
+        .json(errorHandler(error, "isAdmin", `line ${getCurrentLine().line}`));
+    } else {
+      if (role === Role.Admin) {
+        console.log("hello admin");
+        return next();
+      } else
+        return res.status(401).json({
+          unauthorized: "You do not have the permission to access this route",
+        });
+    }
+  });
 };
 
-const signJWT = (req: Request, res: Response) => {
+export const isUser = (req: Request, res: Response, next: NextFunction) => {
+  verifyJWT(req, (error) => {
+    if (error) {
+      return res
+        .status(400)
+        .json(errorHandler(error, "isUser", `line ${getCurrentLine().line}`));
+    } else {
+      console.log("hello user");
+      return next();
+    }
+  });
+};
+
+export const signJWT = (req: Request, res: Response) => {
   const user: any = req.user;
   var currentTime = new Date().getTime();
   var expirationTimeInMS = (currentTime + 3600) * 100000;
@@ -103,6 +125,7 @@ const signJWT = (req: Request, res: Response) => {
       {
         email: user.email,
         password: user.password,
+        role: user.role,
       },
       "TOKEN_SECRET",
       {
@@ -124,5 +147,3 @@ const signJWT = (req: Request, res: Response) => {
     console.log("Error. Please ctrl+f to see where this is.\n");
   }
 };
-
-export default { strategize, authenticate, signJWT };
