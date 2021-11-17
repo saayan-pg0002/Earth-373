@@ -17,7 +17,7 @@ router
 
 router.route("/creategoal").post(UserController.createGoalForAssociation);
 router.route("/me/associations").get(UserController.getAssociationsFromMentor);
-router.route("/createassociation").post(UserController.createAssociation);
+router.route("/create-association").post(UserController.createAssociation);
 
 router
   .route("/login")
