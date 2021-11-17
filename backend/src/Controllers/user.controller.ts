@@ -14,12 +14,15 @@ import _ from "lodash";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
-const getHashedPassword = (password: string) => {
+const getHashedPassword = async (
+  password: string,
+  callback: (hash: string) => void
+) => {
   bcrypt.hash(password, 10, (hashError, hash) => {
     if (hashError) {
       throw hashError;
     } else {
-      return hash;
+      callback(hash);
     }
   });
 };
@@ -299,8 +302,8 @@ const emailTransporter = nodemailer.createTransport({
   service: "yahoo",
   secure: false,
   auth: {
-    user: "baytree.earth@yahoo.com",
-    pass: "zbzkakphalidoobl",
+    user: process.env.BAYTREE_EMAIL as string,
+    pass: process.env.BAYTREE_EMAIL_SECRET as string,
   },
   tls: { rejectUnauthorized: false },
   debug: false,
@@ -366,13 +369,13 @@ const createAssociation = (req: Request, res: Response) => {
     .save()
     .then((result) => {
       return res.status(200).json({
-        message: "Successfully created association.",
+        message: "Successfully created association ",
         result,
       });
     })
     .catch((err) => {
       return res.status(400).json({
-        message: "Error creating association.",
+        message: "Error creating association ",
         err,
       });
     });
@@ -390,7 +393,7 @@ const resetPassword = (req: Request, res: Response) => {
       process.env.JWT_KEY as string,
       (err: any, decodedData: any) => {
         if (err) {
-          return res.status(401).json({ error: "Incorrect or expired token." });
+          return res.status(401).json({ error: "Incorrect or expired token " });
         }
         User.findOne({ resetLink }).exec((err, user) => {
           if (err || !user) {
@@ -398,26 +401,29 @@ const resetPassword = (req: Request, res: Response) => {
               .status(400)
               .json({ error: "User with this token does not exist." });
           }
-          const obj = {
-            password: newPass,
-            resetLink: "",
-          };
+          getHashedPassword(newPass, (hash: string) => {
+            const obj = {
+              password: hash,
+              resetLink: "",
+            };
 
-          user = _.extend(user, obj);
-          user!.save((err, result) => {
-            if (err) {
-              return res.status(400).json({ error: "Reset password error" });
-            } else {
-              return res
-                .status(200)
-                .json({ message: "Your password has been changed" });
-            }
+            user = _.extend(user, obj);
+
+            user!.save((err, result) => {
+              if (err) {
+                return res.status(400).json({ error: "Reset password error " });
+              } else {
+                return res
+                  .status(200)
+                  .json({ message: "Your password has been changed " });
+              }
+            });
           });
         });
       }
     );
   } else {
-    return res.status(401).json({ error: "Authentication Error ..." });
+    return res.status(401).json({ error: "Authentication Error " });
   }
 };
 
@@ -433,6 +439,7 @@ const UserController = {
   getGoalsForAssociation,
   forgotPassword,
   resetPassword,
+  getHashedPassword,
 };
 
 export default UserController;
