@@ -364,33 +364,43 @@ const createAssociation = (req: Request, res: Response) => {
         .status(400)
         .json({ error: "Specified Mentor does not exist " });
     }
-
-    Mentee.findOne({ _id: mentee_id }).exec((err, mentee) => {
-      if (err || !mentee) {
-        return res
-          .status(400)
-          .json({ error: "Specified Mnetee does not exist " });
-      }
-      const newAssociation: AssociationInterface = new Association({
-        mentor_id: mentor_id,
-        mentee_id: mentee_id,
-        isActive: true,
-      });
-
-      newAssociation
-        .save()
-        .then((result) => {
-          return res.status(200).json({
-            message: "Successfully created association ",
-            result,
-          });
-        })
-        .catch((err) => {
-          return res.status(400).json({
-            message: "Error creating association :",
-            err,
-          });
+    Association.findOne({
+      mentor_id: mentor_id,
+      mentee_id: mentee_id,
+      isActive: true,
+    }).exec((err, association) => {
+      if (association) {
+        return res.status(400).json({
+          error: "This specific Mentor-Mentee association is already active ",
         });
+      }
+      Mentee.findOne({ _id: mentee_id }).exec((err, mentee) => {
+        if (err || !mentee) {
+          return res
+            .status(400)
+            .json({ error: "Specified Mnetee does not exist " });
+        }
+        const newAssociation: AssociationInterface = new Association({
+          mentor_id: mentor_id,
+          mentee_id: mentee_id,
+          isActive: true,
+        });
+
+        newAssociation
+          .save()
+          .then((result) => {
+            return res.status(200).json({
+              message: "Successfully created association ",
+              result,
+            });
+          })
+          .catch((err) => {
+            return res.status(400).json({
+              message: "Error creating association :",
+              err,
+            });
+          });
+      });
     });
   });
 };
