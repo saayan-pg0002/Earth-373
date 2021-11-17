@@ -378,7 +378,7 @@ const createAssociation = (req: Request, res: Response) => {
         if (err || !mentee) {
           return res
             .status(400)
-            .json({ error: "Specified Mnetee does not exist " });
+            .json({ error: "Specified Mentee does not exist " });
         }
         const newAssociation: AssociationInterface = new Association({
           mentor_id: mentor_id,
