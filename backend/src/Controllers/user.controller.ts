@@ -358,27 +358,28 @@ const forgotPassword = (req: Request, res: Response) => {
 
 const createAssociation = (req: Request, res: Response) => {
   let { mentor_id, mentee_id } = req.body;
-  User.findOne({ _id: mentor_id }).exec((err, user) => {
-    if (err || !user) {
-      return res
-        .status(400)
-        .json({ error: "Specified Mentor does not exist " });
+
+  Association.findOne({
+    mentor_id: mentor_id,
+    mentee_id: mentee_id,
+    isActive: true,
+  }).exec((err, association) => {
+    if (association) {
+      return res.status(400).json({
+        error: "This specific Mentor-Mentee association is already active",
+      });
     }
-    Association.findOne({
-      mentor_id: mentor_id,
-      mentee_id: mentee_id,
-      isActive: true,
-    }).exec((err, association) => {
-      if (association) {
+    User.findOne({ _id: mentor_id }).exec((err, user) => {
+      if (err || !user) {
         return res.status(400).json({
-          error: "This specific Mentor-Mentee association is already active ",
+          error: "Specified Mentor does not exist",
         });
       }
       Mentee.findOne({ _id: mentee_id }).exec((err, mentee) => {
         if (err || !mentee) {
           return res
             .status(400)
-            .json({ error: "Specified Mentee does not exist " });
+            .json({ error: "Specified Mentee does not exist" });
         }
         const newAssociation: AssociationInterface = new Association({
           mentor_id: mentor_id,
@@ -390,7 +391,7 @@ const createAssociation = (req: Request, res: Response) => {
           .save()
           .then((result) => {
             return res.status(200).json({
-              message: "Successfully created association ",
+              message: "Successfully created association",
               result,
             });
           })
