@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
 import User from "../Models/user.model";
-import UserInterface from "../Interfaces/user.interface";
 import passportLocal from "passport-local";
 // import passportJWT from "passport-jwt";
 import jwt from "jsonwebtoken";
@@ -22,7 +21,7 @@ const strategize = (passport: any) => {
         first_name: user.first_name,
         last_name: user.last_name,
         activity_status: user.activity_status,
-        role: user.role,
+        role: user.role
       };
       done(err, info);
     });
@@ -31,12 +30,12 @@ const strategize = (passport: any) => {
     "signIn",
     new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
       User.findOne({
-        email: email,
+        email: email
       }).then((user) => {
         //if email is not found
         if (!user) {
           return done(null, false, {
-            message: "That email is not registered",
+            message: "That email is not registered"
           });
         }
 
@@ -65,7 +64,7 @@ const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
       if (error) {
         return res.status(400).json({
           message: error.message,
-          error,
+          error
         });
       } else if (decoded) {
         console.log("Validation Successful");
@@ -74,7 +73,7 @@ const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
     });
   } else {
     return res.status(401).json({
-      message: "JWT is undefined",
+      message: "JWT is undefined"
     });
   }
 };
@@ -98,13 +97,13 @@ const signJWT = (req: Request, res: Response) => {
     jwt.sign(
       {
         email: user.email,
-        password: user.password,
+        password: user.password
       },
       "session secret",
       {
         issuer: "BayTreeDevs",
         algorithm: "HS256",
-        expiresIn: expirationTimeInSeconds,
+        expiresIn: expirationTimeInSeconds
       },
       (error, token) => {
         if (error) {

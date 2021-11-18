@@ -1,9 +1,9 @@
-import { NextFunction, Request, response, Response, Router } from "express";
+import { Request, Response } from "express";
 import User from "../Models/user.model";
 import Mentee from "../Models/mentee.model";
 import axios from "axios";
 import dotenv from "dotenv";
-import mongoose, { Error, Model } from "mongoose";
+import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import Association from "../Models/association.model";
 import AssociationInterface from "../Interfaces/association.interface";
@@ -36,7 +36,7 @@ const addMongoUser = (req: Request, res: Response) => {
     password,
     activity_status,
     start_date,
-    role,
+    role
   } = req.body;
 
   const user = new User({
@@ -48,7 +48,7 @@ const addMongoUser = (req: Request, res: Response) => {
     password,
     activity_status,
     start_date,
-    role,
+    role
   });
 
   return user
@@ -56,13 +56,13 @@ const addMongoUser = (req: Request, res: Response) => {
     .then((result) => {
       return res.status(201).json({
         message: "Successfully saved user to the database.",
-        user: result,
+        user: result
       });
     })
     .catch((error) => {
       return res.status(500).json({
         message: "Error adding user to the database.",
-        error,
+        error
       });
     });
 };
@@ -74,13 +74,13 @@ const getMongoUsers = (req: Request, res: Response) => {
     .then((users) => {
       return res.status(200).json({
         users: users,
-        count: users.length,
+        count: users.length
       });
     })
     .catch((error) => {
       return res.status(500).json({
         message: "Error getting user from the database.",
-        error,
+        error
       });
     });
 };
@@ -103,10 +103,10 @@ const getViewUserType = async (userType: string) => {
     url: url,
     auth: {
       username: process.env.VIEW_USERNAME as string,
-      password: process.env.VIEW_PASSWORD as string,
+      password: process.env.VIEW_PASSWORD as string
     },
     responseType: "json",
-    transformResponse: [(v) => v],
+    transformResponse: [(v) => v]
   })
     .then((response) => {
       result = JSON.parse(response.data);
@@ -150,7 +150,7 @@ async function createUsers(data: any) {
               if (hashError) {
                 return {
                   message: hashError.message,
-                  error: hashError,
+                  error: hashError
                 };
               }
               let userType = "Admin";
@@ -169,7 +169,7 @@ async function createUsers(data: any) {
                   userFields["VolunteerStatus_V_1"] || ("Active" as string),
                 password: hashedPassword as string,
                 role: userType,
-                resetLink: "",
+                resetLink: ""
               });
               newUser.save().catch((error) => {
                 return console.log("Error adding user", error);
@@ -204,7 +204,7 @@ async function createMentees(data: any) {
               first_name: menteeFields["Forename"],
               last_name: menteeFields["Surname"],
               age: menteeAge,
-              dateOfBirth: DoB,
+              dateOfBirth: DoB
             });
             newMentee.save().catch((error) => {
               return console.error("Error adding Mentee to DB", error);
@@ -229,32 +229,32 @@ const createGoalForAssociation = (req: Request, res: Response) => {
   Association.findOneAndUpdate(
     {
       mentor_id: mentor_id,
-      mentee_id: mentee_id,
+      mentee_id: mentee_id
     },
     {
       $push: {
         goals: {
           name: goal,
-          is_complete: false,
-        },
-      },
+          is_complete: false
+        }
+      }
     },
     { new: true }
   )
     .then((result) => {
       if (result == null) {
         return res.status(500).json({
-          message: "Warning: Mentor/Mentee pair not found. Are they active?",
+          message: "Warning: Mentor/Mentee pair not found. Are they active?"
         });
       }
       return res.status(201).json({
         message: "Successfully created goal for mentorship.",
-        result,
+        result
       });
     })
     .catch((error) => {
       return res.status(500).json({
-        message: "Error creating goal for the mentee/mentor association.",
+        message: "Error creating goal for the mentee/mentor association."
       });
     });
 };
@@ -271,7 +271,7 @@ const getAssociationsFromMentor = (req: Request, res: Response) => {
     .catch((error) => {
       return res.status(404).json({
         message: "Error: Mentee id not found.",
-        error,
+        error
       });
     });
 };
@@ -285,13 +285,13 @@ const getGoalsForAssociation = (req: Request, res: Response) => {
     .exec()
     .then((result: any) => {
       return res.status(200).json({
-        goals: result.goals,
+        goals: result.goals
       });
     })
     .catch((error) => {
       return res.status(400).json({
         message: "Error: Unable to find mentor/mentee association.",
-        error: error.message,
+        error: error.message
       });
     });
 };
@@ -303,11 +303,11 @@ const emailTransporter = nodemailer.createTransport({
   secure: false,
   auth: {
     user: process.env.BAYTREE_EMAIL as string,
-    pass: process.env.BAYTREE_EMAIL_SECRET as string,
+    pass: process.env.BAYTREE_EMAIL_SECRET as string
   },
   tls: { rejectUnauthorized: false },
   debug: false,
-  logger: true,
+  logger: true
 });
 
 const forgotPassword = (req: Request, res: Response) => {
@@ -322,7 +322,7 @@ const forgotPassword = (req: Request, res: Response) => {
     }
 
     const token = jwt.sign({ _id: user._id }, process.env.JWT_KEY as string, {
-      expiresIn: "20m",
+      expiresIn: "20m"
     });
 
     const mailOptions = {
@@ -331,7 +331,7 @@ const forgotPassword = (req: Request, res: Response) => {
       subject: "Password Reset Link",
       html: ` <h2>Please click on the link below to reset your password</h2>
               <br>
-              <a href="http://${process.env.URL}/users/resetpassword/${token}">http://${process.env.URL}/users/resetpassword/${token}</a>`,
+              <a href="http://${process.env.URL}/users/resetpassword/${token}">http://${process.env.URL}/users/resetpassword/${token}</a>`
     };
 
     return user.updateOne(
@@ -348,7 +348,7 @@ const forgotPassword = (req: Request, res: Response) => {
             console.log("Message sent: %s", info.messageId);
           });
           return res.json({
-            message: "Email has been sent, kindly follow the instructions",
+            message: "Email has been sent, kindly follow the instructions"
           });
         }
       }
@@ -362,17 +362,17 @@ const createAssociation = (req: Request, res: Response) => {
   Association.findOne({
     mentor_id: mentor_id,
     mentee_id: mentee_id,
-    isActive: true,
+    isActive: true
   }).exec((err, association) => {
     if (association) {
       return res.status(400).json({
-        error: "This specific Mentor-Mentee association is already active",
+        error: "This specific Mentor-Mentee association is already active"
       });
     }
     User.findOne({ _id: mentor_id }).exec((err, user) => {
       if (err || !user) {
         return res.status(400).json({
-          error: "Specified Mentor does not exist",
+          error: "Specified Mentor does not exist"
         });
       }
       Mentee.findOne({ _id: mentee_id }).exec((err, mentee) => {
@@ -384,7 +384,7 @@ const createAssociation = (req: Request, res: Response) => {
         const newAssociation: AssociationInterface = new Association({
           mentor_id: mentor_id,
           mentee_id: mentee_id,
-          isActive: true,
+          isActive: true
         });
 
         newAssociation
@@ -392,13 +392,13 @@ const createAssociation = (req: Request, res: Response) => {
           .then((result) => {
             return res.status(200).json({
               message: "Successfully created association",
-              result,
+              result
             });
           })
           .catch((err) => {
             return res.status(400).json({
               message: "Error creating association :",
-              err,
+              err
             });
           });
       });
@@ -429,7 +429,7 @@ const resetPassword = (req: Request, res: Response) => {
           getHashedPassword(newPass, (hash: string) => {
             const obj = {
               password: hash,
-              resetLink: "",
+              resetLink: ""
             };
 
             user = _.extend(user, obj);
@@ -452,6 +452,10 @@ const resetPassword = (req: Request, res: Response) => {
   }
 };
 
+const getMyProfile = (req: Request, res: Response) => {};
+
+const editProfile = (req: Request, res: Response) => {};
+
 const UserController = {
   addMongoUser,
   getMongoUsers,
@@ -465,6 +469,8 @@ const UserController = {
   forgotPassword,
   resetPassword,
   getHashedPassword,
+  getMyProfile,
+  editProfile
 };
 
 export default UserController;

@@ -1,30 +1,25 @@
-import express, { Request, Response, Router } from "express";
+import express, { Router } from "express";
 import UserController from "../Controllers/user.controller";
 import passportConfig from "../Middleware/middleWare";
 import passport from "passport";
 
 const router: Router = express.Router();
 
-router.route("/mongo/add").post(UserController.addMongoUser);
-router.route("/getusers").get(UserController.getMongoUsers);
+router.post("/mongo/add", UserController.addMongoUser);
+router.get("/getusers", UserController.getMongoUsers);
+router.get("/view/get/:type", UserController.getViewUsers);
+router.get("/view/migrate", UserController.migrateViewUsers);
+router.post("/me/association/goals", UserController.getGoalsForAssociation);
+router.post("/creategoal", UserController.createGoalForAssociation);
+router.get("/me/associations", UserController.getAssociationsFromMentor);
+router.post("/create-association", UserController.createAssociation);
+router.post("/login", passport.authenticate("signIn"), passportConfig.signJWT);
+router.get("/me", passportConfig.authenticate, UserController.getProfile);
+router.post("/forgot-password", UserController.forgotPassword);
+router.post("/reset-password", UserController.resetPassword);
+router.get("/profile/me", UserController.getMyProfile);
 
-router.route("/view/get/:type").get(UserController.getViewUsers);
-router.route("/view/migrate").get(UserController.migrateViewUsers);
+/* Admin only routes */
+router.post("/profile/edit", UserController.editProfile);
 
-router
-  .route("/me/association/goals")
-  .post(UserController.getGoalsForAssociation);
-
-router.route("/creategoal").post(UserController.createGoalForAssociation);
-router.route("/me/associations").get(UserController.getAssociationsFromMentor);
-router.route("/create-association").post(UserController.createAssociation);
-
-router
-  .route("/login")
-  .post(passport.authenticate("signIn"), passportConfig.signJWT);
-
-router.route("/me").get(passportConfig.authenticate, UserController.getProfile);
-
-router.route("/forgot-password").post(UserController.forgotPassword);
-router.route("/reset-password").post(UserController.resetPassword);
 export default router;
