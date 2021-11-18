@@ -1,4 +1,4 @@
-import axios, { AxiosPromise, Method } from "axios";
+import axios, { AxiosResponse, Method } from "axios";
 
 export enum http {
   get = "GET",
@@ -8,12 +8,12 @@ export enum http {
   delete = "DELETE",
 }
 
-export const sendViewRequests = async (
+export const sendViewsRequests = async (
   url: string,
   method: string,
   body: any
-): Promise<AxiosPromise<never> | any> => {
-  let data: any;
+): Promise<AxiosResponse<never> | any> => {
+  let data: AxiosResponse<never> | any;
   await axios({
     method: method as Method,
     url: url,

@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
-import { sendViewRequests, errorHandler, http } from "../util";
+import { sendViewsRequests, errorHandler, http } from "../util";
 import getCurrentLine from "get-current-line";
+import { AxiosResponse } from "axios";
 
 export const getSessions = async (req: Request, res: Response) => {
-  const groupID = req.params.groupID;
-  const sessionID = req.params.sessionID;
+  const groupID: string = req.params.groupID;
+  const sessionID: string = req.params.sessionID;
   const user: any = req.user;
   let url: string = "";
 
@@ -31,8 +32,12 @@ export const getSessions = async (req: Request, res: Response) => {
   }
 
   try {
-    const response: any = await sendViewRequests(url, http.get, undefined);
-    const length = Object.keys(response.data).length;
+    const response: AxiosResponse<never> | any = await sendViewsRequests(
+      url,
+      http.get,
+      undefined
+    );
+    const length: number = Object.keys(response.data).length;
     return res.json({
       session_counts: `${length}`,
       data: response.data,
@@ -65,7 +70,7 @@ export const createSessions = async (req: Request, res: Response) => {
 
   let response: any;
   try {
-    response = await sendViewRequests(url, http.post, body);
+    response = await sendViewsRequests(url, http.post, body);
     if (Object.keys(response.data)[0] === "errors") {
       return res.status(400).json(response.data);
     }
@@ -84,7 +89,7 @@ export const createSessions = async (req: Request, res: Response) => {
     "/staff/";
 
   try {
-    await sendViewRequests(url, http.put, { ContactID: user.views_id });
+    await sendViewsRequests(url, http.put, { ContactID: user.views_id });
     return res.json({
       success: `created session ${sessionID} under session group ${groupID}`,
     });
@@ -115,7 +120,11 @@ export const updateSessions = async (req: Request, res: Response) => {
   } = req.body;
 
   try {
-    const response = await sendViewRequests(url, http.put, body);
+    const response: AxiosResponse<never> | any = await sendViewsRequests(
+      url,
+      http.put,
+      body
+    );
     if (Object.keys(response.data)[0] === "errors") {
       return res.status(400).json(response.data);
     }
@@ -136,7 +145,7 @@ export const updateSessions = async (req: Request, res: Response) => {
 //   let url: string =
 //     "https://app.viewsapp.net/api/restful/work/sessiongroups/14/sessions";
 //   try {
-//     const response = await sendViewRequests(url, http.get, undefined);
+//     const response = await sendViewsRequests(url, http.get, undefined);
 //     const sessions = response.data;
 //     for (var i in sessions) {
 //       const session = sessions[i];
@@ -164,7 +173,11 @@ export const getAttendees = async (req: Request, res: Response) => {
       url += "/staff";
   }
   try {
-    const response: any = await sendViewRequests(url, http.get, undefined);
+    const response: AxiosResponse<never> | any = await sendViewsRequests(
+      url,
+      http.get,
+      undefined
+    );
     return res.json(response.data);
   } catch (error: unknown) {
     return res
@@ -186,7 +199,11 @@ export const getNotes = async (req: Request, res: Response) => {
   if (noteID) url += "/" + noteID;
 
   try {
-    const response = await sendViewRequests(url, http.get, undefined);
+    const response: AxiosResponse<never> | any = await sendViewsRequests(
+      url,
+      http.get,
+      undefined
+    );
     return res.json(response.data);
   } catch (error: unknown) {
     return res
@@ -211,7 +228,11 @@ export const createNotes = async (req: Request, res: Response) => {
     return res.status(400).json({ error: "Note field must have values" });
   }
   try {
-    const response = await sendViewRequests(url, http.post, body);
+    const response: AxiosResponse<never> | any = await sendViewsRequests(
+      url,
+      http.post,
+      body
+    );
     return res.json(
       `Created notes '${response.data.Note}' under session ${sessionID}`
     );
@@ -242,7 +263,11 @@ export const updateNotes = async (req: Request, res: Response) => {
     return res.status(400).json({ error: "Note field must have values" });
   }
   try {
-    const response = await sendViewRequests(url, http.put, body);
+    const response: AxiosResponse<never> | any = await sendViewsRequests(
+      url,
+      http.put,
+      body
+    );
     return res.json(
       `Updated notes '${response.data.Note}' under session ${sessionID}`
     );
