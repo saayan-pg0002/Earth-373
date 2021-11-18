@@ -1,124 +1,86 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
-import User from "../Models/user.model";
-import UserInterface from "../Interfaces/user.interface";
-import passportLocal from "passport-local";
-// import passportJWT from "passport-jwt";
+import User, { Role } from "../Models/user.model";
 import jwt from "jsonwebtoken";
 
-const LocalStrategy = passportLocal.Strategy;
+export const login = async (req: Request, res: Response) => {
+  const user: any = await User.findOne({
+    email: req.body.email,
+  }).exec();
 
-const strategize = (passport: any) => {
-  passport.serializeUser((user: any, done: any) => {
-    done(undefined, user.id);
-  });
+  if (!user) return res.status(400).send("That account does not exist");
 
-  passport.deserializeUser((id: any, done: any) => {
-    User.findById(id, (err: any, user: any) => {
-      const info = {
-        _id: user._id,
-        email: user.email,
-        views_id: user.views_id,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        activity_status: user.activity_status,
-        role: user.role,
-      };
-      done(err, info);
-    });
-  });
-  passport.use(
-    "signIn",
-    new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
-      User.findOne({
-        email: email,
-      }).then((user) => {
-        //if email is not found
-        if (!user) {
-          return done(null, false, {
-            message: "That email is not registered",
-          });
-        }
-
-        // otherwise, compare password
-        bcrypt.compare(password, user.password as string, (err, isMatch) => {
-          if (err) throw err;
-          if (isMatch) {
-            return done(null, user, { message: "login successful" });
-          } else {
-            return done(null, false, { message: "Password incorrect" });
-          }
-        });
-      });
-    })
+  const isMatch = await bcrypt.compare(
+    req.body.password as string,
+    user.password as string
   );
 
-  // More strategies go here ...
-};
-
-const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
-  console.log("Validating Token...");
-  // let token = req.headers.authorization?.split(" ")[1];
-  const token = req.cookies.jwt;
-  if (token) {
-    jwt.verify(token, "session secret", (error: any, decoded: any) => {
-      if (error) {
-        return res.status(400).json({
-          message: error.message,
-          error,
-        });
-      } else if (decoded) {
-        console.log("Validation Successful");
-        next();
-      }
-    });
+  if (isMatch) {
+    const JWT = signJWT(user);
+    return res.json({ jwt: JWT });
   } else {
-    return res.status(401).json({
-      message: "JWT is undefined",
-    });
+    return res.status(400).send("Invalid credentials");
   }
 };
 
-const authenticate = (req: Request, res: Response, next: NextFunction) => {
-  if (!req.user) {
-    return res.status(401).json({ message: "You are not signed in" });
-  }
-  verifyJWT(req, res, next);
-};
-
-const signJWT = (req: Request, res: Response) => {
-  const user: any = req.user;
+const signJWT = (user: any): string | any => {
   var currentTime = new Date().getTime();
   var expirationTimeInMS = (currentTime + 3600) * 100000;
   var expirationTimeInSeconds = Math.floor(expirationTimeInMS / 1000);
 
-  console.log(`Attempting to sign token for ${user.email}`);
+  return jwt.sign(
+    {
+      _id: user._id,
+      role: user.role,
+    },
+    "token secret",
+    {
+      issuer: "BayTreeDevs",
+      algorithm: "HS256",
+      expiresIn: expirationTimeInSeconds,
+    }
+  );
+};
 
+const verifyJWT = (
+  req: Request,
+  callback: (error: Error | any, role: Role | undefined) => void
+) => {
   try {
-    jwt.sign(
-      {
-        email: user.email,
-        password: user.password,
-      },
-      "session secret",
-      {
-        issuer: "BayTreeDevs",
-        algorithm: "HS256",
-        expiresIn: expirationTimeInSeconds,
-      },
-      (error, token) => {
-        if (error) {
-          return res.status(400).json({ error });
-        } else if (token) {
-          res.cookie("jwt", token);
-          console.log("Signing successful");
-          return res.status(200).json({ "signed token": token });
-        }
+    let token = (req.headers.authorization as string).split(" ")[1];
+    jwt.verify(token, "token secret", (error: any, payload: any) => {
+      if (error) {
+        return callback(error, undefined);
+      } else if (payload) {
+        return callback(undefined, payload.role);
       }
-    );
-  } catch (e) {
-    console.log("Error. Please ctrl+f to see where this is.\n");
+    });
+  } catch (error) {
+    return callback(error, undefined);
   }
 };
 
-export default { strategize, authenticate, signJWT };
+export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+  verifyJWT(req, (error, role) => {
+    if (error) {
+      return res.status(400).send(error.message);
+    } else {
+      if (role === Role.Admin) {
+        return next();
+      } else
+        return res
+          .status(401)
+          .send("You are not authorized to access this page");
+    }
+  });
+};
+
+export const isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
+  verifyJWT(req, (error) => {
+    if (error) {
+      return res.status(400).send(error);
+    } else {
+      return next();
+    }
+  });
+};

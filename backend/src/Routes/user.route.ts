@@ -1,7 +1,7 @@
-import express, { Request, Response, Router } from "express";
+import express, { Router } from "express";
 import UserController from "../Controllers/user.controller";
-import passportConfig from "../Middleware/middleWare";
-import passport from "passport";
+import * as middleware from "../Middleware/middleWare";
+import User from "../Models/user.model";
 
 const router: Router = express.Router();
 
@@ -19,12 +19,24 @@ router.route("/creategoal").post(UserController.createGoalForAssociation);
 router.route("/me/associations").get(UserController.getAssociationsFromMentor);
 router.route("/create-association").post(UserController.createAssociation);
 
-router
-  .route("/login")
-  .post(passport.authenticate("signIn"), passportConfig.signJWT);
-
-router.route("/me").get(passportConfig.authenticate, UserController.getProfile);
+router.route("/me").get(UserController.getProfile);
 
 router.route("/forgot-password").post(UserController.forgotPassword);
 router.route("/reset-password").post(UserController.resetPassword);
+
+router.route("/login").post(middleware.login);
+
+// demo routes
+router.route("/signedin").get(middleware.isLoggedIn, async (req, res) => {
+  const mongoID: string = req.body._id;
+  const user = await User.findOne({ _id: mongoID }).exec();
+  return res.send(`Hello ${user!.first_name}!`);
+});
+
+router.route("/protected").get(middleware.isAdmin, async (req, res) => {
+  const mongoID: string = req.body._id;
+  const admin = await User.findOne({ _id: mongoID }).exec();
+  return res.send(`Hello admin ${admin!.first_name}!`);
+});
+
 export default router;
