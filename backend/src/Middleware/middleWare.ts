@@ -43,44 +43,64 @@ const signJWT = (user: any): string | any => {
 };
 
 const verifyJWT = (
-  req: Request,
-  callback: (error: Error | any, role: Role | undefined) => void
+  token: string,
+  callback: (error: Error | undefined, payload: any | undefined) => void
 ) => {
-  try {
-    let token = (req.headers.authorization as string).split(" ")[1];
-    jwt.verify(token, "token secret", (error: any, payload: any) => {
+  jwt.verify(
+    token.split(" ")[1],
+    "token secret",
+    (error: any, payload: any) => {
       if (error) {
         return callback(error, undefined);
       } else if (payload) {
-        return callback(undefined, payload.role);
+        return callback(undefined, payload);
       }
-    });
-  } catch (error) {
-    return callback(error, undefined);
+    }
+  );
+};
+
+export const isAdmin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.headers.authorization)
+    return res.status(400).json({ error: "Authorization header is undefined" });
+
+  const token: string = req.headers.authorization as string;
+  let role: string = "";
+  let mongoID: string = "";
+  verifyJWT(token, (error, payload) => {
+    if (error) {
+      return res.json(error);
+    } else {
+      role = payload.role;
+      mongoID = payload._id;
+    }
+  });
+  if (role === Role.Admin) {
+    const user = await User.findById(mongoID).exec();
+    req.user = user as Express.User;
+    return next();
   }
+  return res.status(401).json({ unauthorized: "Not permitted" });
 };
 
-export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
-  verifyJWT(req, (error, role) => {
+export const isLoggedIn = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.headers.authorization)
+    return res.status(400).json({ error: "Authorization header is undefined" });
+  const token = req.headers.authorization as string;
+  let mongoID: string = "";
+  verifyJWT(token, (error, payload) => {
     if (error) {
-      return res.status(400).send(error.message);
-    } else {
-      if (role === Role.Admin) {
-        return next();
-      } else
-        return res
-          .status(401)
-          .send("You are not authorized to access this page");
-    }
+      return res.json(error);
+    } else mongoID = payload._id;
   });
-};
-
-export const isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
-  verifyJWT(req, (error) => {
-    if (error) {
-      return res.status(400).send(error);
-    } else {
-      return next();
-    }
-  });
+  const user = await User.findById(mongoID).exec();
+  req.user = user as Express.User;
+  return next();
 };
