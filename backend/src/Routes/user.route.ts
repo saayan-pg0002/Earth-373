@@ -25,15 +25,4 @@ router.route("/reset-password").post(UserController.resetPassword);
 
 router.route("/login").post(middleware.login);
 
-// demo routes
-router.route("/loggedin").get(middleware.isLoggedIn, async (req, res) => {
-  const user: any = req.user;
-  return res.send(`Hello ${user.first_name}!`);
-});
-
-router.route("/protected").get(middleware.isAdmin, async (req, res) => {
-  const user: any = req.user;
-  return res.send(`Hello admin ${user.first_name}!`);
-});
-
 export default router;
