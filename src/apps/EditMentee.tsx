@@ -38,15 +38,15 @@ const EditMentee: React.FC<EditMenteeProp> = ({
       <h2 className="h2"> {menteeName}</h2>
       <form className="form">
         <FormField labelText="Start Date">
-          <DateInput date={StartDate} />
+          <DateInput initialValue={StartDate} />
         </FormField>
 
         <FormField labelText="End Date">
-          <DateInput date={EndDate} />
+          <DateInput initialValue={EndDate} />
         </FormField>
 
         <FormField labelText="Birthday">
-          <DateInput date={BirthDate} />
+          <DateInput initialValue={BirthDate} />
         </FormField>
       </form>
 
@@ -57,7 +57,7 @@ const EditMentee: React.FC<EditMenteeProp> = ({
         </FormField>
 
         <FormField labelText="Start Time">
-          <TimeInput time={EndDate} />
+          <TimeInput initialValue={EndDate} />
         </FormField>
 
         <div className="actions">

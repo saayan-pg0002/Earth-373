@@ -1,31 +1,26 @@
 import React from "react";
 import { FormField } from "../components/form/FormField";
 import { InputNotes } from "../components/form/InputNotes";
-import { RenderAttributes } from "../components/form/RenderAttributes";
 import { IconName } from "../components/Icon";
-import { getFormattedTimeString } from "../util/date";
+import { TextInput } from "../components/form/TextInput";
 import PageHelmet from "../util/PageHelmet";
 import { NewSessionProps } from "./NewSession";
+import { DateInput } from "../components/form/DateInput";
+import { TimeInput } from "../components/form/TimeInput";
 
 const ViewSession: React.FC<NewSessionProps> = ({
   menteeName,
   date,
-  actualclockInTime,
-  actualclockOutTime,
+  startTime,
+  endTime,
   notes,
 }) => {
   menteeName = "Melissa Nguyen";
-  date = "2021-09-19";
-  actualclockInTime = (() => {
-    const date = new Date();
-    date.setHours(20, 0);
-    return date;
-  })();
-  actualclockOutTime = (() => {
-    const date = new Date();
-    date.setHours(21, 0);
-    return date;
-  })();
+  date = new Date();
+  startTime = new Date();
+  startTime.setHours(20, 0);
+  endTime = new Date();
+  endTime.setHours(22, 0);
   notes = "Learn Math";
 
   return (
@@ -34,41 +29,46 @@ const ViewSession: React.FC<NewSessionProps> = ({
 
       <h1 className="page-title">View Session</h1>
       <form className="form">
+        <p className="subtext">
+          This is a view-only page. To change any fields, please contact an
+          admin
+        </p>
         <FormField labelText="Mentee">
-          <RenderAttributes
-            attribute={menteeName}
+          <TextInput
             rightIconName={IconName.smiley}
+            initialValue="Melissa Nguyen"
+            placeholderText="Mentee Name"
+            isDisabled={true}
           />
         </FormField>
 
         <FormField labelText="Date">
-          <RenderAttributes
-            attribute={date}
-            rightIconName={IconName.calendar}
+          <DateInput
+            name="date"
+            id="inputDate"
+            initialValue={date}
+            isDisabled={true}
           />
         </FormField>
 
         <FormField labelText="Start Time">
-          <RenderAttributes
-            attribute={getFormattedTimeString(actualclockInTime)}
-            rightIconName={IconName.clock}
+          <TimeInput
+            name="start_time"
+            initialValue={startTime}
+            isDisabled={true}
           />
         </FormField>
 
         <FormField labelText="End Time">
-          <RenderAttributes
-            attribute={getFormattedTimeString(actualclockOutTime)}
-            rightIconName={IconName.clock}
-          />
+          <TimeInput name="end_time" initialValue={endTime} isDisabled={true} />
         </FormField>
 
         <FormField labelText="Notes">
           <InputNotes
-            placeholderText="Your notes..."
+            placeholderText="Add notes about your session..."
             name="notes"
-            id="notes"
             isDisabled={true}
-            notes={notes}
+            initialValue={notes}
           />
         </FormField>
       </form>

@@ -5,21 +5,21 @@ import { DateInput } from "../components/form/DateInput";
 import { InputNotes } from "../components/form/InputNotes";
 import { TimeInput } from "../components/form/TimeInput";
 
-const AciveMenteeList: string[] = ["Melissa Nguyen", "Dianne Russell"];
+const ActiveMenteeList: string[] = ["Melissa Nguyen", "Dianne Russell"];
 
 export interface NewSessionProps {
   menteeName: string;
-  date: string;
-  actualclockInTime: Date;
-  actualclockOutTime: Date;
+  date: Date;
+  startTime: Date;
+  endTime: Date;
   notes: string;
 }
 
 const NewSession: React.FC<NewSessionProps> = ({
   menteeName,
   date,
-  actualclockInTime,
-  actualclockOutTime,
+  startTime,
+  endTime,
   notes,
 }) => {
   const onSubmit = (e: React.SyntheticEvent) => {
@@ -47,7 +47,7 @@ const NewSession: React.FC<NewSessionProps> = ({
       <h1 className="page-title">New Session</h1>
       <form onSubmit={onSubmit} className="form">
         <FormField labelText="Mentee">
-          <DropdownMenu options={AciveMenteeList} name="mentee_name" />
+          <DropdownMenu options={ActiveMenteeList} name="mentee_name" />
         </FormField>
 
         <FormField labelText="Date">
