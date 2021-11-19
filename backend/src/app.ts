@@ -2,10 +2,6 @@ import express, { Application } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import UserRouter from "./Routes/user.route";
-import passport from "passport";
-import session from "express-session";
-import passportConfig from "./Middleware/middleWare";
-import cookie from "cookie-parser";
 import cors from "cors";
 import path from "path";
 
@@ -19,23 +15,6 @@ mongoose.connect(URI).then(() => {
 });
 
 const port: string | number = process.env.PORT || 5000;
-
-/** use cookie */
-app.use(cookie());
-
-/** use sessions */
-app.use(
-  session({
-    secret: "session secret",
-    resave: true,
-    saveUninitialized: true,
-  })
-);
-
-/** Initialize passports */
-passportConfig.strategize(passport);
-app.use(passport.initialize());
-app.use(passport.session());
 
 /** Rules of our API */
 app.use(express.json());
