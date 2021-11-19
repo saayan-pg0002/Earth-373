@@ -7,6 +7,7 @@ import PageHelmet from "../util/PageHelmet";
 import { NewSessionProps } from "./NewSession";
 import { DateInput } from "../components/form/DateInput";
 import { TimeInput } from "../components/form/TimeInput";
+import { Checkbox } from "../components/form/Checkbox";
 
 const ViewSession: React.FC<NewSessionProps> = ({
   menteeName,
@@ -33,6 +34,8 @@ const ViewSession: React.FC<NewSessionProps> = ({
           This is a view-only page. To change any fields, please contact an
           admin
         </p>
+        <Checkbox isChecked={true} label="Cancelled" isDisabled={true} />
+
         <FormField labelText="Mentee">
           <TextInput
             rightIconName={IconName.smiley}

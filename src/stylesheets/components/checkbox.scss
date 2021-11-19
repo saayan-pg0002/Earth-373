@@ -1,8 +1,19 @@
 @import "../util/";
 
 label.checkbox {
+  display: flex;
+
+  .label {
+    display: inline-block;
+    margin-left: 0.5rem;
+  }
+
   input {
     display: none;
+  }
+
+  &.disabled .checkmark {
+    background-color: $grey-50;
   }
 
   .checkmark {

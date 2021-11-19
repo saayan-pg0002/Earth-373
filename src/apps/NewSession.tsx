@@ -4,6 +4,7 @@ import { FormField } from "../components/form/FormField";
 import { DateInput } from "../components/form/DateInput";
 import { InputNotes } from "../components/form/InputNotes";
 import { TimeInput } from "../components/form/TimeInput";
+import { Checkbox } from "../components/form/Checkbox";
 
 const ActiveMenteeList: string[] = ["Melissa Nguyen", "Dianne Russell"];
 
@@ -13,6 +14,7 @@ export interface NewSessionProps {
   startTime: Date;
   endTime: Date;
   notes: string;
+  isCancelled: boolean;
 }
 
 const NewSession: React.FC<NewSessionProps> = ({
@@ -21,6 +23,7 @@ const NewSession: React.FC<NewSessionProps> = ({
   startTime,
   endTime,
   notes,
+  isCancelled,
 }) => {
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -46,6 +49,8 @@ const NewSession: React.FC<NewSessionProps> = ({
 
       <h1 className="page-title">New Session</h1>
       <form onSubmit={onSubmit} className="form">
+        <Checkbox isChecked={false} label="Cancelled" />
+
         <FormField labelText="Mentee">
           <DropdownMenu options={ActiveMenteeList} name="mentee_name" />
         </FormField>
