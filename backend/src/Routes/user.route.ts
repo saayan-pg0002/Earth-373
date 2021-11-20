@@ -14,12 +14,11 @@ router.post("/creategoal", UserController.createGoalForAssociation);
 router.get("/me/associations", UserController.getAssociationsFromMentor);
 router.post("/create-association", UserController.createAssociation);
 router.post("/login", passport.authenticate("signIn"), passportConfig.signJWT);
-router.get("/me", passportConfig.authenticate, UserController.getProfile);
 router.post("/forgot-password", UserController.forgotPassword);
 router.post("/reset-password", UserController.resetPassword);
 router.get("/profile/me", UserController.getMyProfile);
 
 /* Admin only routes */
-router.post("/profile/edit", UserController.editProfile);
-
+router.put("/profile/edit/:id", UserController.editProfile);
+router.get("/get/:type", UserController.getUsers);
 export default router;

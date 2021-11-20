@@ -1,4 +1,4 @@
-import mongoose, { Model, Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import AssociationInterface from "../Interfaces/association.interface";
 
 const associationSchema: Schema = new Schema(
@@ -9,15 +9,13 @@ const associationSchema: Schema = new Schema(
     goals: [
       {
         name: { type: String, required: true },
-        is_complete: { type: Boolean, required: true, default: false },
-      },
+        is_complete: { type: Boolean, required: true, default: false }
+      }
     ],
-    questionnaire_ids: [
-      { type: mongoose.Types.ObjectId, ref: "Questionnaire" },
-    ],
+    questionnaire_ids: [{ type: mongoose.Types.ObjectId, ref: "Questionnaire" }]
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 );
 

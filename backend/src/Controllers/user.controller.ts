@@ -406,10 +406,6 @@ const createAssociation = (req: Request, res: Response) => {
   });
 };
 
-const getProfile = (req: Request, res: Response) => {
-  return res.json(req.user);
-};
-
 const resetPassword = (req: Request, res: Response) => {
   const { resetLink, newPass } = req.body;
   if (resetLink) {
@@ -452,9 +448,33 @@ const resetPassword = (req: Request, res: Response) => {
   }
 };
 
-const getMyProfile = (req: Request, res: Response) => {};
+const getMyProfile = (req: Request, res: Response) => {
+  let user: any = req.user;
+  delete user["password"];
+  return res.json(user);
+};
 
-const editProfile = (req: Request, res: Response) => {};
+const editProfile = (req: Request, res: Response) => {
+  const user: any = req.body.user;
+  User.updateOne(
+    { _id: user._id },
+    {
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      activity_status: user.activity_status,
+      role: user.role
+    }
+  ).exec((err, user) => {
+    if (err) {
+      res
+        .status(400)
+        .json({ error: "Error occured when updating profile", err });
+    }
+  });
+};
+
+const getUsers = (req: Request, res: Response) => {};
 
 const UserController = {
   addMongoUser,
@@ -464,12 +484,12 @@ const UserController = {
   createGoalForAssociation,
   createAssociation,
   getAssociationsFromMentor,
-  getProfile,
   getGoalsForAssociation,
   forgotPassword,
   resetPassword,
   getHashedPassword,
   getMyProfile,
+  getUsers,
   editProfile
 };
 
