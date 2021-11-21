@@ -57,9 +57,13 @@
   }
 
   &.disabled {
+    .icon svg path {
+      fill: $baytree-navy;
+    }
+
     &,
     & > *:disabled {
-      color: $black;
+      color: $baytree-navy;
       background-color: $grey-50;
       opacity: 1;
     }

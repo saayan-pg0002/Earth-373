@@ -14,7 +14,7 @@ const Resources: React.FC<{}> = () => {
         </div>
         <div className="resource-list">
           <ExternalLinkItem
-            content="BayTree Centre Website"
+            content="Baytree Centre Website"
             path="https://www.baytreecentre.org"
           />
           <ExternalLinkItem
