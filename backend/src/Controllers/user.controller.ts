@@ -266,7 +266,43 @@ const getAssociationsFromMentor = (req: Request, res: Response) => {
   Association.find({ mentor_id: mentor_id })
     .exec()
     .then((associations) => {
-      return res.status(200).json({ associations });
+      const menteeIds: String[] = associations.map(
+        (association) => association.mentee_id
+      );
+
+      Mentee.find({ _id: { $in: menteeIds } }).exec((err, mentees) => {
+        if (err || mentees.length !== associations.length) {
+          return res.status(400).json({
+            error:
+              "One of the mentees in the specified associations does not exist.",
+          });
+        }
+
+        const associationsWithMenteeName: any[] = associations.map(
+          (association) => {
+            const mentee: any = mentees.find(
+              (currentMentee) =>
+                currentMentee._id.toString() === association.mentee_id
+            );
+
+            if (!mentee) {
+              return res.status(400).json({
+                error:
+                  "One of the mentees in the specified associations does not exist.",
+              });
+            }
+
+            return {
+              ...association.toJSON(),
+              mentee_name: `${mentee.first_name} ${mentee.last_name}`,
+            };
+          }
+        );
+
+        return res
+          .status(200)
+          .json({ associations: associationsWithMenteeName });
+      });
     })
     .catch((error) => {
       return res.status(404).json({
