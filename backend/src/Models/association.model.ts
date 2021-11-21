@@ -1,4 +1,4 @@
-import mongoose, { Model, Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import AssociationInterface from "../Interfaces/association.interface";
 
 const associationSchema: Schema = new Schema(
