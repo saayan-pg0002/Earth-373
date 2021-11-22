@@ -1,9 +1,9 @@
-import axios, { AxiosPromise } from "axios";
+import axios, { AxiosPromise, AxiosResponse } from "axios";
 import { getLocalStorageItem } from "./localStorage";
 
 export const ORIGIN: string = window.location.origin;
 const BASE_URL: string = ORIGIN.split(":").slice(0, 2).join(":");
-const PORT: String = "5000";
+const PORT: String = "8000";
 
 export enum RequestType {
   POST = "POST",
@@ -25,7 +25,7 @@ export const sendRequest = (
   method: RequestType,
   endpoint: Endpoints,
   data?: {}
-): AxiosPromise<any> => {
+): AxiosPromise => {
   return axios({
     method,
     url: `${BASE_URL}:${PORT}/${endpoint}`,

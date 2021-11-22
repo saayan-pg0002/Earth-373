@@ -18,7 +18,7 @@ const pastMenteeList: MenteeItemProps[] = [
   {
     menteeName: "Tessa Pampangan",
     startDate: new Date("1/20/2020"),
-    endDate: new Date("3/12/2020")
+    endDate: new Date("3/12/2020"),
   },
   {
     menteeName: "Lila Singh",
