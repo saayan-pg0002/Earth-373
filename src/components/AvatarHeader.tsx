@@ -10,31 +10,36 @@ import {
 } from "../util/localStorage";
 
 export interface AvatarHeaderProps {
-  name: string;
+  name?: string | null;
   img?: string;
 }
 
-const GetUserName = (): string | undefined => {
-  const [avatar, setAvatar] = React.useState<string | undefined>();
-  sendRequest(RequestType.GET, Endpoints.me)
-    .then(({ data }) => {
-      storeLocalStorageItem("firstName", data?.["first_name"]);
-      setAvatar(data?.["first_name"][0]);
-    })
-    .catch((err) => {
-      showMessageToast(MessageToastType.ERROR, "Unable to load your avatar");
-    });
+export const GetUserName = (): string | undefined | null => {
+  const [avatar, setAvatar] = React.useState<string | undefined | null>(
+    getLocalStorageItem("Initial")
+  );
+  if (getLocalStorageItem("token")) {
+    if (!getLocalStorageItem("firstName")) {
+      sendRequest(RequestType.GET, Endpoints.type)
+        .then(({ data }) => {
+          console.log(data);
+          storeLocalStorageItem("Initial", data?.["first_name"][0]);
+          setAvatar(data?.["first_name"][0]);
+        })
+        .catch((err) => {
+          storeLocalStorageItem("Initial", undefined);
+        });
+    }
+  }
+
   return avatar;
 };
 
-export const AvatarHeader: React.FC<AvatarHeaderProps> = () => {
-  let avatar = getLocalStorageItem("firstName"[0])
-    ? getLocalStorageItem("firstName")
-    : GetUserName();
+export const AvatarHeader: React.FC<AvatarHeaderProps> = ({}) => {
   return (
     <div className="avatar">
       <Link to={Paths.settings}>
-        <Avatar children={avatar} />
+        <Avatar children={GetUserName()} />
       </Link>
     </div>
   );
