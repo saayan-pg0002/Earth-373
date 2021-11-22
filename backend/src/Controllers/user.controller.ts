@@ -284,7 +284,13 @@ const getGoalsForAssociation = (req: Request, res: Response) => {
   Association.findOne({ mentee_id: mentee_id, mentor_id: mentor_id })
     .exec()
     .then((result: any) => {
+      if (result.body.message == "Not found") {
+        return res.status(400).json({
+          message: "Couldn't find anything.",
+        });
+      } //THE ABOVE CASE STILL DOESNT WORK. FIX BEFORE MERGING
       return res.status(200).json({
+        message: "Found goals for association.",
         goals: result.goals,
       });
     })
@@ -395,7 +401,7 @@ const resetPassword = (req: Request, res: Response) => {
         if (err) {
           return res.status(401).json({ error: "Incorrect or expired token " });
         }
-        User.findOne({ resetLink }).exec((err, user) => {
+        User.findOne({ resetLink }).exec((err, user: any) => {
           if (err || !user) {
             return res
               .status(400)
@@ -409,7 +415,7 @@ const resetPassword = (req: Request, res: Response) => {
 
             user = _.extend(user, obj);
 
-            user!.save((err, result) => {
+            user!.save((err: any, result: any) => {
               if (err) {
                 return res.status(400).json({ error: "Reset password error " });
               } else {
