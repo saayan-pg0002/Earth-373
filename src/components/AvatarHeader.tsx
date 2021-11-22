@@ -22,7 +22,6 @@ export const GetUserName = (): string | undefined | null => {
     if (!getLocalStorageItem("firstName")) {
       sendRequest(RequestType.GET, Endpoints.me)
         .then(({ data }) => {
-          console.log(data);
           storeLocalStorageItem("Initial", data?.["first_name"][0]);
           setAvatar(data?.["first_name"][0]);
         })
