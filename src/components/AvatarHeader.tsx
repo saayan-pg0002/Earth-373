@@ -20,7 +20,7 @@ export const GetUserName = (): string | undefined | null => {
   );
   if (getLocalStorageItem("token")) {
     if (!getLocalStorageItem("firstName")) {
-      sendRequest(RequestType.GET, Endpoints.type)
+      sendRequest(RequestType.GET, Endpoints.me)
         .then(({ data }) => {
           console.log(data);
           storeLocalStorageItem("Initial", data?.["first_name"][0]);
