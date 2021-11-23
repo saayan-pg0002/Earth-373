@@ -30,23 +30,22 @@ const getQuestions = async (qTId: Number) => {
     .catch((error) => {
       result = error;
     });
-  createQuestions(result);
-  return result;
-};
 
-async function createQuestions(data: any) {
-  for (const key in data) {
-    const viewsQues = data[key];
-    console.log({
-      id: viewsQues["QuestionID"],
-      question: viewsQues["Question"],
-      label: viewsQues["Question"],
-      is_required: viewsQues["validation"] !== "",
-      field_type: viewsQues["inputType"],
-      enabled: viewsQues["enabled"],
-    });
+  let allQues = [];
+  for (const key1 in result as any) {
+    const viewsQues: any = result[key1 as any];
+    if (viewsQues["enabled"] === "1") {
+      let oneField = {
+        id: viewsQues["QuestionID"],
+        label: viewsQues["Question"],
+        is_required: viewsQues["validation"] !== "",
+        field_type: viewsQues["inputType"],
+      };
+      allQues.push(oneField);
+    }
   }
-}
+  return allQues;
+};
 
 const getQuestionnaireTemplates = async () => {
   const url: string =
@@ -68,22 +67,26 @@ const getQuestionnaireTemplates = async () => {
     .catch((error) => {
       result = error;
     });
-  await getQuestions(30);
-  return result;
+  await createQTemplates(result);
 };
 
-async function createTemplates(data: any) {
-  for (const key in data) {
-    const viewsQT = data[key];
-    for (const key1 in viewsQT) {
-      const qTfields = viewsQT[key1];
-    }
-  }
+async function createQTemplates(data: any) {
+  const questionfields = await getQuestions(30);
+  const newQTemplate = new QuestionnaireT({
+    name: "Test Questionnaire" as string,
+    id: 30 as Number,
+    fields: questionfields,
+  });
+  newQTemplate.save().catch((error) => {
+    return console.log("Error adding template", error);
+  });
+  return console.log(`Added template ${newQTemplate.id}`);
 }
+
 const migrateQuestionnarie = async (req: Request, res: Response) => {
   try {
-    const qT: any = await getQuestionnaireTemplates();
-    res.status(200).send(qT);
+    await getQuestionnaireTemplates();
+    res.status(200).send("Added templates successfully");
   } catch (error) {
     throw error;
   }
