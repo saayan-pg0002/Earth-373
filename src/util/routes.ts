@@ -11,11 +11,12 @@ import Notifications from "../apps/Notifications";
 import Settings from "../apps/Settings";
 import Resources from "../apps/Resources";
 import Profile from "../apps/Profile";
-import EditMentee from "../apps/EditMentee";
 import ViewSession from "../apps/ViewSession";
 import ForgotPassword from "../apps/ForgotPassword";
 import ResetPassword from "../apps/ResetPassword";
 import MenteeProfile from "../apps/MenteeProfile";
+import EditSchedule from "../apps/EditSchedule";
+import NewQuestionnaire from "../components/mentee_profile/NewQuestionnaire";
 
 export const history = createBrowserHistory();
 
@@ -35,13 +36,14 @@ export const Paths = {
   viewSession: "/view-session",
   profile: "/profile",
   resources: "/resources",
-  editMentee: "/edit-mentee",
+  editSchedule: "/edit-schedule",
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password",
   menteeProfile: "/mentee/*",
   menteeProfileGoals: "/mentee/goals",
   menteeProfileSessions: "/mentee/sessions",
   menteeProfileQuestionnaires: "/mentee/questionnaires",
+  NewQuestionnaire: "/new-questionnaire",
 };
 
 export const PublicPaths: string[] = [Paths.login, Paths.forgotPassword, Paths.resetPassword];
@@ -105,8 +107,8 @@ export const routes: Route[] = [
     exact: true,
   },
   {
-    path: Paths.editMentee,
-    component: EditMentee,
+    path: Paths.editSchedule,
+    component: EditSchedule,
     exact: true,
   },
   {
@@ -122,6 +124,11 @@ export const routes: Route[] = [
   {
     path: Paths.resetPassword,
     component: ResetPassword,
+    exact: true,
+  },
+  {
+    path: Paths.NewQuestionnaire,
+    component: NewQuestionnaire,
     exact: true,
   },
 ];
