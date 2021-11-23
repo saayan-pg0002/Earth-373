@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import QuestionnaireT from "../Models/questionnairetemplate.model";
+import { FieldType } from "../Models/questionnairetemplate.model";
 import axios from "axios";
 import mongoose, { Error, Model } from "mongoose";
 import dotenv from "dotenv";
@@ -34,7 +35,10 @@ const getQuestions = async (qTId: Number) => {
   let allQues = [];
   for (const key1 in result as any) {
     const viewsQues: any = result[key1 as any];
-    if (viewsQues["enabled"] === "1") {
+    if (!Object.values(FieldType).includes(viewsQues["inputType"])) {
+      console.log(viewsQues["inputType"]);
+    }
+    if (viewsQues["enabled"] == "1") {
       let oneField = {
         id: viewsQues["QuestionID"],
         label: viewsQues["Question"],
@@ -67,20 +71,53 @@ const getQuestionnaireTemplates = async () => {
     .catch((error) => {
       result = error;
     });
-  await createQTemplates(result);
+  try {
+    await createQTemplates(result);
+  } catch (error) {
+    return error;
+  }
 };
 
 async function createQTemplates(data: any) {
-  const questionfields = await getQuestions(30);
-  const newQTemplate = new QuestionnaireT({
-    name: "Test Questionnaire" as string,
-    id: 30 as Number,
-    fields: questionfields,
-  });
-  newQTemplate.save().catch((error) => {
-    return console.log("Error adding template", error);
-  });
-  return console.log(`Added template ${newQTemplate.id}`);
+  for (const key1 in data) {
+    const quesTemplate = data[key1];
+    for (const key2 in quesTemplate) {
+      const qTFields = quesTemplate[key2];
+      await QuestionnaireT.find({
+        id: Number(qTFields["QuestionnaireID"]),
+      })
+        .exec()
+        .then(async (qTemp) => {
+          if (qTemp.length === 0) {
+            const questionfields = await getQuestions(
+              Number(qTFields["QuestionnaireID"])
+            );
+            if (questionfields.length > 0) {
+              const newQTemplate = new QuestionnaireT({
+                name: String(qTFields["Title"]),
+                id: Number(qTFields["QuestionnaireID"]),
+                fields: questionfields,
+              });
+              await newQTemplate
+                .save()
+                .then(() => {
+                  console.log(`Template ${newQTemplate.id} added`);
+                })
+                .catch((error) => {
+                  console.log(`Error adding template ${newQTemplate.id}`);
+                  return error;
+                });
+            } else {
+              console.log(
+                `QTemplate ${qTFields["QuestionnaireID"]} has no ques.`
+              );
+            }
+          } else {
+            console.log("Template already exists");
+          }
+        });
+    }
+  }
 }
 
 const migrateQuestionnarie = async (req: Request, res: Response) => {
