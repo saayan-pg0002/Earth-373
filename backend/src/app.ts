@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import UserRouter from "./Routes/user.route";
 import cors from "cors";
 import path from "path";
+import QuestionnaireRouter from "./Routes/questionnaire.route";
 
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
@@ -22,6 +23,7 @@ app.use(cors());
 
 /** Routes go here */
 app.use("/users", UserRouter);
+app.use("/questionnaire", QuestionnaireRouter);
 
 /** Error Handling */
 app.use((req, res, next) => {
