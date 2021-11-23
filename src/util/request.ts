@@ -3,7 +3,7 @@ import { getLocalStorageItem } from "./localStorage";
 
 export const ORIGIN: string = window.location.origin;
 const BASE_URL: string = ORIGIN.split(":").slice(0, 2).join(":");
-const PORT: String = "8000";
+const PORT: String = "5000";
 
 export enum RequestType {
   POST = "POST",

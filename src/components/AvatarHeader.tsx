@@ -19,7 +19,10 @@ export const GetUserName = (): string | undefined | null => {
     getLocalStorageItem("Initial")
   );
   if (getLocalStorageItem("token")) {
-    if (!getLocalStorageItem("firstName")) {
+    if (
+      !getLocalStorageItem("Initial") ||
+      getLocalStorageItem("Initial") == "undefined"
+    ) {
       sendRequest(RequestType.GET, Endpoints.me)
         .then(({ data }) => {
           storeLocalStorageItem("Initial", data?.["first_name"][0]);
@@ -30,7 +33,6 @@ export const GetUserName = (): string | undefined | null => {
         });
     }
   }
-
   return avatar;
 };
 
