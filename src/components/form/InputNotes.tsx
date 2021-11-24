@@ -1,54 +1,48 @@
 import { useState } from "react";
 import { IconName } from "../Icon";
+import { GeneralInputProps } from "./FormField";
 
 interface InputNotesProps {
-  required?: boolean;
-  id?: string;
-  name?: string;
   leftIconName?: IconName;
   rightIconName?: IconName;
   placeholderText: string;
   type?: string;
-  isDisabled?: boolean;
-  notes?: string;
+  initialValue?: string;
 }
 
-export const InputNotes: React.FC<InputNotesProps> = ({
+export const InputNotes: React.FC<GeneralInputProps & InputNotesProps> = ({
   required,
   id,
   name,
   placeholderText,
-  isDisabled,
-  notes,
+  isDisabled = false,
+  initialValue,
 }) => {
-  const [inputNotes, setNotes] = useState(notes ? notes : "");
-  const [isFocused, setIsFocused] = useState<Boolean>(false);
+  const [value, setValue] = useState<string>(initialValue ? initialValue : "");
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
   const onFocus = (): void => setIsFocused(true);
   const onBlur = (): void => setIsFocused(false);
 
-  const handleNotesChange = (e: any) => {
-    if (isDisabled) {
-      alert("You first need to start the session");
-    } else {
-      setNotes(e.target.value);
-    }
-    e.preventDefault();
-  };
+  const onChange = (event: any) => setValue(event.target.value);
 
   return (
-    <div className={`input-notes control ${isFocused ? "focused" : ""}`}>
+    <div
+      className={`input-notes control ${isFocused ? "focused" : ""} ${
+        isDisabled ? "disabled" : ""
+      }`}
+    >
       <textarea
         id={id}
         name={name}
         placeholder={placeholderText}
-        value={inputNotes}
-        onChange={handleNotesChange}
+        value={value}
         disabled={isDisabled}
         onFocus={onFocus}
         onBlur={onBlur}
+        onChange={onChange}
       >
-        {inputNotes}
+        {value}
       </textarea>
     </div>
   );
