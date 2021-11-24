@@ -1,18 +1,29 @@
 import { FC } from "react";
 import { routeTo } from "../util/routes";
-import { ORIGIN } from "../util/request";
 
+export interface ParamsAndQueriesInterface {
+  name: string;
+  value: string;
+}
 interface LinkProps {
   to: string;
+  params?: ParamsAndQueriesInterface[];
+  queries?: ParamsAndQueriesInterface[];
   className?: string;
 }
 
-const Link: FC<LinkProps> = ({ to: path, className = "", children }) => {
-  const href: string = `${ORIGIN}/${path}`;
+const Link: FC<LinkProps> = ({
+  to: path,
+  params = [],
+  queries = [],
+  className = "",
+  children,
+}) => {
+  const href: string = buildHrefPath(path, params, queries);
 
   const onClick = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    routeTo(path);
+    routeTo(href);
   };
 
   return (
@@ -20,6 +31,22 @@ const Link: FC<LinkProps> = ({ to: path, className = "", children }) => {
       {children}
     </a>
   );
+};
+
+export const buildHrefPath = (
+  path: string,
+  params: ParamsAndQueriesInterface[] = [],
+  queries: ParamsAndQueriesInterface[] = []
+): string => {
+  for (const { name, value } of params) {
+    path = path.replace(`:${name}`, value);
+  }
+
+  for (const { name, value } of queries) {
+    path = `${path}?${name}=${value}`;
+  }
+
+  return path;
 };
 
 export default Link;

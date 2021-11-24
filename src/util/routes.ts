@@ -38,13 +38,17 @@ export const Paths = {
   editMentee: "/edit-mentee",
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password",
-  menteeProfile: "/mentee/*",
-  menteeProfileGoals: "/mentee/goals",
-  menteeProfileSessions: "/mentee/sessions",
-  menteeProfileQuestionnaires: "/mentee/questionnaires",
+  menteeProfile: "/mentee/:association_id/*",
+  menteeProfileGoals: "/mentee/:association_id/goals",
+  menteeProfileSessions: "/mentee/:association_id/sessions",
+  menteeProfileQuestionnaires: "/mentee/:association_id/questionnaires",
 };
 
-export const PublicPaths: string[] = [Paths.login, Paths.forgotPassword, Paths.resetPassword];
+export const PublicPaths: string[] = [
+  Paths.login,
+  Paths.forgotPassword,
+  Paths.resetPassword,
+];
 
 export interface Route {
   path: string;
@@ -112,7 +116,7 @@ export const routes: Route[] = [
   {
     path: Paths.menteeProfile,
     component: MenteeProfile,
-    exact: true,
+    exact: false,
   },
   {
     path: Paths.forgotPassword,

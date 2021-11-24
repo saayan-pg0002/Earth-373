@@ -18,7 +18,11 @@ export interface MenteeItemProps {
 
 export const MenteeItem: React.FC<MenteeItemProps> = ({ _id, mentee_name }) => {
   return (
-    <Link to={Paths.menteeProfileGoals} className="mentee-item">
+    <Link
+      to={Paths.menteeProfileGoals}
+      params={[{ name: "association_id", value: _id }]}
+      className="mentee-item"
+    >
       <div className="body">
         {/* <p className="subtext">
           {endDate
