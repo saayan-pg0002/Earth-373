@@ -46,7 +46,7 @@ const EditSchedule: React.FC<MenteeInfoProps> = ({
         </FormField>
 
         <FormField labelText="Start Time">
-          <TimeInput name="sessionTime" time={time} />
+          <TimeInput name="sessionTime" initialValue={time} />
         </FormField>
 
         <div className="actions">
