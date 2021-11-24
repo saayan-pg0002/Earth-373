@@ -12,6 +12,7 @@ export interface ItemProps {
   clockInTime: Date;
   clockOutTime: Date;
   viewOnly?: boolean;
+  content?: string;
 }
 
 export const SessionItem: React.FC<ItemProps> = ({
@@ -19,6 +20,7 @@ export const SessionItem: React.FC<ItemProps> = ({
   clockInTime,
   clockOutTime,
   viewOnly = false,
+  content,
 }) => {
   const [isOngoing, setIsOngoing] = useState<Boolean>(
     isCurrentDateBetween(clockInTime, clockOutTime)
@@ -31,7 +33,7 @@ export const SessionItem: React.FC<ItemProps> = ({
 
     return () => clearInterval(checkIsOngoingIntervalID);
   });
-
+  console.log(content);
   return (
     <Link
       to={viewOnly ? Paths.viewSession : Paths.newSession}
@@ -43,6 +45,7 @@ export const SessionItem: React.FC<ItemProps> = ({
           {getStartEndFormattedTimeString(clockInTime, clockOutTime)}
         </p>
         <p className="semi-bold">{value}</p>
+        <p className="subtext content">{content}</p>
       </div>
       {!viewOnly && (
         <ContainedIcon
