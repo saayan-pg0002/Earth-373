@@ -309,7 +309,7 @@ const getMenteesForMentor = (req: Request, res: Response) => {
     })
     .catch((error) => {
       return res.status(404).json({
-        message: "Error: Mentee id not found.",
+        message: "Error: Mentees not found.",
         error,
       });
     });
@@ -318,52 +318,33 @@ const getMenteesForMentor = (req: Request, res: Response) => {
 const getAssociationsForMentorById = (req: Request, res: Response) => {
   const user: any = req.user;
   const mentor_id: string = user._id as string;
+  const association_id: string = req.params.id as string;
 
-  Association.find({ mentor_id: mentor_id })
+  Association.findOne({ _id: association_id, mentor_id: mentor_id })
     .exec()
-    .then((associations) => {
-      const menteeIds: String[] = associations.map(
-        (association) => association.mentee_id
-      );
+    .then((association) => {
+      if (!association) {
+        return res.status(400).json({
+          error: "Error: Association not found.",
+        });
+      }
 
-      Mentee.find({ _id: { $in: menteeIds } }).exec((err, mentees) => {
-        if (err || mentees.length !== associations.length) {
+      Mentee.findOne({ _id: association.mentee_id }).exec((err, mentee) => {
+        if (err || !mentee) {
           return res.status(400).json({
-            error:
-              "One of the mentees in the specified associations does not exist.",
+            error: "Error: The mentee for this association does not exist.",
           });
         }
 
-        const associationsWithMenteeName: any[] = associations.map(
-          (association) => {
-            const mentee: any = mentees.find(
-              (currentMentee) =>
-                currentMentee._id.toString() === association.mentee_id
-            );
-
-            if (!mentee) {
-              return res.status(400).json({
-                error:
-                  "One of the mentees in the specified associations does not exist.",
-              });
-            }
-
-            return {
-              ...association.toJSON(),
-              mentee_name: `${mentee.first_name} ${mentee.last_name}`,
-            };
-          }
-        );
-
-        return res
-          .status(200)
-          .json({ associations: associationsWithMenteeName });
+        return res.status(200).json({
+          ...association.toJSON(),
+          mentee: mentee.toJSON(),
+        });
       });
     })
     .catch((error) => {
       return res.status(404).json({
-        message: "Error: Mentee id not found.",
-        error,
+        error: "Error: Association not found.",
       });
     });
 };
