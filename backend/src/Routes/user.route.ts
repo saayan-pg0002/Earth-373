@@ -17,9 +17,10 @@ router
   .post(UserController.getGoalsForAssociation);
 
 router.route("/creategoal").post(UserController.createGoalForAssociation);
+router.route("/me/mentees").get(isLoggedIn, UserController.getMenteesForMentor);
 router
-  .route("/me/associations")
-  .get(isLoggedIn, UserController.getAssociationsFromMentor);
+  .route("/me/associations/:id")
+  .get(isLoggedIn, UserController.getAssociationsForMentorById);
 router.route("/create-association").post(UserController.createAssociation);
 
 router.route("/me").get(isLoggedIn, UserController.getProfile);

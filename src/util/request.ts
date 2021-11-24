@@ -13,7 +13,7 @@ export enum RequestType {
 
 export enum Endpoints {
   login = "users/login",
-  myAssociations = "users/me/associations",
+  myMentees = "users/me/mentees",
 }
 
 const getAuthHeaders = (): {} => {

@@ -4,23 +4,19 @@ import Link from "./Link";
 import { Paths } from "../util/routes";
 
 export interface MenteeItemProps {
-  _id: string;
-  mentor_id?: string;
-  mentee_id: string;
-  isActive?: boolean;
-  questionnaire_ids?: [];
-  goals?: [];
-  createdAt?: string;
-  updatedAt?: string;
-  __v?: string;
+  association_id: string;
+  is_active: boolean;
   mentee_name: string;
 }
 
-export const MenteeItem: React.FC<MenteeItemProps> = ({ _id, mentee_name }) => {
+export const MenteeItem: React.FC<MenteeItemProps> = ({
+  association_id,
+  mentee_name,
+}) => {
   return (
     <Link
       to={Paths.menteeProfileGoals}
-      params={[{ name: "association_id", value: _id }]}
+      params={[{ name: "association_id", value: association_id }]}
       className="mentee-item"
     >
       <div className="body">

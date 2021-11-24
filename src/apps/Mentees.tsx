@@ -10,13 +10,13 @@ const Mentees: React.FC<{}> = () => {
   const [pastMenteeList, setPastMenteeList] = useState<MenteeItemProps[]>([]);
 
   useEffect(() => {
-    sendRequest(RequestType.GET, Endpoints.myAssociations).then(
-      ({ data: { associations } }) => {
-        const ongoingMentees: MenteeItemProps[] = associations.filter(
-          (association: MenteeItemProps) => association.isActive
+    sendRequest(RequestType.GET, Endpoints.myMentees).then(
+      ({ data: { mentees } }) => {
+        const ongoingMentees: MenteeItemProps[] = mentees.filter(
+          (mentee: MenteeItemProps) => mentee.is_active
         );
-        const pastMentees: MenteeItemProps[] = associations.filter(
-          (association: MenteeItemProps) => !association.isActive
+        const pastMentees: MenteeItemProps[] = mentees.filter(
+          (mentee: MenteeItemProps) => !mentee.is_active
         );
 
         setMenteeList(ongoingMentees);

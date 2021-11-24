@@ -22,11 +22,14 @@ export const MenteeList: React.FC<MenteeListProps> = ({
         </div>
       ) : (
         mentees.map(
-          ({ _id, mentee_id, mentee_name }: MenteeItemProps, index: number) => (
+          (
+            { association_id, is_active, mentee_name }: MenteeItemProps,
+            index: number
+          ) => (
             <MenteeItem
-              key={_id}
-              _id={_id}
-              mentee_id={mentee_id}
+              key={association_id}
+              association_id={association_id}
+              is_active={is_active}
               mentee_name={mentee_name}
             />
           )
