@@ -33,7 +33,6 @@ export const SessionItem: React.FC<ItemProps> = ({
 
     return () => clearInterval(checkIsOngoingIntervalID);
   });
-  console.log(content);
   return (
     <Link
       to={viewOnly ? Paths.viewSession : Paths.newSession}
