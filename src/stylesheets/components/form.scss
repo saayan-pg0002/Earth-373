@@ -3,7 +3,6 @@
 .form {
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%;
 
   .header {
@@ -57,6 +56,19 @@
     box-shadow: $baytree-green-400 0px 0px 0px 3px;
   }
 
+  &.disabled {
+    .icon svg path {
+      fill: $baytree-navy;
+    }
+
+    &,
+    & > *:disabled {
+      color: $baytree-navy;
+      background-color: $grey-50;
+      opacity: 1;
+    }
+  }
+
   input,
   textarea,
   select {
@@ -67,10 +79,6 @@
     font-family: $font-family;
     color: $black;
     background-color: white;
-
-    &:disabled {
-      color: $black;
-    }
   }
 
   input[type="date"]::-webkit-inner-spin-button,

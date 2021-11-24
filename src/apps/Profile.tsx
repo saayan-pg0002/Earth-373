@@ -1,6 +1,5 @@
 import PageHelmet from "../util/PageHelmet";
 import { FormField } from "../components/form/FormField";
-import { PasswordInput } from "../components/form/PasswordInput";
 import { IconName } from "../components/Icon";
 import { TextInput } from "../components/form/TextInput";
 import Link from "../components/Link";
@@ -26,31 +25,33 @@ const Profile: React.FC<{}> = () => {
           </Link>
         </div>
         <form className="form">
+          <p className="subtext">
+            This is a view-only page. To change any fields, please contact an
+            admin
+          </p>
           <FormField labelText="Mentor Type">
-            <DropdownMenu options={mentorTypes} />
+            <DropdownMenu
+              options={mentorTypes}
+              initialValue={mentorTypes[0]}
+              isDisabled={true}
+            />
           </FormField>
           <FormField labelText="Email">
             <TextInput
               leftIconName={IconName.user}
               placeholderText="Email"
-              defaultValue="wendy.389@gmail.com"
+              initialValue="wendy.389@gmail.com"
+              isDisabled={true}
             ></TextInput>
           </FormField>
           <FormField labelText="Name">
             <TextInput
               placeholderText="Name"
               leftIconName={IconName.smiley}
-              defaultValue="Wendy Stuart"
+              initialValue="Wendy Stuart"
+              isDisabled={true}
             ></TextInput>
           </FormField>
-          <FormField labelText="Password">
-            <PasswordInput />
-          </FormField>
-          <div className="actions">
-            <button type="button" className="btn">
-              Save Changes
-            </button>
-          </div>
         </form>
       </div>
     </main>
