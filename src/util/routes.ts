@@ -3,7 +3,6 @@ import { dispatch } from "./store";
 import { createBrowserHistory } from "history";
 
 import Login from "../apps/Login";
-import CurrentSession from "../apps/CurrentSession";
 import Dashboard from "../apps/Dashboard";
 import Mentees from "../apps/Mentees";
 import NewSession from "../apps/NewSession";
@@ -31,7 +30,6 @@ export const Paths = {
   notifications: "/notifications",
   settings: "/settings",
   newSession: "/new-session",
-  currentSession: "/current-session",
   viewSession: "/view-session",
   profile: "/profile",
   resources: "/resources",
@@ -86,11 +84,6 @@ export const routes: Route[] = [
   {
     path: Paths.newSession,
     component: NewSession,
-    exact: true,
-  },
-  {
-    path: Paths.currentSession,
-    component: CurrentSession,
     exact: true,
   },
   {

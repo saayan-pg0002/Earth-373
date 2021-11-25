@@ -23,9 +23,11 @@ const sessionHistoryList: ItemProps[] = [
     })(),
     clockOutTime: (() => {
       const date = new Date();
-      date.setHours(22, 0);
+      date.setHours(24, 0);
       return date;
     })(),
+    content:
+      "CMPT373: Survey of modern software development methodology. Several software development process models will be examined, as will the general principles behind such models. Provides experience with different programming paradigms and their advantages and disadvantages during software development.",
   },
   {
     value: getFormattedMonthDateyearString(new Date()),
@@ -39,12 +41,14 @@ const sessionHistoryList: ItemProps[] = [
       date.setHours(22, 0);
       return date;
     })(),
+    content:
+      "CMPT 363: Topics include: goals and principles of UI design (systems engineering and human factors), historical perspective, current paradigms (widget-based, mental model, graphic design, ergonomics, metaphor, constructivist/iterative approach, and visual languages) and their evaluation, existing tools and packages (dialogue models, event-based systems, prototyping), future paradigms, and the social impact of UI.",
   },
   {
     value: getFormattedMonthDateyearString(new Date()),
     clockInTime: (() => {
       const date = new Date();
-      date.setHours(21, 0);
+      date.setHours(12, 0);
       return date;
     })(),
     clockOutTime: (() => {
@@ -52,6 +56,8 @@ const sessionHistoryList: ItemProps[] = [
       date.setHours(22, 0);
       return date;
     })(),
+    content:
+      "CMPT 300: This course aims to give the student an understanding of what a modern operating system is, and the services it provides. It also discusses some basic issues in operating systems and provides solutions. Topics include multiprogramming, process management, memory management, and file systems.",
   },
 ];
 

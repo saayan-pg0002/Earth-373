@@ -54,7 +54,7 @@ const Dashboard: React.FC = () => {
       <div className="container">
         <div className="header">
           <h1 className="page-title">Hi, Wendy!</h1>
-          <AvatarHeader name="Wendy Evans" />
+          <AvatarHeader />
         </div>
         <WeekScheduleCalendar />
         <SessionList sessions={sessionList} />
