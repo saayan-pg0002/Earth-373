@@ -1,8 +1,8 @@
-import { Request, Response, Router } from "express";
+import { Request, Response } from "express";
 import QuestionnaireT from "../Models/questionnairetemplate.model";
 import { FieldType } from "../Models/questionnairetemplate.model";
 import axios from "axios";
-import mongoose, { Error, Model } from "mongoose";
+
 import dotenv from "dotenv";
 import path from "path";
 import _ from "lodash";
@@ -35,21 +35,60 @@ const getQuestions = async (qTId: Number) => {
   let allQues = [];
   for (const key1 in result as any) {
     const viewsQues: any = result[key1 as any];
-    if (!Object.values(FieldType).includes(viewsQues["inputType"])) {
-      console.log(viewsQues["inputType"]);
+    let fieldtype: string = viewsQues["inputType"];
+    if (!Object.values(FieldType).includes(<any>fieldtype)) {
+      fieldtype = "other";
     }
     if (viewsQues["enabled"] == "1") {
       let oneField = {
         id: viewsQues["QuestionID"],
         label: viewsQues["Question"],
-        is_required: viewsQues["validation"] !== "",
-        field_type: viewsQues["inputType"],
+        is_required: false,
+        field_type: fieldtype,
+        validation: viewsQues["validation"].split("|"),
+        options: await getOptions(Number(viewsQues["valueListID"])),
       };
+      oneField.is_required = oneField.validation.includes("required");
+      if (oneField.validation[0] == "") {
+        oneField.validation = [];
+      }
       allQues.push(oneField);
     }
   }
+
   return allQues;
 };
+
+async function getOptions(valuelist: Number) {
+  if (valuelist == 0) {
+    return [];
+  }
+  const url: string =
+    "https://app.viewsapp.net/api/restful/admin/valuelists/" + valuelist;
+  let result = "";
+  await axios({
+    method: "get",
+    url: url,
+    auth: {
+      username: process.env.VIEW_USERNAME as string,
+      password: process.env.VIEW_PASSWORD as string,
+    },
+    responseType: "json",
+    transformResponse: [(v) => v],
+  })
+    .then((response) => {
+      result = JSON.parse(response.data);
+    })
+    .catch((error) => {
+      result = error;
+    });
+  let arrayOptions: Array<string> = [];
+  const jsonOptions = <any>result[<any>"items"];
+  for (const opt in jsonOptions) {
+    arrayOptions.push(String(jsonOptions[opt]));
+  }
+  return arrayOptions;
+}
 
 const getQuestionnaireTemplates = async () => {
   const url: string =
@@ -84,7 +123,7 @@ async function createQTemplates(data: any) {
     for (const key2 in quesTemplate) {
       const qTFields = quesTemplate[key2];
       await QuestionnaireT.find({
-        id: Number(qTFields["QuestionnaireID"]),
+        views_id: Number(qTFields["QuestionnaireID"]),
       })
         .exec()
         .then(async (qTemp) => {
@@ -95,21 +134,24 @@ async function createQTemplates(data: any) {
             if (questionfields.length > 0) {
               const newQTemplate = new QuestionnaireT({
                 name: String(qTFields["Title"]),
-                id: Number(qTFields["QuestionnaireID"]),
+                views_id: Number(qTFields["QuestionnaireID"]),
                 fields: questionfields,
               });
               await newQTemplate
                 .save()
                 .then(() => {
-                  console.log(`Template ${newQTemplate.id} added`);
+                  console.log(`Template ${newQTemplate.views_id} added`);
                 })
                 .catch((error) => {
-                  console.log(`Error adding template ${newQTemplate.id}`);
+                  console.log(
+                    `Error adding template ${newQTemplate.views_id}`,
+                    error
+                  );
                   return error;
                 });
             } else {
               console.log(
-                `QTemplate ${qTFields["QuestionnaireID"]} has no ques.`
+                `QTemplate ${qTFields["QuestionnaireID"]} has no questions, not adding...`
               );
             }
           } else {

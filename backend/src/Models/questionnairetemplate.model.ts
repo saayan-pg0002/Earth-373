@@ -1,20 +1,25 @@
 import mongoose, { Model, Schema } from "mongoose";
 import QuestionnaireTemplateInterface from "../Interfaces/questionnairetemplate.interface";
 
+//These are all the input types for making questions on Views
 export enum FieldType {
   Text = "text",
   TextArea = "textarea",
-  Checkbox = "checkbox",
-  CheckboxGroup = "checkboxgroup",
+  Date = "date",
+  Time = "time",
+  Number = "number",
+  DropdownSingle = "select",
+  DropdownSingleOrText = "selectother",
+  MultiSelect = "checkselect",
   Radio = "radio",
-  RadioGroup = "radiogroup",
-  Select = "select",
+  PhoneNumber = "phone_number",
+  Other = "other",
 }
 
 const questionnaireTemplateSchema: Schema = new Schema(
   {
     name: { type: String, required: true },
-    id: { type: Number, required: true },
+    views_id: { type: Number, required: true },
     fields: [
       {
         id: { type: Number, required: true, auto: true },
@@ -24,8 +29,9 @@ const questionnaireTemplateSchema: Schema = new Schema(
           type: String,
           enum: Object.values(FieldType),
           required: true,
-          default: FieldType.Text,
+          default: FieldType.Other,
         },
+        validation: [String],
         options: [String],
       },
     ],
