@@ -23,13 +23,17 @@ export const MenteeSessionList: React.FC<MenteeSessionListProps> = ({
         </div>
       ) : (
         sessions.map(
-          ({ value, clockInTime, clockOutTime }: ItemProps, index: number) => (
+          (
+            { value, clockInTime, clockOutTime, content }: ItemProps,
+            index: number
+          ) => (
             <SessionItem
               key={index}
               value={value}
               clockInTime={clockInTime}
               clockOutTime={clockOutTime}
               viewOnly={true}
+              content={content}
             />
           )
         )
