@@ -10,7 +10,7 @@ const Resources: React.FC<{}> = () => {
       <div className="container">
         <div className="header">
           <h1 className="page-title">Resources</h1>
-          <AvatarHeader name="Wendy Evans" />
+          <AvatarHeader />
         </div>
         <div className="resource-list">
           <ExternalLinkItem

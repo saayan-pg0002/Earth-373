@@ -31,7 +31,7 @@ const Notifications: React.FC<{}> = () => {
       <div className="container">
         <div className="header">
           <h1 className="page-title">Notifications</h1>
-          <AvatarHeader name="Wendy Evans" />
+          <AvatarHeader />
         </div>
         <NotificationList notifications={NotifcationList} />
       </div>
