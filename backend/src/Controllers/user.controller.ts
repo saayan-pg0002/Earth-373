@@ -469,7 +469,7 @@ const editProfile = (req: Request, res: Response) => {
     if (err) {
       res
         .status(400)
-        .json({ error: "Error occured when updating profile", err });
+        .json({ error: "Error occured while updating profile", err });
     }
   });
 };
