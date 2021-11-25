@@ -13,12 +13,10 @@ const sessionSchema: Schema = new Schema(
     start_time: { type: Date },
     end_time: { type: Date },
     is_cancelled: { type: Boolean, required: true, default: false },
-    notes: [
-      {
-        views_id: { type: String, required: true },
-        description: { type: String, required: true, default: "" },
-      },
-    ],
+    notes: {
+      views_id: { type: String, required: false, default: "" },
+      description: { type: String, required: false, default: "" },
+    },
   },
   {
     timestamps: true,

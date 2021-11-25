@@ -7,10 +7,8 @@ export default interface SessionInterface extends Document {
   start_time: Date;
   end_time: Date;
   is_cancelled: Boolean;
-  notes: [
-    {
-      views_id: String;
-      description: String;
-    }
-  ];
+  notes: {
+    views_id: String;
+    description: String;
+  };
 }
