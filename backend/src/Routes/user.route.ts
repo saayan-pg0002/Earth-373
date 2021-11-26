@@ -4,22 +4,68 @@ import * as middleware from "../Middleware/middleWare";
 
 const router: Router = express.Router();
 
-router.post("/mongo/add", UserController.addMongoUser);
-router.get("/getusers", middleware.isAdmin, UserController.getMongoUsers);
-router.get("/view/get/:type", UserController.getViewUsers);
-router.get("/view/migrate", UserController.migrateViewUsers);
-router.post("/me/association/goals", UserController.getGoalsForAssociation);
-router.post("/creategoal", UserController.createGoalForAssociation);
-router.get("/me/associations", UserController.getAssociationsFromMentor);
-router.post("/create-association", UserController.createAssociation);
+router.post(
+  "/me/association/goals",
+  middleware.isLoggedIn,
+  UserController.getGoalsForAssociation
+);
+router.post(
+  "/creategoal",
+  middleware.isLoggedIn,
+  UserController.createGoalForAssociation
+);
+router.get(
+  "/me/associations",
+  middleware.isLoggedIn,
+  UserController.getAssociationsFromMentor
+);
 router.post("/login", middleware.login);
 router.post("/forgot-password", UserController.forgotPassword);
 router.post("/reset-password", UserController.resetPassword);
-router.get("/profile/me", UserController.getMyProfile);
+router.get("/profile/me", middleware.isLoggedIn, UserController.getMyProfile);
 
 /* Admin only routes */
-router.put("/profile/edit/:id", UserController.editProfile);
-router.get("/get/:type", UserController.getUsers);
-// middleware.isLoggedIn,
-//   middleware.isAdmin,
+router.post(
+  "/mongo/add",
+  middleware.isLoggedIn,
+  middleware.isAdmin,
+  UserController.addMongoUser
+);
+router.get(
+  "/getusers",
+  middleware.isLoggedIn,
+  middleware.isAdmin,
+  UserController.getMongoUsers
+);
+router.get(
+  "/view/get/:type",
+  middleware.isLoggedIn,
+  middleware.isAdmin,
+  UserController.getViewUsers
+);
+router.get(
+  "/view/migrate",
+  middleware.isLoggedIn,
+  middleware.isAdmin,
+  UserController.migrateViewUsers
+);
+router.post(
+  "/create-association",
+  middleware.isLoggedIn,
+  middleware.isAdmin,
+  UserController.createAssociation
+);
+router.put(
+  "/profile/edit/:id",
+  middleware.isLoggedIn,
+  middleware.isAdmin,
+  UserController.editProfile
+);
+router.get(
+  "/get/:type",
+  middleware.isLoggedIn,
+  middleware.isAdmin,
+  UserController.getUsers
+);
+
 export default router;
