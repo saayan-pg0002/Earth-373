@@ -451,7 +451,7 @@ const resetPassword = (req: Request, res: Response) => {
 const getMyProfile = (req: Request, res: Response) => {
   let user: any = req.user;
   delete user["password"];
-  return res.json(user);
+  return res.status(200).json(user);
 };
 
 const editProfile = (req: Request, res: Response) => {
