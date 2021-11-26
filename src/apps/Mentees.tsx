@@ -18,7 +18,7 @@ const pastMenteeList: MenteeItemProps[] = [
   {
     menteeName: "Tessa Pampangan",
     startDate: new Date("1/20/2020"),
-    endDate: new Date("3/12/2020")
+    endDate: new Date("3/12/2020"),
   },
   {
     menteeName: "Lila Singh",
@@ -35,7 +35,7 @@ const Mentees: React.FC<{}> = () => {
       <div className="container">
         <div className="header">
           <h1 className="page-title">Mentees</h1>
-          <AvatarHeader name="Wendy Evans" />
+          <AvatarHeader />
         </div>{" "}
         <MenteeList mentees={menteeList} />
         <p className="subtext">Past Mentees</p>

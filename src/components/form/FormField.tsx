@@ -3,6 +3,7 @@ export interface GeneralInputProps {
   id?: string;
   name?: string;
   value?: string;
+  isDisabled?: boolean;
 }
 
 interface FormFieldProps {

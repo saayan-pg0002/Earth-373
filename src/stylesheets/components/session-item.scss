@@ -33,5 +33,10 @@
       font-size: 1rem;
       margin-bottom: 1rem;
     }
+    .content {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 }

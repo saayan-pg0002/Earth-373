@@ -64,26 +64,13 @@ export const isAdmin = async (
   res: Response,
   next: NextFunction
 ) => {
-  if (!req.headers.authorization)
-    return res.status(400).json({ error: "Authorization header is undefined" });
-
-  const token: string = req.headers.authorization as string;
-  let role: string = "";
-  let mongoID: string = "";
-  verifyJWT(token, (error, payload) => {
-    if (error) {
-      return res.json(error);
-    } else {
-      role = payload.role;
-      mongoID = payload._id;
-    }
-  });
-  if (role === Role.Admin) {
-    const user = await User.findById(mongoID).exec();
-    req.user = user as Express.User;
+  const user: any = req.user;
+  if (user.role === Role.Admin) {
     return next();
   }
-  return res.status(401).json({ unauthorized: "Not permitted" });
+  return res.json({
+    unauthorized: "You do not have the permission to access this page.",
+  });
 };
 
 export const isLoggedIn = async (
