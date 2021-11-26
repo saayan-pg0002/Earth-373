@@ -4,7 +4,7 @@ import { isLoggedIn, isAdmin, login } from "../Middleware/middleWare";
 
 const router: Router = express.Router();
 
-router.get("/me", isLoggedIn, UserController.getProfile);
+router.get("/me", isLoggedIn, UserController.getMyProfile);
 router.post(
   "/me/association/goals",
   isLoggedIn,
