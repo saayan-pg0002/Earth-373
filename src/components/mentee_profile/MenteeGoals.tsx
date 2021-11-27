@@ -8,6 +8,8 @@ export interface MenteeInfoProps {
   menteeName: string;
   startDate: string;
   birthday: String;
+  sessionDay?: String;
+  sessionTime?: String;
 }
 
 export interface GoalProp {
