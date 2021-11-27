@@ -11,6 +11,7 @@ router.post(
   UserController.getGoalsForAssociation
 );
 router.post("/creategoal", isLoggedIn, UserController.createGoalForAssociation);
+router.post("/update-goal", UserController.updateGoalsForAssociation);
 router.get(
   "/me/associations",
   isLoggedIn,

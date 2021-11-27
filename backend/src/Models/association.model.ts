@@ -5,7 +5,7 @@ const associationSchema: Schema = new Schema(
   {
     mentor_id: { type: String, ref: "User", required: true },
     mentee_id: { type: String, ref: "Mentee", required: true },
-    start_date: { type: Date, required: false, default: "" },
+    start_date: { type: Date, required: true },
     end_date: { type: Date, required: false, default: "" },
     isActive: { type: Boolean, required: true, default: true },
     goals: [
