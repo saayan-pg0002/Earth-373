@@ -16,6 +16,5 @@
   "trailingComma": "none",
   "useTabs": false,
   "vueIndentScriptAndStyle": false,
-  "filepath": "/Users/sm/Develop/cmpt373/prj/backend/src/Routes/user.route.ts",
   "parser": "typescript"
 }
