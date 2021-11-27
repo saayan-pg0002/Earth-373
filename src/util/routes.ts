@@ -10,11 +10,12 @@ import Notifications from "../apps/Notifications";
 import Settings from "../apps/Settings";
 import Resources from "../apps/Resources";
 import Profile from "../apps/Profile";
-import EditMentee from "../apps/EditMentee";
 import ViewSession from "../apps/ViewSession";
 import ForgotPassword from "../apps/ForgotPassword";
 import ResetPassword from "../apps/ResetPassword";
 import MenteeProfile from "../apps/MenteeProfile";
+import EditSchedule from "../apps/EditSchedule";
+import NewQuestionnaire from "../components/mentee_profile/NewQuestionnaire";
 
 export const history = createBrowserHistory();
 
@@ -33,19 +34,20 @@ export const Paths = {
   viewSession: "/view-session",
   profile: "/profile",
   resources: "/resources",
-  editMentee: "/edit-mentee",
+  editSchedule: "/edit-schedule",
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password",
   menteeProfile: "/mentee/:association_id/*",
   menteeProfileGoals: "/mentee/:association_id/goals",
   menteeProfileSessions: "/mentee/:association_id/sessions",
   menteeProfileQuestionnaires: "/mentee/:association_id/questionnaires",
+  NewQuestionnaire: "/new-questionnaire"
 };
 
 export const PublicPaths: string[] = [
   Paths.login,
   Paths.forgotPassword,
-  Paths.resetPassword,
+  Paths.resetPassword
 ];
 
 export interface Route {
@@ -59,66 +61,71 @@ export const routes: Route[] = [
   {
     path: Paths.login,
     component: Login,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.dashboard,
     component: Dashboard,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.mentees,
     component: Mentees,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.notifications,
     component: Notifications,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.settings,
     component: Settings,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.newSession,
     component: NewSession,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.viewSession,
     component: ViewSession,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.profile,
     component: Profile,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.resources,
     component: Resources,
-    exact: true,
+    exact: true
   },
   {
-    path: Paths.editMentee,
-    component: EditMentee,
-    exact: true,
+    path: Paths.editSchedule,
+    component: EditSchedule,
+    exact: true
   },
   {
     path: Paths.menteeProfile,
     component: MenteeProfile,
-    exact: false,
+    exact: false
   },
   {
     path: Paths.forgotPassword,
     component: ForgotPassword,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.resetPassword,
     component: ResetPassword,
-    exact: true,
+    exact: true
   },
+  {
+    path: Paths.NewQuestionnaire,
+    component: NewQuestionnaire,
+    exact: true
+  }
 ];

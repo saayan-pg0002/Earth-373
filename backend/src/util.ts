@@ -13,7 +13,7 @@ export const sendViewsRequests = async (
   method: http,
   body: any | undefined
 ): Promise<AxiosResponse<never> | any> => {
-  let data: AxiosResponse<never> | any;
+  let response: AxiosResponse<never> | any;
   await axios({
     method: method as Method,
     url: url,
@@ -24,22 +24,22 @@ export const sendViewsRequests = async (
     data: body,
     responseType: "json",
   })
-    .then((response) => {
-      data = response;
+    .then((ViewsData: AxiosResponse<never>) => {
+      response = ViewsData;
     })
-    .catch((error) => {
-      data = error;
+    .catch((error: unknown) => {
+      response = errorHandler(error);
     });
-  return data;
+  return response;
 };
 
 export const errorHandler = (error: unknown): object => {
   if (error instanceof Error) {
     return {
-      TYPE: `${error.name}`,
+      ERROR: `${error.name}`,
       DESCRIPTION: `${error.stack}`,
     };
   } else {
-    return { DESCRIPTION: "An unidentified error has occurred" };
+    return { ERROR: "An unidentified error has occurred" };
   }
 };
