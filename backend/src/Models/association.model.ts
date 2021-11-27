@@ -14,15 +14,13 @@ const associationSchema: Schema = new Schema(
         created_at: { type: Date, required: true },
         updated_at: { type: Date, required: true },
         is_complete: { type: Boolean, required: true, default: false },
-        completed_at: { type: Date, required: false, default: "" },
-      },
+        completed_at: { type: Date, required: false, default: "" }
+      }
     ],
-    questionnaire_ids: [
-      { type: mongoose.Types.ObjectId, ref: "Questionnaire" },
-    ],
+    questionnaire_ids: [{ type: mongoose.Types.ObjectId, ref: "Questionnaire" }]
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 );
 
