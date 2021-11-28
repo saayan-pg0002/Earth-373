@@ -14,7 +14,7 @@ router.post("/creategoal", isLoggedIn, UserController.createGoalForAssociation);
 router.get(
   "/me/associations/:id",
   isLoggedIn,
-  UserController.getAssociationsForMentorById
+  UserController.getAssociationForMentorById
 );
 router.get("/me/mentees", isLoggedIn, UserController.getMenteesForMentor);
 router.post("/login", login);

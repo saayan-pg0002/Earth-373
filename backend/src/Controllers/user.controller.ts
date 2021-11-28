@@ -315,7 +315,7 @@ const getMenteesForMentor = (req: Request, res: Response) => {
     });
 };
 
-const getAssociationsForMentorById = (req: Request, res: Response) => {
+const getAssociationForMentorById = (req: Request, res: Response) => {
   const user: any = req.user;
   const mentor_id: string = user._id as string;
   const association_id: string = req.params.id as string;
@@ -557,7 +557,7 @@ const UserController = {
   createGoalForAssociation,
   createAssociation,
   getMenteesForMentor,
-  getAssociationsForMentorById,
+  getAssociationForMentorById,
   getGoalsForAssociation,
   forgotPassword,
   resetPassword,
