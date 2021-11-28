@@ -4,13 +4,14 @@ import { Icon, IconName } from "../Icon";
 import { GeneralInputProps } from "./FormField";
 
 interface TimeInputProps {
-  time?: Date;
+  initialValue?: Date;
 }
 
 export const TimeInput: React.FC<GeneralInputProps & TimeInputProps> = ({
-  time,
   name,
   id,
+  isDisabled = false,
+  initialValue,
 }) => {
   const [isFocused, setIsFocused] = useState<Boolean>(false);
 
@@ -18,14 +19,18 @@ export const TimeInput: React.FC<GeneralInputProps & TimeInputProps> = ({
   const onBlur = (): void => setIsFocused(false);
 
   const [value, setValue] = useState<string>(
-    !!time ? getFormattedHourMinuteString(time) : ""
+    !!initialValue ? getFormattedHourMinuteString(initialValue) : ""
   );
 
   const onChange = (event: any) => {
     setValue(event.target.value);
   };
   return (
-    <div className={`control ${isFocused ? "focused" : ""}`}>
+    <div
+      className={`control ${isFocused ? "focused" : ""} ${
+        isDisabled ? "disabled" : ""
+      }`}
+    >
       <input
         type="time"
         onFocus={onFocus}
@@ -34,6 +39,7 @@ export const TimeInput: React.FC<GeneralInputProps & TimeInputProps> = ({
         onChange={onChange}
         name={name}
         id={id}
+        disabled={isDisabled}
       />
       <Icon name={IconName.clock} />
     </div>

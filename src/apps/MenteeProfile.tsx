@@ -10,6 +10,8 @@ import { ItemProps } from "../components/SessionItem";
 import { QuestionnaireList } from "../components/mentee_profile/QuestionnaireList";
 import { QuestionnaireItemProps } from "../components/mentee_profile/QuestionnaireItem";
 import { TabNavItemProps } from "../components/TabNav";
+import { buildHrefPath } from "../components/Link";
+import { useParams, useLocation } from "react-router";
 
 const sessionHistoryList: ItemProps[] = [
   {
@@ -21,9 +23,11 @@ const sessionHistoryList: ItemProps[] = [
     })(),
     clockOutTime: (() => {
       const date = new Date();
-      date.setHours(22, 0);
+      date.setHours(24, 0);
       return date;
     })(),
+    content:
+      "CMPT373: Survey of modern software development methodology. Several software development process models will be examined, as will the general principles behind such models. Provides experience with different programming paradigms and their advantages and disadvantages during software development.",
   },
   {
     value: getFormattedMonthDateyearString(new Date()),
@@ -37,12 +41,14 @@ const sessionHistoryList: ItemProps[] = [
       date.setHours(22, 0);
       return date;
     })(),
+    content:
+      "CMPT 363: Topics include: goals and principles of UI design (systems engineering and human factors), historical perspective, current paradigms (widget-based, mental model, graphic design, ergonomics, metaphor, constructivist/iterative approach, and visual languages) and their evaluation, existing tools and packages (dialogue models, event-based systems, prototyping), future paradigms, and the social impact of UI.",
   },
   {
     value: getFormattedMonthDateyearString(new Date()),
     clockInTime: (() => {
       const date = new Date();
-      date.setHours(21, 0);
+      date.setHours(12, 0);
       return date;
     })(),
     clockOutTime: (() => {
@@ -50,6 +56,8 @@ const sessionHistoryList: ItemProps[] = [
       date.setHours(22, 0);
       return date;
     })(),
+    content:
+      "CMPT 300: This course aims to give the student an understanding of what a modern operating system is, and the services it provides. It also discusses some basic issues in operating systems and provides solutions. Topics include multiprogramming, process management, memory management, and file systems.",
   },
 ];
 
@@ -73,18 +81,22 @@ const MenteeProfile: FC<{}> = () => {
   const startDate = "January 1, 2021";
   const birthday = "January 1, 2021";
 
+  const { association_id } = useParams<{ association_id: string }>();
+  const getNavPath = (path: string): string =>
+    buildHrefPath(path, [{ name: "association_id", value: association_id }]);
+
   const routes: TabNavItemProps[] = [
     {
       label: "Goals",
-      to: Paths.menteeProfileGoals,
+      to: getNavPath(Paths.menteeProfileGoals),
     },
     {
       label: "Sessions",
-      to: Paths.menteeProfileSessions,
+      to: getNavPath(Paths.menteeProfileSessions),
     },
     {
       label: "Questionnaires",
-      to: Paths.menteeProfileQuestionnaires,
+      to: getNavPath(Paths.menteeProfileQuestionnaires),
     },
   ];
 
@@ -100,17 +112,17 @@ const MenteeProfile: FC<{}> = () => {
         <TabNav routes={routes} />
 
         <Router history={history}>
-          <Route path={Paths.menteeProfileGoals}>
+          <Route path={getNavPath(Paths.menteeProfileGoals)}>
             <MenteeGoals
               menteeName={menteeName}
               startDate={startDate}
               birthday={birthday}
             />
           </Route>
-          <Route path={Paths.menteeProfileSessions}>
+          <Route path={getNavPath(Paths.menteeProfileSessions)}>
             <MenteeSessionList sessions={sessionHistoryList} />
           </Route>
-          <Route path={Paths.menteeProfileQuestionnaires}>
+          <Route path={getNavPath(Paths.menteeProfileQuestionnaires)}>
             <QuestionnaireList questionnaires={questionnaireList} />
           </Route>
         </Router>

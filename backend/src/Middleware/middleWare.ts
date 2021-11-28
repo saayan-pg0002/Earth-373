@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 export const login = async (req: Request, res: Response) => {
   const user: any = await User.findOne({
-    email: req.body.email,
+    email: req.body.email
   }).exec();
 
   if (!user) return res.status(400).send("That account does not exist");
@@ -31,13 +31,13 @@ const signJWT = (user: any): string | any => {
   return jwt.sign(
     {
       _id: user._id,
-      role: user.role,
+      role: user.role
     },
     "token secret",
     {
       issuer: "BayTreeDevs",
       algorithm: "HS256",
-      expiresIn: expirationTimeInSeconds,
+      expiresIn: expirationTimeInSeconds
     }
   );
 };

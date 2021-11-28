@@ -1,19 +1,16 @@
 import { useState } from "react";
 import { Icon, IconName } from "../Icon";
+import { GeneralInputProps } from "./FormField";
 
 interface TextInputProps {
-  required?: boolean;
-  id?: string;
-  name?: string;
   leftIconName?: IconName;
   rightIconName?: IconName;
   placeholderText: string;
   type?: string;
-  value?: string;
-  defaultValue?: string;
+  initialValue?: string;
 }
 
-export const TextInput: React.FC<TextInputProps> = ({
+export const TextInput: React.FC<GeneralInputProps & TextInputProps> = ({
   required = true,
   id,
   name,
@@ -21,16 +18,23 @@ export const TextInput: React.FC<TextInputProps> = ({
   rightIconName,
   placeholderText,
   type = "text",
-  value,
-  defaultValue,
+  initialValue,
+  isDisabled = false,
 }) => {
+  const [value, setValue] = useState<string>(initialValue ?? "");
   const [isFocused, setIsFocused] = useState<Boolean>(false);
 
   const onFocus = (): void => setIsFocused(true);
   const onBlur = (): void => setIsFocused(false);
 
+  const onChange = (event: any) => setValue(event.target.vaue);
+
   return (
-    <div className={`control ${isFocused ? "focused" : ""}`}>
+    <div
+      className={`control ${isFocused ? "focused" : ""} ${
+        isDisabled ? "disabled" : ""
+      }`}
+    >
       {leftIconName && <Icon name={leftIconName} />}
       <input
         type={type}
@@ -41,7 +45,8 @@ export const TextInput: React.FC<TextInputProps> = ({
         onFocus={onFocus}
         onBlur={onBlur}
         value={value}
-        defaultValue={defaultValue}
+        disabled={isDisabled}
+        onChange={onChange}
       />
       {rightIconName && <Icon name={rightIconName} />}
     </div>

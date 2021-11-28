@@ -17,10 +17,7 @@ export const SessionList: React.FC<SessionListProps> = ({ sessions }) => {
         />
       ) : (
         sessions.map(
-          (
-            { value, clockInTime, clockOutTime }: ItemProps,
-            index: number
-          ) => (
+          ({ value, clockInTime, clockOutTime }: ItemProps, index: number) => (
             <SessionItem
               key={index}
               value={value}

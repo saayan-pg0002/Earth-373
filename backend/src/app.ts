@@ -2,6 +2,8 @@ import express, { Application } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import UserRouter from "./Routes/user.route";
+import SessionController from "./Routes/session.route";
+import { isLoggedIn } from "./Middleware/middleWare";
 import cors from "cors";
 import path from "path";
 import QuestionnaireRouter from "./Routes/questionnaire.route";
@@ -24,12 +26,13 @@ app.use(cors());
 /** Routes go here */
 app.use("/users", UserRouter);
 app.use("/questionnaires", QuestionnaireRouter);
+app.use("/sessions", isLoggedIn, SessionController);
 
 /** Error Handling */
 app.use((req, res, next) => {
   const error: Error = new Error("Not found");
   res.status(404).json({
-    message: error.message,
+    message: error.message
   });
 });
 

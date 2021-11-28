@@ -1,4 +1,7 @@
+import { Link } from "react-router-dom";
 import { ReactComponent as BaytreeTreeGrey } from "../../assets/images/baytree-tree-grey.svg";
+import { Paths } from "../../util/routes";
+import { Icon, IconColors, IconName } from "../Icon";
 import { QuestionnaireItem, QuestionnaireItemProps } from "./QuestionnaireItem";
 
 interface QuestionnaireListProps {
@@ -11,6 +14,12 @@ export const QuestionnaireList: React.FC<QuestionnaireListProps> = ({
   const isEmpty: boolean = questionnaires.length === 0;
   return (
     <div className={`mentee-list ${isEmpty ? "empty" : ""}`}>
+      <div className="header">
+        <h2 className="subtext">Completed </h2>
+        <Link to={Paths.NewQuestionnaire}>
+          <Icon name={IconName.plus} color={IconColors.black}></Icon>
+        </Link>
+      </div>
       {isEmpty ? (
         <div className="empty-state">
           <BaytreeTreeGrey />

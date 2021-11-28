@@ -4,27 +4,46 @@ import { isLoggedIn, isAdmin, login } from "../Middleware/middleWare";
 
 const router: Router = express.Router();
 
-router.route("/mongo/add").post(UserController.addMongoUser);
-router
-  .route("/getusers")
-  .get(isLoggedIn, isAdmin, UserController.getMongoUsers);
+router.get("/me", isLoggedIn, UserController.getMyProfile);
+router.post(
+  "/me/association/goals",
+  isLoggedIn,
+  UserController.getGoalsForAssociation
+);
+router.post("/creategoal", isLoggedIn, UserController.createGoalForAssociation);
+router.get(
+  "/me/associations/:id",
+  isLoggedIn,
+  UserController.getAssociationForMentorById
+);
+router.get("/me/mentees", isLoggedIn, UserController.getMenteesForMentor);
+router.post("/login", login);
+router.post("/forgot-password", UserController.forgotPassword);
+router.post("/reset-password", UserController.resetPassword);
+router.get("/profile/me", isLoggedIn, UserController.getMyProfile);
 
-router.route("/view/get/:type").get(UserController.getViewUsers);
-router.route("/view/migrate").get(UserController.migrateViewUsers);
-
-router
-  .route("/me/association/goals")
-  .post(UserController.getGoalsForAssociation);
-
-router.route("/creategoal").post(UserController.createGoalForAssociation);
-router.route("/me/associations").get(UserController.getAssociationsFromMentor);
-router.route("/create-association").post(UserController.createAssociation);
-
-router.route("/me").get(isLoggedIn, UserController.getProfile);
-
-router.route("/forgot-password").post(UserController.forgotPassword);
-router.route("/reset-password").post(UserController.resetPassword);
-
-router.route("/login").post(login);
+/* Admin only routes */
+router.post("/mongo/add", isLoggedIn, isAdmin, UserController.addMongoUser);
+router.get("/getusers", isLoggedIn, isAdmin, UserController.getMongoUsers);
+router.get("/view/get/:type", isLoggedIn, isAdmin, UserController.getViewUsers);
+router.get(
+  "/view/migrate",
+  isLoggedIn,
+  isAdmin,
+  UserController.migrateViewUsers
+);
+router.post(
+  "/create-association",
+  isLoggedIn,
+  isAdmin,
+  UserController.createAssociation
+);
+router.put(
+  "/profile/edit/:id",
+  isLoggedIn,
+  isAdmin,
+  UserController.editProfile
+);
+router.get("/get/:type", isLoggedIn, isAdmin, UserController.getUsers);
 
 export default router;
