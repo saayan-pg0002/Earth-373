@@ -259,19 +259,92 @@ const createGoalForAssociation = (req: Request, res: Response) => {
     });
 };
 
-const getAssociationsFromMentor = (req: Request, res: Response) => {
+const getMenteesForMentor = (req: Request, res: Response) => {
   const user: any = req.user;
   const mentor_id: string = user._id as string;
 
   Association.find({ mentor_id: mentor_id })
     .exec()
     .then((associations) => {
-      return res.status(200).json({ associations });
+      const menteeIds: String[] = associations.map(
+        (association) => association.mentee_id
+      );
+
+      Mentee.find(
+        { _id: { $in: menteeIds } },
+        "_id first_name last_name age dateOfBirth"
+      ).exec((err, mentees) => {
+        if (err || mentees.length !== associations.length) {
+          return res.status(400).json({
+            error:
+              "One of the mentees in the specified associations does not exist."
+          });
+        }
+
+        const associationsWithMenteeName: any[] = associations.map(
+          (association) => {
+            const mentee: any = mentees.find(
+              (currentMentee) =>
+                currentMentee._id.toString() === association.mentee_id
+            );
+
+            if (!mentee) {
+              return res.status(400).json({
+                error:
+                  "One of the mentees in the specified associations does not exist."
+              });
+            }
+
+            return {
+              // TODO: Add association start_date and end_date
+              association_id: association._id,
+              is_active: association.isActive,
+              mentee_name: `${mentee.first_name} ${mentee.last_name}`
+            };
+          }
+        );
+
+        return res.status(200).json({ mentees: associationsWithMenteeName });
+      });
     })
     .catch((error) => {
       return res.status(404).json({
-        message: "Error: Mentee id not found.",
+        message: "Error: Mentees not found.",
         error
+      });
+    });
+};
+
+const getAssociationForMentorById = (req: Request, res: Response) => {
+  const user: any = req.user;
+  const mentor_id: string = user._id as string;
+  const association_id: string = req.params.id as string;
+
+  Association.findOne({ _id: association_id, mentor_id: mentor_id })
+    .exec()
+    .then((association) => {
+      if (!association) {
+        return res.status(400).json({
+          error: "Error: Association not found."
+        });
+      }
+
+      Mentee.findOne({ _id: association.mentee_id }).exec((err, mentee) => {
+        if (err || !mentee) {
+          return res.status(400).json({
+            error: "Error: The mentee for this association does not exist."
+          });
+        }
+
+        return res.status(200).json({
+          ...association.toJSON(),
+          mentee: mentee.toJSON()
+        });
+      });
+    })
+    .catch((error) => {
+      return res.status(404).json({
+        error: "Error: Association not found."
       });
     });
 };
@@ -483,7 +556,8 @@ const UserController = {
   migrateViewUsers,
   createGoalForAssociation,
   createAssociation,
-  getAssociationsFromMentor,
+  getMenteesForMentor,
+  getAssociationForMentorById,
   getGoalsForAssociation,
   forgotPassword,
   resetPassword,

@@ -37,17 +37,17 @@ export const Paths = {
   editSchedule: "/edit-schedule",
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password",
-  menteeProfile: "/mentee/*",
-  menteeProfileGoals: "/mentee/goals",
-  menteeProfileSessions: "/mentee/sessions",
-  menteeProfileQuestionnaires: "/mentee/questionnaires",
-  NewQuestionnaire: "/new-questionnaire",
+  menteeProfile: "/mentee/:association_id/*",
+  menteeProfileGoals: "/mentee/:association_id/goals",
+  menteeProfileSessions: "/mentee/:association_id/sessions",
+  menteeProfileQuestionnaires: "/mentee/:association_id/questionnaires",
+  NewQuestionnaire: "/new-questionnaire"
 };
 
 export const PublicPaths: string[] = [
   Paths.login,
   Paths.forgotPassword,
-  Paths.resetPassword,
+  Paths.resetPassword
 ];
 
 export interface Route {
@@ -61,71 +61,71 @@ export const routes: Route[] = [
   {
     path: Paths.login,
     component: Login,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.dashboard,
     component: Dashboard,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.mentees,
     component: Mentees,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.notifications,
     component: Notifications,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.settings,
     component: Settings,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.newSession,
     component: NewSession,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.viewSession,
     component: ViewSession,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.profile,
     component: Profile,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.resources,
     component: Resources,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.editSchedule,
     component: EditSchedule,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.menteeProfile,
     component: MenteeProfile,
-    exact: true,
+    exact: false
   },
   {
     path: Paths.forgotPassword,
     component: ForgotPassword,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.resetPassword,
     component: ResetPassword,
-    exact: true,
+    exact: true
   },
   {
     path: Paths.NewQuestionnaire,
     component: NewQuestionnaire,
-    exact: true,
-  },
+    exact: true
+  }
 ];
