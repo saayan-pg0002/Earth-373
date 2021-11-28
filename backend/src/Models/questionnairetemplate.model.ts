@@ -3,17 +3,17 @@ import QuestionnaireTemplateInterface from "../Interfaces/questionnairetemplate.
 
 //These are all the input types for making questions on Views
 export enum FieldType {
-  Text = "text",
-  TextArea = "textarea",
-  Date = "date",
-  Time = "time",
-  Number = "number",
-  DropdownSingle = "select",
-  DropdownSingleOrText = "selectother",
-  MultiSelect = "checkselect",
-  Radio = "radio",
-  PhoneNumber = "phone_number",
-  Other = "other",
+  TEXT = "text",
+  TEXTAREA = "textarea",
+  DATE = "date",
+  TIME = "time",
+  NUMBER = "number",
+  DROPDOWNSINGLE = "select",
+  DROPDOWNSINGLEORTEXT = "selectother",
+  MULTISELECT = "checkselect",
+  RADIO = "radio",
+  PHONENUMBER = "phone_number",
+  OTHER = "other"
 }
 
 const questionnaireTemplateSchema: Schema = new Schema(
@@ -29,15 +29,15 @@ const questionnaireTemplateSchema: Schema = new Schema(
           type: String,
           enum: Object.values(FieldType),
           required: true,
-          default: FieldType.Other,
+          default: FieldType.OTHER
         },
         validation: [String],
-        options: [String],
-      },
-    ],
+        options: [String]
+      }
+    ]
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 );
 
