@@ -89,7 +89,7 @@ async function getOptions(valuelist: Number) {
   return arrayOptions;
 }
 
-const getQuestionnaireTemplates = async () => {
+const getQuestionnaireT = async () => {
   const url: string =
     "https://app.viewsapp.net/api/restful/evidence/questionnaires/search";
   let result: string = "";
@@ -110,13 +110,13 @@ const getQuestionnaireTemplates = async () => {
       result = error;
     });
   try {
-    await createQTemplates(result);
+    await createTemplateDB(result);
   } catch (error) {
     return error;
   }
 };
 
-async function createQTemplates(data: any) {
+async function createTemplateDB(data: any) {
   for (const key1 in data) {
     const quesTemplate = data[key1];
     for (const key2 in quesTemplate) {
@@ -161,9 +161,9 @@ async function createQTemplates(data: any) {
   }
 }
 
-const migrateQuestionnarie = async (req: Request, res: Response) => {
+const migrateQuestionnarieT = async (req: Request, res: Response) => {
   try {
-    await getQuestionnaireTemplates();
+    await getQuestionnaireT();
     res.status(200).send("Added templates successfully");
   } catch (error) {
     throw error;
@@ -171,6 +171,6 @@ const migrateQuestionnarie = async (req: Request, res: Response) => {
 };
 
 const QuestionnaireController = {
-  migrateQuestionnarie,
+  migrateQuestionnarieT,
 };
 export default QuestionnaireController;
