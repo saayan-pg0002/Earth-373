@@ -23,6 +23,7 @@ const userSchema: Schema = new Schema(
     last_name: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
+    phone_number: { type: String, required: false, default: "" },
     activity_status: {
       type: String,
       enum: Object.values(ActivityStatus),

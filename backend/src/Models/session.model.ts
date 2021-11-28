@@ -3,6 +3,8 @@ import SessionInterface from "../Interfaces/session.interface";
 
 const sessionSchema: Schema = new Schema(
   {
+    views_id: { type: String, required: true },
+    views_group_id: { type: String, required: true },
     association_id: {
       type: mongoose.Types.ObjectId,
       ref: "Association",
@@ -11,7 +13,10 @@ const sessionSchema: Schema = new Schema(
     start_time: { type: Date },
     end_time: { type: Date },
     is_cancelled: { type: Boolean, required: true, default: false },
-    notes: { type: String, default: "" },
+    notes: {
+      views_id: { type: String, required: false, default: "" },
+      description: { type: String, required: false, default: "" },
+    },
   },
   {
     timestamps: true,

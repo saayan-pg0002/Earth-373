@@ -1,9 +1,9 @@
-import { NextFunction, Request, response, Response, Router } from "express";
+import { Request, Response } from "express";
 import User from "../Models/user.model";
 import Mentee from "../Models/mentee.model";
 import axios from "axios";
 import dotenv from "dotenv";
-import mongoose, { Error, Model } from "mongoose";
+import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import Association from "../Models/association.model";
 import AssociationInterface from "../Interfaces/association.interface";
@@ -409,10 +409,6 @@ const createAssociation = (req: Request, res: Response) => {
   });
 };
 
-const getProfile = (req: Request, res: Response) => {
-  return res.json(req.user);
-};
-
 const resetPassword = (req: Request, res: Response) => {
   const { resetLink, newPass } = req.body;
   if (resetLink) {
@@ -546,6 +542,34 @@ const updateQuestionnaireValues = async (req: Request, res: Response) => {
   });
 };
 
+const getMyProfile = (req: Request, res: Response) => {
+  let user: any = req.user;
+  delete user["password"];
+  return res.status(200).json(user);
+};
+
+const editProfile = (req: Request, res: Response) => {
+  const user: any = req.body.user;
+  User.updateOne(
+    { _id: user._id },
+    {
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      activity_status: user.activity_status,
+      role: user.role
+    }
+  ).exec((err, user) => {
+    if (err) {
+      res
+        .status(400)
+        .json({ error: "Error occured while updating profile", err });
+    }
+  });
+};
+
+const getUsers = (req: Request, res: Response) => {};
+
 const UserController = {
   addMongoUser,
   getMongoUsers,
@@ -554,13 +578,15 @@ const UserController = {
   createGoalForAssociation,
   createAssociation,
   getAssociationsFromMentor,
-  getProfile,
   getGoalsForAssociation,
   forgotPassword,
   resetPassword,
   getHashedPassword,
   assignQuestionnaireToAssociation,
-  updateQuestionnaireValues
+  updateQuestionnaireValues,
+  getMyProfile,
+  getUsers,
+  editProfile
 };
 
 export default UserController;

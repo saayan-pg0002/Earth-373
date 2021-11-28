@@ -11,15 +11,15 @@
 }
 
 .header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    .back-btn {
-      padding-top: 0.6rem;
-      &:hover,
-      &:focus {
-        font-weight: bold;
-      }
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  .back-btn {
+    padding-top: 0.6rem;
+    &:hover,
+    &:focus {
+      font-weight: bold;
     }
   }
-  
+}
