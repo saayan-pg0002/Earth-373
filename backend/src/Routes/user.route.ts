@@ -25,6 +25,14 @@ router.route("/me").get(isLoggedIn, UserController.getProfile);
 router.route("/forgot-password").post(UserController.forgotPassword);
 router.route("/reset-password").post(UserController.resetPassword);
 
+router
+  .route("/associations/:assid/assign-questionnaire/:questid")
+  .post(UserController.assignQuestionnaireToAssociation);
+
+router
+  .route("/associations/questionnaire/:id")
+  .patch(UserController.updateQuestionnaireValues);
+
 router.route("/login").post(login);
 
 export default router;
