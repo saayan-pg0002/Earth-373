@@ -23,7 +23,7 @@ app.use(cors());
 
 /** Routes go here */
 app.use("/users", UserRouter);
-app.use("/questionnaire", QuestionnaireRouter);
+app.use("/questionnaires", QuestionnaireRouter);
 
 /** Error Handling */
 app.use((req, res, next) => {
