@@ -10,12 +10,14 @@ interface AddNewGoalProps {
 
 export const AddNewGoal: FC<AddNewGoalProps> = ({
   addNewGoal,
-  hideAddNewGoal,
+  hideAddNewGoal
 }) => {
   const [goal, setGoal] = useState<GoalProp>({
     id: Math.floor(Math.random() * 100 + 1),
     name: "",
     isComplete: false,
+    createdDate: new Date(),
+    modifiedDate: new Date()
   });
   const [willCancel, setWillCancel] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -24,6 +26,8 @@ export const AddNewGoal: FC<AddNewGoalProps> = ({
       id: Math.floor(Math.random() * 100 + 1),
       name: "",
       isComplete: false,
+      createdDate: new Date(),
+      modifiedDate: new Date()
     });
 
   useEffect(() => {
