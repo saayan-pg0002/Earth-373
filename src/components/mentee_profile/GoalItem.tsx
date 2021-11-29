@@ -69,24 +69,28 @@ export const GoalItem: FC<GoalItemProps> = ({
       className={`goal-item ${isEditing ? "editing" : ""}`}
       onBlur={stopEditing}
     >
-      <span onClick={onClick}>
-        <Checkbox isChecked={goal.isComplete} />
-      </span>
-      <span className="input" onClick={onClickStartEditing}>
-        <input
-          type="text"
-          value={goal.name}
-          onChange={onChange}
-          disabled={!isEditing}
-          ref={inputRef}
-          onKeyPress={handleKeyPress}
-        />
-      </span>
-      <div className="subtext">
-        Created: {getFormattedMonthDateyearString(goal.createdDate)}
+      <div className="header">
+        <div onClick={onClick}>
+          <Checkbox isChecked={goal.isComplete} />
+        </div>
+        <div className="input" onClick={onClickStartEditing}>
+          <input
+            type="text"
+            value={goal.name}
+            onChange={onChange}
+            disabled={!isEditing}
+            ref={inputRef}
+            onKeyPress={handleKeyPress}
+          />
+        </div>
       </div>
-      <div className="subtext">
-        Modified: {getFormattedMonthDateyearString(goal.modifiedDate)}
+      <div className="dates">
+        <div className="subtext">
+          Created: {getFormattedMonthDateyearString(goal.createdDate)}
+        </div>
+        <div className="subtext">
+          Modified: {getFormattedMonthDateyearString(goal.modifiedDate)}
+        </div>
       </div>
     </div>
   );
