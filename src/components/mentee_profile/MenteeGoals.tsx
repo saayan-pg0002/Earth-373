@@ -101,8 +101,8 @@ const MenteeGoals: React.FC<MenteeInfoProps> = ({
   };
 
   const completeGoal = (goal: GoalProp): void => {
-    setCompletedGoals([...completedGoals, { ...goal, isComplete: true }]);
     goal.modifiedDate = new Date();
+    setCompletedGoals([...completedGoals, { ...goal, isComplete: true }]);
     setOngoingGoals([
       ...ongoingGoals.filter(
         (ongoingGoals) => ongoingGoals.name !== goal.name,
@@ -112,8 +112,8 @@ const MenteeGoals: React.FC<MenteeInfoProps> = ({
   };
 
   const uncheckGoal = (goal: GoalProp): void => {
-    setOngoingGoals([...ongoingGoals, { ...goal, isComplete: false }]);
     goal.modifiedDate = new Date();
+    setOngoingGoals([...ongoingGoals, { ...goal, isComplete: false }]);
     setCompletedGoals([
       ...completedGoals.filter(
         (completedGoals) => completedGoals.name !== goal.name,

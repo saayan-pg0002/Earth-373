@@ -1,31 +1,42 @@
 @import "../util/";
 
 .goal-item {
+  background-color: $grey-50;
+  padding: 1rem 0.875rem 1rem 1.3125rem;
+  border-radius: $border-radius;
   display: flex;
-  align-items: center;
+  align-items: left;
   width: 100%;
+  flex-direction: column;
 
-  .checkbox {
-    margin-right: 0.25rem;
-  }
+  .header{
+    flex-direction: row;
+    align-items: left;
+    .checkbox {
+      margin-right: 0.25rem;
+    }
 
-  .input {
-    width: 100%;
-    input {
-      cursor: pointer;
-      font-family: $font-family;
-      font-size: $font-size;
+    .input {
+      flex-direction: row;
       width: 100%;
-      border: none;
-      background-color: $white;
-      padding: 0 0.5rem 0.5rem 0.5rem;
-      border-bottom: 1px solid transparent;
+      input {
+        background-color: $grey-50;
+        cursor: pointer;
+        font-family: $font-family;
+        font-size: $font-size;
+        width: 100%;
+        border: none;
+        padding: 0rem 0rem 0rem 0.5rem;
+        border-bottom: 1px solid transparent;
 
-      &:disabled {
-        color: $black;
+        &:disabled {
+          color: $black;
+        }
       }
     }
   }
+
+
 
   &.editing {
     input {
