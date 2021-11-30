@@ -231,7 +231,7 @@ const createGoalForAssociation = (req: Request, res: Response) => {
     {
       $push: {
         goals: {
-          name: goal,
+          goal_name: goal,
           created_at: Date.now(),
           updated_at: Date.now(),
           is_complete: false
@@ -297,20 +297,19 @@ const getGoalsForAssociation = (req: Request, res: Response) => {
 
 const updateGoalsForAssociation = (req: Request, res: Response) => {
   try {
-    const { association_id, goal_id, name, is_complete } = req.body;
+    const { association_id, goal_id, goal_name, is_complete } = req.body;
 
     Association.findOneAndUpdate(
       { _id: association_id, "goals._id": goal_id },
       {
         $set: {
-          "goals.$.name": name,
+          "goals.$.goal_name": goal_name,
           "goals.$.is_complete": is_complete,
           "goals.$.updated_at": Date.now(),
           "goals.$.completed_at": is_complete === true ? Date.now() : null
         }
       }
     )
-      .exec()
       .then(() => {
         return res.json({ updated: `${goal_id}` });
       })
