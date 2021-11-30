@@ -3,7 +3,6 @@ import { AddNewGoal } from "./AddNewGoal";
 import { Icon, IconColors, IconName } from "../Icon";
 import { GoalItem } from "./GoalItem";
 import { EmptyState } from "../EmptyState";
-import { getFormattedMonthDateyearString } from "../../util/date";
 
 export interface MenteeInfoProps {
   menteeName: string;

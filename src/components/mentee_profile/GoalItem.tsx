@@ -1,11 +1,7 @@
 import React, { FC, useState, useRef, useEffect } from "react";
 import { Checkbox } from "../form/Checkbox";
 import { GoalProp } from "./MenteeGoals";
-import { Icon, IconName, IconColors } from "../Icon";
-import {
-  getFormattedHourMinuteString,
-  getFormattedMonthDateyearString
-} from "../../util/date";
+import { getFormattedMonthDateyearString } from "../../util/date";
 
 interface GoalItemProps {
   onClickCheckbox: (goal: GoalProp) => void;
