@@ -19,6 +19,7 @@ export interface GoalProp {
   isComplete: boolean;
   createdDate: Date;
   modifiedDate: Date;
+  completedDate?: Date;
 }
 
 const MenteeGoals: React.FC<MenteeInfoProps> = ({
@@ -46,7 +47,8 @@ const MenteeGoals: React.FC<MenteeInfoProps> = ({
       name: "Learn History",
       isComplete: true,
       createdDate: new Date(2021, 2, 3, 5, 30),
-      modifiedDate: new Date(2021, 2, 3, 5, 30)
+      modifiedDate: new Date(2021, 2, 3, 5, 30),
+      completedDate: new Date()
     }
   ]);
 
@@ -102,6 +104,7 @@ const MenteeGoals: React.FC<MenteeInfoProps> = ({
 
   const completeGoal = (goal: GoalProp): void => {
     goal.modifiedDate = new Date();
+    goal.completedDate = new Date();
     setCompletedGoals([...completedGoals, { ...goal, isComplete: true }]);
     setOngoingGoals([
       ...ongoingGoals.filter(
@@ -113,6 +116,7 @@ const MenteeGoals: React.FC<MenteeInfoProps> = ({
 
   const uncheckGoal = (goal: GoalProp): void => {
     goal.modifiedDate = new Date();
+    goal.completedDate = undefined;
     setOngoingGoals([...ongoingGoals, { ...goal, isComplete: false }]);
     setCompletedGoals([
       ...completedGoals.filter(

@@ -91,6 +91,11 @@ export const GoalItem: FC<GoalItemProps> = ({
         <div className="subtext">
           Modified: {getFormattedMonthDateyearString(goal.modifiedDate)}
         </div>
+        {goal.isComplete && goal.completedDate && (
+          <div className="subtext">
+            Completed: {getFormattedMonthDateyearString(goal.completedDate)}
+          </div>
+        )}
       </div>
     </div>
   );
