@@ -19,10 +19,10 @@ const getQuestions = async (qTId: Number) => {
     url: url,
     auth: {
       username: process.env.VIEW_USERNAME as string,
-      password: process.env.VIEW_PASSWORD as string,
+      password: process.env.VIEW_PASSWORD as string
     },
     responseType: "json",
-    transformResponse: [(v) => v],
+    transformResponse: [(v) => v]
   })
     .then((response) => {
       result = JSON.parse(response.data);
@@ -45,7 +45,7 @@ const getQuestions = async (qTId: Number) => {
         is_required: false,
         field_type: fieldtype,
         validation: viewsQues["validation"].split("|"),
-        options: await getOptions(Number(viewsQues["valueListID"])),
+        options: await getOptions(Number(viewsQues["valueListID"]))
       };
       oneField.is_required = oneField.validation.includes("required");
       if (oneField.validation[0] == "") {
@@ -70,10 +70,10 @@ async function getOptions(valuelist: Number) {
     url: url,
     auth: {
       username: process.env.VIEW_USERNAME as string,
-      password: process.env.VIEW_PASSWORD as string,
+      password: process.env.VIEW_PASSWORD as string
     },
     responseType: "json",
-    transformResponse: [(v) => v],
+    transformResponse: [(v) => v]
   })
     .then((response) => {
       result = JSON.parse(response.data);
@@ -98,10 +98,10 @@ const getQuestionnaireT = async () => {
     url: url,
     auth: {
       username: process.env.VIEW_USERNAME as string,
-      password: process.env.VIEW_PASSWORD as string,
+      password: process.env.VIEW_PASSWORD as string
     },
     responseType: "json",
-    transformResponse: [(v) => v],
+    transformResponse: [(v) => v]
   })
     .then((response) => {
       result = JSON.parse(response.data);
@@ -122,7 +122,7 @@ async function createTemplateDB(data: any) {
     for (const key2 in quesTemplate) {
       const qTFields = quesTemplate[key2];
       await QuestionnaireT.find({
-        views_id: Number(qTFields["QuestionnaireID"]),
+        views_id: Number(qTFields["QuestionnaireID"])
       })
         .exec()
         .then(async (qTemp) => {
@@ -134,12 +134,14 @@ async function createTemplateDB(data: any) {
               const newQTemplate = new QuestionnaireT({
                 name: String(qTFields["Title"]),
                 views_id: Number(qTFields["QuestionnaireID"]),
-                fields: questionfields,
+                fields: questionfields
               });
               await newQTemplate
                 .save()
                 .then(() => {
-                  console.log(`Template ${newQTemplate.views_id} added`);
+                  console.log(
+                    `Questionnaire Template ${newQTemplate.views_id} added`
+                  );
                 })
                 .catch((error) => {
                   console.log(
@@ -150,11 +152,11 @@ async function createTemplateDB(data: any) {
                 });
             } else {
               console.log(
-                `QTemplate ${qTFields["QuestionnaireID"]} has no questions, not adding...`
+                `Questionnaire Template ${qTFields["QuestionnaireID"]} has no questions, not adding...`
               );
             }
           } else {
-            console.log("Template already exists");
+            console.log("Questionnaire Template already exists");
           }
         });
     }
@@ -171,6 +173,6 @@ const migrateQuestionnarieT = async (req: Request, res: Response) => {
 };
 
 const QuestionnaireController = {
-  migrateQuestionnarieT,
+  migrateQuestionnarieT
 };
 export default QuestionnaireController;
