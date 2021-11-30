@@ -1,8 +1,6 @@
 import React, { FC, useState, useRef, useEffect } from "react";
 import { Checkbox } from "../form/Checkbox";
 import { GoalProp } from "./MenteeGoals";
-import { Icon, IconName, IconColors } from "../Icon";
-import { getFormattedMonthDateyearString } from "../../util/date";
 
 interface AddNewGoalProps {
   addNewGoal: (newGoal: GoalProp) => void;
