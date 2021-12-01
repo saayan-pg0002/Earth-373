@@ -499,7 +499,11 @@ const assignQuestionnaireToAssociation = async (
           }).then((resultFromAPI) => {
             xml2js.parseString(resultFromAPI.data, (err, result) => {
               if (err) {
-                return;
+                return res.status(500).json({
+                  message:
+                    "Error in parsing XML from response to JSON, coming from the Views API",
+                  err
+                });
               }
 
               const val: any = Object.values(result.answerset)[0];
@@ -507,11 +511,16 @@ const assignQuestionnaireToAssociation = async (
 
               Questionnaire.create(
                 {
+                  mentor_views_id: user_views_id,
                   questionnaire_template_views_id: template_id,
                   questionnaire_views_id: val_id
                 },
                 (err, new_questionnaire) => {
                   if (err) {
+                    return res.status(500).json({
+                      message: "Error in creating a questionnaire object",
+                      err
+                    });
                   }
 
                   Association.findOneAndUpdate(
@@ -522,16 +531,28 @@ const assignQuestionnaireToAssociation = async (
                     { new: true }
                   )
                     .exec()
-                    .then((association) => {});
+                    .then(() => {
+                      const val = resultFromAPI.data;
+                      res.type("text/xml");
+                      return res.status(200).send({
+                        val
+                      });
+                    })
+                    .catch((e) => {
+                      return res.status(500).json({
+                        message: "Failed to update association object",
+                        e
+                      });
+                    });
                 }
               );
             });
-
-            const val = resultFromAPI.data;
-            res.type("text/xml");
-            return res.status(200).send({
-              val
-            });
+          });
+        })
+        .catch((err) => {
+          return res.status(500).json({
+            message: "Error in finding the mentor profile of the association",
+            err
           });
         });
     });
@@ -542,45 +563,63 @@ const updateQuestionnaireValues = async (req: Request, res: Response) => {
   const questionnaire_id: string = req.params.id;
   const builder = new xml2js.Builder();
 
-  //Find template ID of questionnaire (we need it for some reason...)
+  //Find template ID of questionnaire (we need it for some reason, according to Views API...)
+  Questionnaire.findOne({ questionnaire_views_id: questionnaire_id })
+    .exec()
+    .then((questionnaire) => {
+      const template_id = questionnaire?.questionnaire_template_views_id;
+      const mentor_id = questionnaire?.mentor_views_id;
 
-  let resBody = {
-    answers: {
-      EntityType: "Person",
-      EntityID: 1,
-      answer: answer
-    }
-  };
+      let resBody = {
+        answers: {
+          EntityType: "Person",
+          EntityID: mentor_id,
+          answer: answer
+        }
+      };
 
-  const xmlInput = builder.buildObject(resBody);
+      const xmlInput = builder.buildObject(resBody);
 
-  await axios({
-    method: "post",
-    url:
-      "https://app.viewsapp.net/api/restful/evidence/questionnaires/" +
-      //template_id +
-      "/answers/" +
-      questionnaire_id,
-    auth: {
-      username: process.env.VIEW_USERNAME as string,
-      password: process.env.VIEW_PASSWORD as string
-    },
-    data: xmlInput,
-    headers: {
-      "Content-Type": "text/xml",
-      Accept: "text/xml"
-    },
-    responseType: "json",
-    transformResponse: [(v) => v]
-  }).then((result) => {
-    const val = result.data;
-
-    res.type("text/xml");
-
-    return res.status(200).send({
-      val
+      axios({
+        method: "put",
+        url:
+          "https://app.viewsapp.net/api/restful/evidence/questionnaires/" +
+          template_id +
+          "/answers/" +
+          questionnaire_id,
+        auth: {
+          username: process.env.VIEW_USERNAME as string,
+          password: process.env.VIEW_PASSWORD as string
+        },
+        data: xmlInput,
+        headers: {
+          "Content-Type": "text/xml",
+          Accept: "text/xml"
+        },
+        responseType: "json",
+        transformResponse: [(v) => v]
+      })
+        .then((result) => {
+          const val = result.data;
+          res.type("text/xml");
+          return res.status(200).send({
+            message: "Successfully updated questionnaire values",
+            val
+          });
+        })
+        .catch((err) => {
+          return res.status(500).json({
+            message: "Error in sending axios request",
+            err
+          });
+        });
+    })
+    .catch((err) => {
+      return res.status(500).json({
+        message: "",
+        err
+      });
     });
-  });
 };
 
 const getMyProfile = (req: Request, res: Response) => {

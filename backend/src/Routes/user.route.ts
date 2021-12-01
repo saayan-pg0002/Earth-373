@@ -51,6 +51,6 @@ router
 
 router
   .route("/associations/questionnaire/:id")
-  .patch(UserController.updateQuestionnaireValues);
+  .put(UserController.updateQuestionnaireValues);
 
 export default router;
