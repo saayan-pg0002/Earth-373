@@ -14,7 +14,7 @@ const getQuestionnaireTemplateList = async (req: Request, res: Response) => {
   try {
     const questionnaireTemplates: AxiosResponse<never> | any =
       await QuestionnaireT.find({}, { name: true }).exec();
-    return res.json(questionnaireTemplates);
+    return res.status(200).json(questionnaireTemplates);
   } catch (error) {
     return res.status(400).json({
       function: "getQuestionnaireTemplateList",
@@ -33,9 +33,12 @@ const getQuestionnaireTemplateById = async (req: Request, res: Response) => {
         .status(404)
         .json({ error: "Questionnaire Template does not exists!" });
     }
-    return res.json(questionnaireTemplate);
+    return res.status(200).json(questionnaireTemplate);
   } catch (error) {
-    return res.status(400);
+    return res.status(400).json({
+      function: "getQuestionnaireTemplateById",
+      error: errorHandler(error)
+    });
   }
 };
 
