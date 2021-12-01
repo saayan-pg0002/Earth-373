@@ -11,11 +11,17 @@ router.post(
   UserController.getGoalsForAssociation
 );
 router.post("/creategoal", isLoggedIn, UserController.createGoalForAssociation);
-router.get(
-  "/me/associations",
+router.put(
+  "/update-goal",
   isLoggedIn,
-  UserController.getAssociationsFromMentor
+  UserController.updateGoalsForAssociation
 );
+router.get(
+  "/me/associations/:id",
+  isLoggedIn,
+  UserController.getAssociationForMentorById
+);
+router.get("/me/mentees", isLoggedIn, UserController.getMenteesForMentor);
 router.post("/login", login);
 router.post("/forgot-password", UserController.forgotPassword);
 router.post("/reset-password", UserController.resetPassword);
@@ -44,13 +50,5 @@ router.put(
   UserController.editProfile
 );
 router.get("/get/:type", isLoggedIn, isAdmin, UserController.getUsers);
-
-router
-  .route("/associations/:assid/assign-questionnaire/:tempid")
-  .post(UserController.assignQuestionnaireToAssociation);
-
-router
-  .route("/associations/questionnaire/:id")
-  .put(UserController.updateQuestionnaireValues);
 
 export default router;

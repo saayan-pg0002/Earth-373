@@ -10,7 +10,7 @@ const associationSchema: Schema = new Schema(
     isActive: { type: Boolean, required: true, default: true },
     goals: [
       {
-        name: { type: String, required: true },
+        goal_name: { type: String, required: true },
         created_at: { type: Date, required: true },
         updated_at: { type: Date, required: true },
         is_complete: { type: Boolean, required: true, default: false },

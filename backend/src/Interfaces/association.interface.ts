@@ -8,7 +8,7 @@ export default interface AssociationInterface extends Document {
   isActive: Boolean;
   goals: [
     {
-      name: String;
+      goal_name: String;
       created_at: Date;
       updated_at: Date;
       is_complete: Boolean;

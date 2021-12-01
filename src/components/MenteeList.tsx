@@ -3,13 +3,18 @@ import { ReactComponent as BaytreeTreeGrey } from "../assets/images/baytree-tree
 
 interface MenteeListProps {
   mentees: MenteeItemProps[];
+  showEmptyState?: boolean;
 }
 
-export const MenteeList: React.FC<MenteeListProps> = ({ mentees }) => {
+export const MenteeList: React.FC<MenteeListProps> = ({
+  mentees,
+  showEmptyState = false,
+}) => {
   const isEmpty: boolean = mentees.length === 0;
+
   return (
     <div className={`mentee-list ${isEmpty ? "empty" : ""}`}>
-      {isEmpty ? (
+      {isEmpty && showEmptyState ? (
         <div className="empty-state">
           <BaytreeTreeGrey />
           <h1 className="widget-title">You Currently Have No Mentees</h1>
@@ -18,14 +23,14 @@ export const MenteeList: React.FC<MenteeListProps> = ({ mentees }) => {
       ) : (
         mentees.map(
           (
-            { menteeName, startDate, endDate }: MenteeItemProps,
+            { association_id, is_active, mentee_name }: MenteeItemProps,
             index: number
           ) => (
             <MenteeItem
-              key={index}
-              menteeName={menteeName}
-              startDate={startDate}
-              endDate={endDate}
+              key={association_id}
+              association_id={association_id}
+              is_active={is_active}
+              mentee_name={mentee_name}
             />
           )
         )

@@ -11,10 +11,7 @@ import jwt from "jsonwebtoken";
 import path from "path";
 import nodemailer from "nodemailer";
 import _ from "lodash";
-import QuestionnaireTemplate from "../Models/questionnairetemplate.model";
-import QuestionnaireTemplateInterface from "../Interfaces/questionnairetemplate.interface";
-import Questionnaire from "../Models/questionnaire.model";
-import xml2js from "xml2js";
+import { errorHandler } from "../util";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
@@ -225,20 +222,18 @@ async function createMentees(data: any) {
 }
 
 const createGoalForAssociation = (req: Request, res: Response) => {
-  let { mentee_id, goal } = req.body;
-
-  const user: any = req.user;
-  const mentor_id: string = user._id as string;
+  let { association_id, goal } = req.body;
 
   Association.findOneAndUpdate(
     {
-      mentor_id: mentor_id,
-      mentee_id: mentee_id
+      _id: association_id
     },
     {
       $push: {
         goals: {
-          name: goal,
+          goal_name: goal,
+          created_at: Date.now(),
+          updated_at: Date.now(),
           is_complete: false
         }
       }
@@ -263,19 +258,92 @@ const createGoalForAssociation = (req: Request, res: Response) => {
     });
 };
 
-const getAssociationsFromMentor = (req: Request, res: Response) => {
+const getMenteesForMentor = (req: Request, res: Response) => {
   const user: any = req.user;
   const mentor_id: string = user._id as string;
 
   Association.find({ mentor_id: mentor_id })
     .exec()
     .then((associations) => {
-      return res.status(200).json({ associations });
+      const menteeIds: mongoose.Types.ObjectId[] = associations.map(
+        (association) => association.mentee_id
+      );
+
+      Mentee.find(
+        { _id: { $in: menteeIds } },
+        "_id first_name last_name age dateOfBirth"
+      ).exec((err, mentees) => {
+        if (err || mentees.length !== associations.length) {
+          return res.status(400).json({
+            error:
+              "One of the mentees in the specified associations does not exist."
+          });
+        }
+
+        const associationsWithMenteeName: any[] = associations.map(
+          (association) => {
+            const mentee: any = mentees.find(
+              (currentMentee) =>
+                currentMentee._id.toString() === association.mentee_id
+            );
+
+            if (!mentee) {
+              return res.status(400).json({
+                error:
+                  "One of the mentees in the specified associations does not exist."
+              });
+            }
+
+            return {
+              // TODO: Add association start_date and end_date
+              association_id: association._id,
+              is_active: association.isActive,
+              mentee_name: `${mentee.first_name} ${mentee.last_name}`
+            };
+          }
+        );
+
+        return res.status(200).json({ mentees: associationsWithMenteeName });
+      });
     })
     .catch((error) => {
       return res.status(404).json({
-        message: "Error: Mentee id not found.",
+        message: "Error: Mentees not found.",
         error
+      });
+    });
+};
+
+const getAssociationForMentorById = (req: Request, res: Response) => {
+  const user: any = req.user;
+  const mentor_id: string = user._id as string;
+  const association_id: string = req.params.id as string;
+
+  Association.findOne({ _id: association_id, mentor_id: mentor_id })
+    .exec()
+    .then((association) => {
+      if (!association) {
+        return res.status(400).json({
+          error: "Error: Association not found."
+        });
+      }
+
+      Mentee.findOne({ _id: association.mentee_id }).exec((err, mentee) => {
+        if (err || !mentee) {
+          return res.status(400).json({
+            error: "Error: The mentee for this association does not exist."
+          });
+        }
+
+        return res.status(200).json({
+          ...association.toJSON(),
+          mentee: mentee.toJSON()
+        });
+      });
+    })
+    .catch((error) => {
+      return res.status(404).json({
+        error: "Error: Association not found."
       });
     });
 };
@@ -298,6 +366,38 @@ const getGoalsForAssociation = (req: Request, res: Response) => {
         error: error.message
       });
     });
+};
+
+const updateGoalsForAssociation = (req: Request, res: Response) => {
+  try {
+    const { association_id, goal_id, goal_name, is_complete } = req.body;
+
+    Association.findOneAndUpdate(
+      { _id: association_id, "goals._id": goal_id },
+      {
+        $set: {
+          "goals.$.goal_name": goal_name,
+          "goals.$.is_complete": is_complete,
+          "goals.$.updated_at": Date.now(),
+          "goals.$.completed_at": is_complete === true ? Date.now() : null
+        }
+      }
+    )
+      .then(() => {
+        return res.json({ updated: `${goal_id}` });
+      })
+      .catch((error) => {
+        return res.status(400).json({
+          function: "updateGoalsForAssociation",
+          error: errorHandler(error)
+        });
+      });
+  } catch (error) {
+    return res.status(400).json({
+      function: "updateGoalsForAssociation",
+      error: errorHandler(error)
+    });
+  }
 };
 
 const emailTransporter = nodemailer.createTransport({
@@ -361,7 +461,7 @@ const forgotPassword = (req: Request, res: Response) => {
 };
 
 const createAssociation = (req: Request, res: Response) => {
-  let { mentor_id, mentee_id } = req.body;
+  let { mentor_id, mentee_id, start_date } = req.body;
 
   Association.findOne({
     mentor_id: mentor_id,
@@ -388,6 +488,7 @@ const createAssociation = (req: Request, res: Response) => {
         const newAssociation: AssociationInterface = new Association({
           mentor_id: mentor_id,
           mentee_id: mentee_id,
+          start_date: new Date(start_date),
           isActive: true
         });
 
@@ -452,176 +553,6 @@ const resetPassword = (req: Request, res: Response) => {
   }
 };
 
-const assignQuestionnaireToAssociation = async (
-  req: Request,
-  res: Response
-) => {
-  const association_id: string = req.params.assid;
-  const template_id: string = req.params.tempid;
-  const builder = new xml2js.Builder();
-
-  Association.findOne({ _id: association_id })
-    .exec()
-    .then((assoc) => {
-      const user_id = assoc?.mentor_id;
-
-      User.findOne({ _id: user_id })
-        .exec()
-        .then((user_profile) => {
-          const user_views_id = user_profile?.views_id;
-
-          let resBody = {
-            answers: {
-              EntityType: "Person",
-              EntityID: user_views_id
-            }
-          };
-
-          const xmlInput = builder.buildObject(resBody);
-
-          axios({
-            method: "post",
-            url:
-              "https://app.viewsapp.net/api/restful/evidence/questionnaires/" +
-              template_id +
-              "/answers",
-            auth: {
-              username: process.env.VIEW_USERNAME as string,
-              password: process.env.VIEW_PASSWORD as string
-            },
-            data: xmlInput,
-            headers: {
-              "Content-Type": "text/xml",
-              Accept: "text/xml"
-            },
-            responseType: "json",
-            transformResponse: [(v) => v]
-          }).then((resultFromAPI) => {
-            xml2js.parseString(resultFromAPI.data, (err, result) => {
-              if (err) {
-                return res.status(500).json({
-                  message:
-                    "Error in parsing XML from response to JSON, coming from the Views API",
-                  err
-                });
-              }
-
-              const val: any = Object.values(result.answerset)[0];
-              const val_id = val.id;
-
-              Questionnaire.create(
-                {
-                  mentor_views_id: user_views_id,
-                  questionnaire_template_views_id: template_id,
-                  questionnaire_views_id: val_id
-                },
-                (err, new_questionnaire) => {
-                  if (err) {
-                    return res.status(500).json({
-                      message: "Error in creating a questionnaire object",
-                      err
-                    });
-                  }
-
-                  Association.findOneAndUpdate(
-                    {
-                      _id: association_id
-                    },
-                    { questionnaire_id: val_id },
-                    { new: true }
-                  )
-                    .exec()
-                    .then(() => {
-                      const val = resultFromAPI.data;
-                      res.type("text/xml");
-                      return res.status(200).send({
-                        val
-                      });
-                    })
-                    .catch((e) => {
-                      return res.status(500).json({
-                        message: "Failed to update association object",
-                        e
-                      });
-                    });
-                }
-              );
-            });
-          });
-        })
-        .catch((err) => {
-          return res.status(500).json({
-            message: "Error in finding the mentor profile of the association",
-            err
-          });
-        });
-    });
-};
-
-const updateQuestionnaireValues = async (req: Request, res: Response) => {
-  const answer = req.body;
-  const questionnaire_id: string = req.params.id;
-  const builder = new xml2js.Builder();
-
-  //Find template ID of questionnaire (we need it for some reason, according to Views API...)
-  Questionnaire.findOne({ questionnaire_views_id: questionnaire_id })
-    .exec()
-    .then((questionnaire) => {
-      const template_id = questionnaire?.questionnaire_template_views_id;
-      const mentor_id = questionnaire?.mentor_views_id;
-
-      let resBody = {
-        answers: {
-          EntityType: "Person",
-          EntityID: mentor_id,
-          answer: answer
-        }
-      };
-
-      const xmlInput = builder.buildObject(resBody);
-
-      axios({
-        method: "put",
-        url:
-          "https://app.viewsapp.net/api/restful/evidence/questionnaires/" +
-          template_id +
-          "/answers/" +
-          questionnaire_id,
-        auth: {
-          username: process.env.VIEW_USERNAME as string,
-          password: process.env.VIEW_PASSWORD as string
-        },
-        data: xmlInput,
-        headers: {
-          "Content-Type": "text/xml",
-          Accept: "text/xml"
-        },
-        responseType: "json",
-        transformResponse: [(v) => v]
-      })
-        .then((result) => {
-          const val = result.data;
-          res.type("text/xml");
-          return res.status(200).send({
-            message: "Successfully updated questionnaire values",
-            val
-          });
-        })
-        .catch((err) => {
-          return res.status(500).json({
-            message: "Error in sending axios request",
-            err
-          });
-        });
-    })
-    .catch((err) => {
-      return res.status(500).json({
-        message: "",
-        err
-      });
-    });
-};
-
 const getMyProfile = (req: Request, res: Response) => {
   let user: any = req.user;
   delete user["password"];
@@ -657,13 +588,13 @@ const UserController = {
   migrateViewUsers,
   createGoalForAssociation,
   createAssociation,
-  getAssociationsFromMentor,
+  getMenteesForMentor,
+  getAssociationForMentorById,
   getGoalsForAssociation,
+  updateGoalsForAssociation,
   forgotPassword,
   resetPassword,
   getHashedPassword,
-  assignQuestionnaireToAssociation,
-  updateQuestionnaireValues,
   getMyProfile,
   getUsers,
   editProfile

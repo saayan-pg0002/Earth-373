@@ -2,7 +2,7 @@ import { Document } from "mongoose";
 import { ActivityStatus, Role } from "../Models/user.model";
 
 export default interface UserInterface extends Document {
-  views_id: Number;
+  views_id: String;
   first_name: String;
   last_name: String;
   email: String;

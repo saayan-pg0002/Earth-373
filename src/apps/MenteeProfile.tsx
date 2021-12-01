@@ -10,6 +10,8 @@ import { ItemProps } from "../components/SessionItem";
 import { QuestionnaireList } from "../components/mentee_profile/QuestionnaireList";
 import { QuestionnaireItemProps } from "../components/mentee_profile/QuestionnaireItem";
 import { TabNavItemProps } from "../components/TabNav";
+import { buildHrefPath } from "../components/Link";
+import { useParams, useLocation } from "react-router";
 
 const sessionHistoryList: ItemProps[] = [
   {
@@ -79,18 +81,22 @@ const MenteeProfile: FC<{}> = () => {
   const startDate = "January 1, 2021";
   const birthday = "January 1, 2021";
 
+  const { association_id } = useParams<{ association_id: string }>();
+  const getNavPath = (path: string): string =>
+    buildHrefPath(path, [{ name: "association_id", value: association_id }]);
+
   const routes: TabNavItemProps[] = [
     {
       label: "Goals",
-      to: Paths.menteeProfileGoals,
+      to: getNavPath(Paths.menteeProfileGoals),
     },
     {
       label: "Sessions",
-      to: Paths.menteeProfileSessions,
+      to: getNavPath(Paths.menteeProfileSessions),
     },
     {
       label: "Questionnaires",
-      to: Paths.menteeProfileQuestionnaires,
+      to: getNavPath(Paths.menteeProfileQuestionnaires),
     },
   ];
 
@@ -106,17 +112,17 @@ const MenteeProfile: FC<{}> = () => {
         <TabNav routes={routes} />
 
         <Router history={history}>
-          <Route path={Paths.menteeProfileGoals}>
+          <Route path={getNavPath(Paths.menteeProfileGoals)}>
             <MenteeGoals
               menteeName={menteeName}
               startDate={startDate}
               birthday={birthday}
             />
           </Route>
-          <Route path={Paths.menteeProfileSessions}>
+          <Route path={getNavPath(Paths.menteeProfileSessions)}>
             <MenteeSessionList sessions={sessionHistoryList} />
           </Route>
-          <Route path={Paths.menteeProfileQuestionnaires}>
+          <Route path={getNavPath(Paths.menteeProfileQuestionnaires)}>
             <QuestionnaireList questionnaires={questionnaireList} />
           </Route>
         </Router>
