@@ -7,11 +7,10 @@ const router: Router = express.Router();
 //Admin only endpoint to migrate Questionnaire
 router
   .route("/migrate-questionnaires")
-  .get(isLoggedIn, isAdmin, QuestionnaireController.migrateQuestionnarieT);
-
-//for developing and testing purpose only
-// router
-//   .route("/migrate-questionnaires")
-//   .get(QuestionnaireController.migrateQuestionnarie);
+  .get(
+    isLoggedIn,
+    isAdmin,
+    QuestionnaireController.migrateQuestionnarieTemplate
+  );
 
 export default router;
