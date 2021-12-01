@@ -11,6 +11,8 @@ import jwt from "jsonwebtoken";
 import path from "path";
 import nodemailer from "nodemailer";
 import _ from "lodash";
+import SessionInterface from "../Interfaces/session.interface";
+import Session from "../Models/session.model";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
@@ -357,7 +359,9 @@ const forgotPassword = (req: Request, res: Response) => {
 };
 
 const createAssociation = (req: Request, res: Response) => {
-  let { mentor_id, mentee_id } = req.body;
+  let user: any = req.user;
+  let mentor_id = user._id;
+  let { mentee_id } = req.body;
 
   Association.findOne({
     mentor_id: mentor_id,
@@ -476,6 +480,57 @@ const editProfile = (req: Request, res: Response) => {
 
 const getUsers = (req: Request, res: Response) => {};
 
+const getStatistcs = (req: Request, res: Response) => {
+  // const user: any = req.body.user;
+  let { mentor_id } = req.body;
+
+  let totalSessions: number,
+    totalCancelled: number,
+    totalCompletedGoals: number,
+    totalGoals: number;
+
+  Association.find({ mentor_id: mentor_id, isActive: true }).exec(
+    (err, associations) => {
+      const association_ids: any = associations.map(
+        (association) => association._id as string
+      );
+      console.log(association_ids); // remove this line later
+      Session.count(
+        { association_id: { $in: association_ids } },
+        (err, count) => {
+          if (err) {
+            res
+              .status(400)
+              .json({ error: "Error occured during counting sessions ", err });
+          }
+          totalSessions = count;
+          Session.count(
+            { association_id: { $in: association_ids }, is_cancelled: true },
+            (err, count) => {
+              if (err) {
+                res.status(400).json({
+                  error: "Error occured during counting sessions ",
+                  err
+                });
+              }
+              totalCancelled = count;
+              Association.count({
+                mentor_id: mentor_id,
+                isActive: true,
+                "goals.is_complete": true
+              }).exec((err, count) => {
+                console.log("Completed goals: ", count);
+              });
+              console.log("Cancelled sessions: ", totalCancelled);
+              console.log("Total Sessions: ", totalSessions);
+            }
+          );
+        }
+      );
+    }
+  );
+};
+
 const UserController = {
   addMongoUser,
   getMongoUsers,
@@ -490,7 +545,8 @@ const UserController = {
   getHashedPassword,
   getMyProfile,
   getUsers,
-  editProfile
+  editProfile,
+  getStatistcs
 };
 
 export default UserController;
