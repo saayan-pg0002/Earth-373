@@ -496,26 +496,38 @@ const assignQuestionnaireToAssociation = async (
             },
             responseType: "json",
             transformResponse: [(v) => v]
-          }).then((result) => {
-            const questid = xml2js.parseString(result.data, (err, result) => {
+          }).then((resultFromAPI) => {
+            xml2js.parseString(resultFromAPI.data, (err, result) => {
               if (err) {
                 return;
               }
+
               const val: any = Object.values(result.answerset)[0];
               const val_id = val.id;
-              console.log(val_id);
-              Association.findOneAndUpdate(
+
+              Questionnaire.create(
                 {
-                  _id: association_id
+                  questionnaire_template_views_id: template_id,
+                  questionnaire_views_id: val_id
                 },
-                { questionnaire_id: val_id },
-                { new: true }
-              )
-                .exec()
-                .then((association) => {});
+                (err, new_questionnaire) => {
+                  if (err) {
+                  }
+
+                  Association.findOneAndUpdate(
+                    {
+                      _id: association_id
+                    },
+                    { questionnaire_id: val_id },
+                    { new: true }
+                  )
+                    .exec()
+                    .then((association) => {});
+                }
+              );
             });
 
-            const val = result.data;
+            const val = resultFromAPI.data;
             res.type("text/xml");
             return res.status(200).send({
               val
@@ -527,8 +539,10 @@ const assignQuestionnaireToAssociation = async (
 
 const updateQuestionnaireValues = async (req: Request, res: Response) => {
   const answer = req.body;
-  const template_id: string = req.params.id;
+  const questionnaire_id: string = req.params.id;
   const builder = new xml2js.Builder();
+
+  //Find template ID of questionnaire (we need it for some reason...)
 
   let resBody = {
     answers: {
@@ -544,8 +558,9 @@ const updateQuestionnaireValues = async (req: Request, res: Response) => {
     method: "post",
     url:
       "https://app.viewsapp.net/api/restful/evidence/questionnaires/" +
-      template_id +
-      "/answers",
+      //template_id +
+      "/answers/" +
+      questionnaire_id,
     auth: {
       username: process.env.VIEW_USERNAME as string,
       password: process.env.VIEW_PASSWORD as string
