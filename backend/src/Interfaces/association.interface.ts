@@ -1,8 +1,8 @@
 import mongoose, { Document } from "mongoose";
 
 export default interface AssociationInterface extends Document {
-  mentor_id: String;
-  mentee_id: String;
+  mentor_id: mongoose.Types.ObjectId;
+  mentee_id: mongoose.Types.ObjectId;
   start_date: Date;
   end_date: Date;
   isActive: Boolean;
@@ -15,5 +15,5 @@ export default interface AssociationInterface extends Document {
       completed_at: Date;
     }
   ];
-  questionnaire_ids: [mongoose.Types.ObjectId];
+  questionnaire_id: String;
 }

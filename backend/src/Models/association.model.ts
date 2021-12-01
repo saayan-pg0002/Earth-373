@@ -3,8 +3,8 @@ import AssociationInterface from "../Interfaces/association.interface";
 
 const associationSchema: Schema = new Schema(
   {
-    mentor_id: { type: String, ref: "User", required: true },
-    mentee_id: { type: String, ref: "Mentee", required: true },
+    mentor_id: { type: mongoose.Types.ObjectId, ref: "User", required: true },
+    mentee_id: { type: mongoose.Types.ObjectId, ref: "Mentee", required: true },
     start_date: { type: Date, required: false, default: "" },
     end_date: { type: Date, required: false, default: "" },
     isActive: { type: Boolean, required: true, default: true },
@@ -17,7 +17,7 @@ const associationSchema: Schema = new Schema(
         completed_at: { type: Date, required: false, default: "" }
       }
     ],
-    questionnaire_ids: [{ type: mongoose.Types.ObjectId, ref: "Questionnaire" }]
+    questionnaire_id: { type: String, default: "none" }
   },
   {
     timestamps: true

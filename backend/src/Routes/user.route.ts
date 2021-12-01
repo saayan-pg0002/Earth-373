@@ -46,7 +46,7 @@ router.put(
 router.get("/get/:type", isLoggedIn, isAdmin, UserController.getUsers);
 
 router
-  .route("/associations/:assid/assign-questionnaire/:questid")
+  .route("/associations/:assid/assign-questionnaire/:tempid")
   .post(UserController.assignQuestionnaireToAssociation);
 
 router

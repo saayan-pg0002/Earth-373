@@ -14,6 +14,7 @@ import _ from "lodash";
 import QuestionnaireTemplate from "../Models/questionnairetemplate.model";
 import QuestionnaireTemplateInterface from "../Interfaces/questionnairetemplate.interface";
 import Questionnaire from "../Models/questionnaire.model";
+import xml2js from "xml2js";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
@@ -451,94 +452,119 @@ const resetPassword = (req: Request, res: Response) => {
   }
 };
 
-const assignQuestionnaireToAssociation = (req: Request, res: Response) => {
-  const associationId: string = req.params.assid;
-  const questionnaireId: string = req.params.questid;
+const assignQuestionnaireToAssociation = async (
+  req: Request,
+  res: Response
+) => {
+  const association_id: string = req.params.assid;
+  const template_id: string = req.params.tempid;
+  const builder = new xml2js.Builder();
 
-  //Step 1: Find the association
-  Association.findOne({
-    _id: associationId
-  })
+  Association.findOne({ _id: association_id })
     .exec()
-    .then((association) => {
-      //Step 2: Create the questionnaire object
-      QuestionnaireTemplate.findOne({ _id: questionnaireId })
+    .then((assoc) => {
+      const user_id = assoc?.mentor_id;
+
+      User.findOne({ _id: user_id })
         .exec()
-        .then((template) => {
-          if (template) {
-            Questionnaire.create({
-              questionnaire_template_id: questionnaireId
-            })
-              .then(function (questionnaire) {
-                template.fields.forEach((element) => {
-                  questionnaire.values.push({
-                    field_id: element.id,
-                    value: ""
-                  });
-                  questionnaire.save();
-                });
+        .then((user_profile) => {
+          const user_views_id = user_profile?.views_id;
 
-                //Part 3: Push this questionnaire ID to the association' questionnaires ID
-                association?.questionnaire_ids.push(questionnaire._id);
-                association?.save();
+          let resBody = {
+            answers: {
+              EntityType: "Person",
+              EntityID: user_views_id
+            }
+          };
 
-                return res.status(200).json({
-                  message:
-                    "Successfully assigned the questionnaire to the association."
-                });
-              })
-              .catch((error) => {
-                console.log(error);
-                throw new Error(
-                  "Error creating a questionnaire from the questionnaire template."
-                );
-              });
-          } else {
-          }
-        })
-        .catch((error) => {
-          return res.status(400).json({
-            message: "Couldn't find the template ID",
-            error
+          const xmlInput = builder.buildObject(resBody);
+
+          axios({
+            method: "post",
+            url:
+              "https://app.viewsapp.net/api/restful/evidence/questionnaires/" +
+              template_id +
+              "/answers",
+            auth: {
+              username: process.env.VIEW_USERNAME as string,
+              password: process.env.VIEW_PASSWORD as string
+            },
+            data: xmlInput,
+            headers: {
+              "Content-Type": "text/xml",
+              Accept: "text/xml"
+            },
+            responseType: "json",
+            transformResponse: [(v) => v]
+          }).then((result) => {
+            const questid = xml2js.parseString(result.data, (err, result) => {
+              if (err) {
+                return;
+              }
+              const val: any = Object.values(result.answerset)[0];
+              const val_id = val.id;
+              console.log(val_id);
+              Association.findOneAndUpdate(
+                {
+                  _id: association_id
+                },
+                { questionnaire_id: val_id },
+                { new: true }
+              )
+                .exec()
+                .then((association) => {});
+            });
+
+            const val = result.data;
+            res.type("text/xml");
+            return res.status(200).send({
+              val
+            });
           });
         });
-    })
-    .catch((error) => {
-      return res.status(400).json({
-        message: "Error creating questionnarie from template.",
-        error
-      });
     });
 };
 
 const updateQuestionnaireValues = async (req: Request, res: Response) => {
-  let { values } = req.body;
-  const questionnaire_id: string = req.params.id;
+  const answer = req.body;
+  const template_id: string = req.params.id;
+  const builder = new xml2js.Builder();
 
-  await values.forEach((element: any) => {
-    Questionnaire.findOneAndUpdate(
-      {
-        _id: questionnaire_id,
-        "values.field_id": element?.field_id
-      },
-      {
-        $set: {
-          "values.$.value": element?.value
-        }
-      },
-      {
-        new: true
-      }
-    ).catch((error) => {
-      return res.status(500).json({
-        message: "Error in updating questionnaire value.",
-        error
-      });
+  let resBody = {
+    answers: {
+      EntityType: "Person",
+      EntityID: 1,
+      answer: answer
+    }
+  };
+
+  const xmlInput = builder.buildObject(resBody);
+
+  await axios({
+    method: "post",
+    url:
+      "https://app.viewsapp.net/api/restful/evidence/questionnaires/" +
+      template_id +
+      "/answers",
+    auth: {
+      username: process.env.VIEW_USERNAME as string,
+      password: process.env.VIEW_PASSWORD as string
+    },
+    data: xmlInput,
+    headers: {
+      "Content-Type": "text/xml",
+      Accept: "text/xml"
+    },
+    responseType: "json",
+    transformResponse: [(v) => v]
+  }).then((result) => {
+    const val = result.data;
+
+    res.type("text/xml");
+
+    return res.status(200).send({
+      val
     });
-  });
-
-  return res.status(200).json({
-    message: "Successfully updated questionnaire values."
   });
 };
 

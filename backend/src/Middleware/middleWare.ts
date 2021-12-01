@@ -69,7 +69,7 @@ export const isAdmin = async (
     return next();
   }
   return res.json({
-    unauthorized: "You do not have the permission to access this page.",
+    unauthorized: "You do not have the permission to access this page."
   });
 };
 
