@@ -16,6 +16,6 @@ router
   .route("/all-questionnaires")
   .get(isLoggedIn, QuestionnaireController.getQuestionnaireTemplateList);
 router
-  .route("/questionnaire-template/:questionnaireTemplateID")
+  .route("/questionnaire-template/:id")
   .get(isLoggedIn, QuestionnaireController.getQuestionnaireTemplateById);
 export default router;

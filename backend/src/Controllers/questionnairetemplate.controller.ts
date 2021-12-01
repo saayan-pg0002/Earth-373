@@ -25,8 +25,7 @@ const getQuestionnaireTemplateList = async (req: Request, res: Response) => {
 
 const getQuestionnaireTemplateById = async (req: Request, res: Response) => {
   try {
-    const mongo_questionnaireTemplate_id: string =
-      req.params.questionnaireTemplateID;
+    const mongo_questionnaireTemplate_id: string = req.params.id;
     const questionnaireTemplate: AxiosResponse<never> | any =
       await QuestionnaireT.findById(mongo_questionnaireTemplate_id).exec();
     if (!questionnaireTemplate) {
