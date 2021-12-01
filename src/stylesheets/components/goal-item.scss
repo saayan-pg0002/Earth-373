@@ -5,20 +5,20 @@
   padding: 1rem 0.875rem 1rem 1.3125rem;
   border-radius: $border-radius;
   display: flex;
-  align-items: left;
   width: 100%;
   flex-direction: column;
 
   .header{
-    flex-direction: row;
-    align-items: left;
+    justify-content: flex-start;
+
     .checkbox {
       margin-right: 0.25rem;
     }
 
     .input {
-      flex-direction: row;
-      width: 100%;
+      flex-grow: 100;
+      justify-content: flex-start;
+
       input {
         background-color: $grey-50;
         cursor: pointer;
@@ -39,11 +39,13 @@
 
 
   &.editing {
+
     input {
-      &:focus,
+
+      &:focus,    
       &:active {
         outline: none;
-        border-bottom: 1px solid $baytree-green;
+        border-bottom: 1px solid $baytree-navy;
       }
     }
   }
