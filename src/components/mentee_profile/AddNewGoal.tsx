@@ -35,9 +35,6 @@ export const AddNewGoal: FC<AddNewGoalProps> = ({
     }
   });
 
-  const onMouseOverCancel = (): void => setWillCancel(true);
-  const onMouseOutCancel = (): void => setWillCancel(false);
-
   const onBlur = () => {
     if (!willCancel) {
       if (goal.name.trim() !== "") {
