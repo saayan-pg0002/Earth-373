@@ -18,9 +18,9 @@ import EditSchedule from "../apps/EditSchedule";
 import NewQuestionnaire from "../components/mentee_profile/NewQuestionnaire";
 // import Mentors from "../apps/AdminPortal/Mentors";
 // import MentorsDetails from "../apps/AdminPortal/MentorsDetails";
-import MenteeDetails from "../apps/AdminPortal/MenteeDetails";
-import CreateNewMentor from "../apps/AdminPortal/CreateNewMentor";
-import MentorPairMentee from "../apps/AdminPortal/MentorPairMentee";
+import MenteeDetails from "../apps/AdminPortal/mentors/MenteeDetails";
+import CreateNewMentor from "../apps/AdminPortal/mentors/CreateNewMentor";
+import MentorPairMentee from "../apps/AdminPortal/mentors/MentorPairMentee";
 
 export const history = createBrowserHistory();
 
@@ -49,10 +49,10 @@ export const Paths = {
   NewQuestionnaire: "/new-questionnaire",
   // mentors: "/admin/mentors",
   // mentorsDetails: "/admin/mentors/details",
-  menteeDetails: "/admin-portal/mentee/*",
-  adminViewMenteeProfileGoals: "/admin-portal/mentee/goals",
-  adminViewMenteeProfileSessions: "/admin-portal/mentee/sessions",
-  adminViewMenteeProfileQuestionnaires: "/admin-portal/mentee/questionnaires",
+  menteeDetails: "/admin/mentee/*",
+  adminViewMenteeProfileGoals: "/admin/mentee/goals",
+  adminViewMenteeProfileSessions: "/admin/mentee/sessions",
+  adminViewMenteeProfileQuestionnaires: "/admin/mentee/questionnaires",
   createNewMentor: "/admin/create-new-mentor",
   mentorPairMentee: "/admin/pair-mentee"
 };

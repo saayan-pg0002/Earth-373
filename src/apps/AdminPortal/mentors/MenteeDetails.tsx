@@ -1,12 +1,12 @@
 import { Route, Router } from "react-router-dom";
-import { MenteeHeader } from "../../components/AdminPortal_Mentors/MenteeHeader";
-import MenteeGoals from "../../components/mentee_profile/MenteeGoals";
-import { MenteeSessionList } from "../../components/mentee_profile/MenteeSessionList";
-import { QuestionnaireList } from "../../components/mentee_profile/QuestionnaireList";
-import { TabNav, TabNavItemProps } from "../../components/TabNav";
-import PageHelmet from "../../util/PageHelmet";
-import { history, Paths } from "../../util/routes";
-import { questionnaireList, sessionHistoryList } from "../MenteeProfile";
+import { MenteeHeader } from "../../../components/AdminPortal_Mentors/MenteeHeader";
+import MenteeGoals from "../../../components/mentee_profile/MenteeGoals";
+import { MenteeSessionList } from "../../../components/mentee_profile/MenteeSessionList";
+import { QuestionnaireList } from "../../../components/mentee_profile/QuestionnaireList";
+import { TabNav, TabNavItemProps } from "../../../components/TabNav";
+import PageHelmet from "../../../util/PageHelmet";
+import { history, Paths } from "../../../util/routes";
+import { questionnaireList, sessionHistoryList } from "../../MenteeProfile";
 
 const MenteeDetails: React.FC<{}> = () => {
   const menteeName = "Melissa Nguyen";
@@ -30,7 +30,7 @@ const MenteeDetails: React.FC<{}> = () => {
 
   return (
     <main className="container">
-      <PageHelmet title="Mentee Details | Admin Portal | BayTree " />
+      <PageHelmet title="Mentee Details" isAdminPortal="true" />
       <MenteeHeader
         menteeName={menteeName}
         startDate={startDate}

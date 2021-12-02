@@ -1,8 +1,8 @@
-import { DropdownMenu } from "../../components/form/DropdownMenu";
-import { FormField } from "../../components/form/FormField";
-import { TextInput } from "../../components/form/TextInput";
-import { IconName } from "../../components/Icon";
-import PageHelmet from "../../util/PageHelmet";
+import { DropdownMenu } from "../../../components/form/DropdownMenu";
+import { FormField } from "../../../components/form/FormField";
+import { TextInput } from "../../../components/form/TextInput";
+import { IconName } from "../../../components/Icon";
+import PageHelmet from "../../../util/PageHelmet";
 
 export const MentorTypes: string[] = [
   "IntoSchool Mentors",
@@ -13,14 +13,16 @@ export const MentorTypes: string[] = [
 interface MentorInfoProp {
   mentorType: string;
   email: string;
-  fullName?: string;
+  firstName: string;
+  lastName: string;
   phoneNumber?: string;
 }
 
 const CreateNewMentor: React.FC<MentorInfoProp> = ({
   mentorType,
   email,
-  fullName,
+  firstName,
+  lastName,
   phoneNumber
 }) => {
   const onSubmit = (e: React.SyntheticEvent) => {
@@ -28,19 +30,21 @@ const CreateNewMentor: React.FC<MentorInfoProp> = ({
     const target = e.target as typeof e.target & {
       mentorType: { value: string };
       email: { value: string };
-      fullName: { value: string };
+      firstName: { value: string };
+      lastName: {value: string};
       phoneNumber: { value: string };
     };
 
     mentorType = target.mentorType.value;
     email = target.email.value;
-    fullName = target.fullName.value;
+    firstName = target.firstName.value;
+    lastName = target.lastName.value;
     phoneNumber = target.phoneNumber.value;
   };
 
   return (
     <main className="container">
-      <PageHelmet title="Create New Mentor| Admin Portal | BayTree " />
+      <PageHelmet title="Create New Mentor" isAdminPortal="true" />
       <div className="header">
         <h1 className="page-title">Create New Mentor</h1>
       </div>
@@ -63,18 +67,28 @@ const CreateNewMentor: React.FC<MentorInfoProp> = ({
             name="email"
             id="email"
             leftIconName={IconName.user}
-            placeholderText="Enter mentor's email"
+            placeholderText="Email"
             initialValue={email}
             isDisabled={false}
           />
         </FormField>
 
-        <FormField labelText="Full Name (Optional)">
+        <FormField labelText="First Name">
           <TextInput
-            name="fullName"
-            id="fullname"
+            name="firstName"
+            id="firstname"
             leftIconName={IconName.smiley}
-            placeholderText="Enter mentor's Full Name"
+            placeholderText="First Name"
+            isDisabled={false}
+          />
+        </FormField>
+
+        <FormField labelText="Last Name">
+          <TextInput
+            name="lastName"
+            id="lastname"
+            leftIconName={IconName.smiley}
+            placeholderText="last Name"
             isDisabled={false}
           />
         </FormField>
@@ -84,7 +98,7 @@ const CreateNewMentor: React.FC<MentorInfoProp> = ({
             name="phoneNumber"
             id="phoneNumber"
             leftIconName={IconName.phone}
-            placeholderText="Enter mentor's Phone Number"
+            placeholderText="Phone Number"
             isDisabled={false}
           />
         </FormField>

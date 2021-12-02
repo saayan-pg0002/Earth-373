@@ -1,8 +1,8 @@
-import { DateInput } from "../../components/form/DateInput";
-import { DropdownMenu } from "../../components/form/DropdownMenu";
-import { FormField } from "../../components/form/FormField";
-import PageHelmet from "../../util/PageHelmet";
-import { Paths, routeTo } from "../../util/routes";
+import { DateInput } from "../../../components/form/DateInput";
+import { DropdownMenu } from "../../../components/form/DropdownMenu";
+import { FormField } from "../../../components/form/FormField";
+import PageHelmet from "../../../util/PageHelmet";
+import { Paths, routeTo } from "../../../util/routes";
 
 const ListOfMenteesUnpairedWithMentee: string[] = [
   "Gilda Aindrea",
@@ -36,7 +36,7 @@ const MentorPairMentee: React.FC<PairMenteeProp> = ({
 
   return (
     <main className="container">
-      <PageHelmet title="Pair Mentee| Admin Portal | BayTree " />
+      <PageHelmet title="Pair New Mentee" isAdminPortal="true" />
       <div className="header">
         <h1 className="page-title">Pair Mentee</h1>
       </div>
