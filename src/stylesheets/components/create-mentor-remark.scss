@@ -1,0 +1,11 @@
+@import "../util/";
+
+.remark {  
+    background-color: #F4F5F6;
+    margin-bottom: 1rem;
+    border-radius: $border-radius;
+    p {
+      color: $baytree-navy;
+      padding: 1rem 1rem;
+    }
+}
