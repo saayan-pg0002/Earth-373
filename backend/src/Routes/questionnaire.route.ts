@@ -10,7 +10,12 @@ router
   .get(
     isLoggedIn,
     isAdmin,
-    QuestionnaireController.migrateQuestionnarieTemplate
+    QuestionnaireController.migrateQuestionnaireTemplate
   );
-
+router
+  .route("/all-questionnaires")
+  .get(isLoggedIn, QuestionnaireController.getQuestionnaireTemplateList);
+router
+  .route("/questionnaire-template/:id")
+  .get(isLoggedIn, QuestionnaireController.getQuestionnaireTemplateById);
 export default router;
