@@ -9,7 +9,9 @@ import React from "react";
 const Nav: React.FC = () => {
   return (
     <nav className="nav">
-      <BaytreeMentorPortalWordLogo className="desktop-only header-logo" />
+      <Link to={Paths.dashboard}>
+        <BaytreeMentorPortalWordLogo className="desktop-only header-logo" />
+      </Link>
       <ul className="items">
         <NavItem
           label="Dashboard"

@@ -4,14 +4,15 @@ import { MenteeItemProps } from "../components/MenteeItem";
 import { AvatarHeader } from "../components/AvatarHeader";
 import { Endpoints, RequestType, sendRequest } from "../util/request";
 import { useState, useEffect } from "react";
+import { showMessageToast, MessageToastType } from "../components/MessageToast";
 
 const Mentees: React.FC<{}> = () => {
   const [menteeList, setMenteeList] = useState<MenteeItemProps[]>([]);
   const [pastMenteeList, setPastMenteeList] = useState<MenteeItemProps[]>([]);
 
   useEffect(() => {
-    sendRequest(RequestType.GET, Endpoints.myMentees).then(
-      ({ data: { mentees } }) => {
+    sendRequest(RequestType.GET, Endpoints.myMentees)
+      .then(({ data: { mentees } }) => {
         const ongoingMentees: MenteeItemProps[] = mentees.filter(
           (mentee: MenteeItemProps) => mentee.is_active
         );
@@ -21,8 +22,10 @@ const Mentees: React.FC<{}> = () => {
 
         setMenteeList(ongoingMentees);
         setPastMenteeList(pastMentees);
-      }
-    );
+      })
+      .catch((err) =>
+        showMessageToast(MessageToastType.ERROR, "Unable to fetch mentees")
+      );
   }, []);
 
   return (
