@@ -22,7 +22,7 @@ const questionnaireTemplateSchema: Schema = new Schema(
     views_id: { type: Number, required: true },
     fields: [
       {
-        id: { type: Number, required: true, auto: true },
+        views_id: { type: Number, required: true, auto: true },
         label: { type: String, required: true },
         is_required: { type: Boolean, required: true, default: false },
         field_type: {

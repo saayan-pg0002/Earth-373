@@ -1,7 +1,6 @@
 import React, { FC, useState, useRef, useEffect } from "react";
 import { Checkbox } from "../form/Checkbox";
 import { GoalProp } from "./MenteeGoals";
-import { Icon, IconName, IconColors } from "../Icon";
 
 interface AddNewGoalProps {
   addNewGoal: (newGoal: GoalProp) => void;
@@ -10,12 +9,14 @@ interface AddNewGoalProps {
 
 export const AddNewGoal: FC<AddNewGoalProps> = ({
   addNewGoal,
-  hideAddNewGoal,
+  hideAddNewGoal
 }) => {
   const [goal, setGoal] = useState<GoalProp>({
     id: Math.floor(Math.random() * 100 + 1),
     name: "",
     isComplete: false,
+    createdDate: new Date(),
+    modifiedDate: new Date()
   });
   const [willCancel, setWillCancel] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -24,6 +25,8 @@ export const AddNewGoal: FC<AddNewGoalProps> = ({
       id: Math.floor(Math.random() * 100 + 1),
       name: "",
       isComplete: false,
+      createdDate: new Date(),
+      modifiedDate: new Date()
     });
 
   useEffect(() => {
@@ -31,9 +34,6 @@ export const AddNewGoal: FC<AddNewGoalProps> = ({
       inputRef.current.focus();
     }
   });
-
-  const onMouseOverCancel = (): void => setWillCancel(true);
-  const onMouseOutCancel = (): void => setWillCancel(false);
 
   const onBlur = () => {
     if (!willCancel) {
@@ -59,22 +59,21 @@ export const AddNewGoal: FC<AddNewGoalProps> = ({
 
   return (
     <div className="goal-item editing">
-      <span>
-        <Checkbox isChecked={goal.isComplete} />
-      </span>
-      <span className="input">
-        <input
-          type="text"
-          value={goal.name}
-          onChange={onChange}
-          ref={inputRef}
-          onKeyPress={handleKeyPress}
-          onBlur={onBlur}
-        />
-      </span>
-      <span onMouseOver={onMouseOverCancel} onMouseOut={onMouseOutCancel}>
-        <Icon name={IconName.x} color={IconColors.black} />
-      </span>
+      <div className="header">
+        <div>
+          <Checkbox isChecked={goal.isComplete} />
+        </div>
+        <div className="input">
+          <input
+            type="text"
+            value={goal.name}
+            onChange={onChange}
+            ref={inputRef}
+            onKeyPress={handleKeyPress}
+            onBlur={onBlur}
+          />
+        </div>
+      </div>
     </div>
   );
 };
