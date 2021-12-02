@@ -7,8 +7,10 @@
   border-bottom: $border-thin-grey;
 
   &:hover {
-    background-color: $grey-200;
+    background-color: $grey-50;
+    cursor: pointer;
   }
+
   .body {
     p {
       margin-left: 1rem;

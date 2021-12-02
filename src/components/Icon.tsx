@@ -50,7 +50,7 @@ export enum IconName {
   gift,
   x,
   checkmark,
-  phone,
+  phone
 }
 
 export enum IconColors {
@@ -58,12 +58,12 @@ export enum IconColors {
   white = "white",
   baytreeNavy = "baytree-navy",
   baytreeGreen = "baytree-green",
-  transparent = "transparent",
+  transparent = "transparent"
 }
 
 export enum IconSizes {
   xsmall = "x-small",
-  default = "default",
+  default = "default"
 }
 interface IconProps {
   name: IconName;
@@ -93,7 +93,7 @@ export const ContainedIcon: React.FC<IconProps & ContainedIconProps> = ({
   color,
   onClick,
   backgroundColor,
-  isCircle = false,
+  isCircle = false
 }) => {
   return (
     <div
