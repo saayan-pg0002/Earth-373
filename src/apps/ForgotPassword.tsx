@@ -17,11 +17,9 @@ const ForgotPassword: React.FC<{}> = () => {
     const email: string = target.email.value;
 
     sendRequest(RequestType.POST, Endpoints.ForgotPassword, { email })
-      .then(() => {
-        showMessageToast(
-          MessageToastType.INFO,
-          "The reset email has been sent. Please check your mailbox for reset link"
-        );
+      .then(({ data }) => {
+        const message: string = data?.["message"];
+        showMessageToast(MessageToastType.INFO, message);
       })
       .catch((err) =>
         showMessageToast(MessageToastType.ERROR, "Unable to send reset email")
