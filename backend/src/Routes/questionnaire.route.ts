@@ -10,7 +10,7 @@ router
   .get(
     isLoggedIn,
     isAdmin,
-    QuestionnaireController.migrateQuestionnarieTemplate
+    QuestionnaireController.migrateQuestionnaireTemplate
   );
 router
   .route("/all-questionnaires")

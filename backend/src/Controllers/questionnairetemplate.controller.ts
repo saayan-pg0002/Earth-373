@@ -197,7 +197,7 @@ async function createTemplateDB(data: any) {
   }
 }
 
-const migrateQuestionnarieTemplate = async (req: Request, res: Response) => {
+const migrateQuestionnaireTemplate = async (req: Request, res: Response) => {
   try {
     await getQuestionnaireTemplate();
     res.status(200).send("Added templates successfully");
@@ -207,7 +207,7 @@ const migrateQuestionnarieTemplate = async (req: Request, res: Response) => {
 };
 
 const QuestionnaireController = {
-  migrateQuestionnarieTemplate,
+  migrateQuestionnaireTemplate,
   getQuestionnaireTemplateList,
   getQuestionnaireTemplateById
 };
