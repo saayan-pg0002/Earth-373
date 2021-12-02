@@ -8,13 +8,14 @@ const PORT: String = "5000";
 export enum RequestType {
   POST = "POST",
   GET = "GET",
-  PATCH = "PATCH",
+  PATCH = "PATCH"
 }
 
 export enum Endpoints {
   login = "users/login",
   myMentees = "users/me/mentees",
   me = "users/me",
+  ForgotPassword = "users/forgot-password"
 }
 
 const getAuthHeaders = (): {} => {
@@ -31,6 +32,6 @@ export const sendRequest = (
     method,
     url: `${BASE_URL}:${PORT}/${endpoint}`,
     data,
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders()
   });
 };
