@@ -1,5 +1,4 @@
 import axios, { AxiosPromise } from "axios";
-import ResetPassword from "../apps/ResetPassword";
 import { getLocalStorageItem } from "./localStorage";
 
 export const ORIGIN: string = window.location.origin;
