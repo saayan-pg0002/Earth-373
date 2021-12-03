@@ -23,6 +23,7 @@ import { ReactComponent as CircledCheckmark } from "../assets/icons/icon-circled
 import { ReactComponent as Gift } from "../assets/icons/icon-gift.svg";
 import { ReactComponent as X } from "../assets/icons/icon-x.svg";
 import { ReactComponent as Checkmark } from "../assets/icons/icon-checkmark.svg";
+import { ReactComponent as Phone } from "../assets/icons/icon-phone.svg";
 
 export enum IconName {
   autocomplete,
@@ -49,6 +50,7 @@ export enum IconName {
   gift,
   x,
   checkmark,
+  phone,
 }
 
 export enum IconColors {
@@ -154,6 +156,8 @@ const getIcon = (name: IconName): JSX.Element => {
       return <X />;
     case IconName.checkmark:
       return <Checkmark />;
+    case IconName.phone:
+      return <Phone />;
     default:
       return <></>;
   }
