@@ -435,7 +435,7 @@ const forgotPassword = (req: Request, res: Response) => {
       subject: "Password Reset Link",
       html: ` <h2>Please click on the link below to reset your password</h2>
               <br>
-              <a href="http://${process.env.URL}/users/resetpassword/${token}">http://${process.env.URL}/users/resetpassword/${token}</a>`
+              <a href="http://${process.env.URL}/reset-password/${token}">http://${process.env.URL}/reset-password/${token}</a>`
     };
 
     return user.updateOne(
