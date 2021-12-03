@@ -1,4 +1,5 @@
 import axios, { AxiosPromise } from "axios";
+import ResetPassword from "../apps/ResetPassword";
 import { getLocalStorageItem } from "./localStorage";
 
 export const ORIGIN: string = window.location.origin;
@@ -15,7 +16,8 @@ export enum Endpoints {
   login = "users/login",
   myMentees = "users/me/mentees",
   me = "users/me",
-  ForgotPassword = "users/forgot-password"
+  forgotPassword = "users/forgot-password",
+  resetPassword = "users/reset-password"
 }
 
 const getAuthHeaders = (): {} => {
