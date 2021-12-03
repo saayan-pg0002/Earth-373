@@ -6,6 +6,7 @@ import Link from "../components/Link";
 import { Paths } from "../util/routes";
 import { FC, useState, useEffect } from "react";
 import { Endpoints, RequestType, sendRequest } from "../util/request";
+import { MessageToastType, showMessageToast } from "../components/MessageToast";
 
 const Profile: FC<{}> = () => {
   const [activityStatus, setActivityStatus] = useState<string>("");
@@ -14,15 +15,19 @@ const Profile: FC<{}> = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
 
   useEffect(() => {
-    sendRequest(RequestType.GET, Endpoints.me).then(({ data }) => {
-      const { activity_status, email, first_name, last_name, phone_number } =
-        data;
+    sendRequest(RequestType.GET, Endpoints.me)
+      .then(({ data }) => {
+        const { activity_status, email, first_name, last_name, phone_number } =
+          data;
 
-      setActivityStatus(activity_status);
-      setEmail(email);
-      setName(`${first_name} ${last_name}`);
-      setPhoneNumber(phone_number);
-    });
+        setActivityStatus(activity_status);
+        setEmail(email);
+        setName(`${first_name} ${last_name}`);
+        setPhoneNumber(phone_number);
+      })
+      .catch((err) =>
+        showMessageToast(MessageToastType.ERROR, "Unable to load profile")
+      );
   }, []);
 
   return (
