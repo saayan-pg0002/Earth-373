@@ -1,14 +1,17 @@
 import { Document } from "mongoose";
-import { FieldType } from "../Models/questionnairetemplate.model"
+import { FieldType } from "../Models/questionnairetemplate.model";
 
 export default interface QuestionnaireTemplateInterface extends Document {
-    name: String;
-    fields: [{
-        id: Number;
-        name: String;
-        label: String;
-        is_required: Boolean;
-        field_type: FieldType;
-        options: String[];
-    }];
+  name: String;
+  views_id: Number;
+  fields: [
+    {
+      views_id: Number;
+      label: String;
+      is_required: Boolean;
+      field_type: FieldType;
+      validation: String[];
+      options: String[];
+    }
+  ];
 }

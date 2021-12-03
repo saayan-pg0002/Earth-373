@@ -13,7 +13,7 @@ import { TabNavItemProps } from "../components/TabNav";
 import { buildHrefPath } from "../components/Link";
 import { useParams } from "react-router";
 
-const sessionHistoryList: ItemProps[] = [
+export const sessionHistoryList: ItemProps[] = [
   {
     value: getFormattedMonthDateyearString(new Date()),
     clockInTime: (() => {
@@ -61,7 +61,7 @@ const sessionHistoryList: ItemProps[] = [
   }
 ];
 
-const questionnaireList: QuestionnaireItemProps[] = [
+export const questionnaireList: QuestionnaireItemProps[] = [
   {
     month: "September",
     year: "2021"

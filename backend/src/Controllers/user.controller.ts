@@ -11,6 +11,7 @@ import jwt from "jsonwebtoken";
 import path from "path";
 import nodemailer from "nodemailer";
 import _ from "lodash";
+import { errorHandler } from "../util";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
@@ -221,20 +222,18 @@ async function createMentees(data: any) {
 }
 
 const createGoalForAssociation = (req: Request, res: Response) => {
-  let { mentee_id, goal } = req.body;
-
-  const user: any = req.user;
-  const mentor_id: string = user._id as string;
+  let { association_id, goal } = req.body;
 
   Association.findOneAndUpdate(
     {
-      mentor_id: mentor_id,
-      mentee_id: mentee_id
+      _id: association_id
     },
     {
       $push: {
         goals: {
-          name: goal,
+          goal_name: goal,
+          created_at: Date.now(),
+          updated_at: Date.now(),
           is_complete: false
         }
       }
@@ -369,6 +368,38 @@ const getGoalsForAssociation = (req: Request, res: Response) => {
     });
 };
 
+const updateGoalsForAssociation = (req: Request, res: Response) => {
+  try {
+    const { association_id, goal_id, goal_name, is_complete } = req.body;
+
+    Association.findOneAndUpdate(
+      { _id: association_id, "goals._id": goal_id },
+      {
+        $set: {
+          "goals.$.goal_name": goal_name,
+          "goals.$.is_complete": is_complete,
+          "goals.$.updated_at": Date.now(),
+          "goals.$.completed_at": is_complete === true ? Date.now() : null
+        }
+      }
+    )
+      .then(() => {
+        return res.json({ updated: `${goal_id}` });
+      })
+      .catch((error) => {
+        return res.status(400).json({
+          function: "updateGoalsForAssociation",
+          error: errorHandler(error)
+        });
+      });
+  } catch (error) {
+    return res.status(400).json({
+      function: "updateGoalsForAssociation",
+      error: errorHandler(error)
+    });
+  }
+};
+
 const emailTransporter = nodemailer.createTransport({
   host: "smtp.mail.yahoo.com",
   port: 465,
@@ -430,7 +461,7 @@ const forgotPassword = (req: Request, res: Response) => {
 };
 
 const createAssociation = (req: Request, res: Response) => {
-  let { mentor_id, mentee_id } = req.body;
+  let { mentor_id, mentee_id, start_date } = req.body;
 
   Association.findOne({
     mentor_id: mentor_id,
@@ -457,6 +488,7 @@ const createAssociation = (req: Request, res: Response) => {
         const newAssociation: AssociationInterface = new Association({
           mentor_id: mentor_id,
           mentee_id: mentee_id,
+          start_date: new Date(start_date),
           isActive: true
         });
 
@@ -559,6 +591,7 @@ const UserController = {
   getMenteesForMentor,
   getAssociationForMentorById,
   getGoalsForAssociation,
+  updateGoalsForAssociation,
   forgotPassword,
   resetPassword,
   getHashedPassword,
