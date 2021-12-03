@@ -68,8 +68,8 @@ export const isAdmin = async (
   if (user.role === Role.Admin) {
     return next();
   }
-  return res.json({
-    unauthorized: "You do not have the permission to access this page.",
+  return res.status(401).json({
+    unauthorized: "You do not have the permission to access this page."
   });
 };
 
@@ -78,7 +78,7 @@ export const isLoggedIn = async (
   res: Response,
   next: NextFunction
 ) => {
-  if (!req.headers.authorization)
+  if (!req.headers || !req.headers.authorization)
     return res.status(400).json({ error: "Authorization header is undefined" });
   const token = req.headers.authorization as string;
   let mongoID: string = "";
@@ -88,6 +88,7 @@ export const isLoggedIn = async (
     } else mongoID = payload._id;
   });
   const user = await User.findById(mongoID).exec();
+  if (!user) return res.status(500).json({ error: "Cannot find that user" });
   req.user = user as Express.User;
   return next();
 };
