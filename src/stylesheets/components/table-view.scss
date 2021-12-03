@@ -1,0 +1,40 @@
+@import "../util/";
+
+.table-container{
+    .table {  
+        border-radius: $border-radius;
+        box-shadow: none;
+        thead {
+            background-color: #F4F5F6;
+            tr {
+                th {
+                    font-family: $font-family;
+                    font-size: $font-size;
+                    font-weight: 500;
+                }
+            }
+        }
+        tbody {
+            tr {
+                font-family: $font-family;
+                td {
+                    font-family: $font-family;
+                    font-size: $font-size;
+                }
+                &:focus {
+                    border-color: $baytree-green;
+                    outline: none;
+                    box-shadow: $baytree-green-400 0px 0px 0px 5px;
+                }
+                &:hover {
+                    td{
+                        color: white;
+                    }
+                background-color: $baytree-green;
+                border: 1px solid $baytree-green;
+                }
+            }
+        }
+    }
+}
+
