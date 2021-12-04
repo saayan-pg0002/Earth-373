@@ -16,8 +16,8 @@ import ResetPassword from "../apps/ResetPassword";
 import MenteeProfile from "../apps/MenteeProfile";
 import EditSchedule from "../apps/EditSchedule";
 import NewQuestionnaire from "../components/mentee_profile/NewQuestionnaire";
-// import Mentors from "../apps/AdminPortal/Mentors";
-// import MentorsDetails from "../apps/AdminPortal/MentorsDetails";
+import Mentors from "../apps/AdminPortal/mentors/Mentors";
+import MentorsDetails from "../apps/AdminPortal/mentors/MentorsDetails";
 import MenteeDetails from "../apps/AdminPortal/mentors/MenteeDetails";
 import CreateNewMentor from "../apps/AdminPortal/mentors/CreateNewMentor";
 import MentorPairMentee from "../apps/AdminPortal/mentors/MentorPairMentee";
@@ -47,8 +47,8 @@ export const Paths = {
   menteeProfileSessions: "/mentee/:association_id/sessions",
   menteeProfileQuestionnaires: "/mentee/:association_id/questionnaires",
   NewQuestionnaire: "/new-questionnaire",
-  // mentors: "/admin/mentors",
-  // mentorsDetails: "/admin/mentors/details",
+  mentors: "/admin/mentors",
+  mentorsDetails: "/admin/mentors/details",
   menteeDetails: "/admin/mentee/*",
   adminViewMenteeProfileGoals: "/admin/mentee/goals",
   adminViewMenteeProfileSessions: "/admin/mentee/sessions",
@@ -141,16 +141,16 @@ export const routes: Route[] = [
     component: NewQuestionnaire,
     exact: true
   },
-  // {
-  //   path: Paths.mentors,
-  //   component: Mentors,
-  //   exact: true
-  // },
-  // {
-  //   path: Paths.mentorsDetails,
-  //   component: MentorsDetails,
-  //   exact: true
-  // },
+  {
+    path: Paths.mentors,
+    component: Mentors,
+    exact: true
+  },
+  {
+    path: Paths.mentorsDetails,
+    component: MentorsDetails,
+    exact: true
+  },
   {
     path: Paths.menteeDetails,
     component: MenteeDetails,

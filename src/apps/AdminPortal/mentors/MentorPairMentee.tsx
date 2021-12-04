@@ -31,7 +31,7 @@ const MentorPairMentee: React.FC<PairMenteeProp> = ({
     startDate = target.startDate.value;
     endDate = target.endDate.value;
 
-    //routeTo(Paths.mentorsDetails);
+    routeTo(Paths.mentorsDetails);
   };
 
   return (
