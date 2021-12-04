@@ -17,7 +17,8 @@ const associationSchema: Schema = new Schema(
         completed_at: { type: Date, required: false, default: "" }
       }
     ],
-    questionnaire_id: { type: String, default: "none" }
+    current_questionnaire_id: { type: String, default: "none" },
+    previous_questionnaire_ids: [{ type: String }]
   },
   {
     timestamps: true

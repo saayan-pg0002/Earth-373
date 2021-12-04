@@ -15,5 +15,6 @@ export default interface AssociationInterface extends Document {
       completed_at: Date;
     }
   ];
-  questionnaire_id: String;
+  current_questionnaire_id: String;
+  previous_questionnaire_ids: [String];
 }

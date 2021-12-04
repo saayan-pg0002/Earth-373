@@ -282,7 +282,12 @@ const assignQuestionnaireToAssociation = async (
                     {
                       _id: association_id
                     },
-                    { questionnaire_id: val_id },
+                    {
+                      current_questionnaire_id: val_id,
+                      $push: {
+                        previous_questionnaire_ids: val_id
+                      }
+                    },
                     { new: true }
                   )
                     .exec()
