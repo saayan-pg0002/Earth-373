@@ -46,7 +46,7 @@ const Login: React.FC<{}> = () => {
         <main>
           <BaytreeMentorPortalLogo className="logo" />
           <form onSubmit={onSubmit} className="form">
-            <header className="header">
+            <header className="header center">
               <h1 className="page-title no-margin-bottom">Log In</h1>
             </header>
             <FormField labelText="Email">

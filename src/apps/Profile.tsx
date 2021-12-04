@@ -4,15 +4,32 @@ import { IconName } from "../components/Icon";
 import { TextInput } from "../components/form/TextInput";
 import Link from "../components/Link";
 import { Paths } from "../util/routes";
-import { DropdownMenu } from "../components/form/DropdownMenu";
+import { FC, useState, useEffect } from "react";
+import { Endpoints, RequestType, sendRequest } from "../util/request";
+import { MessageToastType, showMessageToast } from "../components/MessageToast";
 
-const mentorTypes: string[] = [
-  "Into School Mentor",
-  "Youth Mentor",
-  "Women Mentor",
-];
+const Profile: FC<{}> = () => {
+  const [activityStatus, setActivityStatus] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
 
-const Profile: React.FC<{}> = () => {
+  useEffect(() => {
+    sendRequest(RequestType.GET, Endpoints.me)
+      .then(({ data }) => {
+        const { activity_status, email, first_name, last_name, phone_number } =
+          data;
+
+        setActivityStatus(activity_status);
+        setEmail(email);
+        setName(`${first_name} ${last_name}`);
+        setPhoneNumber(phone_number);
+      })
+      .catch((err) =>
+        showMessageToast(MessageToastType.ERROR, "Unable to load profile")
+      );
+  }, []);
+
   return (
     <main className="profile">
       <PageHelmet title="Profile" />
@@ -29,29 +46,46 @@ const Profile: React.FC<{}> = () => {
             This is a view-only page. To change any fields, please contact an
             admin
           </p>
-          <FormField labelText="Mentor Type">
-            <DropdownMenu
-              options={mentorTypes}
-              initialValue={mentorTypes[0]}
-              isDisabled={true}
-            />
-          </FormField>
-          <FormField labelText="Email">
-            <TextInput
-              leftIconName={IconName.user}
-              placeholderText="Email"
-              initialValue="wendy.389@gmail.com"
-              isDisabled={true}
-            ></TextInput>
-          </FormField>
-          <FormField labelText="Name">
-            <TextInput
-              placeholderText="Name"
-              leftIconName={IconName.smiley}
-              initialValue="Wendy Stuart"
-              isDisabled={true}
-            ></TextInput>
-          </FormField>
+          {activityStatus && (
+            <FormField labelText="Activity Status">
+              <TextInput
+                leftIconName={IconName.circledCheckMark}
+                placeholderText="Activity Status"
+                initialValue={activityStatus}
+                isDisabled={true}
+              ></TextInput>
+            </FormField>
+          )}
+          {email && (
+            <FormField labelText="Email">
+              <TextInput
+                leftIconName={IconName.user}
+                placeholderText="Email"
+                initialValue={email}
+                isDisabled={true}
+              ></TextInput>
+            </FormField>
+          )}
+          {name && (
+            <FormField labelText="Name">
+              <TextInput
+                placeholderText="Name"
+                leftIconName={IconName.smiley}
+                initialValue={name}
+                isDisabled={true}
+              ></TextInput>
+            </FormField>
+          )}
+          {phoneNumber && (
+            <FormField labelText="Phone Number">
+              <TextInput
+                placeholderText="Phone Number"
+                leftIconName={IconName.phone}
+                initialValue={phoneNumber}
+                isDisabled={true}
+              ></TextInput>
+            </FormField>
+          )}
         </form>
       </div>
     </main>
