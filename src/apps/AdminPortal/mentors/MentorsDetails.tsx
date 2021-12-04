@@ -52,7 +52,7 @@ const MentorsDetails: React.FC<{}> = () => {
   const phoneNumber = "234-808-6043";
   return (
     <main className="container">
-      <PageHelmet title="Mentors Details | Admin Portal | BayTree " />
+      <PageHelmet title="Mentors Details" isAdminPortal="true"/>
 
       <MentorHeader
         mentorName={mentorName}
