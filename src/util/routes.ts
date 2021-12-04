@@ -42,6 +42,7 @@ export const Paths = {
   editSchedule: "/edit-schedule",
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password",
+  ResetPasswordWithToken: "/reset-password/:token/",
   menteeProfile: "/mentee/:association_id/*",
   menteeProfileGoals: "/mentee/:association_id/goals",
   menteeProfileSessions: "/mentee/:association_id/sessions",
@@ -60,9 +61,9 @@ export const Paths = {
 export const PublicPaths: string[] = [
   Paths.login,
   Paths.forgotPassword,
-  Paths.resetPassword
+  Paths.resetPassword,
+  Paths.ResetPasswordWithToken
 ];
-
 export interface Route {
   path: string;
   exact: boolean;
@@ -74,7 +75,7 @@ export const routes: Route[] = [
   {
     path: Paths.login,
     component: Login,
-    exact: true
+    exact: false
   },
   {
     path: Paths.dashboard,
@@ -133,6 +134,11 @@ export const routes: Route[] = [
   },
   {
     path: Paths.resetPassword,
+    component: ResetPassword,
+    exact: true
+  },
+  {
+    path: Paths.ResetPasswordWithToken,
     component: ResetPassword,
     exact: true
   },
