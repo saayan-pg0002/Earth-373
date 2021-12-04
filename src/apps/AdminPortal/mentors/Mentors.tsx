@@ -56,7 +56,7 @@ function createMentorListRows(MentorList: MentorTableBodyProps[]) {
 const Mentors: React.FC<{}> = () => {
   return (
     <main className="container">
-      <PageHelmet title="Mentors | Admin Portal | BayTree " />
+      <PageHelmet title="Mentors" isAdminPortal="true"/>
       <div className="mentee-profile-header">
         <div className="heading">
           <h1 className="page-title">Mentors</h1>
