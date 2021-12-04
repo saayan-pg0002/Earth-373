@@ -248,6 +248,36 @@ const assignQuestionnaireToAssociation = async (
                     });
                   }
 
+                  for (
+                    var i = 0;
+                    i < result.answerset.answers[0].answer.length;
+                    i++
+                  ) {
+                    var questionId =
+                      result.answerset.answers[0].answer[i].QuestionID[0];
+                    var answer =
+                      result.answerset.answers[0].answer[i].Answer[0];
+
+                    Questionnaire.findOneAndUpdate(
+                      { _id: new_questionnaire._id },
+                      {
+                        $push: {
+                          values: {
+                            field_id: questionId,
+                            value: answer
+                          }
+                        }
+                      },
+                      { new: true }
+                    ).catch((e) => {
+                      return res.status(500).json({
+                        message:
+                          "Error in updating our DB's questionnaire values.",
+                        e
+                      });
+                    });
+                  }
+
                   Association.findOneAndUpdate(
                     {
                       _id: association_id
@@ -305,6 +335,24 @@ const updateQuestionnaireValues = async (req: Request, res: Response) => {
 
       const xmlInput = builder.buildObject(resBody);
 
+      //Part 1: Update the questionnaire values on our DB
+      for (var i = 0; i < answer.length; i++) {
+        Questionnaire.findOneAndUpdate(
+          { _id: questionnaire?._id, "values.field_id": answer[i].QuestionID },
+          {
+            $set: {
+              "values.$.value": answer[i].Answer
+            }
+          }
+        ).catch((e) => {
+          return res.status(500).json({
+            message: "Error in updating questionnaire values in our DB",
+            e
+          });
+        });
+      }
+
+      //Part 2: Update the questionnaire values on Views
       axios({
         method: "put",
         url:
