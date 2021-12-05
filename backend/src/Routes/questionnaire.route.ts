@@ -18,4 +18,13 @@ router
 router
   .route("/questionnaire-template/:id")
   .get(isLoggedIn, QuestionnaireController.getQuestionnaireTemplateById);
+
+router
+  .route("/associations/:assid/assign-questionnaire/:tempid")
+  .post(QuestionnaireController.assignQuestionnaireToAssociation);
+
+router
+  .route("/associations/questionnaire/:id")
+  .put(QuestionnaireController.updateQuestionnaireValues);
+
 export default router;

@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import User from "../Models/user.model";
 import Mentee from "../Models/mentee.model";
-import axios from "axios";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
@@ -12,7 +11,7 @@ import path from "path";
 import nodemailer from "nodemailer";
 import _ from "lodash";
 import Session from "../Models/session.model";
-import { errorHandler } from "../util";
+import { sendViewsRequests, errorHandler, http } from "../util";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
@@ -87,55 +86,60 @@ const getMongoUsers = (req: Request, res: Response) => {
     });
 };
 
-const getViewUsers = async (req: Request, res: Response) => {
-  const result = await getViewUserType(req.params.type as string);
-  if (result) {
-    return res.status(200).json(result);
+const getViewsUsers = async (req: Request, res: Response) => {
+  try {
+    const url: string = "https://app.viewsapp.net/api/restful/contacts/";
+    const result: any = await sendViewsRequests(
+      url + `${req.params.type}/search`,
+      http.get,
+      undefined
+    );
+    if (result.ERROR) return res.status(400).json(result);
+    return res.status(200).json(result.data);
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ function: "getViewsUsers", error: errorHandler(error) });
   }
-  return res.status(400).json({ error: "unable to find users" });
 };
 
-const getViewUserType = async (userType: string) => {
-  let url: string =
-    "https://app.viewsapp.net/api/restful/contacts/" + userType + "/search?q=";
-
-  let result: string = "";
-  await axios({
-    method: "get",
-    url: url,
-    auth: {
-      username: process.env.VIEW_USERNAME as string,
-      password: process.env.VIEW_PASSWORD as string
-    },
-    responseType: "json",
-    transformResponse: [(v) => v]
-  })
-    .then((response) => {
-      result = JSON.parse(response.data);
-    })
-    .catch((error) => {
-      result = error;
-    });
-  return result;
-};
-
-const migrateViewUsers = async (req: Request, res: Response) => {
+const migrateViewsUsers = async (req: Request, res: Response) => {
   try {
     // admins
-    const staffs: any = await getViewUserType("staff");
-    await createUsers(staffs);
+    const url: string = "https://app.viewsapp.net/api/restful/contacts/";
+
+    const staffs: any = await sendViewsRequests(
+      url + "staff/search",
+      http.get,
+      undefined
+    );
+    if (staffs.ERROR) return res.status(400).json(staffs);
+    await createUsers(staffs.data);
 
     // mentors
-    const mentors: any = await getViewUserType("volunteers");
-    await createUsers(mentors);
+    const mentors: any = await sendViewsRequests(
+      url + "volunteers/search",
+      http.get,
+      undefined
+    );
+    if (mentors.ERROR) return res.status(400).json(mentors);
+    await createUsers(mentors.data);
 
     // mentees
-    const mentees: any = await getViewUserType("participants");
-    await createMentees(mentees);
+    const mentees: any = await sendViewsRequests(
+      url + "participants/search",
+      http.get,
+      undefined
+    );
+    if (mentees.ERROR) return res.status(400).json(mentees);
+    await createMentees(mentees.data);
+
+    return res.status(200).json({ response: "All View entries migrated" });
   } catch (error) {
-    throw error;
+    return res
+      .status(400)
+      .json({ function: "migrateViewsUsers", error: errorHandler(error) });
   }
-  res.status(200).json({ response: "All View entries migrated" });
 };
 
 async function createUsers(data: any) {
@@ -522,7 +526,7 @@ const resetPassword = (req: Request, res: Response) => {
         if (err) {
           return res.status(401).json({ error: "Incorrect or expired token " });
         }
-        User.findOne({ resetLink }).exec((err, user) => {
+        User.findOne({ resetLink }).exec((err, user: any) => {
           if (err || !user) {
             return res
               .status(400)
@@ -536,7 +540,7 @@ const resetPassword = (req: Request, res: Response) => {
 
             user = _.extend(user, obj);
 
-            user!.save((err, result) => {
+            user!.save((err: any, result: any) => {
               if (err) {
                 return res.status(400).json({ error: "Reset password error " });
               } else {
@@ -662,8 +666,8 @@ const getStatistcs = (req: Request, res: Response) => {
 const UserController = {
   addMongoUser,
   getMongoUsers,
-  getViewUsers,
-  migrateViewUsers,
+  getViewsUsers,
+  migrateViewsUsers,
   createGoalForAssociation,
   createAssociation,
   getMenteesForMentor,

@@ -31,12 +31,17 @@ router.get("/stats", isLoggedIn, UserController.getStatistcs);
 /* Admin only routes */
 router.post("/mongo/add", isLoggedIn, isAdmin, UserController.addMongoUser);
 router.get("/getusers", isLoggedIn, isAdmin, UserController.getMongoUsers);
-router.get("/view/get/:type", isLoggedIn, isAdmin, UserController.getViewUsers);
+router.get(
+  "/view/get/:type",
+  isLoggedIn,
+  isAdmin,
+  UserController.getViewsUsers
+);
 router.get(
   "/view/migrate",
   isLoggedIn,
   isAdmin,
-  UserController.migrateViewUsers
+  UserController.migrateViewsUsers
 );
 router.post(
   "/create-association",
