@@ -16,7 +16,22 @@ export const getVenues = async (req: Request, res: Response) => {
       http.get,
       undefined
     );
-    return res.json(ViewsData.data);
+
+    const responseData: any = ViewsData?.data;
+    const responseDataObjectKeys: string[] = Object.keys(responseData);
+    const data: any = responseData[responseDataObjectKeys[0]];
+    const venues: { venue_id: string; name: string }[] = [];
+
+    for (const venue in data) {
+      if (!data[venue]?.ArchivedBy) {
+        venues.push({
+          venue_id: data[venue]?.VenueID,
+          name: data[venue]?.Name
+        });
+      }
+    }
+
+    return res.json({ venues });
   } catch (error) {
     return res
       .status(400)
@@ -33,7 +48,20 @@ export const getSessionGroups = async (req: Request, res: Response) => {
       http.get,
       undefined
     );
-    return res.json(ViewsData.data);
+
+    const responseData: any = ViewsData?.data;
+    const responseDataObjectKeys: string[] = Object.keys(responseData);
+    const data: any = responseData[responseDataObjectKeys[0]];
+    const sessionGroups: { session_group_id: string; name: string }[] = [];
+
+    for (const sessionGroup in data) {
+      sessionGroups.push({
+        session_group_id: data[sessionGroup]?.SessionGroupID,
+        name: data[sessionGroup]?.Title
+      });
+    }
+
+    return res.json({ session_groups: sessionGroups });
   } catch (error) {
     return res
       .status(400)
@@ -45,7 +73,7 @@ export const getAssociatedSessions = async (req: Request, res: Response) => {
   try {
     const associationID: string = req.params.associationID;
     const sessions: AxiosResponse<never> | any = await Session.find({
-      association_id: associationID,
+      association_id: associationID
     }).exec();
     return res.json(sessions);
   } catch (error) {
@@ -130,10 +158,10 @@ export const createSession = async (req: Request, res: Response) => {
       session_views_id;
 
     ViewsData = await sendViewsRequests((url += "/staff"), http.put, {
-      ContactID: mentor.views_id,
+      ContactID: mentor.views_id
     });
     ViewsData = await sendViewsRequests((url += "/participants"), http.put, {
-      ContactID: mentee.views_id,
+      ContactID: mentee.views_id
     });
     // no error checking because the Views' request will return
     // an error even though their API works
@@ -151,13 +179,13 @@ export const createSession = async (req: Request, res: Response) => {
       association_id: associationID,
       start_time: schedule.start_time,
       end_time: schedule.end_time,
-      is_cancelled: false,
+      is_cancelled: false
     });
 
     newSession.save();
 
     return res.json({
-      created: `${session_views_id}`,
+      created: `${session_views_id}`
     });
   } catch (error: unknown) {
     return res
@@ -207,7 +235,7 @@ export const updateSessions = async (req: Request, res: Response) => {
     const updates: object = {
       start_time: schedule.start_time,
       end_time: schedule.end_time,
-      is_cancelled: body.Cancelled,
+      is_cancelled: body.Cancelled
     };
 
     await Session.findOneAndUpdate({ _id: session_mongo_id }, updates).exec();
@@ -220,7 +248,7 @@ export const updateSessions = async (req: Request, res: Response) => {
     if (ViewsData.ERROR) return res.status(400).json(ViewsData);
 
     return res.json({
-      updated: `${session.views_id}`,
+      updated: `${session.views_id}`
     });
   } catch (error: unknown) {
     return res
@@ -280,9 +308,9 @@ export const createNotes = async (req: Request, res: Response) => {
       $set: {
         notes: {
           views_id: ViewsData.data.NoteID,
-          description: body.Note,
-        },
-      },
+          description: body.Note
+        }
+      }
     }).exec();
 
     return res.json({ created: `${ViewsData.data.NoteID}` });
@@ -324,8 +352,8 @@ export const updateNotes = async (req: Request, res: Response) => {
 
     await Session.findByIdAndUpdate(session_mongo_id, {
       $set: {
-        "notes.description": body.Note,
-      },
+        "notes.description": body.Note
+      }
     }).exec();
 
     return res.json({ updated: `${note_views_id}` });
