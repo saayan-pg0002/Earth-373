@@ -1,10 +1,16 @@
 import PageHelmet from "../util/PageHelmet";
 import { SettingItem } from "../components/SettingItem";
-import { IconName } from "../components/Icon";
-import { Paths } from "../util/routes";
+import { IconName, Icon, IconColors } from "../components/Icon";
+import { Paths, routeTo } from "../util/routes";
 import { ReactComponent as BaytreeMentorPortalLogo } from "../assets/images/baytree-mentor-portal-logo.svg";
+import { removeLocalStorageItem } from "../util/localStorage";
 
 const Settings: React.FC<{}> = () => {
+  const onClickLogOut = (): void => {
+    removeLocalStorageItem("token");
+    routeTo(Paths.login);
+  };
+
   return (
     <main className="settings">
       <PageHelmet title="Settings" />
@@ -20,16 +26,12 @@ const Settings: React.FC<{}> = () => {
             content="Profile"
             path={Paths.profile}
           />
-          <SettingItem
-            icon={IconName.logOut}
-            content="Log Out"
-            path={Paths.login}
-          />
-          <SettingItem
-            icon={IconName.info}
-            content="About"
-            path={Paths.settings}
-          />
+          <div className="setting-item" onClick={onClickLogOut}>
+            <Icon name={IconName.logOut} color={IconColors.black} />
+            <div className=" body">
+              <p>Log Out</p>
+            </div>
+          </div>
         </div>
         <BaytreeMentorPortalLogo className="logo" />
       </div>

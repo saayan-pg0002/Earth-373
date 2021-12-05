@@ -16,6 +16,11 @@ import ResetPassword from "../apps/ResetPassword";
 import MenteeProfile from "../apps/MenteeProfile";
 import EditSchedule from "../apps/EditSchedule";
 import NewQuestionnaire from "../components/mentee_profile/NewQuestionnaire";
+import Mentors from "../apps/AdminPortal/mentors/Mentors";
+import MentorsDetails from "../apps/AdminPortal/mentors/MentorsDetails";
+import MenteeDetails from "../apps/AdminPortal/mentors/MenteeDetails";
+import CreateNewMentor from "../apps/AdminPortal/mentors/CreateNewMentor";
+import MentorPairMentee from "../apps/AdminPortal/mentors/MentorPairMentee";
 
 export const history = createBrowserHistory();
 
@@ -37,19 +42,28 @@ export const Paths = {
   editSchedule: "/edit-schedule",
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password",
+  ResetPasswordWithToken: "/reset-password/:token/",
   menteeProfile: "/mentee/:association_id/*",
   menteeProfileGoals: "/mentee/:association_id/goals",
   menteeProfileSessions: "/mentee/:association_id/sessions",
   menteeProfileQuestionnaires: "/mentee/:association_id/questionnaires",
-  NewQuestionnaire: "/new-questionnaire"
+  NewQuestionnaire: "/new-questionnaire",
+  mentors: "/admin/mentors",
+  mentorsDetails: "/admin/mentors/details",
+  menteeDetails: "/admin/mentee/*",
+  adminViewMenteeProfileGoals: "/admin/mentee/goals",
+  adminViewMenteeProfileSessions: "/admin/mentee/sessions",
+  adminViewMenteeProfileQuestionnaires: "/admin/mentee/questionnaires",
+  createNewMentor: "/admin/create-new-mentor",
+  mentorPairMentee: "/admin/pair-mentee"
 };
 
 export const PublicPaths: string[] = [
   Paths.login,
   Paths.forgotPassword,
-  Paths.resetPassword
+  Paths.resetPassword,
+  Paths.ResetPasswordWithToken
 ];
-
 export interface Route {
   path: string;
   exact: boolean;
@@ -61,7 +75,7 @@ export const routes: Route[] = [
   {
     path: Paths.login,
     component: Login,
-    exact: true
+    exact: false
   },
   {
     path: Paths.dashboard,
@@ -124,8 +138,38 @@ export const routes: Route[] = [
     exact: true
   },
   {
+    path: Paths.ResetPasswordWithToken,
+    component: ResetPassword,
+    exact: true
+  },
+  {
     path: Paths.NewQuestionnaire,
     component: NewQuestionnaire,
+    exact: true
+  },
+  {
+    path: Paths.mentors,
+    component: Mentors,
+    exact: true
+  },
+  {
+    path: Paths.mentorsDetails,
+    component: MentorsDetails,
+    exact: true
+  },
+  {
+    path: Paths.menteeDetails,
+    component: MenteeDetails,
+    exact: true
+  },
+  {
+    path: Paths.createNewMentor,
+    component: CreateNewMentor,
+    exact: true
+  },
+  {
+    path: Paths.mentorPairMentee,
+    component: MentorPairMentee,
     exact: true
   }
 ];

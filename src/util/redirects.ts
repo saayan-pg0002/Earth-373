@@ -6,7 +6,12 @@ import { routeTo } from "./routes";
 const redirectActions = () => {
   const { token, currentPath }: State = getState();
   const isAuthenticated: boolean = !!token;
-  const isOnPublicPath: boolean = PublicPaths.includes(currentPath);
+  var isOnPublicPath: boolean = false;
+  PublicPaths.forEach((path) => {
+    if (currentPath.includes(path)) {
+      isOnPublicPath = true;
+    }
+  });
 
   if (isOnPublicPath && isAuthenticated) {
     routeTo(Paths.dashboard);
