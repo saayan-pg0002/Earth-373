@@ -1,14 +1,17 @@
 import { Router, Route, Switch, RouteComponentProps } from "react-router-dom";
-import { routes, PublicPaths, Paths } from "./util/routes";
+import { routes, PublicPaths, Paths, AdminPaths } from "./util/routes";
 import { history } from "./util/routes";
 import Nav from "./components/Nav";
 import "./stylesheets/index.scss";
 import { Provider } from "react-redux";
 import store from "./util/store";
 import MessageToast from "./components/MessageToast";
+import AdminNav from "./apps/AdminPortal/AdminNav";
 
 const App: React.FC<{}> = () => {
-  const isPrivatePath = (path: string): boolean => !PublicPaths.includes(path);
+  const isMentorPath = (path: string): boolean =>
+    !PublicPaths.includes(path) && !AdminPaths.includes(path);
+  const isAdminPath = (path: string): boolean => AdminPaths.includes(path);
 
   return (
     <Provider store={store}>
@@ -23,7 +26,7 @@ const App: React.FC<{}> = () => {
                 exact={route.exact}
                 render={(props: RouteComponentProps<any>) => {
                   let classes = "app-container";
-                  if (isPrivatePath(route.path)) {
+                  if (isMentorPath(route.path) || isAdminPath(route.path)) {
                     classes += " private-path";
                   }
 
@@ -37,7 +40,8 @@ const App: React.FC<{}> = () => {
 
                   return (
                     <div className={classes}>
-                      {isPrivatePath(route.path) && <Nav />}
+                      {(isAdminPath(route.path) && <AdminNav />) ||
+                        (isMentorPath(route.path) && <Nav />)}
                       <route.component {...props} {...route.props} />
                     </div>
                   );

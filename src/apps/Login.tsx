@@ -27,8 +27,10 @@ const Login: React.FC<{}> = () => {
     sendRequest(RequestType.POST, Endpoints.login, { email, password })
       .then(({ data }) => {
         const token: string = data?.["jwt"];
+        const role: string = data?.["role"];
         dispatch({ type: ActionType.STORE_TOKEN, payload: token });
         storeLocalStorageItem("token", token);
+        storeLocalStorageItem("role", role);
         routeTo(Paths.dashboard);
       })
       .catch((err) =>

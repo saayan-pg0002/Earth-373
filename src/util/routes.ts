@@ -58,6 +58,17 @@ export const Paths = {
   mentorPairMentee: "/admin/pair-mentee"
 };
 
+export const AdminPaths: string[] = [
+  Paths.mentors,
+  Paths.mentorsDetails,
+  Paths.menteeDetails,
+  Paths.adminViewMenteeProfileGoals,
+  Paths.adminViewMenteeProfileQuestionnaires,
+  Paths.adminViewMenteeProfileSessions,
+  Paths.createNewMentor,
+  Paths.mentorPairMentee,
+]
+
 export const PublicPaths: string[] = [
   Paths.login,
   Paths.forgotPassword,
