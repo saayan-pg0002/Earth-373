@@ -123,31 +123,33 @@ export const createSession = async (req: Request, res: Response) => {
     if (!mentor || !mentee)
       return res.json({ error: "mentor or mentee not found" });
 
-    let url =
-      "https://app.viewsapp.net/api/restful/work/sessiongroups/" +
-      groupID +
-      "/sessions";
-    var body: {
+    let url = `https://app.viewsapp.net/api/restful/work/sessiongroups/${groupID}/sessions`;
+    const body: {
       Name: string;
       StartDate: string;
       StartTime: string;
       Duration: string;
       Activity: string;
-      LeadStaff: string;
       VenueID: string;
+      Cancelled: boolean;
     } = req.body;
 
-    if (
-      !body.StartDate ||
-      !body.StartTime ||
-      !body.Duration ||
-      !body.LeadStaff ||
-      !body.VenueID
-    )
+    if (!body.StartDate || !body.StartTime || !body.VenueID || !body.Duration) {
       return res.status(400).json({ error: "Some fields are not filled" });
+    }
+
+    const schedule: any = createSchedule(
+      body.StartDate,
+      body.StartTime,
+      body.Duration
+    );
 
     let ViewsData: AxiosResponse<never> | any;
-    ViewsData = await sendViewsRequests(url, http.post, body);
+    ViewsData = await sendViewsRequests(url, http.post, {
+      ...body,
+      LeadStaff: mentor.views_id,
+      Cancelled: body.Cancelled ? "1" : "0"
+    });
     if (ViewsData.ERROR) return res.status(400).json(ViewsData);
 
     const session_views_id: string = ViewsData.data.SessionID;
@@ -166,12 +168,6 @@ export const createSession = async (req: Request, res: Response) => {
     // no error checking because the Views' request will return
     // an error even though their API works
 
-    const schedule: any = createSchedule(
-      body.StartDate,
-      body.StartTime,
-      body.Duration
-    );
-
     const newSession = new Session({
       _id: new mongoose.Types.ObjectId(),
       views_id: session_views_id,
@@ -179,14 +175,12 @@ export const createSession = async (req: Request, res: Response) => {
       association_id: associationID,
       start_time: schedule.start_time,
       end_time: schedule.end_time,
-      is_cancelled: false
+      is_cancelled: body.Cancelled
     });
 
     newSession.save();
 
-    return res.json({
-      created: `${session_views_id}`
-    });
+    return res.json({ session_id: newSession._id });
   } catch (error: unknown) {
     return res
       .status(400)
@@ -313,7 +307,7 @@ export const createNotes = async (req: Request, res: Response) => {
       }
     }).exec();
 
-    return res.json({ created: `${ViewsData.data.NoteID}` });
+    return res.json({ note_id: `${ViewsData.data.NoteID}` });
   } catch (error: unknown) {
     return res
       .status(400)

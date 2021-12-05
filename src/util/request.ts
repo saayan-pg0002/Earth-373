@@ -21,7 +21,8 @@ export enum Endpoints {
 
   venues = "sessions/getVenues",
   sessionGroups = "sessions/getSessionGroups",
-  createSession = "sessions/createSessions/:session_group_id/:association_id"
+  createSession = "sessions/createSessions/:session_group_id/:association_id",
+  createNote = "sessions/createNotes/:session_id"
 }
 
 const getAuthHeaders = (): {} => {

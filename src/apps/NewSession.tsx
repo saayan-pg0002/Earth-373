@@ -37,14 +37,7 @@ interface SessionGroupInterface {
   name: string;
 }
 
-const NewSession: FC<NewSessionProps> = ({
-  menteeName,
-  date,
-  startTime,
-  endTime,
-  notes,
-  isCancelled
-}) => {
+const NewSession: FC<{}> = () => {
   const [menteeOptions, setMenteeOptions] =
     useState<DropdownMenuOptionsProps[]>();
   const [venueOptions, setVenueOptions] =
@@ -72,7 +65,9 @@ const NewSession: FC<NewSessionProps> = ({
     const session_group_id: string = target.session_group_id.value;
     const date: string = target.date.value;
     const start_time: Date = getDateFromTimeString(target.start_time.value);
-    const end_time: Date = getDateFromTimeString(target.end_time.value);
+    const end_time: Date | undefined = !!target.end_time
+      ? getDateFromTimeString(target.end_time.value)
+      : undefined;
     const notes: string = target.notes.value;
 
     if (
@@ -80,21 +75,45 @@ const NewSession: FC<NewSessionProps> = ({
       !venue_id ||
       !session_group_id ||
       !date ||
+      !start_time ||
       !notes ||
-      (!is_cancelled && !end_time)
+      (is_cancelled && !end_time)
     ) {
       showMessageToast(MessageToastType.ERROR, "You are missing a some fields");
       return;
     }
 
-    const duration = getTimeDurationString(start_time, end_time);
+    if (end_time) {
+      const duration = getTimeDurationString(start_time, end_time);
 
-    if (!duration) {
-      showMessageToast(
-        MessageToastType.ERROR,
-        "End time must be after start time"
-      );
-      return;
+      if (!duration) {
+        showMessageToast(
+          MessageToastType.ERROR,
+          "End time must be after start time"
+        );
+        return;
+      }
+    }
+
+    const data: {
+      StartDate: string;
+      StartTime: string;
+      EndTime?: string;
+      VenueID?: string;
+      Duration?: string | boolean;
+      Cancelled: boolean;
+    } = {
+      StartDate: date,
+      StartTime: getFormattedHourMinuteString(start_time),
+      Cancelled: is_cancelled,
+      VenueID: venue_id
+    };
+
+    if (!is_cancelled && end_time && venue_id) {
+      data.EndTime = getFormattedHourMinuteString(end_time);
+      data.Duration = getTimeDurationString(start_time, end_time);
+    } else {
+      data.Duration = "00:00";
     }
 
     sendRequest(
@@ -106,19 +125,31 @@ const NewSession: FC<NewSessionProps> = ({
           { name: "association_id", value: association_id }
         ]
       },
-      {
-        StartDate: date,
-        StartTime: getFormattedHourMinuteString(start_time),
-        Duration: getTimeDurationString(start_time, end_time),
-        LeadStaff: "1",
-        VenueID: venue_id
-      }
+      data
     )
-      .then((res) => {
-        console.log(res);
-        showMessageToast(MessageToastType.SUCCESS, "Created new session");
+      .then(({ data: { session_id } }) => {
+        sendRequest(
+          RequestType.POST,
+          {
+            endpoint: Endpoints.createNote,
+            params: [{ name: "session_id", value: session_id }]
+          },
+          { Note: notes }
+        )
+          .then(() =>
+            showMessageToast(
+              MessageToastType.SUCCESS,
+              "Succesfully Created new session"
+            )
+          )
+          .catch(() =>
+            showMessageToast(
+              MessageToastType.ERROR,
+              "Unable to create notes for new session"
+            )
+          );
       })
-      .catch((err) =>
+      .catch(() =>
         showMessageToast(MessageToastType.ERROR, "Unable to create new session")
       );
   };
@@ -139,7 +170,7 @@ const NewSession: FC<NewSessionProps> = ({
 
         setMenteeOptions(menteeList);
       })
-      .catch((err) =>
+      .catch(() =>
         showMessageToast(MessageToastType.ERROR, "Unable to fetch venues")
       );
 
@@ -154,7 +185,7 @@ const NewSession: FC<NewSessionProps> = ({
 
         setVenueOptions(venueList);
       })
-      .catch((err) =>
+      .catch(() =>
         showMessageToast(MessageToastType.ERROR, "Unable to fetch venues")
       );
 
@@ -169,7 +200,7 @@ const NewSession: FC<NewSessionProps> = ({
 
         setSessionGroupOptions(sessionGroupList);
       })
-      .catch((err) =>
+      .catch(() =>
         showMessageToast(
           MessageToastType.ERROR,
           "Unable to fetch session groups"
