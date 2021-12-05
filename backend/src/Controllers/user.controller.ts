@@ -10,6 +10,7 @@ import jwt from "jsonwebtoken";
 import path from "path";
 import nodemailer from "nodemailer";
 import _ from "lodash";
+import Session from "../Models/session.model";
 import { sendViewsRequests, errorHandler, http } from "../util";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
@@ -583,7 +584,84 @@ const editProfile = (req: Request, res: Response) => {
   });
 };
 
-const getUsers = (req: Request, res: Response) => {};
+const getStatistcs = (req: Request, res: Response) => {
+  const user: any = req.user;
+  const mentor_id: string = user._id as string;
+
+  let totalSessions: number,
+    totalCancelled: number,
+    totalCompletedGoals: number = 0,
+    totalGoals: number = 0;
+
+  Association.find({ mentor_id: mentor_id, isActive: true }).exec(
+    (err, associations) => {
+      if (err) {
+        res.status(400).json({
+          error: "Error occured during counting associations ",
+          err
+        });
+      }
+      const association_ids: any = associations.map(
+        (association) => association._id as string
+      );
+      Session.count(
+        { association_id: { $in: association_ids } },
+        (err, count) => {
+          if (err) {
+            res
+              .status(400)
+              .json({ error: "Error occured during counting sessions ", err });
+          }
+          totalSessions = count;
+          Session.count(
+            { association_id: { $in: association_ids }, is_cancelled: true },
+            (err, count) => {
+              if (err) {
+                res.status(400).json({
+                  error: "Error occured during counting sessions ",
+                  err
+                });
+              }
+              totalCancelled = count;
+              Association.find({
+                mentor_id: mentor_id,
+                isActive: true
+              }).exec((err, obj: any) => {
+                if (err) {
+                  res.status(400).json({
+                    error: "Error occured during counting goals ",
+                    err
+                  });
+                }
+                for (var association in obj) {
+                  const data: any = obj[association];
+                  for (var goal in data.goals) {
+                    if (data.goals[goal].is_complete === true) {
+                      totalCompletedGoals++;
+                      totalGoals++;
+                    } else {
+                      totalGoals++;
+                    }
+                  }
+                }
+                console.log("Completed goals: ", totalCompletedGoals);
+                console.log("Cancelled sessions: ", totalCancelled);
+                console.log("Total Sessions: ", totalSessions);
+                console.log("Total Goals: ", totalGoals);
+                res.status(200).json({
+                  "Completed Goals": totalCompletedGoals,
+                  "Cancelled Sessions": totalCancelled,
+                  "Total Sessions": totalSessions,
+                  "Total Goals": totalGoals
+                });
+              });
+            }
+          );
+        }
+      );
+    }
+  );
+};
 
 const UserController = {
   addMongoUser,
@@ -600,8 +678,8 @@ const UserController = {
   resetPassword,
   getHashedPassword,
   getMyProfile,
-  getUsers,
-  editProfile
+  editProfile,
+  getStatistcs
 };
 
 export default UserController;
