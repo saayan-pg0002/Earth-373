@@ -2,7 +2,7 @@ import { MentorHeader } from "../../../components/AdminPortal_Mentors/MentorHead
 import TableComponent from "../../../components/AdminPortal_Mentors/TableView";
 import Link from "../../../components/Link";
 import PageHelmet from "../../../util/PageHelmet";
-import { Paths } from "../../../util/routes";
+import { Paths, routeTo } from "../../../util/routes";
 
 const MenteeTableHeading: string[] = ["Id", "Name", "Start Date", "End Date"];
 
@@ -44,6 +44,10 @@ function createMentorListRows(MenteeList: MenteeTableBodyProps[]) {
   });
 }
 
+function handleRowSelection(selectionID: number) {
+  routeTo(Paths.adminViewMenteeProfileGoals);
+}
+
 const MentorsDetails: React.FC<{}> = () => {
   const mentorName = "Wendy Stuart";
   const mentorType = "IntoSchool Mentor";
@@ -52,7 +56,7 @@ const MentorsDetails: React.FC<{}> = () => {
   const phoneNumber = "234-808-6043";
   return (
     <main className="container">
-      <PageHelmet title="Mentors Details" isAdminPortal="true"/>
+      <PageHelmet title="Mentors Details" isAdminPortal="true" />
 
       <MentorHeader
         mentorName={mentorName}
@@ -81,6 +85,7 @@ const MentorsDetails: React.FC<{}> = () => {
       <TableComponent
         heading={MenteeTableHeading}
         body={createMentorListRows(MenteeList)}
+        handleRowSelection={handleRowSelection}
       />
     </main>
   );

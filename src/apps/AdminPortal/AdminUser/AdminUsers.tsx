@@ -1,7 +1,7 @@
 import TableComponent from "../../../components/AdminPortal_Mentors/TableView";
 import Link from "../../../components/Link";
 import PageHelmet from "../../../util/PageHelmet";
-import { Paths } from "../../../util/routes";
+import { Paths, routeTo } from "../../../util/routes";
 
 const AdminUsersTableHeading: string[] = [
   "Id",
@@ -43,6 +43,10 @@ const AdminUsersList: AdminUsersTableBodyProps[] = [
   }
 ];
 
+function handleRowSelection(selectionID: number) {
+  routeTo(Paths.adminUsers);
+}
+
 function createAdminUsersListRows(AdminList: AdminUsersTableBodyProps[]) {
   return AdminList.map((admin) => {
     const { id, ...items } = admin;
@@ -73,6 +77,7 @@ const AdminUsers: React.FC<{}> = () => {
       <TableComponent
         heading={AdminUsersTableHeading}
         body={createAdminUsersListRows(AdminUsersList)}
+        handleRowSelection={handleRowSelection}
       />
     </main>
   );
