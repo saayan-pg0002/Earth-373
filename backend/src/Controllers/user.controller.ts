@@ -478,23 +478,26 @@ const editProfile = (req: Request, res: Response) => {
   });
 };
 
-const getUsers = (req: Request, res: Response) => {};
-
 const getStatistcs = (req: Request, res: Response) => {
-  // const user: any = req.body.user;
-  let { mentor_id } = req.body;
+  const user: any = req.user;
+  const mentor_id: string = user._id as string;
 
   let totalSessions: number,
     totalCancelled: number,
-    totalCompletedGoals: number,
-    totalGoals: number;
+    totalCompletedGoals: number = 0,
+    totalGoals: number = 0;
 
   Association.find({ mentor_id: mentor_id, isActive: true }).exec(
     (err, associations) => {
+      if (err) {
+        res.status(400).json({
+          error: "Error occured during counting associations ",
+          err
+        });
+      }
       const association_ids: any = associations.map(
         (association) => association._id as string
       );
-      console.log(association_ids); // remove this line later
       Session.count(
         { association_id: { $in: association_ids } },
         (err, count) => {
@@ -514,15 +517,38 @@ const getStatistcs = (req: Request, res: Response) => {
                 });
               }
               totalCancelled = count;
-              Association.count({
+              Association.find({
                 mentor_id: mentor_id,
-                isActive: true,
-                "goals.is_complete": true
-              }).exec((err, count) => {
-                console.log("Completed goals: ", count);
+                isActive: true
+              }).exec((err, obj: any) => {
+                if (err) {
+                  res.status(400).json({
+                    error: "Error occured during counting goals ",
+                    err
+                  });
+                }
+                for (var association in obj) {
+                  const data: any = obj[association];
+                  for (var goal in data.goals) {
+                    if (data.goals[goal].is_complete == true) {
+                      totalCompletedGoals++;
+                      totalGoals++;
+                    } else {
+                      totalGoals++;
+                    }
+                  }
+                }
+                console.log("Completed goals: ", totalCompletedGoals);
+                console.log("Cancelled sessions: ", totalCancelled);
+                console.log("Total Sessions: ", totalSessions);
+                console.log("Total Goals: ", totalGoals);
+                res.status(200).json({
+                  "Completed Goals": totalCompletedGoals,
+                  "Cancelled Sessions": totalCancelled,
+                  "Total Sessions": totalSessions,
+                  "Total Goals": totalGoals
+                });
               });
-              console.log("Cancelled sessions: ", totalCancelled);
-              console.log("Total Sessions: ", totalSessions);
             }
           );
         }
@@ -544,7 +570,6 @@ const UserController = {
   resetPassword,
   getHashedPassword,
   getMyProfile,
-  getUsers,
   editProfile,
   getStatistcs
 };
