@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
+import { AxiosResponse } from "axios";
 import QuestionnaireT from "../Models/questionnairetemplate.model";
 import { FieldType } from "../Models/questionnairetemplate.model";
 import axios from "axios";
@@ -10,8 +11,41 @@ import Association from "../Models/association.model";
 import Questionnaire from "../Models/questionnaire.model";
 import User from "../Models/user.model";
 import xml2js from "xml2js";
+import { errorHandler } from "../util";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+
+const getQuestionnaireTemplateList = async (req: Request, res: Response) => {
+  try {
+    const questionnaireTemplates: AxiosResponse<never> | any =
+      await QuestionnaireT.find({}, { name: true }).exec();
+    return res.status(200).json(questionnaireTemplates);
+  } catch (error) {
+    return res.status(400).json({
+      function: "getQuestionnaireTemplateList",
+      error: errorHandler(error)
+    });
+  }
+};
+
+const getQuestionnaireTemplateById = async (req: Request, res: Response) => {
+  try {
+    const mongo_questionnaireTemplate_id: string = req.params.id;
+    const questionnaireTemplate: AxiosResponse<never> | any =
+      await QuestionnaireT.findById(mongo_questionnaireTemplate_id).exec();
+    if (!questionnaireTemplate) {
+      return res
+        .status(404)
+        .json({ error: "Questionnaire Template does not exists!" });
+    }
+    return res.status(200).json(questionnaireTemplate);
+  } catch (error) {
+    return res.status(400).json({
+      function: "getQuestionnaireTemplateById",
+      error: errorHandler(error)
+    });
+  }
+};
 
 const getQuestions = async (qTId: Number) => {
   const url: string =
@@ -45,7 +79,7 @@ const getQuestions = async (qTId: Number) => {
     }
     if (viewsQues["enabled"] == "1") {
       let oneField = {
-        id: viewsQues["QuestionID"],
+        views_id: viewsQues["QuestionID"],
         label: viewsQues["Question"],
         is_required: false,
         field_type: fieldtype,
@@ -168,7 +202,7 @@ async function createTemplateDB(data: any) {
   }
 }
 
-const migrateQuestionnarieTemplate = async (req: Request, res: Response) => {
+const migrateQuestionnaireTemplate = async (req: Request, res: Response) => {
   try {
     await getQuestionnaireTemplate();
     res.status(200).send("Added templates successfully");
@@ -401,8 +435,10 @@ const updateQuestionnaireValues = async (req: Request, res: Response) => {
 };
 
 const QuestionnaireController = {
-  migrateQuestionnarieTemplate,
+  migrateQuestionnaireTemplate,
   assignQuestionnaireToAssociation,
-  updateQuestionnaireValues
+  updateQuestionnaireValues,
+  getQuestionnaireTemplateList,
+  getQuestionnaireTemplateById
 };
 export default QuestionnaireController;

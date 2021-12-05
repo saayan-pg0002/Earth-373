@@ -6,7 +6,7 @@ export default interface QuestionnaireTemplateInterface extends Document {
   views_id: Number;
   fields: [
     {
-      id: Number;
+      views_id: Number;
       label: String;
       is_required: Boolean;
       field_type: FieldType;
