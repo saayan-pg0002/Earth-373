@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import Link from "./Link";
 import { Paths } from "../util/routes";
 import { Avatar } from "@mui/material";
 import { Endpoints, RequestType, sendRequest } from "../util/request";
-import { MessageToastType, showMessageToast } from "./MessageToast";
 import {
   getLocalStorageItem,
-  storeLocalStorageItem,
+  storeLocalStorageItem
 } from "../util/localStorage";
 
 export interface AvatarHeaderProps {
@@ -16,20 +15,20 @@ export interface AvatarHeaderProps {
 
 export const GetUserName = (): string | undefined | null => {
   const [avatar, setAvatar] = React.useState<string | undefined | null>(
-    getLocalStorageItem("Initial")
+    getLocalStorageItem("initial")
   );
   if (getLocalStorageItem("token")) {
     if (
-      !getLocalStorageItem("Initial") ||
-      getLocalStorageItem("Initial") == "undefined"
+      !getLocalStorageItem("initial") ||
+      getLocalStorageItem("initial") === "undefined"
     ) {
-      sendRequest(RequestType.GET, Endpoints.me)
+      sendRequest(RequestType.GET, { endpoint: Endpoints.me })
         .then(({ data }) => {
-          storeLocalStorageItem("Initial", data?.["first_name"][0]);
+          storeLocalStorageItem("initial", data?.["first_name"][0]);
           setAvatar(data?.["first_name"][0]);
         })
         .catch((err) => {
-          storeLocalStorageItem("Initial", undefined);
+          storeLocalStorageItem("initial", undefined);
         });
     }
   }

@@ -15,7 +15,7 @@ const Profile: FC<{}> = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
 
   useEffect(() => {
-    sendRequest(RequestType.GET, Endpoints.me)
+    sendRequest(RequestType.GET, { endpoint: Endpoints.me })
       .then(({ data }) => {
         const { activity_status, email, first_name, last_name, phone_number } =
           data;

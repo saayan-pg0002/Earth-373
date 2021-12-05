@@ -17,9 +17,9 @@ const Link: FC<LinkProps> = ({
   params = [],
   queries = [],
   className = "",
-  children,
+  children
 }) => {
-  const href: string = buildHrefPath(path, params, queries);
+  const href: string = buildPath(path, params, queries);
 
   const onClick = (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -33,7 +33,7 @@ const Link: FC<LinkProps> = ({
   );
 };
 
-export const buildHrefPath = (
+export const buildPath = (
   path: string,
   params: ParamsAndQueriesInterface[] = [],
   queries: ParamsAndQueriesInterface[] = []
