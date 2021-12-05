@@ -3,8 +3,13 @@ import { Icon, IconColors, IconName } from "../Icon";
 import { GeneralInputProps } from "./FormField";
 
 interface DropdownMenuProps {
-  options: string[];
+  options: DropdownMenuOptionsProps[];
   initialValue?: string;
+}
+
+export interface DropdownMenuOptionsProps {
+  label: string;
+  value: any;
 }
 
 export const DropdownMenu: React.FC<GeneralInputProps & DropdownMenuProps> = ({
@@ -12,10 +17,10 @@ export const DropdownMenu: React.FC<GeneralInputProps & DropdownMenuProps> = ({
   id,
   name,
   isDisabled = false,
-  initialValue,
+  initialValue
 }) => {
-  const [selectedOption, setSelectedOption] = useState<string>(
-    initialValue ?? options[0]
+  const [selectedOption, setSelectedOption] = useState<any>(
+    initialValue ? initialValue : options[0]?.value
   );
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
@@ -40,9 +45,9 @@ export const DropdownMenu: React.FC<GeneralInputProps & DropdownMenuProps> = ({
         id={id}
         disabled={isDisabled}
       >
-        {options.map((item: string, index: number) => (
-          <option key={index} value={item}>
-            {item}
+        {options.map(({ label, value }, index: number) => (
+          <option key={index} value={value}>
+            {label}
           </option>
         ))}
       </select>

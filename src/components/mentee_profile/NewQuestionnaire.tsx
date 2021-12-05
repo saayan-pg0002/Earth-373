@@ -20,9 +20,9 @@ const NewQuestionnaire: React.FC<{}> = () => {
       </div>
 
       <form className="form">
-        <FormField labelText="Questionnaire type">
+        {/* <FormField labelText="Questionnaire type">
           <DropdownMenu options={QuestionnaireType} />
-        </FormField>
+        </FormField> */}
 
         <div className="actions">
           <button type="button" className="btn">

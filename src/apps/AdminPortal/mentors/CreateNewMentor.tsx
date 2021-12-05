@@ -31,7 +31,7 @@ const CreateNewMentor: React.FC<MentorInfoProp> = ({
       mentorType: { value: string };
       email: { value: string };
       firstName: { value: string };
-      lastName: {value: string};
+      lastName: { value: string };
       phoneNumber: { value: string };
     };
 
@@ -58,9 +58,9 @@ const CreateNewMentor: React.FC<MentorInfoProp> = ({
       </div>
 
       <form className="form" onSubmit={onSubmit}>
-        <FormField labelText="Mentee">
+        {/* <FormField labelText="Mentee">
           <DropdownMenu options={MentorTypes} />
-        </FormField>
+        </FormField> */}
 
         <FormField labelText="Email">
           <TextInput
