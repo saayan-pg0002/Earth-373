@@ -5,24 +5,43 @@ import PageHelmet from "../util/PageHelmet";
 import { PasswordInput } from "../components/form/PasswordInput";
 import { MessageToastType, showMessageToast } from "../components/MessageToast";
 import { Paths, routeTo } from "../util/routes";
+import { useParams } from "react-router";
+import { Endpoints, RequestType, sendRequest } from "../util/request";
 
 const ResetPassword: React.FC<{}> = () => {
+  const jwt: { token: string } = useParams();
+  const token: string = jwt["token"];
+
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     const target = e.target as typeof e.target & {
       password: { value: string };
-      confirmPassword: {value: string};
+      confirmPassword: { value: string };
     };
 
-    if (target.password.value === target.confirmPassword.value){
-      const password: string = target.password.value;
-      console.log(password);
-      routeTo(Paths.login);
-    }
-    else{
-      showMessageToast(MessageToastType.ERROR, "Password Unmatched, Please re-enter");
+    if (target.password.value === target.confirmPassword.value) {
+      const resetLink: string = token;
+      const newPass: string = target.password.value;
+      sendRequest(RequestType.POST, Endpoints.resetPassword, {
+        resetLink,
+        newPass
+      })
+        .then(({ data }) => {
+          const message: string = data?.["message"];
+          showMessageToast(MessageToastType.INFO, message);
+          routeTo(Paths.login);
+        })
+        .catch((err) =>
+          showMessageToast(MessageToastType.ERROR, "Unable to send reset email")
+        );
+    } else {
+      showMessageToast(
+        MessageToastType.ERROR,
+        "Password Unmatched, Please re-enter"
+      );
     }
   };
+
   return (
     <div className="login">
       <PageHelmet title="Reset Password" />

@@ -4,6 +4,8 @@ import { TextInput } from "../components/form/TextInput";
 import { IconName } from "../components/Icon";
 import { TabletDesktopView } from "../components/TabletDesktopView";
 import PageHelmet from "../util/PageHelmet";
+import { Endpoints, RequestType, sendRequest } from "../util/request";
+import { MessageToastType, showMessageToast } from "../components/MessageToast";
 
 const ForgotPassword: React.FC<{}> = () => {
   const onSubmit = (e: React.SyntheticEvent) => {
@@ -14,7 +16,14 @@ const ForgotPassword: React.FC<{}> = () => {
 
     const email: string = target.email.value;
 
-    console.log(email);
+    sendRequest(RequestType.POST, Endpoints.forgotPassword, { email })
+      .then(({ data }) => {
+        const message: string = data?.["message"];
+        showMessageToast(MessageToastType.INFO, message);
+      })
+      .catch((err) =>
+        showMessageToast(MessageToastType.ERROR, "Unable to send reset email")
+      );
   };
   return (
     <div className="login">

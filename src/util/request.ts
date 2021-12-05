@@ -1,4 +1,4 @@
-import axios, { AxiosPromise, AxiosResponse } from "axios";
+import axios, { AxiosPromise } from "axios";
 import { getLocalStorageItem } from "./localStorage";
 
 export const ORIGIN: string = window.location.origin;
@@ -8,15 +8,18 @@ const PORT: String = "5000";
 export enum RequestType {
   POST = "POST",
   GET = "GET",
-  PATCH = "PATCH",
+  PATCH = "PATCH"
 }
 
 export enum Endpoints {
   login = "users/login",
+  myMentees = "users/me/mentees",
   me = "users/me",
+  forgotPassword = "users/forgot-password",
+  resetPassword = "users/reset-password"
 }
 
-const getAuthHeader = (): {} => {
+const getAuthHeaders = (): {} => {
   const token = getLocalStorageItem("token");
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
@@ -25,11 +28,11 @@ export const sendRequest = (
   method: RequestType,
   endpoint: Endpoints,
   data?: {}
-): AxiosPromise => {
+): AxiosPromise<any> => {
   return axios({
     method,
     url: `${BASE_URL}:${PORT}/${endpoint}`,
     data,
-    headers: getAuthHeader(),
+    headers: getAuthHeaders()
   });
 };

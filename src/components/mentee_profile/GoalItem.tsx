@@ -1,7 +1,7 @@
 import React, { FC, useState, useRef, useEffect } from "react";
 import { Checkbox } from "../form/Checkbox";
 import { GoalProp } from "./MenteeGoals";
-import { Icon, IconName, IconColors } from "../Icon";
+import { getFormattedMonthDateyearString } from "../../util/date";
 
 interface GoalItemProps {
   onClickCheckbox: (goal: GoalProp) => void;
@@ -14,7 +14,7 @@ export const GoalItem: FC<GoalItemProps> = ({
   updateGoal,
   deleteGoal,
   onClickCheckbox,
-  initialGoal,
+  initialGoal
 }) => {
   const [goal, setGoal] = useState<GoalProp>(initialGoal);
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -33,11 +33,6 @@ export const GoalItem: FC<GoalItemProps> = ({
   const onClick = (): void => onClickCheckbox(goal);
 
   const onClickStartEditing = (): void => setIsEditing(true);
-
-  const onMouseOverDelete = (): void => setWillDelete(true);
-  const onMouseOutDelete = (): void => setWillDelete(false);
-
-  const onClickDeleteGoal = (): void => deleteGoal(goal);
 
   const stopEditing = (): void => {
     if (!willDelete) {
@@ -70,28 +65,34 @@ export const GoalItem: FC<GoalItemProps> = ({
       className={`goal-item ${isEditing ? "editing" : ""}`}
       onBlur={stopEditing}
     >
-      <span onClick={onClick}>
-        <Checkbox isChecked={goal.isComplete} />
-      </span>
-      <span className="input" onClick={onClickStartEditing}>
-        <input
-          type="text"
-          value={goal.name}
-          onChange={onChange}
-          disabled={!isEditing}
-          ref={inputRef}
-          onKeyPress={handleKeyPress}
-        />
-      </span>
-      {isEditing && (
-        <span onMouseOver={onMouseOverDelete} onMouseOut={onMouseOutDelete}>
-          <Icon
-            name={IconName.x}
-            color={IconColors.black}
-            onClick={onClickDeleteGoal}
+      <div className="header">
+        <div onClick={onClick}>
+          <Checkbox isChecked={goal.isComplete} />
+        </div>
+        <div className="input" onClick={onClickStartEditing}>
+          <input
+            type="text"
+            value={goal.name}
+            onChange={onChange}
+            disabled={!isEditing}
+            ref={inputRef}
+            onKeyPress={handleKeyPress}
           />
-        </span>
-      )}
+        </div>
+      </div>
+      <div className="dates">
+        <div className="subtext">
+          Created: {getFormattedMonthDateyearString(goal.createdDate)}
+        </div>
+        <div className="subtext">
+          Modified: {getFormattedMonthDateyearString(goal.modifiedDate)}
+        </div>
+        {goal.isComplete && goal.completedDate && (
+          <div className="subtext">
+            Completed: {getFormattedMonthDateyearString(goal.completedDate)}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

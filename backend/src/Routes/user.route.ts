@@ -11,11 +11,17 @@ router.post(
   UserController.getGoalsForAssociation
 );
 router.post("/creategoal", isLoggedIn, UserController.createGoalForAssociation);
-router.get(
-  "/me/associations",
+router.put(
+  "/update-goal",
   isLoggedIn,
-  UserController.getAssociationsFromMentor
+  UserController.updateGoalsForAssociation
 );
+router.get(
+  "/me/associations/:id",
+  isLoggedIn,
+  UserController.getAssociationForMentorById
+);
+router.get("/me/mentees", isLoggedIn, UserController.getMenteesForMentor);
 router.post("/login", login);
 router.post("/forgot-password", UserController.forgotPassword);
 router.post("/reset-password", UserController.resetPassword);

@@ -16,12 +16,15 @@ export interface GoalProp {
   id: number;
   name: string;
   isComplete: boolean;
+  createdDate: Date;
+  modifiedDate: Date;
+  completedDate?: Date;
 }
 
 const MenteeGoals: React.FC<MenteeInfoProps> = ({
   menteeName,
   startDate,
-  birthday,
+  birthday
 }) => {
   menteeName = "Melissa Nguyen";
   startDate = "September 2021";
@@ -32,7 +35,9 @@ const MenteeGoals: React.FC<MenteeInfoProps> = ({
       id: 1,
       name: "Learn Math",
       isComplete: false,
-    },
+      createdDate: new Date(2021, 2, 3, 5, 30),
+      modifiedDate: new Date(2021, 2, 3, 5, 30)
+    }
   ]);
 
   const [completedGoals, setCompletedGoals] = useState<GoalProp[]>([
@@ -40,7 +45,10 @@ const MenteeGoals: React.FC<MenteeInfoProps> = ({
       id: 2,
       name: "Learn History",
       isComplete: true,
-    },
+      createdDate: new Date(2021, 2, 3, 5, 30),
+      modifiedDate: new Date(2021, 2, 3, 5, 30),
+      completedDate: new Date()
+    }
   ]);
 
   const [isAddingGoal, setIsAddingGoal] = useState(false);
@@ -62,19 +70,19 @@ const MenteeGoals: React.FC<MenteeInfoProps> = ({
     const index: number = targetGoalsList.findIndex(
       (goal) => goal.id === editedGoal.id
     );
-
+    editedGoal.modifiedDate = new Date();
     if (index !== -1) {
       if (isComplete) {
         setCompletedGoals([
           ...completedGoals.slice(0, index),
           editedGoal,
-          ...completedGoals.slice(index + 1),
+          ...completedGoals.slice(index + 1)
         ]);
       } else {
         setOngoingGoals([
           ...ongoingGoals.slice(0, index),
           editedGoal,
-          ...ongoingGoals.slice(index + 1),
+          ...ongoingGoals.slice(index + 1)
         ]);
       }
     }
@@ -84,34 +92,36 @@ const MenteeGoals: React.FC<MenteeInfoProps> = ({
     const { isComplete } = deletedGoal;
     if (isComplete) {
       setCompletedGoals([
-        ...completedGoals.filter((goal) => goal.id !== deletedGoal.id),
+        ...completedGoals.filter((goal) => goal.id !== deletedGoal.id)
       ]);
     } else {
       setOngoingGoals([
-        ...ongoingGoals.filter((goal) => goal.id !== deletedGoal.id),
+        ...ongoingGoals.filter((goal) => goal.id !== deletedGoal.id)
       ]);
     }
   };
 
   const completeGoal = (goal: GoalProp): void => {
+    goal.modifiedDate = new Date();
+    goal.completedDate = new Date();
     setCompletedGoals([...completedGoals, { ...goal, isComplete: true }]);
-
     setOngoingGoals([
       ...ongoingGoals.filter(
         (ongoingGoals) => ongoingGoals.name !== goal.name,
         ongoingGoals
-      ),
+      )
     ]);
   };
 
   const uncheckGoal = (goal: GoalProp): void => {
+    goal.modifiedDate = new Date();
+    goal.completedDate = undefined;
     setOngoingGoals([...ongoingGoals, { ...goal, isComplete: false }]);
-
     setCompletedGoals([
       ...completedGoals.filter(
         (completedGoals) => completedGoals.name !== goal.name,
         completedGoals
-      ),
+      )
     ]);
     hideAddNewGoal();
   };

@@ -11,8 +11,8 @@ import jwt from "jsonwebtoken";
 import path from "path";
 import nodemailer from "nodemailer";
 import _ from "lodash";
-import SessionInterface from "../Interfaces/session.interface";
 import Session from "../Models/session.model";
+import { errorHandler } from "../util";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
@@ -223,20 +223,18 @@ async function createMentees(data: any) {
 }
 
 const createGoalForAssociation = (req: Request, res: Response) => {
-  let { mentee_id, goal } = req.body;
-
-  const user: any = req.user;
-  const mentor_id: string = user._id as string;
+  let { association_id, goal } = req.body;
 
   Association.findOneAndUpdate(
     {
-      mentor_id: mentor_id,
-      mentee_id: mentee_id
+      _id: association_id
     },
     {
       $push: {
         goals: {
-          name: goal,
+          goal_name: goal,
+          created_at: Date.now(),
+          updated_at: Date.now(),
           is_complete: false
         }
       }
@@ -261,19 +259,92 @@ const createGoalForAssociation = (req: Request, res: Response) => {
     });
 };
 
-const getAssociationsFromMentor = (req: Request, res: Response) => {
+const getMenteesForMentor = (req: Request, res: Response) => {
   const user: any = req.user;
   const mentor_id: string = user._id as string;
 
   Association.find({ mentor_id: mentor_id })
     .exec()
     .then((associations) => {
-      return res.status(200).json({ associations });
+      const menteeIds: String[] = associations.map(
+        (association) => association.mentee_id
+      );
+
+      Mentee.find(
+        { _id: { $in: menteeIds } },
+        "_id first_name last_name age dateOfBirth"
+      ).exec((err, mentees) => {
+        if (err || mentees.length !== associations.length) {
+          return res.status(400).json({
+            error:
+              "One of the mentees in the specified associations does not exist."
+          });
+        }
+
+        const associationsWithMenteeName: any[] = associations.map(
+          (association) => {
+            const mentee: any = mentees.find(
+              (currentMentee) =>
+                currentMentee._id.toString() === association.mentee_id
+            );
+
+            if (!mentee) {
+              return res.status(400).json({
+                error:
+                  "One of the mentees in the specified associations does not exist."
+              });
+            }
+
+            return {
+              // TODO: Add association start_date and end_date
+              association_id: association._id,
+              is_active: association.isActive,
+              mentee_name: `${mentee.first_name} ${mentee.last_name}`
+            };
+          }
+        );
+
+        return res.status(200).json({ mentees: associationsWithMenteeName });
+      });
     })
     .catch((error) => {
       return res.status(404).json({
-        message: "Error: Mentee id not found.",
+        message: "Error: Mentees not found.",
         error
+      });
+    });
+};
+
+const getAssociationForMentorById = (req: Request, res: Response) => {
+  const user: any = req.user;
+  const mentor_id: string = user._id as string;
+  const association_id: string = req.params.id as string;
+
+  Association.findOne({ _id: association_id, mentor_id: mentor_id })
+    .exec()
+    .then((association) => {
+      if (!association) {
+        return res.status(400).json({
+          error: "Error: Association not found."
+        });
+      }
+
+      Mentee.findOne({ _id: association.mentee_id }).exec((err, mentee) => {
+        if (err || !mentee) {
+          return res.status(400).json({
+            error: "Error: The mentee for this association does not exist."
+          });
+        }
+
+        return res.status(200).json({
+          ...association.toJSON(),
+          mentee: mentee.toJSON()
+        });
+      });
+    })
+    .catch((error) => {
+      return res.status(404).json({
+        error: "Error: Association not found."
       });
     });
 };
@@ -296,6 +367,38 @@ const getGoalsForAssociation = (req: Request, res: Response) => {
         error: error.message
       });
     });
+};
+
+const updateGoalsForAssociation = (req: Request, res: Response) => {
+  try {
+    const { association_id, goal_id, goal_name, is_complete } = req.body;
+
+    Association.findOneAndUpdate(
+      { _id: association_id, "goals._id": goal_id },
+      {
+        $set: {
+          "goals.$.goal_name": goal_name,
+          "goals.$.is_complete": is_complete,
+          "goals.$.updated_at": Date.now(),
+          "goals.$.completed_at": is_complete === true ? Date.now() : null
+        }
+      }
+    )
+      .then(() => {
+        return res.json({ updated: `${goal_id}` });
+      })
+      .catch((error) => {
+        return res.status(400).json({
+          function: "updateGoalsForAssociation",
+          error: errorHandler(error)
+        });
+      });
+  } catch (error) {
+    return res.status(400).json({
+      function: "updateGoalsForAssociation",
+      error: errorHandler(error)
+    });
+  }
 };
 
 const emailTransporter = nodemailer.createTransport({
@@ -333,7 +436,7 @@ const forgotPassword = (req: Request, res: Response) => {
       subject: "Password Reset Link",
       html: ` <h2>Please click on the link below to reset your password</h2>
               <br>
-              <a href="http://${process.env.URL}/users/resetpassword/${token}">http://${process.env.URL}/users/resetpassword/${token}</a>`
+              <a href="http://${process.env.URL}/reset-password/${token}">http://${process.env.URL}/reset-password/${token}</a>`
     };
 
     return user.updateOne(
@@ -359,9 +462,7 @@ const forgotPassword = (req: Request, res: Response) => {
 };
 
 const createAssociation = (req: Request, res: Response) => {
-  let user: any = req.user;
-  let mentor_id = user._id;
-  let { mentee_id } = req.body;
+  let { mentor_id, mentee_id, start_date } = req.body;
 
   Association.findOne({
     mentor_id: mentor_id,
@@ -388,6 +489,7 @@ const createAssociation = (req: Request, res: Response) => {
         const newAssociation: AssociationInterface = new Association({
           mentor_id: mentor_id,
           mentee_id: mentee_id,
+          start_date: new Date(start_date),
           isActive: true
         });
 
@@ -530,7 +632,7 @@ const getStatistcs = (req: Request, res: Response) => {
                 for (var association in obj) {
                   const data: any = obj[association];
                   for (var goal in data.goals) {
-                    if (data.goals[goal].is_complete == true) {
+                    if (data.goals[goal].is_complete === true) {
                       totalCompletedGoals++;
                       totalGoals++;
                     } else {
@@ -564,8 +666,10 @@ const UserController = {
   migrateViewUsers,
   createGoalForAssociation,
   createAssociation,
-  getAssociationsFromMentor,
+  getMenteesForMentor,
+  getAssociationForMentorById,
   getGoalsForAssociation,
+  updateGoalsForAssociation,
   forgotPassword,
   resetPassword,
   getHashedPassword,

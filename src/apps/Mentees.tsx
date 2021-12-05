@@ -2,32 +2,32 @@ import PageHelmet from "../util/PageHelmet";
 import { MenteeList } from "../components/MenteeList";
 import { MenteeItemProps } from "../components/MenteeItem";
 import { AvatarHeader } from "../components/AvatarHeader";
-
-const menteeList: MenteeItemProps[] = [
-  {
-    menteeName: "Melisa Nguyen",
-    startDate: new Date("8/8/2018"),
-  },
-  {
-    menteeName: "Dianne Russell",
-    startDate: new Date("1/6/2020"),
-  },
-];
-
-const pastMenteeList: MenteeItemProps[] = [
-  {
-    menteeName: "Tessa Pampangan",
-    startDate: new Date("1/20/2020"),
-    endDate: new Date("3/12/2020"),
-  },
-  {
-    menteeName: "Lila Singh",
-    startDate: new Date("1/4/2018"),
-    endDate: new Date("1/6/2018"),
-  },
-];
+import { Endpoints, RequestType, sendRequest } from "../util/request";
+import { useState, useEffect } from "react";
+import { showMessageToast, MessageToastType } from "../components/MessageToast";
 
 const Mentees: React.FC<{}> = () => {
+  const [menteeList, setMenteeList] = useState<MenteeItemProps[]>([]);
+  const [pastMenteeList, setPastMenteeList] = useState<MenteeItemProps[]>([]);
+
+  useEffect(() => {
+    sendRequest(RequestType.GET, Endpoints.myMentees)
+      .then(({ data: { mentees } }) => {
+        const ongoingMentees: MenteeItemProps[] = mentees.filter(
+          (mentee: MenteeItemProps) => mentee.is_active
+        );
+        const pastMentees: MenteeItemProps[] = mentees.filter(
+          (mentee: MenteeItemProps) => !mentee.is_active
+        );
+
+        setMenteeList(ongoingMentees);
+        setPastMenteeList(pastMentees);
+      })
+      .catch((err) =>
+        showMessageToast(MessageToastType.ERROR, "Unable to fetch mentees")
+      );
+  }, []);
+
   return (
     <main className="mentees">
       <PageHelmet title="Mentees" />
@@ -36,10 +36,14 @@ const Mentees: React.FC<{}> = () => {
         <div className="header">
           <h1 className="page-title">Mentees</h1>
           <AvatarHeader />
-        </div>{" "}
-        <MenteeList mentees={menteeList} />
-        <p className="subtext">Past Mentees</p>
-        <MenteeList mentees={pastMenteeList} />
+        </div>
+        <MenteeList mentees={menteeList} showEmptyState={true} />
+        {pastMenteeList.length > 0 && (
+          <>
+            <p className="subtext">Past Mentees</p>
+            <MenteeList mentees={pastMenteeList} />
+          </>
+        )}
       </div>
     </main>
   );
