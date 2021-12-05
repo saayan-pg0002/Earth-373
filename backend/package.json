@@ -18,6 +18,7 @@
     "@types/passport": "^1.0.7",
     "@types/passport-jwt": "^3.0.6",
     "@types/passport-local": "^1.0.34",
+    "@types/xml2js": "^0.4.9",
     "axios": "^0.22.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.5",
@@ -33,7 +34,8 @@
     "passport": "^0.5.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

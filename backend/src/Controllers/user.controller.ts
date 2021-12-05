@@ -521,7 +521,7 @@ const resetPassword = (req: Request, res: Response) => {
         if (err) {
           return res.status(401).json({ error: "Incorrect or expired token " });
         }
-        User.findOne({ resetLink }).exec((err, user) => {
+        User.findOne({ resetLink }).exec((err, user: any) => {
           if (err || !user) {
             return res
               .status(400)
@@ -535,7 +535,7 @@ const resetPassword = (req: Request, res: Response) => {
 
             user = _.extend(user, obj);
 
-            user!.save((err, result) => {
+            user!.save((err: any, result: any) => {
               if (err) {
                 return res.status(400).json({ error: "Reset password error " });
               } else {
