@@ -117,6 +117,7 @@ const MenteeProfile: FC<{}> = () => {
               menteeName={menteeName}
               startDate={startDate}
               birthday={birthday}
+              association_id={association_id}
             />
           </Route>
           <Route path={getNavPath(Paths.menteeProfileSessions)}>
