@@ -38,7 +38,7 @@ export const Paths = {
   notifications: "/notifications",
   settings: "/settings",
   newSession: "/new-session",
-  viewSession: "/view-session",
+  viewSession: "/view-session/:session_id",
   profile: "/profile",
   resources: "/resources",
   editSchedule: "/edit-schedule",

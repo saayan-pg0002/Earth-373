@@ -124,7 +124,7 @@ export const getFormattedYearMonthDayNumericString = (date: Date): string => {
   )}-${getDoubleDigitString(dateNumber)}`;
 };
 
-export const getFormattedMonthDateyearString = (date: Date): string => {
+export const getFormattedMonthDateYearString = (date: Date): string => {
   const dateNumber: number = date.getDate();
   const monthName = Months[date.getMonth()];
   const year: number = date.getFullYear(); // 2019

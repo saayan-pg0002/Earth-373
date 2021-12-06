@@ -1,60 +1,42 @@
-import { useState, useEffect } from "react";
-import { ContainedIcon, IconName, IconColors } from "./Icon";
-import {
-  isCurrentDateBetween,
-  getStartEndFormattedTimeString,
-} from "../util/date";
+import { FC } from "react";
+import { getStartEndFormattedTimeString } from "../util/date";
 import Link from "./Link";
 import { Paths } from "../util/routes";
+import { getFormattedMonthDateYearString } from "../util/date";
 
-export interface ItemProps {
-  value: string;
-  clockInTime: Date;
-  clockOutTime: Date;
-  viewOnly?: boolean;
-  content?: string;
+export interface SessionItemProps {
+  notes: {
+    views_id: string;
+    description: string;
+  };
+  _id: string;
+  start_time: string;
+  end_time: string;
 }
 
-export const SessionItem: React.FC<ItemProps> = ({
-  value,
-  clockInTime,
-  clockOutTime,
-  viewOnly = false,
-  content,
+export const SessionItem: FC<SessionItemProps> = ({
+  notes,
+  _id,
+  start_time,
+  end_time
 }) => {
-  const [isOngoing, setIsOngoing] = useState<Boolean>(
-    isCurrentDateBetween(clockInTime, clockOutTime)
-  );
+  const startTime: Date = new Date(start_time);
+  const endTime: Date = new Date(end_time);
+  const date: string = getFormattedMonthDateYearString(startTime);
 
-  useEffect(() => {
-    const checkIsOngoingIntervalID = setInterval(() => {
-      setIsOngoing(isCurrentDateBetween(clockInTime, clockOutTime));
-    }, 1000);
-
-    return () => clearInterval(checkIsOngoingIntervalID);
-  });
   return (
     <Link
-      to={viewOnly ? Paths.viewSession : Paths.newSession}
-      className={`session-item ${isOngoing ? "ongoing" : ""}`}
+      to={Paths.viewSession}
+      params={[{ name: "session_id", value: _id }]}
+      className="session-item"
     >
       <div className="body">
-        {isOngoing && <p className="subtext bold ongoing-tag">Ongoing</p>}
         <p className="subtext">
-          {getStartEndFormattedTimeString(clockInTime, clockOutTime)}
+          {getStartEndFormattedTimeString(startTime, endTime)}
         </p>
-        <p className="semi-bold">{value}</p>
-        <p className="subtext content">{content}</p>
+        <p className="semi-bold">{date}</p>
+        <p className="subtext content">{notes.description}</p>
       </div>
-      {!viewOnly && (
-        <ContainedIcon
-          name={isOngoing ? IconName.doubleArrowRight : IconName.plus}
-          color={isOngoing ? IconColors.baytreeGreen : IconColors.black}
-          backgroundColor={
-            isOngoing ? IconColors.white : IconColors.transparent
-          }
-        />
-      )}
     </Link>
   );
 };

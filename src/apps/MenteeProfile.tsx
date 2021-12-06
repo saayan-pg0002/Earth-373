@@ -2,70 +2,16 @@ import { FC, useEffect, useState } from "react";
 import { MenteeProfileHeader } from "../components/mentee_profile/MenteeProfileHeader";
 import { Router, Route } from "react-router-dom";
 import { history, Paths } from "../util/routes";
-import MenteeGoals, {
-  MenteeInfoProps
-} from "../components/mentee_profile/MenteeGoals";
+import MenteeGoals from "../components/mentee_profile/MenteeGoals";
 import { TabNav } from "../components/TabNav";
 import { MenteeSessionList } from "../components/mentee_profile/MenteeSessionList";
-import {
-  getFormattedDayMonthYearString,
-  getFormattedMonthDateyearString
-} from "../util/date";
-import { ItemProps } from "../components/SessionItem";
+import { getFormattedDayMonthYearString } from "../util/date";
 import { QuestionnaireList } from "../components/mentee_profile/QuestionnaireList";
 import { QuestionnaireItemProps } from "../components/mentee_profile/QuestionnaireItem";
 import { TabNavItemProps } from "../components/TabNav";
 import { buildPath } from "../components/Link";
 import { useParams } from "react-router";
 import { Endpoints, RequestType, sendRequest } from "../util/request";
-
-export const sessionHistoryList: ItemProps[] = [
-  {
-    value: getFormattedMonthDateyearString(new Date()),
-    clockInTime: (() => {
-      const date = new Date();
-      date.setHours(21, 0);
-      return date;
-    })(),
-    clockOutTime: (() => {
-      const date = new Date();
-      date.setHours(24, 0);
-      return date;
-    })(),
-    content:
-      "CMPT373: Survey of modern software development methodology. Several software development process models will be examined, as will the general principles behind such models. Provides experience with different programming paradigms and their advantages and disadvantages during software development."
-  },
-  {
-    value: getFormattedMonthDateyearString(new Date()),
-    clockInTime: (() => {
-      const date = new Date();
-      date.setHours(21, 0);
-      return date;
-    })(),
-    clockOutTime: (() => {
-      const date = new Date();
-      date.setHours(22, 0);
-      return date;
-    })(),
-    content:
-      "CMPT 363: Topics include: goals and principles of UI design (systems engineering and human factors), historical perspective, current paradigms (widget-based, mental model, graphic design, ergonomics, metaphor, constructivist/iterative approach, and visual languages) and their evaluation, existing tools and packages (dialogue models, event-based systems, prototyping), future paradigms, and the social impact of UI."
-  },
-  {
-    value: getFormattedMonthDateyearString(new Date()),
-    clockInTime: (() => {
-      const date = new Date();
-      date.setHours(12, 0);
-      return date;
-    })(),
-    clockOutTime: (() => {
-      const date = new Date();
-      date.setHours(22, 0);
-      return date;
-    })(),
-    content:
-      "CMPT 300: This course aims to give the student an understanding of what a modern operating system is, and the services it provides. It also discusses some basic issues in operating systems and provides solutions. Topics include multiprogramming, process management, memory management, and file systems."
-  }
-];
 
 export const questionnaireList: QuestionnaireItemProps[] = [
   {
@@ -120,7 +66,7 @@ const MenteeProfile: FC<{}> = () => {
         setBirthday(getFormattedDayMonthYearString(birthday));
       })
       .catch();
-  }, []);
+  }, [association_id]);
 
   return (
     <main className="mentee-profile">
@@ -139,10 +85,11 @@ const MenteeProfile: FC<{}> = () => {
               menteeName={menteeName}
               startDate={startDate}
               birthday={birthday}
+              association_id={association_id}
             />
           </Route>
           <Route path={getNavPath(Paths.menteeProfileSessions)}>
-            <MenteeSessionList sessions={sessionHistoryList} />
+            <MenteeSessionList associationId={association_id} />
           </Route>
           <Route path={getNavPath(Paths.menteeProfileQuestionnaires)}>
             <QuestionnaireList questionnaires={questionnaireList} />
