@@ -16,7 +16,8 @@ export enum Endpoints {
   myMentees = "users/me/mentees",
   me = "users/me",
   forgotPassword = "users/forgot-password",
-  resetPassword = "users/reset-password"
+  resetPassword = "users/reset-password",
+  getGoals = "users/me/association/goals"
 }
 
 const getAuthHeaders = (): {} => {

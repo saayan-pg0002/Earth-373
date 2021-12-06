@@ -11,7 +11,7 @@ export interface MenteeItemProps {
 
 export const MenteeItem: React.FC<MenteeItemProps> = ({
   association_id,
-  mentee_name,
+  mentee_name
 }) => {
   return (
     <Link

@@ -81,7 +81,7 @@ export const GoalItem: FC<GoalItemProps> = ({
         </div>
       </div>
       <div className="dates">
-        <div className="subtext">
+        {/* <div className="subtext">
           Created: {getFormattedMonthDateyearString(goal.createdDate)}
         </div>
         <div className="subtext">
@@ -91,7 +91,8 @@ export const GoalItem: FC<GoalItemProps> = ({
           <div className="subtext">
             Completed: {getFormattedMonthDateyearString(goal.completedDate)}
           </div>
-        )}
+
+        )} */}
       </div>
     </div>
   );

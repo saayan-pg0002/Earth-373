@@ -99,6 +99,7 @@ const MenteeProfile: FC<{}> = () => {
       to: getNavPath(Paths.menteeProfileQuestionnaires)
     }
   ];
+  console.log(association_id);
 
   return (
     <main className="mentee-profile">
@@ -117,6 +118,7 @@ const MenteeProfile: FC<{}> = () => {
               menteeName={menteeName}
               startDate={startDate}
               birthday={birthday}
+              association_id={association_id}
             />
           </Route>
           <Route path={getNavPath(Paths.menteeProfileSessions)}>

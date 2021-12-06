@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AddNewGoal } from "./AddNewGoal";
 import { Icon, IconColors, IconName } from "../Icon";
 import { GoalItem } from "./GoalItem";
 import { EmptyState } from "../EmptyState";
+import { Endpoints, RequestType, sendRequest } from "../../util/request";
+import { useParams } from "react-router";
+import { MessageToastType, showMessageToast } from "../MessageToast";
 
 export interface MenteeInfoProps {
+  association_id?: string;
   menteeName: string;
   startDate: string;
   birthday: String;
@@ -13,18 +17,19 @@ export interface MenteeInfoProps {
 }
 
 export interface GoalProp {
-  id: number;
+  id: string;
   name: string;
   isComplete: boolean;
-  createdDate: Date;
-  modifiedDate: Date;
+  createdDate?: Date;
+  modifiedDate?: Date;
   completedDate?: Date;
 }
 
 const MenteeGoals: React.FC<MenteeInfoProps> = ({
   menteeName,
   startDate,
-  birthday
+  birthday,
+  association_id
 }) => {
   menteeName = "Melissa Nguyen";
   startDate = "September 2021";
@@ -32,7 +37,7 @@ const MenteeGoals: React.FC<MenteeInfoProps> = ({
 
   const [ongoingGoals, setOngoingGoals] = useState<GoalProp[]>([
     {
-      id: 1,
+      id: "1",
       name: "Learn Math",
       isComplete: false,
       createdDate: new Date(2021, 2, 3, 5, 30),
@@ -42,7 +47,7 @@ const MenteeGoals: React.FC<MenteeInfoProps> = ({
 
   const [completedGoals, setCompletedGoals] = useState<GoalProp[]>([
     {
-      id: 2,
+      id: "2",
       name: "Learn History",
       isComplete: true,
       createdDate: new Date(2021, 2, 3, 5, 30),
@@ -125,6 +130,40 @@ const MenteeGoals: React.FC<MenteeInfoProps> = ({
     ]);
     hideAddNewGoal();
   };
+
+  useEffect(() => {
+    sendRequest(RequestType.POST, Endpoints.getGoals, { association_id })
+      .then(({ data }) => {
+        console.log(data["goals"][0]);
+        var fetchedCompletedGoals: GoalProp[] = [];
+        var fetchedOngoingGoals: GoalProp[] = [];
+        for (const goal of data["goals"]) {
+          if (goal["is_completed"]) {
+            fetchedCompletedGoals.push({
+              ...goal,
+              id: goal["_id"],
+              name: goal["name"],
+              isComplete: goal["is_complete"]
+            });
+          } else {
+            fetchedOngoingGoals.push({
+              ...goal,
+              id: goal["_id"],
+              name: goal["name"],
+              isComplete: goal["is_complete"]
+            });
+          }
+        }
+        setCompletedGoals([...completedGoals, ...fetchedCompletedGoals]);
+        setOngoingGoals([...ongoingGoals, ...fetchedOngoingGoals]);
+      })
+      .catch((err) =>
+        showMessageToast(
+          MessageToastType.ERROR,
+          "Unable to load goals, please try again later!"
+        )
+      );
+  }, []);
 
   return (
     <main className="mentee-goals">

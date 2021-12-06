@@ -349,11 +349,11 @@ const getAssociationForMentorById = (req: Request, res: Response) => {
 };
 
 const getGoalsForAssociation = (req: Request, res: Response) => {
-  let { mentee_id } = req.body;
+  let { association_id } = req.body;
   const user: any = req.user;
   const mentor_id: string = user._id;
 
-  Association.findOne({ mentee_id: mentee_id, mentor_id: mentor_id })
+  Association.findOne({ _id: association_id, mentor_id: mentor_id })
     .exec()
     .then((result: any) => {
       return res.status(200).json({
