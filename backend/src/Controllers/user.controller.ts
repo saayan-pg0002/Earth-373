@@ -304,6 +304,7 @@ const getMenteesForMentor = (req: Request, res: Response) => {
               association_id: association._id,
               is_active: association.isActive,
               mentee_name: `${mentee.first_name} ${mentee.last_name}`,
+              birthday: `${mentee.dateOfBirth}`,
               start_date: association.start_date,
               end_date: association.end_date
             };

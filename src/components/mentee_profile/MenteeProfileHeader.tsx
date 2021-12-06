@@ -7,7 +7,7 @@ export const MenteeProfileHeader: React.FC<MenteeInfoProps> = ({
   startDate,
   birthday,
   sessionDay,
-  sessionTime,
+  sessionTime
 }) => {
   return (
     <div className="mentee-profile-header">
@@ -35,7 +35,7 @@ export const MenteeProfileHeader: React.FC<MenteeInfoProps> = ({
           color={IconColors.baytreeNavy}
           size={IconSizes.xsmall}
         />
-        {`Started ${startDate}`}
+        {`Started: ${startDate}`}
       </div>
       <div className="subtext">
         <Icon
@@ -43,7 +43,7 @@ export const MenteeProfileHeader: React.FC<MenteeInfoProps> = ({
           color={IconColors.baytreeNavy}
           size={IconSizes.xsmall}
         />
-        {birthday}
+        {`Birthday: ${birthday}`}
       </div>
     </div>
   );

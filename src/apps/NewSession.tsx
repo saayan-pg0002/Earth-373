@@ -17,6 +17,7 @@ import {
   getDateFromTimeString,
   getFormattedHourMinuteString
 } from "../util/date";
+import { Loading } from "../components/Loading";
 
 export interface NewSessionProps {
   menteeName: string;
@@ -45,6 +46,7 @@ const NewSession: FC<{}> = () => {
   const [sessionGroupOptions, setSessionGroupOptions] =
     useState<DropdownMenuOptionsProps[]>();
   const [sessionGroups, setSessionGroups] = useState<SessionGroupInterface[]>();
+  const [isNotSubmitting, setIsNotSubmitting] = useState<boolean>(true);
 
   const getSessionGroupInfo = (sessionGroupId: string) =>
     sessionGroups?.find(
@@ -53,6 +55,7 @@ const NewSession: FC<{}> = () => {
 
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
+    setIsNotSubmitting(false);
 
     const target = e.target as typeof e.target & {
       is_cancelled: HTMLInputElement;
@@ -81,6 +84,7 @@ const NewSession: FC<{}> = () => {
         MessageToastType.ERROR,
         "Unable to find info about this session group"
       );
+      setIsNotSubmitting(true);
       return;
     }
 
@@ -92,6 +96,7 @@ const NewSession: FC<{}> = () => {
       (!is_cancelled && !end_time)
     ) {
       showMessageToast(MessageToastType.ERROR, "You are missing a some fields");
+      setIsNotSubmitting(true);
       return;
     }
 
@@ -103,6 +108,7 @@ const NewSession: FC<{}> = () => {
           MessageToastType.ERROR,
           "End time must be after start time"
         );
+        setIsNotSubmitting(true);
         return;
       }
     }
@@ -153,12 +159,13 @@ const NewSession: FC<{}> = () => {
           },
           { Note: notes }
         )
-          .then(() =>
+          .then(() => {
+            setIsNotSubmitting(true);
             showMessageToast(
               MessageToastType.SUCCESS,
               "Succesfully Created new session"
-            )
-          )
+            );
+          })
           .catch(() =>
             showMessageToast(
               MessageToastType.ERROR,
@@ -217,16 +224,14 @@ const NewSession: FC<{}> = () => {
 
       <div className="container">
         <h1 className="page-title">New Session</h1>
-        {menteeOptions && sessionGroupOptions && (
+        <Loading load={!sessionGroupOptions}>
           <form onSubmit={onSubmit} className="form">
             <Checkbox isChecked={false} label="Cancelled" name="is_cancelled" />
-
             {menteeOptions && (
               <FormField labelText="Mentee">
                 <DropdownMenu options={menteeOptions} name="association_id" />
               </FormField>
             )}
-
             {sessionGroupOptions && (
               <FormField labelText="Session Group">
                 <DropdownMenu
@@ -256,12 +261,17 @@ const NewSession: FC<{}> = () => {
             </FormField>
 
             <div className="actions">
-              <button type="submit" className="btn">
+              <button
+                type="submit"
+                className={`btn ${!isNotSubmitting ? "submitting" : ""}`}
+                disabled={!isNotSubmitting}
+              >
                 Log Session
+                <Loading load={!isNotSubmitting}></Loading>
               </button>
             </div>
           </form>
-        )}
+        </Loading>
       </div>
     </main>
   );
