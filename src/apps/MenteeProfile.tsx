@@ -1,17 +1,23 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { MenteeProfileHeader } from "../components/mentee_profile/MenteeProfileHeader";
 import { Router, Route } from "react-router-dom";
 import { history, Paths } from "../util/routes";
-import MenteeGoals from "../components/mentee_profile/MenteeGoals";
+import MenteeGoals, {
+  MenteeInfoProps
+} from "../components/mentee_profile/MenteeGoals";
 import { TabNav } from "../components/TabNav";
 import { MenteeSessionList } from "../components/mentee_profile/MenteeSessionList";
-import { getFormattedMonthDateyearString } from "../util/date";
+import {
+  getFormattedDayMonthYearString,
+  getFormattedMonthDateyearString
+} from "../util/date";
 import { ItemProps } from "../components/SessionItem";
 import { QuestionnaireList } from "../components/mentee_profile/QuestionnaireList";
 import { QuestionnaireItemProps } from "../components/mentee_profile/QuestionnaireItem";
 import { TabNavItemProps } from "../components/TabNav";
 import { buildPath } from "../components/Link";
 import { useParams } from "react-router";
+import { Endpoints, RequestType, sendRequest } from "../util/request";
 
 export const sessionHistoryList: ItemProps[] = [
   {
@@ -77,9 +83,9 @@ export const questionnaireList: QuestionnaireItemProps[] = [
 ];
 
 const MenteeProfile: FC<{}> = () => {
-  const menteeName = "Melissa Nguyen";
-  const startDate = "January 1, 2021";
-  const birthday = "January 1, 2021";
+  const [menteeName, setMenteeName] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>("");
+  const [birthday, setBirthday] = useState<string>("");
 
   const { association_id } = useParams<{ association_id: string }>();
   const getNavPath = (path: string): string =>
@@ -99,6 +105,22 @@ const MenteeProfile: FC<{}> = () => {
       to: getNavPath(Paths.menteeProfileQuestionnaires)
     }
   ];
+
+  useEffect(() => {
+    sendRequest(RequestType.GET, { endpoint: Endpoints.myMentees })
+      .then(({ data: { mentees } }) => {
+        const mentee = mentees.find(
+          (mentee: { association_id: string }) =>
+            mentee.association_id === association_id
+        );
+        const startDate: Date = new Date(mentee["start_date"].substring(0, 19));
+        const birthday: Date = new Date(mentee["birthday"].substring(0, 15));
+        setMenteeName(mentee["mentee_name"]);
+        setStartDate(getFormattedDayMonthYearString(startDate));
+        setBirthday(getFormattedDayMonthYearString(birthday));
+      })
+      .catch();
+  }, []);
 
   return (
     <main className="mentee-profile">
