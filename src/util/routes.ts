@@ -21,6 +21,8 @@ import MentorsDetails from "../apps/AdminPortal/mentors/MentorsDetails";
 import MenteeDetails from "../apps/AdminPortal/mentors/MenteeDetails";
 import CreateNewMentor from "../apps/AdminPortal/mentors/CreateNewMentor";
 import MentorPairMentee from "../apps/AdminPortal/mentors/MentorPairMentee";
+import AdminUsers from "../apps/AdminPortal/AdminUser/AdminUsers";
+import CreateNewAdmin from "../apps/AdminPortal/AdminUser/CreateNewAdmin";
 
 export const history = createBrowserHistory();
 
@@ -55,7 +57,9 @@ export const Paths = {
   adminViewMenteeProfileSessions: "/admin/mentee/sessions",
   adminViewMenteeProfileQuestionnaires: "/admin/mentee/questionnaires",
   createNewMentor: "/admin/create-new-mentor",
-  mentorPairMentee: "/admin/pair-mentee"
+  mentorPairMentee: "/admin/pair-mentee",
+  adminUsers: "/admin/admin-users",
+  createNewAdmin: "/admin/create-new-admin"
 };
 
 export const PublicPaths: string[] = [
@@ -170,6 +174,16 @@ export const routes: Route[] = [
   {
     path: Paths.mentorPairMentee,
     component: MentorPairMentee,
+    exact: true
+  },
+  {
+    path: Paths.adminUsers,
+    component: AdminUsers,
+    exact: true
+  },
+  {
+    path: Paths.createNewAdmin,
+    component: CreateNewAdmin,
     exact: true
   }
 ];

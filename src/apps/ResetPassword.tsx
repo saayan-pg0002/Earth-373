@@ -22,10 +22,14 @@ const ResetPassword: React.FC<{}> = () => {
     if (target.password.value === target.confirmPassword.value) {
       const resetLink: string = token;
       const newPass: string = target.password.value;
-      sendRequest(RequestType.POST, Endpoints.resetPassword, {
-        resetLink,
-        newPass
-      })
+      sendRequest(
+        RequestType.POST,
+        { endpoint: Endpoints.resetPassword },
+        {
+          resetLink,
+          newPass
+        }
+      )
         .then(({ data }) => {
           const message: string = data?.["message"];
           showMessageToast(MessageToastType.INFO, message);

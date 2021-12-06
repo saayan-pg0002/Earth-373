@@ -10,7 +10,7 @@ import { ItemProps } from "../components/SessionItem";
 import { QuestionnaireList } from "../components/mentee_profile/QuestionnaireList";
 import { QuestionnaireItemProps } from "../components/mentee_profile/QuestionnaireItem";
 import { TabNavItemProps } from "../components/TabNav";
-import { buildHrefPath } from "../components/Link";
+import { buildPath } from "../components/Link";
 import { useParams } from "react-router";
 
 export const sessionHistoryList: ItemProps[] = [
@@ -83,7 +83,7 @@ const MenteeProfile: FC<{}> = () => {
 
   const { association_id } = useParams<{ association_id: string }>();
   const getNavPath = (path: string): string =>
-    buildHrefPath(path, [{ name: "association_id", value: association_id }]);
+    buildPath(path, [{ name: "association_id", value: association_id }]);
 
   const routes: TabNavItemProps[] = [
     {

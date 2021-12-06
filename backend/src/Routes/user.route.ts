@@ -26,16 +26,22 @@ router.post("/login", login);
 router.post("/forgot-password", UserController.forgotPassword);
 router.post("/reset-password", UserController.resetPassword);
 router.get("/profile/me", isLoggedIn, UserController.getMyProfile);
+router.get("/stats", isLoggedIn, UserController.getStatistcs);
 
 /* Admin only routes */
 router.post("/mongo/add", isLoggedIn, isAdmin, UserController.addMongoUser);
 router.get("/getusers", isLoggedIn, isAdmin, UserController.getMongoUsers);
-router.get("/view/get/:type", isLoggedIn, isAdmin, UserController.getViewUsers);
+router.get(
+  "/view/get/:type",
+  isLoggedIn,
+  isAdmin,
+  UserController.getViewsUsers
+);
 router.get(
   "/view/migrate",
   isLoggedIn,
   isAdmin,
-  UserController.migrateViewUsers
+  UserController.migrateViewsUsers
 );
 router.post(
   "/create-association",
@@ -49,6 +55,5 @@ router.put(
   isAdmin,
   UserController.editProfile
 );
-router.get("/get/:type", isLoggedIn, isAdmin, UserController.getUsers);
 
 export default router;
