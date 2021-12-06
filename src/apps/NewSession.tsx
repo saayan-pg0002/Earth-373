@@ -18,6 +18,8 @@ import {
   getFormattedHourMinuteString
 } from "../util/date";
 import { Loading } from "../components/Loading";
+import { routeTo, Paths } from "../util/routes";
+import { buildPath } from "../components/Link";
 
 export interface NewSessionProps {
   menteeName: string;
@@ -164,6 +166,11 @@ const NewSession: FC<{}> = () => {
             showMessageToast(
               MessageToastType.SUCCESS,
               "Succesfully Created new session"
+            );
+            routeTo(
+              buildPath(Paths.viewSession, [
+                { name: "session_id", value: session_id }
+              ])
             );
           })
           .catch(() =>
