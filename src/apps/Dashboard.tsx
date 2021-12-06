@@ -4,6 +4,7 @@ import { FC, useEffect, useState } from "react";
 import { Endpoints, RequestType, sendRequest } from "../util/request";
 import { showMessageToast, MessageToastType } from "../components/MessageToast";
 import { Icon, IconName } from "../components/Icon";
+import { DashboardPieChart } from "../components/DashboardPieChart";
 
 interface StatsInterface {
   completed_goals: number;
@@ -63,29 +64,35 @@ const Dashboard: FC = () => {
           {firstName && <h1 className="page-title">Hi, {firstName}!</h1>}
           <AvatarHeader />
         </div>
-        <div className="stats-grid">
-          {totalSessions !== undefined && (
+        {totalSessions !== undefined && cancelledSessions !== undefined && (
+          <div className="stats-grid">
             <StatWidget
               label="Sessions"
               iconName={IconName.hashtag}
               value={totalSessions}
             />
-          )}
-          {cancelledSessions !== undefined && (
+
             <StatWidget
               label="Cancelled"
               iconName={IconName.x}
               value={cancelledSessions}
             />
-          )}
-          <div className="goal-widget">
-            <p className="semi-bold">{`${completedGoals} / ${totalGoals}`}</p>
-            <progress value={completedGoals} max={totalGoals}>
-              {`${goalCompletionPercentage}%`}
-            </progress>
-            <p className="subtext">Goals Complete</p>
+
+            <div className="goal-widget">
+              <p className="semi-bold">{`${completedGoals} / ${totalGoals}`}</p>
+              <progress value={completedGoals} max={totalGoals}>
+                {`${goalCompletionPercentage}%`}
+              </progress>
+              <p className="subtext">Goals Complete</p>
+            </div>
+            <div className="pie-chart">
+              <DashboardPieChart
+                totalSessions={totalSessions}
+                cancelledSessions={cancelledSessions}
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </main>
   );

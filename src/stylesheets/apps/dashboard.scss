@@ -95,6 +95,16 @@
         }
       }
     }
+
+    .pie-chart {
+      grid-area: chart;
+      justify-self: center;
+
+      canvas {
+        width: unset !important;
+      }
+    }
+
   }
 
 }
