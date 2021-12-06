@@ -1,43 +1,57 @@
 import { ReactComponent as BaytreeTreeGrey } from "../../assets/images/baytree-tree-grey.svg";
-import { SessionItem, ItemProps } from "../SessionItem";
+import { SessionItem, SessionItemProps } from "../SessionItem";
+import { FC, useEffect, useState } from "react";
+import { Endpoints, RequestType, sendRequest } from "../../util/request";
+import { showMessageToast, MessageToastType } from "../MessageToast";
 
 interface MenteeSessionListProps {
-  sessions: ItemProps[];
+  associationId: string;
 }
 
-export const MenteeSessionList: React.FC<MenteeSessionListProps> = ({
-  sessions,
+export const MenteeSessionList: FC<MenteeSessionListProps> = ({
+  associationId
 }) => {
-  const isEmpty: boolean = sessions.length === 0;
+  const [sessionList, setSessionList] = useState<SessionItemProps[]>();
+  const [isEmpty, setIsEmpty] = useState<boolean>(false);
+
+  useEffect(() => {
+    sendRequest(RequestType.GET, {
+      endpoint: Endpoints.associationSessions,
+      params: [{ name: "association_id", value: associationId }]
+    })
+      .then(({ data }) => {
+        setSessionList(data);
+        setIsEmpty(data.length === 0);
+      })
+      .catch(() =>
+        showMessageToast(MessageToastType.ERROR, "Unable to load sessions")
+      );
+  }, []);
 
   return (
     <div className={`session-list ${isEmpty ? "empty" : ""}`}>
-      {isEmpty ? (
+      {isEmpty && (
         <div className="empty-state">
           <BaytreeTreeGrey />
-          <h1 className="widget-title">You Have No Upcoming Sessions</h1>
+          <h1 className="widget-title">No Sessions with this Mentee</h1>
           <p>
-            Contact a staff member to get your schedule or to get matched with a
-            mentee
+            Create a new session to keep track of your meetings and goal
+            progress
           </p>
         </div>
-      ) : (
-        sessions.map(
-          (
-            { value, clockInTime, clockOutTime, content }: ItemProps,
-            index: number
-          ) => (
+      )}
+      {sessionList &&
+        sessionList.map(
+          ({ notes, _id, start_time, end_time }: SessionItemProps) => (
             <SessionItem
-              key={index}
-              value={value}
-              clockInTime={clockInTime}
-              clockOutTime={clockOutTime}
-              viewOnly={true}
-              content={content}
+              key={_id}
+              notes={notes}
+              _id={_id}
+              start_time={start_time}
+              end_time={end_time}
             />
           )
-        )
-      )}
+        )}
     </div>
   );
 };

@@ -85,9 +85,12 @@ export const getSessionGroups = async (req: Request, res: Response) => {
 export const getAssociatedSessions = async (req: Request, res: Response) => {
   try {
     const associationID: string = req.params.associationID;
-    const sessions: AxiosResponse<never> | any = await Session.find({
-      association_id: associationID
-    }).exec();
+    const sessions: AxiosResponse<never> | any = await Session.find(
+      {
+        association_id: associationID
+      },
+      "_id notes start_time end_time"
+    ).exec();
     return res.json(sessions);
   } catch (error) {
     return res

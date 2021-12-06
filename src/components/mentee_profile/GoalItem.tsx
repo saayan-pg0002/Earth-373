@@ -1,7 +1,7 @@
 import React, { FC, useState, useRef, useEffect } from "react";
 import { Checkbox } from "../form/Checkbox";
 import { GoalProp } from "./MenteeGoals";
-import { getFormattedMonthDateyearString } from "../../util/date";
+import { getFormattedMonthDateYearString } from "../../util/date";
 
 interface GoalItemProps {
   onClickCheckbox: (goal: GoalProp) => void;
@@ -82,14 +82,14 @@ export const GoalItem: FC<GoalItemProps> = ({
       </div>
       <div className="dates">
         <div className="subtext">
-          Created: {getFormattedMonthDateyearString(goal.createdDate)}
+          Created: {getFormattedMonthDateYearString(goal.createdDate)}
         </div>
         <div className="subtext">
-          Modified: {getFormattedMonthDateyearString(goal.modifiedDate)}
+          Modified: {getFormattedMonthDateYearString(goal.modifiedDate)}
         </div>
         {goal.isComplete && goal.completedDate && (
           <div className="subtext">
-            Completed: {getFormattedMonthDateyearString(goal.completedDate)}
+            Completed: {getFormattedMonthDateYearString(goal.completedDate)}
           </div>
         )}
       </div>

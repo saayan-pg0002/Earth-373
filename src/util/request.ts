@@ -19,7 +19,7 @@ export enum Endpoints {
   forgotPassword = "users/forgot-password",
   resetPassword = "users/reset-password",
   stats = "users/stats",
-
+  associationSessions = "sessions/getAssociatedSessions/:association_id",
   venues = "sessions/getVenues",
   sessionGroups = "sessions/getSessionGroups",
   createSession = "sessions/createSessions/:session_group_id/:association_id",
