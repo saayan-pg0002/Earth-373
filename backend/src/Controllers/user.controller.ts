@@ -584,7 +584,7 @@ const editProfile = (req: Request, res: Response) => {
   });
 };
 
-const getStatistcs = (req: Request, res: Response) => {
+const getStatistics = (req: Request, res: Response) => {
   const user: any = req.user;
   const mentor_id: string = user._id as string;
 
@@ -722,7 +722,7 @@ const UserController = {
   getHashedPassword,
   getMyProfile,
   editProfile,
-  getStatistcs,
+  getStatistics,
   getSpecifiedUsers
 };
 
