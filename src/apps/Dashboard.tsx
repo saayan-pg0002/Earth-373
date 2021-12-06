@@ -53,7 +53,7 @@ const Dashboard: FC = () => {
       .catch(() =>
         showMessageToast(MessageToastType.ERROR, "Unable to load dashboard")
       );
-  }, []);
+  });
 
   return (
     <main className="dashboard">

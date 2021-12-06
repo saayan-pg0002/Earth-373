@@ -18,7 +18,6 @@ export const GoalItem: FC<GoalItemProps> = ({
 }) => {
   const [goal, setGoal] = useState<GoalProp>(initialGoal);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [willDelete, setWillDelete] = useState<boolean>(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -35,14 +34,12 @@ export const GoalItem: FC<GoalItemProps> = ({
   const onClickStartEditing = (): void => setIsEditing(true);
 
   const stopEditing = (): void => {
-    if (!willDelete) {
-      if (isGoalBlank()) {
-        deleteGoal(goal);
-      } else {
-        updateGoal(goal);
-      }
-      setIsEditing(false);
+    if (isGoalBlank()) {
+      deleteGoal(goal);
+    } else {
+      updateGoal(goal);
     }
+    setIsEditing(false);
   };
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) =>

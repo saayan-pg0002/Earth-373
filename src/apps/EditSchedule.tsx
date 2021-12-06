@@ -41,9 +41,12 @@ const EditSchedule: React.FC<MenteeInfoProps> = ({
       </div>
 
       <form onSubmit={onSubmit} className="form">
-        {/* <FormField labelText="Day">
-          <DropdownMenu name="sessionDay" options={DaysOfWeek} />
-        </FormField> */}
+        <FormField labelText="Day">
+          <DropdownMenu
+            name="sessionDay"
+            options={DaysOfWeek.map((day) => ({ label: day, value: day }))}
+          />
+        </FormField>
 
         <FormField labelText="Start Time">
           <TimeInput name="sessionTime" initialValue={time} />

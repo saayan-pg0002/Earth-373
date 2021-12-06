@@ -18,7 +18,6 @@ export const AddNewGoal: FC<AddNewGoalProps> = ({
     createdDate: new Date(),
     modifiedDate: new Date()
   });
-  const [willCancel, setWillCancel] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const resetGoal = () =>
     setGoal({
@@ -36,11 +35,6 @@ export const AddNewGoal: FC<AddNewGoalProps> = ({
   });
 
   const onBlur = () => {
-    if (!willCancel) {
-      if (goal.name.trim() !== "") {
-        addNewGoal(goal);
-      }
-    }
     hideAddNewGoal();
     resetGoal();
   };

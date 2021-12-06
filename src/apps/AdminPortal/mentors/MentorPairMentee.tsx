@@ -1,13 +1,16 @@
 import { DateInput } from "../../../components/form/DateInput";
-import { DropdownMenu } from "../../../components/form/DropdownMenu";
+import {
+  DropdownMenu,
+  DropdownMenuOptionsProps
+} from "../../../components/form/DropdownMenu";
 import { FormField } from "../../../components/form/FormField";
 import PageHelmet from "../../../util/PageHelmet";
 import { Paths, routeTo } from "../../../util/routes";
 
-const ListOfMenteesUnpairedWithMentee: string[] = [
-  "Gilda Aindrea",
-  "Danial Chinatsu",
-  "Brianne Thorley"
+const ListOfMenteesUnpairedWithMentee: DropdownMenuOptionsProps[] = [
+  { label: "Gilda Aindrea", value: "1" },
+  { label: "Danial Chinatsu", value: "2" },
+  { label: "Brianne Thorley", value: "3" }
 ];
 interface PairMenteeProp {
   mentee: string;
@@ -42,12 +45,12 @@ const MentorPairMentee: React.FC<PairMenteeProp> = ({
       </div>
 
       <form className="form" onSubmit={onSubmit}>
-        {/* <FormField labelText="Mentee">
+        <FormField labelText="Mentee">
           <DropdownMenu
             name="mentee"
             options={ListOfMenteesUnpairedWithMentee}
           />
-        </FormField> */}
+        </FormField>
 
         <FormField labelText="Start Date">
           <DateInput name="startDate" id="inputDate" isDisabled={false} />
