@@ -17,7 +17,7 @@ export const login = async (req: Request, res: Response) => {
 
   if (isMatch) {
     const JWT = signJWT(user);
-    return res.json({ jwt: JWT });
+    return res.json({ jwt: JWT, role: user.role });
   } else {
     return res.status(400).send("Invalid credentials");
   }

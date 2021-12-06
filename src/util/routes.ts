@@ -62,6 +62,19 @@ export const Paths = {
   createNewAdmin: "/admin/create-new-admin"
 };
 
+export const AdminPaths: string[] = [
+  Paths.mentors,
+  Paths.mentorsDetails,
+  Paths.menteeDetails,
+  Paths.adminViewMenteeProfileGoals,
+  Paths.adminViewMenteeProfileQuestionnaires,
+  Paths.adminViewMenteeProfileSessions,
+  Paths.createNewMentor,
+  Paths.mentorPairMentee,
+  Paths.adminUsers,
+  Paths.createNewAdmin
+]
+
 export const PublicPaths: string[] = [
   Paths.login,
   Paths.forgotPassword,

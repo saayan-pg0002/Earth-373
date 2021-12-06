@@ -50,7 +50,7 @@ interface NavItemProps {
   label: string;
 }
 
-const NavItem: React.FC<NavItemProps> = ({ path, iconName, label }) => {
+export const NavItem: React.FC<NavItemProps> = ({ path, iconName, label }) => {
   const isActive: boolean = useLocation().pathname === path;
   const isPrimaryAction: boolean = path === Paths.newSession;
 

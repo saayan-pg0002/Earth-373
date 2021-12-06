@@ -4,6 +4,7 @@ export enum ActionType {
   STORE_TOKEN,
   UPDATE_CURRENT_PATH,
   TOGGLE_MESSAGE_TOAST,
+  STORE_ROLE,
 }
 
 interface StoreToken {
@@ -21,4 +22,10 @@ interface ToggleMessageToast {
   payload: MessageToastProps;
 }
 
-export type Action = StoreToken | UpdateCurrentPath | ToggleMessageToast;
+interface StoreRole {
+  type: ActionType.STORE_ROLE;
+  payload: string;
+}
+
+
+export type Action = StoreToken | UpdateCurrentPath | ToggleMessageToast | StoreRole;

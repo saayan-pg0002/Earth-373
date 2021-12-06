@@ -9,12 +9,14 @@ import {
 
 export interface State {
   token: string;
+  role: string;
   currentPath: string;
   messageToast: MessageToastProps;
 }
 
 export const initialState: State = {
   token: getLocalStorageItem("token") ?? "",
+  role: getLocalStorageItem("role") ?? "",
   currentPath: window.location.pathname ?? "",
   messageToast: { isShown: false, type: MessageToastType.INFO, message: "" },
 };

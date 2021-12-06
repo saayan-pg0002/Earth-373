@@ -9,6 +9,8 @@ const reducer = (state: State = initialState, action: Action) => {
       return { ...state, currentPath: action.payload };
     case ActionType.TOGGLE_MESSAGE_TOAST:
       return { ...state, messageToast: action.payload };
+    case ActionType.STORE_ROLE:
+      return { ...state, role: action.payload };
     default:
       return state;
   }
