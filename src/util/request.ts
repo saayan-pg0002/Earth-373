@@ -9,7 +9,8 @@ const PORT: String = "5000";
 export enum RequestType {
   POST = "POST",
   GET = "GET",
-  PATCH = "PATCH"
+  PATCH = "PATCH",
+  PUT = "PUT"
 }
 
 export enum Endpoints {
@@ -19,6 +20,8 @@ export enum Endpoints {
   forgotPassword = "users/forgot-password",
   resetPassword = "users/reset-password",
   getGoals = "users/me/association/goals",
+  updateGoal = "users/update-goal",
+  createGoal = "users/creategoal",
   venues = "sessions/getVenues",
   sessionGroups = "sessions/getSessionGroups",
   createSession = "sessions/createSessions/:session_group_id/:association_id",
