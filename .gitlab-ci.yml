@@ -8,6 +8,6 @@ cache:
 backend:
   script:
     - echo "DEBUGGING"
-    # - cd ./backend
-    # - npm install --prefer-offline --no-audit
-    # - npm run test
+    - cd ./backend
+    - npm install --prefer-offline --no-audit
+    - npm run test
