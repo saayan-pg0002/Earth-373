@@ -646,15 +646,12 @@ const getStatistcs = (req: Request, res: Response) => {
                     }
                   }
                 }
-                console.log("Completed goals: ", totalCompletedGoals);
-                console.log("Cancelled sessions: ", totalCancelled);
-                console.log("Total Sessions: ", totalSessions);
-                console.log("Total Goals: ", totalGoals);
+
                 res.status(200).json({
-                  "Completed Goals": totalCompletedGoals,
-                  "Cancelled Sessions": totalCancelled,
-                  "Total Sessions": totalSessions,
-                  "Total Goals": totalGoals
+                  completed_goals: totalCompletedGoals,
+                  cancelled_sessions: totalCancelled,
+                  total_sessions: totalSessions,
+                  total_goals: totalGoals
                 });
               });
             }
