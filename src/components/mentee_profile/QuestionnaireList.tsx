@@ -16,12 +16,17 @@ export const QuestionnaireList: React.FC<QuestionnaireListProps> = ({
   association_id
 }) => {
   const isEmpty: boolean = questionnaires.length === 0;
+
+  //NOTE: This needs to be finished to connect front-end and back-end.
   useEffect(() => {
     sendRequest(RequestType.GET, {
       endpoint: Endpoints.getQuestionnairesForAssociation,
       params: [{ name: "assid", value: association_id }]
-    }).then(({ data: { mentees } }) => {
-      console.log(mentees);
+    }).then(({ data: { arrayOfValues } }) => {
+      if (arrayOfValues.length > 0) {
+        //set isEmpty to false
+      }
+      //set isEmpty to true
     });
   });
 
