@@ -26,7 +26,7 @@ export const MenteeSessionList: FC<MenteeSessionListProps> = ({
       .catch(() =>
         showMessageToast(MessageToastType.ERROR, "Unable to load sessions")
       );
-  }, []);
+  }, [associationId]);
 
   return (
     <div className={`session-list ${isEmpty ? "empty" : ""}`}>
