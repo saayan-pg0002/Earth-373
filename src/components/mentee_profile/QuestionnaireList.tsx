@@ -7,24 +7,23 @@ import { Endpoints, RequestType, sendRequest } from "../../util/request";
 import { QuestionnaireItem, QuestionnaireItemProps } from "./QuestionnaireItem";
 
 interface QuestionnaireListProps {
+  association_id: string;
   questionnaires: QuestionnaireItemProps[];
 }
 
 export const QuestionnaireList: React.FC<QuestionnaireListProps> = ({
-  questionnaires
+  questionnaires,
+  association_id
 }) => {
   const isEmpty: boolean = questionnaires.length === 0;
-  /*const { assid } = useParams<{ assid: string }>();
-  console.log(assid);
-
   useEffect(() => {
     sendRequest(RequestType.GET, {
       endpoint: Endpoints.getQuestionnairesForAssociation,
-      params: [{ name: "association_id", value: assid }]
+      params: [{ name: "assid", value: association_id }]
     }).then(({ data: { mentees } }) => {
       console.log(mentees);
     });
-  });*/
+  });
 
   return (
     <div className={`mentee-list ${isEmpty ? "empty" : ""}`}>

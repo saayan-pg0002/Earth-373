@@ -92,7 +92,10 @@ const MenteeProfile: FC<{}> = () => {
             <MenteeSessionList associationId={association_id} />
           </Route>
           <Route path={getNavPath(Paths.menteeProfileQuestionnaires)}>
-            <QuestionnaireList questionnaires={questionnaireList} />
+            <QuestionnaireList
+              questionnaires={questionnaireList}
+              association_id={association_id}
+            />
           </Route>
         </Router>
       </div>

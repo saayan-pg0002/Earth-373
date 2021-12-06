@@ -1,4 +1,4 @@
-import { Route, Router } from "react-router-dom";
+import { Route, Router, useParams } from "react-router-dom";
 import { MenteeHeader } from "../../../components/AdminPortal_Mentors/MenteeHeader";
 import MenteeGoals from "../../../components/mentee_profile/MenteeGoals";
 import { MenteeSessionList } from "../../../components/mentee_profile/MenteeSessionList";
@@ -27,6 +27,7 @@ const MenteeDetails: React.FC<{}> = () => {
       to: Paths.adminViewMenteeProfileQuestionnaires
     }
   ];
+  const { association_id } = useParams<{ association_id: string }>();
 
   return (
     <main className="container">
@@ -50,7 +51,10 @@ const MenteeDetails: React.FC<{}> = () => {
           <MenteeSessionList sessions={sessionHistoryList} />
         </Route> */}
         <Route path={Paths.adminViewMenteeProfileQuestionnaires}>
-          <QuestionnaireList questionnaires={questionnaireList} />
+          <QuestionnaireList
+            questionnaires={questionnaireList}
+            association_id={association_id}
+          />
         </Route>
       </Router>
     </main>
