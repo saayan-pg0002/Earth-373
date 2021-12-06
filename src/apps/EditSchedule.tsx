@@ -30,34 +30,36 @@ const EditSchedule: React.FC<MenteeInfoProps> = ({
     return date;
   })();
   return (
-    <main className="container">
+    <main>
       <PageHelmet title="Edit Schedule" />
 
-      <div className="header">
-        <h1 className="page-title">Edit Schedule</h1>
-        <Link to={Paths.menteeProfileGoals} className="back-btn">
-          Go Back
-        </Link>
-      </div>
-
-      <form onSubmit={onSubmit} className="form">
-        <FormField labelText="Day">
-          <DropdownMenu
-            name="sessionDay"
-            options={DaysOfWeek.map((day) => ({ label: day, value: day }))}
-          />
-        </FormField>
-
-        <FormField labelText="Start Time">
-          <TimeInput name="sessionTime" initialValue={time} />
-        </FormField>
-
-        <div className="actions">
-          <button type="submit" className="btn">
-            Save Changes
-          </button>
+      <div className="container">
+        <div className="header">
+          <h1 className="page-title">Edit Schedule</h1>
+          <Link to={Paths.menteeProfileGoals} className="back-btn">
+            Go Back
+          </Link>
         </div>
-      </form>
+
+        <form onSubmit={onSubmit} className="form">
+          <FormField labelText="Day">
+            <DropdownMenu
+              name="sessionDay"
+              options={DaysOfWeek.map((day) => ({ label: day, value: day }))}
+            />
+          </FormField>
+
+          <FormField labelText="Start Time">
+            <TimeInput name="sessionTime" initialValue={time} />
+          </FormField>
+
+          <div className="actions">
+            <button type="submit" className="btn">
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
     </main>
   );
 };
