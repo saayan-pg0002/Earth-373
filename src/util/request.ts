@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosPromise } from "axios";
 import { getLocalStorageItem } from "./localStorage";
 import { buildPath, ParamsAndQueriesInterface } from "../components/Link";
 
@@ -30,7 +30,7 @@ const getAuthHeaders = (): {} => {
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
-export const sendRequest = async (
+export const sendRequest = (
   method: RequestType,
   url: {
     endpoint: Endpoints;
@@ -38,7 +38,7 @@ export const sendRequest = async (
     queries?: ParamsAndQueriesInterface[];
   },
   data?: {}
-) => {
+): AxiosPromise<any> => {
   const { endpoint, params = [], queries = [] } = url;
   return axios({
     method,
