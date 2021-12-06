@@ -30,7 +30,7 @@ const getAuthHeaders = (): {} => {
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
-export const sendRequest = async (
+export const sendRequest = (
   method: RequestType,
   url: {
     endpoint: Endpoints;
