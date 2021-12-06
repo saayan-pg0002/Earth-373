@@ -17,6 +17,7 @@ import {
   getDateFromTimeString,
   getFormattedHourMinuteString
 } from "../util/date";
+import { Loading } from "../components/Loading";
 
 export interface NewSessionProps {
   menteeName: string;
@@ -216,10 +217,9 @@ const NewSession: FC<{}> = () => {
       <PageHelmet title="New Session" />
 
       <h1 className="page-title">New Session</h1>
-      {menteeOptions && sessionGroupOptions && (
+      <Loading load={!sessionGroupOptions}>
         <form onSubmit={onSubmit} className="form">
           <Checkbox isChecked={false} label="Cancelled" name="is_cancelled" />
-
           {menteeOptions && (
             <FormField labelText="Mentee">
               <DropdownMenu options={menteeOptions} name="association_id" />
@@ -260,7 +260,7 @@ const NewSession: FC<{}> = () => {
             </button>
           </div>
         </form>
-      )}
+      </Loading>
     </main>
   );
 };

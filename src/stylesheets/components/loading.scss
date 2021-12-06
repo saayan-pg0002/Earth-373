@@ -1,0 +1,27 @@
+@import "../util/";
+
+.loading {
+  position: absolute;
+  inset: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(44, 62, 80, 0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+
+  .spinner {
+    border: 1rem solid $grey-50;
+    border-top: 1rem solid $baytree-green;
+    border-radius: 50%;
+    width: clamp(1.5rem, 30vmin ,10rem);
+    aspect-ratio: 1/1;
+    animation: spin 1.5s linear infinite;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
