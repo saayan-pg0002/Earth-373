@@ -1,19 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AddNewGoal } from "./AddNewGoal";
 import { Icon, IconColors, IconName } from "../Icon";
 import { GoalItem } from "./GoalItem";
 import { EmptyState } from "../EmptyState";
-
+import { Endpoints, RequestType, sendRequest } from "../../util/request";
+import { MessageToastType, showMessageToast } from "../MessageToast";
 export interface MenteeInfoProps {
+  association_id?: string;
   menteeName: string;
   startDate: string;
   birthday: String;
   sessionDay?: String;
   sessionTime?: String;
 }
-
 export interface GoalProp {
-  id: number;
+  id: string;
   name: string;
   isComplete: boolean;
   createdDate: Date;
@@ -24,32 +25,12 @@ export interface GoalProp {
 const MenteeGoals: React.FC<MenteeInfoProps> = ({
   menteeName,
   startDate,
-  birthday
+  birthday,
+  association_id
 }) => {
-  menteeName = "Melissa Nguyen";
-  startDate = "September 2021";
-  birthday = "Aug 2, 2010";
+  const [ongoingGoals, setOngoingGoals] = useState<GoalProp[]>([]);
 
-  const [ongoingGoals, setOngoingGoals] = useState<GoalProp[]>([
-    {
-      id: 1,
-      name: "Learn Math",
-      isComplete: false,
-      createdDate: new Date(2021, 2, 3, 5, 30),
-      modifiedDate: new Date(2021, 2, 3, 5, 30)
-    }
-  ]);
-
-  const [completedGoals, setCompletedGoals] = useState<GoalProp[]>([
-    {
-      id: 2,
-      name: "Learn History",
-      isComplete: true,
-      createdDate: new Date(2021, 2, 3, 5, 30),
-      modifiedDate: new Date(2021, 2, 3, 5, 30),
-      completedDate: new Date()
-    }
-  ]);
+  const [completedGoals, setCompletedGoals] = useState<GoalProp[]>([]);
 
   const [isAddingGoal, setIsAddingGoal] = useState(false);
 
@@ -57,33 +38,36 @@ const MenteeGoals: React.FC<MenteeInfoProps> = ({
   const hideAddNewGoal = () => setIsAddingGoal(false);
 
   const addNewGoal = (newGoal: GoalProp): void => {
-    setOngoingGoals([...ongoingGoals, newGoal]);
-    hideAddNewGoal();
-    showAddNewGoal();
+    if (isGoalCreated(newGoal)) {
+      setOngoingGoals([...ongoingGoals, newGoal]);
+      hideAddNewGoal();
+      showAddNewGoal();
+    }
   };
 
   const updateGoal = (editedGoal: GoalProp): void => {
-    const { isComplete } = editedGoal;
-    const targetGoalsList: GoalProp[] = isComplete
-      ? completedGoals
-      : ongoingGoals;
-    const index: number = targetGoalsList.findIndex(
-      (goal) => goal.id === editedGoal.id
-    );
-    editedGoal.modifiedDate = new Date();
-    if (index !== -1) {
-      if (isComplete) {
-        setCompletedGoals([
-          ...completedGoals.slice(0, index),
-          editedGoal,
-          ...completedGoals.slice(index + 1)
-        ]);
-      } else {
-        setOngoingGoals([
-          ...ongoingGoals.slice(0, index),
-          editedGoal,
-          ...ongoingGoals.slice(index + 1)
-        ]);
+    if (isGoalUpdated(editedGoal)) {
+      const { isComplete } = editedGoal;
+      const targetGoalsList: GoalProp[] = isComplete
+        ? completedGoals
+        : ongoingGoals;
+      const index: number = targetGoalsList.findIndex(
+        (goal) => goal.id === editedGoal.id
+      );
+      if (index !== -1) {
+        if (isComplete) {
+          setCompletedGoals([
+            ...completedGoals.slice(0, index),
+            editedGoal,
+            ...completedGoals.slice(index + 1)
+          ]);
+        } else {
+          setOngoingGoals([
+            ...ongoingGoals.slice(0, index),
+            editedGoal,
+            ...ongoingGoals.slice(index + 1)
+          ]);
+        }
       }
     }
   };
@@ -102,29 +86,113 @@ const MenteeGoals: React.FC<MenteeInfoProps> = ({
   };
 
   const completeGoal = (goal: GoalProp): void => {
-    goal.modifiedDate = new Date();
-    goal.completedDate = new Date();
-    setCompletedGoals([...completedGoals, { ...goal, isComplete: true }]);
-    setOngoingGoals([
-      ...ongoingGoals.filter(
-        (ongoingGoals) => ongoingGoals.name !== goal.name,
-        ongoingGoals
-      )
-    ]);
+    goal["isComplete"] = true;
+    if (isGoalUpdated(goal)) {
+      goal.modifiedDate = new Date();
+      goal.completedDate = new Date();
+      setCompletedGoals([...completedGoals, { ...goal }]);
+      setOngoingGoals([
+        ...ongoingGoals.filter(
+          (ongoingGoals) => ongoingGoals.name !== goal.name,
+          ongoingGoals
+        )
+      ]);
+    }
   };
 
   const uncheckGoal = (goal: GoalProp): void => {
-    goal.modifiedDate = new Date();
-    goal.completedDate = undefined;
-    setOngoingGoals([...ongoingGoals, { ...goal, isComplete: false }]);
-    setCompletedGoals([
-      ...completedGoals.filter(
-        (completedGoals) => completedGoals.name !== goal.name,
-        completedGoals
-      )
-    ]);
-    hideAddNewGoal();
+    goal["isComplete"] = false;
+    if (isGoalUpdated(goal)) {
+      goal.modifiedDate = new Date();
+      setOngoingGoals([...ongoingGoals, { ...goal }]);
+      setCompletedGoals([
+        ...completedGoals.filter(
+          (completedGoals) => completedGoals.name !== goal.name,
+          completedGoals
+        )
+      ]);
+      hideAddNewGoal();
+    }
   };
+
+  const isGoalCreated = (goal: GoalProp): boolean => {
+    var isCreated: boolean = true;
+    const data = {
+      association_id: association_id,
+      goal: goal["name"]
+    };
+    sendRequest(RequestType.POST, { endpoint: Endpoints.createGoal }, data)
+      .then()
+      .catch((err) => {
+        showMessageToast(
+          MessageToastType.ERROR,
+          "Unable to create new goal. These changes are not applied on server. Please try again later"
+        );
+        isCreated = false;
+      });
+    return isCreated;
+  };
+
+  const isGoalUpdated = (goal: GoalProp): boolean => {
+    var isUpdated: boolean = true;
+    const data = {
+      association_id: association_id,
+      goal_id: goal["id"],
+      goal_name: goal["name"],
+      is_complete: goal["isComplete"]
+    };
+    sendRequest(RequestType.PUT, { endpoint: Endpoints.updateGoal }, data)
+      .then()
+      .catch((err) => {
+        showMessageToast(
+          MessageToastType.ERROR,
+          "Unable to update your goal. These changes are not applied on server. Please try again later"
+        );
+        isUpdated = false;
+      });
+    return isUpdated;
+  };
+
+  useEffect(() => {
+    sendRequest(
+      RequestType.POST,
+      { endpoint: Endpoints.getGoals },
+      { association_id }
+    )
+      .then(({ data }) => {
+        var fetchedCompletedGoals: GoalProp[] = [];
+        var fetchedOngoingGoals: GoalProp[] = [];
+        for (const goal of data["goals"]) {
+          if (goal["is_complete"] && goal["completed_at"]) {
+            fetchedCompletedGoals.push({
+              id: goal["_id"],
+              name: goal["goal_name"],
+              isComplete: goal["is_complete"],
+              completedDate: new Date(goal["completed_at"].substring(0, 19)),
+              modifiedDate: new Date(goal["updated_at"].substring(0, 19)),
+              createdDate: new Date(goal["created_at"].substring(0, 19))
+            });
+          } else {
+            fetchedOngoingGoals.push({
+              id: goal["_id"],
+              name: goal["goal_name"],
+              isComplete: goal["is_complete"],
+              completedDate: undefined,
+              modifiedDate: new Date(goal["updated_at"].substring(0, 19)),
+              createdDate: new Date(goal["created_at"].substring(0, 19))
+            });
+          }
+        }
+        setCompletedGoals([...completedGoals, ...fetchedCompletedGoals]);
+        setOngoingGoals([...ongoingGoals, ...fetchedOngoingGoals]);
+      })
+      .catch((err) => {
+        showMessageToast(
+          MessageToastType.ERROR,
+          "Unable to load goals, please try again later!"
+        );
+      });
+  }, []);
 
   return (
     <main className="mentee-goals">

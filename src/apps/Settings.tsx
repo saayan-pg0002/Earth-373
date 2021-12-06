@@ -8,6 +8,7 @@ import { removeLocalStorageItem } from "../util/localStorage";
 const Settings: React.FC<{}> = () => {
   const onClickLogOut = (): void => {
     removeLocalStorageItem("token");
+    removeLocalStorageItem("Initial");
     routeTo(Paths.login);
   };
 

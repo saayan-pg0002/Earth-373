@@ -1,25 +1,17 @@
-import { DropdownMenu } from "../../../components/form/DropdownMenu";
 import { FormField } from "../../../components/form/FormField";
 import { TextInput } from "../../../components/form/TextInput";
 import { IconName } from "../../../components/Icon";
 import PageHelmet from "../../../util/PageHelmet";
+import { Paths, routeTo } from "../../../util/routes";
 
-export const MentorTypes: string[] = [
-  "IntoSchool Mentors",
-  "Youth Mentors",
-  "Women Mentor"
-];
-
-interface MentorInfoProp {
-  mentorType: string;
+interface AdminInfoProps {
   email: string;
   firstName: string;
   lastName: string;
   phoneNumber?: string;
 }
 
-const CreateNewMentor: React.FC<MentorInfoProp> = ({
-  mentorType,
+const CreateNewAdmin: React.FC<AdminInfoProps> = ({
   email,
   firstName,
   lastName,
@@ -35,11 +27,12 @@ const CreateNewMentor: React.FC<MentorInfoProp> = ({
       phoneNumber: { value: string };
     };
 
-    mentorType = target.mentorType.value;
     email = target.email.value;
     firstName = target.firstName.value;
     lastName = target.lastName.value;
     phoneNumber = target.phoneNumber.value;
+
+    routeTo(Paths.adminUsers);
   };
 
   return (
@@ -51,17 +44,13 @@ const CreateNewMentor: React.FC<MentorInfoProp> = ({
 
       <div className="remark">
         <p>
-          When you create a new mentor, the mentor will receive an email at the
-          specified email below. The email contains a link to set up their
+          When you create a new admin user, the admin will receive an email at
+          the specified email below. The email contains a link to set up their
           password and start using their account.
         </p>
       </div>
 
       <form className="form" onSubmit={onSubmit}>
-        {/* <FormField labelText="Mentee">
-          <DropdownMenu options={MentorTypes} />
-        </FormField> */}
-
         <FormField labelText="Email">
           <TextInput
             name="email"
@@ -104,8 +93,8 @@ const CreateNewMentor: React.FC<MentorInfoProp> = ({
         </FormField>
 
         <div className="actions">
-          <button type="button" className="btn">
-            Create Mentor
+          <button type="submit" className="btn">
+            Create Admin User
           </button>
         </div>
       </form>
@@ -113,4 +102,4 @@ const CreateNewMentor: React.FC<MentorInfoProp> = ({
   );
 };
 
-export default CreateNewMentor;
+export default CreateNewAdmin;

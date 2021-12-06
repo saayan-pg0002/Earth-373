@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ReactComponent as BaytreeTreeGrey } from "../../assets/images/baytree-tree-grey.svg";
 import { Paths } from "../../util/routes";
 import { Icon, IconColors, IconName } from "../Icon";
@@ -13,16 +13,18 @@ interface QuestionnaireListProps {
 export const QuestionnaireList: React.FC<QuestionnaireListProps> = ({
   questionnaires
 }) => {
+  const { assid } = useParams<{ assid: string }>();
+  console.log(assid);
   const isEmpty: boolean = questionnaires.length === 0;
 
-  useEffect(() => {
-    sendRequest(
-      RequestType.GET,
-      Endpoints.getQuestionnairesForAssociation
-    ).then(({ data: { mentees } }) => {
+  /*useEffect(() => {
+    sendRequest(RequestType.GET, {
+      endpoint: Endpoints.getQuestionnairesForAssociation,
+      params: [{ name: "association_id", value: assid }]
+    }).then(({ data: { mentees } }) => {
       console.log(mentees);
     });
-  });
+  });*/
 
   return (
     <div className={`mentee-list ${isEmpty ? "empty" : ""}`}>

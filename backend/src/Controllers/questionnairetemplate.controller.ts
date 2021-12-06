@@ -444,13 +444,7 @@ const getQuestionnairesForAssociation = async (req: Request, res: Response) => {
   Association.findOne({ _id: association_id })
     .exec()
     .then(async (association: AssociationInterface | null) => {
-      if (association?.mentor_id != mentor_id) {
-        return res.status(401).json({
-          message:
-            "Error: The signed in used is not authorized to access this information"
-        });
-      }
-      const questionnaires = association?.previous_questionnaire_ids;
+      const questionnaires: any = association?.previous_questionnaire_ids;
 
       var arrayOfValues: Object[] = [];
 

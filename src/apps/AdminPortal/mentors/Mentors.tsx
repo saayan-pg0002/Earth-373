@@ -1,5 +1,6 @@
 import TableComponent from "../../../components/AdminPortal_Mentors/TableView";
 import PageHelmet from "../../../util/PageHelmet";
+import { Paths, routeTo } from "../../../util/routes";
 
 const MentorTableHeading: string[] = [
   "Id",
@@ -53,6 +54,9 @@ function createMentorListRows(MentorList: MentorTableBodyProps[]) {
   });
 }
 
+function handleRowSelection( selectionID : number) {
+  routeTo(Paths.mentorsDetails);
+}
 const Mentors: React.FC<{}> = () => {
   return (
     <main className="container">
@@ -69,6 +73,7 @@ const Mentors: React.FC<{}> = () => {
       <TableComponent
         heading={MentorTableHeading}
         body={createMentorListRows(MentorList)}
+        handleRowSelection={handleRowSelection}
       />
     </main>
   );

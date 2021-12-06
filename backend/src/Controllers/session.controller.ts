@@ -16,7 +16,22 @@ export const getVenues = async (req: Request, res: Response) => {
       http.get,
       undefined
     );
-    return res.json(ViewsData.data);
+
+    const responseData: any = ViewsData?.data;
+    const responseDataObjectKeys: string[] = Object.keys(responseData);
+    const data: any = responseData[responseDataObjectKeys[0]];
+    const venues: { venue_id: string; name: string }[] = [];
+
+    for (const venue in data) {
+      if (!data[venue]?.ArchivedBy) {
+        venues.push({
+          venue_id: data[venue]?.VenueID,
+          name: data[venue]?.Name
+        });
+      }
+    }
+
+    return res.json({ venues });
   } catch (error) {
     return res
       .status(400)
@@ -33,7 +48,33 @@ export const getSessionGroups = async (req: Request, res: Response) => {
       http.get,
       undefined
     );
-    return res.json(ViewsData.data);
+
+    const responseData: any = ViewsData?.data;
+    const responseDataObjectKeys: string[] = Object.keys(responseData);
+    const data: any = responseData[responseDataObjectKeys[0]];
+    const sessionGroups: {
+      session_group_id: string;
+      name: string;
+      venue_id: string;
+      lead_staff: string;
+    }[] = [];
+
+    for (const sessionGroup in data) {
+      const {
+        SessionGroupID = "",
+        Title = "",
+        VenueID = "",
+        LeadStaff = ""
+      } = data[sessionGroup];
+      sessionGroups.push({
+        session_group_id: SessionGroupID,
+        name: Title,
+        venue_id: VenueID,
+        lead_staff: LeadStaff
+      });
+    }
+
+    return res.json({ session_groups: sessionGroups });
   } catch (error) {
     return res
       .status(400)
@@ -44,9 +85,12 @@ export const getSessionGroups = async (req: Request, res: Response) => {
 export const getAssociatedSessions = async (req: Request, res: Response) => {
   try {
     const associationID: string = req.params.associationID;
-    const sessions: AxiosResponse<never> | any = await Session.find({
-      association_id: associationID,
-    }).exec();
+    const sessions: AxiosResponse<never> | any = await Session.find(
+      {
+        association_id: associationID
+      },
+      "_id notes start_time end_time"
+    ).exec();
     return res.json(sessions);
   } catch (error) {
     return res
@@ -59,10 +103,32 @@ export const getSessionByID = async (req: Request, res: Response) => {
   try {
     const session_mongo_id: string = req.params.sessionID;
     const session: AxiosResponse<never> | any = await Session.findById(
-      session_mongo_id
+      session_mongo_id,
+      "_id notes start_time end_time is_cancelled association_id"
     ).exec();
-    if (!session) return res.status(400).json({ error: "session not found" });
-    return res.json(session);
+    if (!session) return res.status(400).json({ error: "Session not found" });
+
+    const association: AxiosResponse<never> | any = await Association.findById(
+      session.association_id
+    ).exec();
+    if (!association)
+      return res
+        .status(400)
+        .json({ error: "Association not found for this session " });
+
+    const mentee: AxiosResponse<never> | any = await Mentee.findById(
+      association.mentee_id,
+      "first_name last_name"
+    );
+    if (!mentee)
+      return res
+        .status(400)
+        .json({ error: "Mentee not found for this session" });
+
+    return res.json({
+      ...session.toJSON(),
+      name: `${mentee.first_name} ${mentee.last_name}`
+    });
   } catch (error) {
     return res
       .status(400)
@@ -95,11 +161,8 @@ export const createSession = async (req: Request, res: Response) => {
     if (!mentor || !mentee)
       return res.json({ error: "mentor or mentee not found" });
 
-    let url =
-      "https://app.viewsapp.net/api/restful/work/sessiongroups/" +
-      groupID +
-      "/sessions";
-    var body: {
+    let url = `https://app.viewsapp.net/api/restful/work/sessiongroups/${groupID}/sessions`;
+    const body: {
       Name: string;
       StartDate: string;
       StartTime: string;
@@ -107,19 +170,30 @@ export const createSession = async (req: Request, res: Response) => {
       Activity: string;
       LeadStaff: string;
       VenueID: string;
+      Cancelled: boolean;
     } = req.body;
 
     if (
       !body.StartDate ||
       !body.StartTime ||
+      !body.VenueID ||
       !body.Duration ||
-      !body.LeadStaff ||
-      !body.VenueID
-    )
+      !body.LeadStaff
+    ) {
       return res.status(400).json({ error: "Some fields are not filled" });
+    }
+
+    const schedule: any = createSchedule(
+      body.StartDate,
+      body.StartTime,
+      body.Duration
+    );
 
     let ViewsData: AxiosResponse<never> | any;
-    ViewsData = await sendViewsRequests(url, http.post, body);
+    ViewsData = await sendViewsRequests(url, http.post, {
+      ...body,
+      Cancelled: body.Cancelled ? "1" : "0"
+    });
     if (ViewsData.ERROR) return res.status(400).json(ViewsData);
 
     const session_views_id: string = ViewsData.data.SessionID;
@@ -130,19 +204,13 @@ export const createSession = async (req: Request, res: Response) => {
       session_views_id;
 
     ViewsData = await sendViewsRequests((url += "/staff"), http.put, {
-      ContactID: mentor.views_id,
+      ContactID: mentor.views_id
     });
     ViewsData = await sendViewsRequests((url += "/participants"), http.put, {
-      ContactID: mentee.views_id,
+      ContactID: mentee.views_id
     });
     // no error checking because the Views' request will return
     // an error even though their API works
-
-    const schedule: any = createSchedule(
-      body.StartDate,
-      body.StartTime,
-      body.Duration
-    );
 
     const newSession = new Session({
       _id: new mongoose.Types.ObjectId(),
@@ -151,14 +219,12 @@ export const createSession = async (req: Request, res: Response) => {
       association_id: associationID,
       start_time: schedule.start_time,
       end_time: schedule.end_time,
-      is_cancelled: false,
+      is_cancelled: body.Cancelled
     });
 
     newSession.save();
 
-    return res.json({
-      created: `${session_views_id}`,
-    });
+    return res.json({ session_id: newSession._id });
   } catch (error: unknown) {
     return res
       .status(400)
@@ -207,7 +273,7 @@ export const updateSessions = async (req: Request, res: Response) => {
     const updates: object = {
       start_time: schedule.start_time,
       end_time: schedule.end_time,
-      is_cancelled: body.Cancelled,
+      is_cancelled: body.Cancelled
     };
 
     await Session.findOneAndUpdate({ _id: session_mongo_id }, updates).exec();
@@ -220,7 +286,7 @@ export const updateSessions = async (req: Request, res: Response) => {
     if (ViewsData.ERROR) return res.status(400).json(ViewsData);
 
     return res.json({
-      updated: `${session.views_id}`,
+      updated: `${session.views_id}`
     });
   } catch (error: unknown) {
     return res
@@ -280,12 +346,12 @@ export const createNotes = async (req: Request, res: Response) => {
       $set: {
         notes: {
           views_id: ViewsData.data.NoteID,
-          description: body.Note,
-        },
-      },
+          description: body.Note
+        }
+      }
     }).exec();
 
-    return res.json({ created: `${ViewsData.data.NoteID}` });
+    return res.json({ note_id: `${ViewsData.data.NoteID}` });
   } catch (error: unknown) {
     return res
       .status(400)
@@ -324,8 +390,8 @@ export const updateNotes = async (req: Request, res: Response) => {
 
     await Session.findByIdAndUpdate(session_mongo_id, {
       $set: {
-        "notes.description": body.Note,
-      },
+        "notes.description": body.Note
+      }
     }).exec();
 
     return res.json({ updated: `${note_views_id}` });

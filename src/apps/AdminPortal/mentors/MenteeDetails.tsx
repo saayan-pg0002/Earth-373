@@ -6,7 +6,7 @@ import { QuestionnaireList } from "../../../components/mentee_profile/Questionna
 import { TabNav, TabNavItemProps } from "../../../components/TabNav";
 import PageHelmet from "../../../util/PageHelmet";
 import { history, Paths } from "../../../util/routes";
-import { questionnaireList, sessionHistoryList } from "../../MenteeProfile";
+import { questionnaireList } from "../../MenteeProfile";
 
 const MenteeDetails: React.FC<{}> = () => {
   const menteeName = "Melissa Nguyen";
@@ -46,9 +46,9 @@ const MenteeDetails: React.FC<{}> = () => {
             birthday={birthday}
           />
         </Route>
-        <Route path={Paths.adminViewMenteeProfileSessions}>
+        {/* <Route path={Paths.adminViewMenteeProfileSessions}>
           <MenteeSessionList sessions={sessionHistoryList} />
-        </Route>
+        </Route> */}
         <Route path={Paths.adminViewMenteeProfileQuestionnaires}>
           <QuestionnaireList questionnaires={questionnaireList} />
         </Route>

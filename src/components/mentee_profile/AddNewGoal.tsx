@@ -12,7 +12,7 @@ export const AddNewGoal: FC<AddNewGoalProps> = ({
   hideAddNewGoal
 }) => {
   const [goal, setGoal] = useState<GoalProp>({
-    id: Math.floor(Math.random() * 100 + 1),
+    id: "",
     name: "",
     isComplete: false,
     createdDate: new Date(),
@@ -22,7 +22,7 @@ export const AddNewGoal: FC<AddNewGoalProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const resetGoal = () =>
     setGoal({
-      id: Math.floor(Math.random() * 100 + 1),
+      id: Math.floor(Math.random() * 100 + 1).toString(),
       name: "",
       isComplete: false,
       createdDate: new Date(),

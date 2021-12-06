@@ -16,7 +16,11 @@ const ForgotPassword: React.FC<{}> = () => {
 
     const email: string = target.email.value;
 
-    sendRequest(RequestType.POST, Endpoints.forgotPassword, { email })
+    sendRequest(
+      RequestType.POST,
+      { endpoint: Endpoints.forgotPassword },
+      { email }
+    )
       .then(({ data }) => {
         const message: string = data?.["message"];
         showMessageToast(MessageToastType.INFO, message);

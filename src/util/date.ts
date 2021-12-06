@@ -5,7 +5,7 @@ export const DaysOfWeek: string[] = [
   "Wednesday",
   "Thursday",
   "Friday",
-  "Saturday",
+  "Saturday"
 ];
 
 const Months: string[] = [
@@ -20,7 +20,7 @@ const Months: string[] = [
   "September",
   "October",
   "November",
-  "December",
+  "December"
 ];
 
 export const getCurrentWeekDateObjects = (
@@ -57,7 +57,7 @@ export const formatWeekDateObjectsForCalendar = (
   for (const day of weekDateObjects) {
     calendarDayItems.push({
       dayOfWeek: DaysOfWeek[day.getDay()],
-      date: day.getDate(),
+      date: day.getDate()
     });
   }
   return calendarDayItems;
@@ -117,14 +117,14 @@ const getDoubleDigitString = (value: number): string => {
 
 export const getFormattedYearMonthDayNumericString = (date: Date): string => {
   const dateNumber: number = date.getDate();
-  const monthName: number = date.getMonth();
+  const monthName: number = date.getMonth() + 1;
   const year: number = date.getFullYear(); // 2019
   return `${getDoubleDigitString(year)}-${getDoubleDigitString(
     monthName
   )}-${getDoubleDigitString(dateNumber)}`;
 };
 
-export const getFormattedMonthDateyearString = (date: Date): string => {
+export const getFormattedMonthDateYearString = (date: Date): string => {
   const dateNumber: number = date.getDate();
   const monthName = Months[date.getMonth()];
   const year: number = date.getFullYear(); // 2019
@@ -141,4 +141,34 @@ export const getFormattedHourMinuteString = (date: Date): string => {
   const hour: string = getDoubleDigitString(date.getHours());
   const minutes: string = getDoubleDigitString(date.getMinutes());
   return `${hour}:${minutes}`;
+};
+
+export const getTimeDurationString = (
+  start: Date,
+  end: Date
+): string | boolean => {
+  if (end <= start || end === start) {
+    return false;
+  }
+
+  const difference: number = end.valueOf() - start.valueOf();
+  let milliseconds: number = difference;
+  const hour: number = Math.floor(milliseconds / 1000 / 60 / 60);
+  milliseconds -= hour * 1000 * 60 * 60;
+  const minutes: number = Math.floor(milliseconds / 1000 / 60);
+  milliseconds -= minutes * 1000 * 60;
+  const seconds: number = Math.floor(milliseconds / 1000);
+
+  return `${getDoubleDigitString(hour)}:${getDoubleDigitString(
+    minutes
+  )}:${getDoubleDigitString(seconds)}`;
+};
+
+export const getDateFromTimeString = (time: string): Date => {
+  const date: Date = new Date();
+  const [hours, minutes] = time.split(":");
+  date.setHours(Number.parseInt(hours));
+  date.setMinutes(Number.parseInt(minutes));
+
+  return date;
 };

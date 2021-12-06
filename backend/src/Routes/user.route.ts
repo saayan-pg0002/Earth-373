@@ -26,6 +26,7 @@ router.post("/login", login);
 router.post("/forgot-password", UserController.forgotPassword);
 router.post("/reset-password", UserController.resetPassword);
 router.get("/profile/me", isLoggedIn, UserController.getMyProfile);
+router.get("/stats", isLoggedIn, UserController.getStatistics);
 
 /* Admin only routes */
 router.post("/mongo/add", isLoggedIn, isAdmin, UserController.addMongoUser);
@@ -54,6 +55,6 @@ router.put(
   isAdmin,
   UserController.editProfile
 );
-router.get("/get/:type", isLoggedIn, isAdmin, UserController.getUsers);
+router.get("/:type", isLoggedIn, isAdmin, UserController.getSpecifiedUsers);
 
 export default router;

@@ -7,12 +7,19 @@ export interface MenteeItemProps {
   association_id: string;
   is_active: boolean;
   mentee_name: string;
+  start_date: string;
+  end_date: string;
 }
 
 export const MenteeItem: React.FC<MenteeItemProps> = ({
   association_id,
   mentee_name,
+  start_date,
+  end_date
 }) => {
+  const startDate = start_date && new Date(start_date);
+  const endDate = end_date && new Date(end_date);
+
   return (
     <Link
       to={Paths.menteeProfileGoals}
@@ -20,13 +27,15 @@ export const MenteeItem: React.FC<MenteeItemProps> = ({
       className="mentee-item"
     >
       <div className="body">
-        {/* <p className="subtext">
-          {endDate
-            ? `${getFormattedMonthYearString(
-                startDate
-              )} - ${getFormattedMonthYearString(endDate)}`
-            : `${getFormattedMonthYearString(startDate)}`}
-        </p> */}
+        {!!startDate && (
+          <p className="subtext">
+            {!!endDate
+              ? `${getFormattedMonthYearString(
+                  startDate
+                )} - ${getFormattedMonthYearString(endDate)}`
+              : `${getFormattedMonthYearString(startDate)}`}
+          </p>
+        )}
         <p className="semi-bold">{mentee_name}</p>
       </div>
       <div className="icon">
