@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosPromise } from "axios";
 import { getLocalStorageItem } from "./localStorage";
 import { buildPath, ParamsAndQueriesInterface } from "../components/Link";
 
@@ -38,7 +38,7 @@ export const sendRequest = (
     queries?: ParamsAndQueriesInterface[];
   },
   data?: {}
-) => {
+): AxiosPromise<any> => {
   const { endpoint, params = [], queries = [] } = url;
   return axios({
     method,
