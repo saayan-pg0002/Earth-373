@@ -52,12 +52,25 @@ export const getSessionGroups = async (req: Request, res: Response) => {
     const responseData: any = ViewsData?.data;
     const responseDataObjectKeys: string[] = Object.keys(responseData);
     const data: any = responseData[responseDataObjectKeys[0]];
-    const sessionGroups: { session_group_id: string; name: string }[] = [];
+    const sessionGroups: {
+      session_group_id: string;
+      name: string;
+      venue_id: string;
+      lead_staff: string;
+    }[] = [];
 
     for (const sessionGroup in data) {
+      const {
+        SessionGroupID = "",
+        Title = "",
+        VenueID = "",
+        LeadStaff = ""
+      } = data[sessionGroup];
       sessionGroups.push({
-        session_group_id: data[sessionGroup]?.SessionGroupID,
-        name: data[sessionGroup]?.Title
+        session_group_id: SessionGroupID,
+        name: Title,
+        venue_id: VenueID,
+        lead_staff: LeadStaff
       });
     }
 
@@ -130,11 +143,18 @@ export const createSession = async (req: Request, res: Response) => {
       StartTime: string;
       Duration: string;
       Activity: string;
+      LeadStaff: string;
       VenueID: string;
       Cancelled: boolean;
     } = req.body;
 
-    if (!body.StartDate || !body.StartTime || !body.VenueID || !body.Duration) {
+    if (
+      !body.StartDate ||
+      !body.StartTime ||
+      !body.VenueID ||
+      !body.Duration ||
+      !body.LeadStaff
+    ) {
       return res.status(400).json({ error: "Some fields are not filled" });
     }
 
@@ -147,7 +167,6 @@ export const createSession = async (req: Request, res: Response) => {
     let ViewsData: AxiosResponse<never> | any;
     ViewsData = await sendViewsRequests(url, http.post, {
       ...body,
-      LeadStaff: mentor.views_id,
       Cancelled: body.Cancelled ? "1" : "0"
     });
     if (ViewsData.ERROR) return res.status(400).json(ViewsData);

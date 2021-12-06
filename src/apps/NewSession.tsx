@@ -35,15 +35,21 @@ interface VenueInterface {
 interface SessionGroupInterface {
   session_group_id: string;
   name: string;
+  venue_id: string;
+  lead_staff: string;
 }
 
 const NewSession: FC<{}> = () => {
   const [menteeOptions, setMenteeOptions] =
     useState<DropdownMenuOptionsProps[]>();
-  const [venueOptions, setVenueOptions] =
-    useState<DropdownMenuOptionsProps[]>();
   const [sessionGroupOptions, setSessionGroupOptions] =
     useState<DropdownMenuOptionsProps[]>();
+  const [sessionGroups, setSessionGroups] = useState<SessionGroupInterface[]>();
+
+  const getSessionGroupInfo = (sessionGroupId: string) =>
+    sessionGroups?.find(
+      (sessionGroup) => sessionGroup.session_group_id === sessionGroupId
+    );
 
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -51,7 +57,6 @@ const NewSession: FC<{}> = () => {
     const target = e.target as typeof e.target & {
       is_cancelled: HTMLInputElement;
       association_id: { value: string };
-      venue_id: { value: string };
       session_group_id: { value: string };
       date: { value: string };
       start_time: { value: string };
@@ -61,23 +66,30 @@ const NewSession: FC<{}> = () => {
 
     const is_cancelled: boolean = target.is_cancelled.checked;
     const association_id: string = target.association_id.value;
-    const venue_id: string = target.venue_id.value;
     const session_group_id: string = target.session_group_id.value;
     const date: string = target.date.value;
     const start_time: Date = getDateFromTimeString(target.start_time.value);
-    const end_time: Date | undefined = !!target.end_time
+    const end_time: Date | undefined = !!target.end_time.value
       ? getDateFromTimeString(target.end_time.value)
       : undefined;
     const notes: string = target.notes.value;
+    const session_group_info: SessionGroupInterface | undefined =
+      getSessionGroupInfo(session_group_id);
+
+    if (!session_group_info) {
+      showMessageToast(
+        MessageToastType.ERROR,
+        "Unable to find info about this session group"
+      );
+      return;
+    }
 
     if (
       !association_id ||
-      !venue_id ||
-      !session_group_id ||
       !date ||
       !start_time ||
       !notes ||
-      (is_cancelled && !end_time)
+      (!is_cancelled && !end_time)
     ) {
       showMessageToast(MessageToastType.ERROR, "You are missing a some fields");
       return;
@@ -102,18 +114,23 @@ const NewSession: FC<{}> = () => {
       VenueID?: string;
       Duration?: string | boolean;
       Cancelled: boolean;
+      LeadStaff?: string;
     } = {
       StartDate: date,
       StartTime: getFormattedHourMinuteString(start_time),
-      Cancelled: is_cancelled,
-      VenueID: venue_id
+      Cancelled: is_cancelled
     };
 
-    if (!is_cancelled && end_time && venue_id) {
+    if (!is_cancelled && end_time) {
       data.EndTime = getFormattedHourMinuteString(end_time);
       data.Duration = getTimeDurationString(start_time, end_time);
     } else {
       data.Duration = "00:00";
+    }
+
+    if (session_group_info) {
+      data.VenueID = session_group_info.venue_id;
+      data.LeadStaff = session_group_info.lead_staff;
     }
 
     sendRequest(
@@ -174,21 +191,6 @@ const NewSession: FC<{}> = () => {
         showMessageToast(MessageToastType.ERROR, "Unable to fetch venues")
       );
 
-    sendRequest(RequestType.GET, { endpoint: Endpoints.venues })
-      .then(({ data: { venues } }) => {
-        const venueList: DropdownMenuOptionsProps[] = venues.map(
-          ({ venue_id, name }: VenueInterface) => ({
-            label: name,
-            value: venue_id
-          })
-        );
-
-        setVenueOptions(venueList);
-      })
-      .catch(() =>
-        showMessageToast(MessageToastType.ERROR, "Unable to fetch venues")
-      );
-
     sendRequest(RequestType.GET, { endpoint: Endpoints.sessionGroups })
       .then(({ data: { session_groups } }) => {
         const sessionGroupList: DropdownMenuOptionsProps[] = session_groups.map(
@@ -199,6 +201,7 @@ const NewSession: FC<{}> = () => {
         );
 
         setSessionGroupOptions(sessionGroupList);
+        setSessionGroups(session_groups);
       })
       .catch(() =>
         showMessageToast(
@@ -213,19 +216,13 @@ const NewSession: FC<{}> = () => {
       <PageHelmet title="New Session" />
 
       <h1 className="page-title">New Session</h1>
-      {menteeOptions && venueOptions && sessionGroupOptions && (
+      {menteeOptions && sessionGroupOptions && (
         <form onSubmit={onSubmit} className="form">
           <Checkbox isChecked={false} label="Cancelled" name="is_cancelled" />
 
           {menteeOptions && (
             <FormField labelText="Mentee">
               <DropdownMenu options={menteeOptions} name="association_id" />
-            </FormField>
-          )}
-
-          {venueOptions && (
-            <FormField labelText="Venue">
-              <DropdownMenu options={venueOptions} name="venue_id" />
             </FormField>
           )}
 
