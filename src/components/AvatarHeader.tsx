@@ -37,8 +37,11 @@ export const GetUserName = (): string | undefined | null => {
 
 export const AvatarHeader: React.FC<AvatarHeaderProps> = ({}) => {
   return (
-    <div className="avatar">
-      <Link to={Paths.settings}>
+    <div className="avatar-header">
+      <Link to={Paths.newSession} className="new-session">
+        <button className="btn-small">New Session</button>
+      </Link>
+      <Link to={Paths.settings} className="avatar">
         <Avatar children={GetUserName()} />
       </Link>
     </div>
