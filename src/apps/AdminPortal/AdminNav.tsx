@@ -45,7 +45,7 @@ const AdminNav: React.FC = () => {
         />
         <NavItem
           label="Admin Users"
-          path={Paths.dashboard}
+          path={Paths.adminUsers}
           iconName={IconName.settings}
         />
       </ul>

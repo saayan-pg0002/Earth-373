@@ -25,7 +25,6 @@ import { ReactComponent as X } from "../assets/icons/icon-x.svg";
 import { ReactComponent as Checkmark } from "../assets/icons/icon-checkmark.svg";
 import { ReactComponent as Phone } from "../assets/icons/icon-phone.svg";
 import { ReactComponent as Checklist } from "../assets/icons/icon-checklist.svg";
-
 import { ReactComponent as Hashtag } from "../assets/icons/icon-hashtag.svg";
 
 export enum IconName {
@@ -54,11 +53,8 @@ export enum IconName {
   x,
   checkmark,
   phone,
-<<<<<<< HEAD
   checklist,
-=======
   hashtag
->>>>>>> 1b5541822c299ebe4c5d3a3ac5b828bf4f8d7075
 }
 
 export enum IconColors {
@@ -166,13 +162,10 @@ const getIcon = (name: IconName): JSX.Element => {
       return <Checkmark />;
     case IconName.phone:
       return <Phone />;
-<<<<<<< HEAD
     case IconName.checklist:
       return <Checklist />;
-=======
     case IconName.hashtag:
       return <Hashtag />;
->>>>>>> 1b5541822c299ebe4c5d3a3ac5b828bf4f8d7075
     default:
       return <></>;
   }

@@ -71,6 +71,8 @@ export const AdminPaths: string[] = [
   Paths.adminViewMenteeProfileSessions,
   Paths.createNewMentor,
   Paths.mentorPairMentee,
+  Paths.adminUsers,
+  Paths.createNewAdmin
 ]
 
 export const PublicPaths: string[] = [
