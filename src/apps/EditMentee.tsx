@@ -19,7 +19,7 @@ const EditMentee: React.FC<EditMenteeProp> = ({
   menteeName,
   StartDate,
   EndDate,
-  BirthDate,
+  BirthDate
 }) => {
   menteeName = "Melissa Nguyen";
   StartDate = new Date();
@@ -52,9 +52,9 @@ const EditMentee: React.FC<EditMenteeProp> = ({
 
       <h2 className="h2"> Schedule</h2>
       <form className="form">
-        <FormField labelText="Day">
+        {/* <FormField labelText="Day">
           <DropdownMenu options={DaysOfWeek} />
-        </FormField>
+        </FormField> */}
 
         <FormField labelText="Start Time">
           <TimeInput initialValue={EndDate} />

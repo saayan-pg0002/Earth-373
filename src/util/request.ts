@@ -1,5 +1,6 @@
-import axios, { AxiosPromise } from "axios";
+import axios from "axios";
 import { getLocalStorageItem } from "./localStorage";
+import { buildPath, ParamsAndQueriesInterface } from "../components/Link";
 
 export const ORIGIN: string = window.location.origin;
 const BASE_URL: string = ORIGIN.split(":").slice(0, 2).join(":");
@@ -16,7 +17,12 @@ export enum Endpoints {
   myMentees = "users/me/mentees",
   me = "users/me",
   forgotPassword = "users/forgot-password",
-  resetPassword = "users/reset-password"
+  resetPassword = "users/reset-password",
+
+  venues = "sessions/getVenues",
+  sessionGroups = "sessions/getSessionGroups",
+  createSession = "sessions/createSessions/:session_group_id/:association_id",
+  createNote = "sessions/createNotes/:session_id"
 }
 
 const getAuthHeaders = (): {} => {
@@ -24,14 +30,19 @@ const getAuthHeaders = (): {} => {
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
-export const sendRequest = (
+export const sendRequest = async (
   method: RequestType,
-  endpoint: Endpoints,
+  url: {
+    endpoint: Endpoints;
+    params?: ParamsAndQueriesInterface[];
+    queries?: ParamsAndQueriesInterface[];
+  },
   data?: {}
-): AxiosPromise<any> => {
+) => {
+  const { endpoint, params = [], queries = [] } = url;
   return axios({
     method,
-    url: `${BASE_URL}:${PORT}/${endpoint}`,
+    url: `${BASE_URL}:${PORT}/${buildPath(endpoint, params, queries)}`,
     data,
     headers: getAuthHeaders()
   });

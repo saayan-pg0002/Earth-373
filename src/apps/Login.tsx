@@ -24,7 +24,11 @@ const Login: React.FC<{}> = () => {
     const email: string = target.email.value;
     const password: string = target.password.value;
 
-    sendRequest(RequestType.POST, Endpoints.login, { email, password })
+    sendRequest(
+      RequestType.POST,
+      { endpoint: Endpoints.login },
+      { email, password }
+    )
       .then(({ data }) => {
         const token: string = data?.["jwt"];
         const role: string = data?.["role"];

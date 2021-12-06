@@ -11,7 +11,7 @@ const Mentees: React.FC<{}> = () => {
   const [pastMenteeList, setPastMenteeList] = useState<MenteeItemProps[]>([]);
 
   useEffect(() => {
-    sendRequest(RequestType.GET, Endpoints.myMentees)
+    sendRequest(RequestType.GET, { endpoint: Endpoints.myMentees })
       .then(({ data: { mentees } }) => {
         const ongoingMentees: MenteeItemProps[] = mentees.filter(
           (mentee: MenteeItemProps) => mentee.is_active
