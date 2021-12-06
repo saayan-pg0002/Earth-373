@@ -11,8 +11,13 @@ import {
 export interface TableComponentProps {
   heading: any[];
   body: any[];
+  handleRowSelection: (selectionID: number) => void;
 }
-const TableComponent: React.FC<TableComponentProps> = ({ heading, body }) => {
+const TableComponent: React.FC<TableComponentProps> = ({
+  heading,
+  body,
+  handleRowSelection
+}) => {
   const TblHead = () => {
     return (
       <TableHead>
@@ -33,7 +38,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ heading, body }) => {
       <TableBody>
         {body.map(({ id, items }) => (
           <TableRow key={id}>
-            <TableCell align="center" onClick={() => handleClick(id)}>
+            <TableCell align="center" onClick={() => handleRowSelection(id)}>
               {" "}
               {id}
             </TableCell>
@@ -41,7 +46,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ heading, body }) => {
               <TableCell
                 key={`${id}-${index}`}
                 align="center"
-                onClick={() => handleClick(id)}
+                onClick={() => handleRowSelection(id)}
               >
                 {item}
               </TableCell>
@@ -52,13 +57,9 @@ const TableComponent: React.FC<TableComponentProps> = ({ heading, body }) => {
     );
   };
 
-  const handleClick = (e: number) => {
-    //routeTo(Paths.adminViewMenteeProfileGoals);
-  };
-
   return (
     <TableContainer className="table-container" component={Paper}>
-      <Table sx={{ minWidth: 400 }} aria-label="simple table" className="table">
+      <Table aria-label="simple table" className="table">
         <TblHead />
         <TblBody />
       </Table>
