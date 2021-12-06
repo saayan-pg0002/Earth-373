@@ -42,12 +42,12 @@ const MentorPairMentee: React.FC<PairMenteeProp> = ({
       </div>
 
       <form className="form" onSubmit={onSubmit}>
-        <FormField labelText="Mentee">
+        {/* <FormField labelText="Mentee">
           <DropdownMenu
             name="mentee"
             options={ListOfMenteesUnpairedWithMentee}
           />
-        </FormField>
+        </FormField> */}
 
         <FormField labelText="Start Date">
           <DateInput name="startDate" id="inputDate" isDisabled={false} />

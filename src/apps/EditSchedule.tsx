@@ -4,13 +4,13 @@ import { DropdownMenu } from "../components/form/DropdownMenu";
 import { FormField } from "../components/form/FormField";
 import { TimeInput } from "../components/form/TimeInput";
 import { MenteeInfoProps } from "../components/mentee_profile/MenteeGoals";
-import { DaysOfWeek} from "../util/date";
+import { DaysOfWeek } from "../util/date";
 import PageHelmet from "../util/PageHelmet";
 import { Paths } from "../util/routes";
 
 const EditSchedule: React.FC<MenteeInfoProps> = ({
   sessionDay,
-  sessionTime,
+  sessionTime
 }) => {
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -41,9 +41,9 @@ const EditSchedule: React.FC<MenteeInfoProps> = ({
       </div>
 
       <form onSubmit={onSubmit} className="form">
-        <FormField labelText="Day">
+        {/* <FormField labelText="Day">
           <DropdownMenu name="sessionDay" options={DaysOfWeek} />
-        </FormField>
+        </FormField> */}
 
         <FormField labelText="Start Time">
           <TimeInput name="sessionTime" initialValue={time} />
