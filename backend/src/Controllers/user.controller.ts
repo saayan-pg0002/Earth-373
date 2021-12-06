@@ -267,7 +267,7 @@ const getMenteesForMentor = (req: Request, res: Response) => {
   const user: any = req.user;
   const mentor_id: string = user._id as string;
 
-  Association.find({ mentor_id: mentor_id })
+  Association.find({ mentor_id })
     .exec()
     .then((associations) => {
       const menteeIds: String[] = associations.map(
@@ -289,7 +289,8 @@ const getMenteesForMentor = (req: Request, res: Response) => {
           (association) => {
             const mentee: any = mentees.find(
               (currentMentee) =>
-                currentMentee._id.toString() === association.mentee_id
+                currentMentee._id.toString() ===
+                association.mentee_id.toString()
             );
 
             if (!mentee) {
@@ -300,10 +301,12 @@ const getMenteesForMentor = (req: Request, res: Response) => {
             }
 
             return {
-              // TODO: Add association start_date and end_date
               association_id: association._id,
               is_active: association.isActive,
-              mentee_name: `${mentee.first_name} ${mentee.last_name}`
+              mentee_name: `${mentee.first_name} ${mentee.last_name}`,
+              birthday: `${mentee.dateOfBirth}`,
+              start_date: association.start_date,
+              end_date: association.end_date
             };
           }
         );
@@ -354,11 +357,11 @@ const getAssociationForMentorById = (req: Request, res: Response) => {
 };
 
 const getGoalsForAssociation = (req: Request, res: Response) => {
-  let { mentee_id } = req.body;
+  let { association_id } = req.body;
   const user: any = req.user;
   const mentor_id: string = user._id;
 
-  Association.findOne({ mentee_id: mentee_id, mentor_id: mentor_id })
+  Association.findOne({ _id: association_id, mentor_id: mentor_id })
     .exec()
     .then((result: any) => {
       return res.status(200).json({
@@ -584,7 +587,7 @@ const editProfile = (req: Request, res: Response) => {
   });
 };
 
-const getStatistcs = (req: Request, res: Response) => {
+const getStatistics = (req: Request, res: Response) => {
   const user: any = req.user;
   const mentor_id: string = user._id as string;
 
@@ -644,15 +647,12 @@ const getStatistcs = (req: Request, res: Response) => {
                     }
                   }
                 }
-                console.log("Completed goals: ", totalCompletedGoals);
-                console.log("Cancelled sessions: ", totalCancelled);
-                console.log("Total Sessions: ", totalSessions);
-                console.log("Total Goals: ", totalGoals);
+
                 res.status(200).json({
-                  "Completed Goals": totalCompletedGoals,
-                  "Cancelled Sessions": totalCancelled,
-                  "Total Sessions": totalSessions,
-                  "Total Goals": totalGoals
+                  completed_goals: totalCompletedGoals,
+                  cancelled_sessions: totalCancelled,
+                  total_sessions: totalSessions,
+                  total_goals: totalGoals
                 });
               });
             }
@@ -661,6 +661,49 @@ const getStatistcs = (req: Request, res: Response) => {
       );
     }
   );
+};
+
+const getSpecifiedUsers = (req: Request, res: Response) => {
+  const urole: string = req.params.type;
+  let MENTOR: any = "Mentor";
+  let ADMIN: any = "Admin";
+
+  if (urole.toLowerCase() === "mentors") {
+    User.find({ role: MENTOR })
+      .select("-password")
+      .exec((err, mentors) => {
+        if (err) {
+          res
+            .status(400)
+            .json({ error: "An error occured while fetching Mentors ", err });
+        }
+        res.status(200).json(mentors);
+      });
+  }
+
+  if (urole.toLowerCase() === "mentees") {
+    Mentee.find().exec((err, mentees) => {
+      if (err) {
+        res
+          .status(400)
+          .json({ error: "An error occured while fetching Mentees ", err });
+      }
+      res.status(200).json(mentees);
+    });
+  }
+
+  if (urole.toLowerCase() === "admins") {
+    User.find({ role: ADMIN })
+      .select("-password")
+      .exec((err, admins) => {
+        if (err) {
+          res
+            .status(400)
+            .json({ error: "An error occured while fetching Admins ", err });
+        }
+        res.status(200).json(admins);
+      });
+  }
 };
 
 const UserController = {
@@ -679,7 +722,8 @@ const UserController = {
   getHashedPassword,
   getMyProfile,
   editProfile,
-  getStatistcs
+  getStatistics,
+  getSpecifiedUsers
 };
 
 export default UserController;

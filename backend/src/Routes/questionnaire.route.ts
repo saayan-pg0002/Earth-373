@@ -27,4 +27,12 @@ router
   .route("/associations/questionnaire/:id")
   .put(QuestionnaireController.updateQuestionnaireValues);
 
+router
+  .route("/all-questionnaires/:assid")
+  .get(isLoggedIn, QuestionnaireController.getQuestionnairesForAssociation);
+
+router
+  .route("/get-questionnaire/:questid")
+  .get(isLoggedIn, QuestionnaireController.openQuestionnaireById);
+
 export default router;

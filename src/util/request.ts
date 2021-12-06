@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosPromise } from "axios";
 import { getLocalStorageItem } from "./localStorage";
 import { buildPath, ParamsAndQueriesInterface } from "../components/Link";
 
@@ -9,7 +9,8 @@ const PORT: String = "5000";
 export enum RequestType {
   POST = "POST",
   GET = "GET",
-  PATCH = "PATCH"
+  PATCH = "PATCH",
+  PUT = "PUT"
 }
 
 export enum Endpoints {
@@ -18,11 +19,16 @@ export enum Endpoints {
   me = "users/me",
   forgotPassword = "users/forgot-password",
   resetPassword = "users/reset-password",
-
+  getGoals = "users/me/association/goals",
+  updateGoal = "users/update-goal",
+  createGoal = "users/creategoal",
+  stats = "users/stats",
+  associationSessions = "sessions/getAssociatedSessions/:association_id",
   venues = "sessions/getVenues",
   sessionGroups = "sessions/getSessionGroups",
   createSession = "sessions/createSessions/:session_group_id/:association_id",
-  createNote = "sessions/createNotes/:session_id"
+  createNote = "sessions/createNotes/:session_id",
+  session = "sessions/getSessionByID/:session_id"
 }
 
 const getAuthHeaders = (): {} => {
@@ -30,7 +36,7 @@ const getAuthHeaders = (): {} => {
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
-export const sendRequest = async (
+export const sendRequest = (
   method: RequestType,
   url: {
     endpoint: Endpoints;
@@ -38,7 +44,7 @@ export const sendRequest = async (
     queries?: ParamsAndQueriesInterface[];
   },
   data?: {}
-) => {
+): AxiosPromise<any> => {
   const { endpoint, params = [], queries = [] } = url;
   return axios({
     method,
