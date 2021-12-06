@@ -55,5 +55,6 @@ router.put(
   isAdmin,
   UserController.editProfile
 );
+router.get("/:type", isLoggedIn, isAdmin, UserController.getSpecifiedUsers);
 
 export default router;
