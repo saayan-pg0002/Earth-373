@@ -8,7 +8,7 @@ interface MenteeListProps {
 
 export const MenteeList: React.FC<MenteeListProps> = ({
   mentees,
-  showEmptyState = false,
+  showEmptyState = false
 }) => {
   const isEmpty: boolean = mentees.length === 0;
 
@@ -23,7 +23,13 @@ export const MenteeList: React.FC<MenteeListProps> = ({
       ) : (
         mentees.map(
           (
-            { association_id, is_active, mentee_name }: MenteeItemProps,
+            {
+              association_id,
+              is_active,
+              mentee_name,
+              start_date,
+              end_date
+            }: MenteeItemProps,
             index: number
           ) => (
             <MenteeItem
@@ -31,6 +37,8 @@ export const MenteeList: React.FC<MenteeListProps> = ({
               association_id={association_id}
               is_active={is_active}
               mentee_name={mentee_name}
+              start_date={start_date}
+              end_date={end_date}
             />
           )
         )
