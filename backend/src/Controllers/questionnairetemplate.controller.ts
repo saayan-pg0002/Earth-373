@@ -12,6 +12,8 @@ import Questionnaire from "../Models/questionnaire.model";
 import User from "../Models/user.model";
 import xml2js from "xml2js";
 import { errorHandler } from "../util";
+import AssociationInterface from "../Interfaces/association.interface";
+import QuestionnaireInterface from "../Interfaces/questionnaire.interface";
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
@@ -434,11 +436,94 @@ const updateQuestionnaireValues = async (req: Request, res: Response) => {
     });
 };
 
+const getQuestionnairesForAssociation = async (req: Request, res: Response) => {
+  const association_id: string = req.params.assid;
+  const user: any = req.user;
+  const mentor_id: string = user._id as string;
+
+  Association.findOne({ _id: association_id })
+    .exec()
+    .then(async (association: AssociationInterface | null) => {
+      if (association?.mentor_id != mentor_id) {
+        return res.status(401).json({
+          message:
+            "Error: The signed in used is not authorized to access this information"
+        });
+      }
+      const questionnaires = association?.previous_questionnaire_ids;
+
+      var arrayOfValues: Object[] = [];
+
+      await (async () => {
+        for (const questionnaire_id of questionnaires) {
+          await Questionnaire.findOne({
+            questionnaire_views_id: questionnaire_id
+          })
+            .exec()
+            .then((result: any) => {
+              arrayOfValues.push({
+                questionnaire_id: result?.questionnaire_views_id,
+                created_date: result?.createdAt
+              });
+              console.log(result?.questionnaire_views_id);
+            })
+            .catch((err) => {
+              return res.status(500).json({
+                message:
+                  "Error: couldn't find questionnaire by its questionnaire id",
+                err
+              });
+            });
+        }
+      })();
+
+      return res.status(200).json({
+        arrayOfValues
+      });
+    })
+    .catch((err) => {
+      return res.status(500).json({
+        message: "Failed to find association by its id",
+        err
+      });
+    });
+};
+
+const openQuestionnaireById = (req: Request, res: Response) => {
+  const quest_v_id: string = req.params.questid;
+  const user: any = req.user;
+  const mentor_views_id: string = user.views_id as string;
+
+  Questionnaire.findOne({ questionnaire_views_id: quest_v_id })
+    .exec()
+    .then((questionnaire: QuestionnaireInterface | null) => {
+      if (questionnaire?.mentor_views_id != mentor_views_id) {
+        return res.status(401).json({
+          message:
+            "Error: the currently signed in user is not authorized to view this page."
+        });
+      }
+
+      return res.status(200).json({
+        questionnaire
+      });
+    })
+    .catch((err) => {
+      return res.status(500).json({
+        message:
+          "Error: Could not find questionnaire with the given questionnaire id",
+        err
+      });
+    });
+};
+
 const QuestionnaireController = {
   migrateQuestionnaireTemplate,
   getQuestionnaireTemplateList,
   getQuestionnaireTemplateById,
   assignQuestionnaireToAssociation,
-  updateQuestionnaireValues
+  updateQuestionnaireValues,
+  getQuestionnairesForAssociation,
+  openQuestionnaireById
 };
 export default QuestionnaireController;
