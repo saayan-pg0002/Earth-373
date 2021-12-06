@@ -18,6 +18,7 @@ export enum Endpoints {
   me = "users/me",
   forgotPassword = "users/forgot-password",
   resetPassword = "users/reset-password",
+  stats = "users/stats",
 
   venues = "sessions/getVenues",
   sessionGroups = "sessions/getSessionGroups",
