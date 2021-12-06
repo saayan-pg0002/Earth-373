@@ -13,11 +13,11 @@ interface QuestionnaireListProps {
 export const QuestionnaireList: React.FC<QuestionnaireListProps> = ({
   questionnaires
 }) => {
-  const { assid } = useParams<{ assid: string }>();
-  console.log(assid);
   const isEmpty: boolean = questionnaires.length === 0;
+  /*const { assid } = useParams<{ assid: string }>();
+  console.log(assid);
 
-  /*useEffect(() => {
+  useEffect(() => {
     sendRequest(RequestType.GET, {
       endpoint: Endpoints.getQuestionnairesForAssociation,
       params: [{ name: "association_id", value: assid }]
