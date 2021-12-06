@@ -105,16 +105,8 @@ const getViewsUsers = async (req: Request, res: Response) => {
 
 const migrateViewsUsers = async (req: Request, res: Response) => {
   try {
-    // admins
+    // base url
     const url: string = "https://app.viewsapp.net/api/restful/contacts/";
-
-    const staffs: any = await sendViewsRequests(
-      url + "staff/search",
-      http.get,
-      undefined
-    );
-    if (staffs.ERROR) return res.status(400).json(staffs);
-    await createUsers(staffs.data);
 
     // mentors
     const mentors: any = await sendViewsRequests(
@@ -124,6 +116,15 @@ const migrateViewsUsers = async (req: Request, res: Response) => {
     );
     if (mentors.ERROR) return res.status(400).json(mentors);
     await createUsers(mentors.data);
+
+    // admins
+    const staffs: any = await sendViewsRequests(
+      url + "staff/search",
+      http.get,
+      undefined
+    );
+    if (staffs.ERROR) return res.status(400).json(staffs);
+    await createUsers(staffs.data);
 
     // mentees
     const mentees: any = await sendViewsRequests(
@@ -159,6 +160,7 @@ async function createUsers(data: any) {
                   error: hashError
                 };
               }
+
               let userType = "Admin";
               if (userFields["TypeName"] === "volunteer") {
                 userType = "Mentor";
@@ -177,6 +179,33 @@ async function createUsers(data: any) {
                 role: userType,
                 resetLink: ""
               });
+              const token = jwt.sign(
+                { _id: newUser._id },
+                process.env.JWT_KEY as string,
+                {
+                  expiresIn: "25m"
+                }
+              );
+              const mailOptions = {
+                from: "baytree.earth@yahoo.com",
+                to: userFields["Email"] as string,
+                subject: "Password Reset Link",
+                html: ` <h1> Hello ${newUser.first_name} ${newUser.last_name} !
+                        <h2>Please click on the link below to set your password.</h2>
+                        <br>
+                        <a href="http://${process.env.URL}/reset-password/${token}">http://${process.env.URL}/reset-password/${token}</a>`
+              };
+              emailTransporter.sendMail(
+                mailOptions,
+                (error: any, info: any) => {
+                  if (error)
+                    console.log(
+                      `Cannot send password reset link to ${newUser.email}}`,
+                      error
+                    );
+                  console.log("Password reset link sent:", info);
+                }
+              );
               newUser.save().catch((error) => {
                 return console.log("Error adding user", error);
               });
