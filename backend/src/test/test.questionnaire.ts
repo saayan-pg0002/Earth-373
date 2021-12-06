@@ -1,10 +1,8 @@
-import request from "supertest";
 import app from "../app";
 import "mocha";
 import chai from "chai";
 import chaiHttp from "chai-http";
 import QuestionnaireTemplate from "../Models/questionnairetemplate.model";
-import { Console } from "console";
 
 chai.should();
 chai.use(chaiHttp);
