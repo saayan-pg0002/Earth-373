@@ -1,14 +1,10 @@
 @import "../util/";
 
 .loading {
-  position: absolute;
-  inset: 0;
-  height: 100vh;
-  width: 100vw;
-  background-color: rgba(44, 62, 80, 0.35);
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100%;
   
 
   .spinner {

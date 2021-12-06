@@ -13,6 +13,9 @@
   letter-spacing: $letter-spacing;
   width: 100%;
   font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     background-color: $baytree-green-600;
@@ -39,6 +42,20 @@
       box-shadow: $grey-400 0px 0px 0px 5px;
     }
   }
+
+  &.submitting {
+    background-color: $baytree-green-400;
+
+    .loading {
+      margin-left: 0.5rem;
+      .spinner {
+        border: 0.25rem solid #f4f5f6;
+        border-top: 0.25rem solid #48b030;
+        width: 1.5rem;
+      }
+    }
+  }
+
 }
 
 a.btn {
