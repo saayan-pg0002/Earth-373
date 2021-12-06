@@ -99,7 +99,6 @@ const MenteeProfile: FC<{}> = () => {
       to: getNavPath(Paths.menteeProfileQuestionnaires)
     }
   ];
-  console.log(association_id);
 
   return (
     <main className="mentee-profile">
