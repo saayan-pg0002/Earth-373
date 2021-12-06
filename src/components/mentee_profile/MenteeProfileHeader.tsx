@@ -43,7 +43,7 @@ export const MenteeProfileHeader: React.FC<MenteeInfoProps> = ({
           color={IconColors.baytreeNavy}
           size={IconSizes.xsmall}
         />
-        {`Birstday: ${birthday}`}
+        {`Birthday: ${birthday}`}
       </div>
     </div>
   );
