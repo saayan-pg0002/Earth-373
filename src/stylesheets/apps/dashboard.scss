@@ -13,4 +13,99 @@
       }
     }
   }
+
+  .stats-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-areas: 
+      "sessions cancelled"
+      "goals goals"
+      "chart chart";
+
+    .stat-widget {
+      padding: 1rem;
+      display: flex;
+      border-radius: $border-radius;
+      background-color: $grey-50;
+  
+      .icon {
+        margin-right: 0.5rem;
+        align-self: flex-start;
+      }
+      
+      &:nth-child(1) {
+        grid-area: sessions;
+        background-color: $baytree-green;
+        &, .subtext {
+          color: $white;
+        }
+  
+        svg path {
+          fill: $white;
+        }
+      }
+      
+      &:nth-child(2) {
+        grid-area: cancelled;
+      }
+
+      .body {
+        p:first-child {
+          font-size: $font-size * 1.5;
+          line-height: normal;
+          margin-bottom: 0.5rem;
+        }
+      }
+    }
+
+    .goal-widget {
+      grid-area: goals;
+      padding: 1rem;
+      border-radius: $border-radius;
+      background-color: $grey-50;
+      
+      & > * + * {
+        margin-top: 0.5rem;
+      }
+
+      p:first-of-type {
+        font-size: $font-size * 1.5;
+      }
+      
+      p:last-of-type {
+        font-size: $font-size * 0.75;
+        color: $black;
+      }
+
+      progress {
+        width: 100%;
+        height: 1rem;
+        border-radius: $border-radius;
+        
+        &::-webkit-progress-bar, 
+        &::-webkit-progress-value {
+          border-radius: $border-radius;
+        }
+
+        &::-webkit-progress-bar {
+          background-color: $grey-200;
+        }
+        &::-webkit-progress-value {
+          background-color: $baytree-pink;
+        }
+      }
+    }
+
+    .pie-chart {
+      grid-area: chart;
+      justify-self: center;
+
+      canvas {
+        width: unset !important;
+      }
+    }
+
+  }
+
 }
+

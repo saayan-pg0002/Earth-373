@@ -22,6 +22,7 @@ export enum Endpoints {
   getGoals = "users/me/association/goals",
   updateGoal = "users/update-goal",
   createGoal = "users/creategoal",
+  stats = "users/stats",
   venues = "sessions/getVenues",
   sessionGroups = "sessions/getSessionGroups",
   createSession = "sessions/createSessions/:session_group_id/:association_id",

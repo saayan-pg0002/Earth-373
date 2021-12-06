@@ -586,7 +586,7 @@ const editProfile = (req: Request, res: Response) => {
   });
 };
 
-const getStatistcs = (req: Request, res: Response) => {
+const getStatistics = (req: Request, res: Response) => {
   const user: any = req.user;
   const mentor_id: string = user._id as string;
 
@@ -646,15 +646,12 @@ const getStatistcs = (req: Request, res: Response) => {
                     }
                   }
                 }
-                console.log("Completed goals: ", totalCompletedGoals);
-                console.log("Cancelled sessions: ", totalCancelled);
-                console.log("Total Sessions: ", totalSessions);
-                console.log("Total Goals: ", totalGoals);
+
                 res.status(200).json({
-                  "Completed Goals": totalCompletedGoals,
-                  "Cancelled Sessions": totalCancelled,
-                  "Total Sessions": totalSessions,
-                  "Total Goals": totalGoals
+                  completed_goals: totalCompletedGoals,
+                  cancelled_sessions: totalCancelled,
+                  total_sessions: totalSessions,
+                  total_goals: totalGoals
                 });
               });
             }
@@ -663,6 +660,49 @@ const getStatistcs = (req: Request, res: Response) => {
       );
     }
   );
+};
+
+const getSpecifiedUsers = (req: Request, res: Response) => {
+  const urole: string = req.params.type;
+  let MENTOR: any = "Mentor";
+  let ADMIN: any = "Admin";
+
+  if (urole.toLowerCase() === "mentors") {
+    User.find({ role: MENTOR })
+      .select("-password")
+      .exec((err, mentors) => {
+        if (err) {
+          res
+            .status(400)
+            .json({ error: "An error occured while fetching Mentors ", err });
+        }
+        res.status(200).json(mentors);
+      });
+  }
+
+  if (urole.toLowerCase() === "mentees") {
+    Mentee.find().exec((err, mentees) => {
+      if (err) {
+        res
+          .status(400)
+          .json({ error: "An error occured while fetching Mentees ", err });
+      }
+      res.status(200).json(mentees);
+    });
+  }
+
+  if (urole.toLowerCase() === "admins") {
+    User.find({ role: ADMIN })
+      .select("-password")
+      .exec((err, admins) => {
+        if (err) {
+          res
+            .status(400)
+            .json({ error: "An error occured while fetching Admins ", err });
+        }
+        res.status(200).json(admins);
+      });
+  }
 };
 
 const UserController = {
@@ -681,7 +721,8 @@ const UserController = {
   getHashedPassword,
   getMyProfile,
   editProfile,
-  getStatistcs
+  getStatistics,
+  getSpecifiedUsers
 };
 
 export default UserController;
