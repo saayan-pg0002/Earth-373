@@ -264,6 +264,7 @@ const NewSession: FC<{}> = () => {
             <button
               type="submit"
               className={`btn ${!isNotSubmitting ? "submitting" : ""}`}
+              disabled={!isNotSubmitting}
             >
               Log Session
               <Loading load={!isNotSubmitting}></Loading>
