@@ -85,9 +85,12 @@ export const getSessionGroups = async (req: Request, res: Response) => {
 export const getAssociatedSessions = async (req: Request, res: Response) => {
   try {
     const associationID: string = req.params.associationID;
-    const sessions: AxiosResponse<never> | any = await Session.find({
-      association_id: associationID
-    }).exec();
+    const sessions: AxiosResponse<never> | any = await Session.find(
+      {
+        association_id: associationID
+      },
+      "_id notes start_time end_time"
+    ).exec();
     return res.json(sessions);
   } catch (error) {
     return res
@@ -100,10 +103,32 @@ export const getSessionByID = async (req: Request, res: Response) => {
   try {
     const session_mongo_id: string = req.params.sessionID;
     const session: AxiosResponse<never> | any = await Session.findById(
-      session_mongo_id
+      session_mongo_id,
+      "_id notes start_time end_time is_cancelled association_id"
     ).exec();
-    if (!session) return res.status(400).json({ error: "session not found" });
-    return res.json(session);
+    if (!session) return res.status(400).json({ error: "Session not found" });
+
+    const association: AxiosResponse<never> | any = await Association.findById(
+      session.association_id
+    ).exec();
+    if (!association)
+      return res
+        .status(400)
+        .json({ error: "Association not found for this session " });
+
+    const mentee: AxiosResponse<never> | any = await Mentee.findById(
+      association.mentee_id,
+      "first_name last_name"
+    );
+    if (!mentee)
+      return res
+        .status(400)
+        .json({ error: "Mentee not found for this session" });
+
+    return res.json({
+      ...session.toJSON(),
+      name: `${mentee.first_name} ${mentee.last_name}`
+    });
   } catch (error) {
     return res
       .status(400)

@@ -23,10 +23,12 @@ export enum Endpoints {
   updateGoal = "users/update-goal",
   createGoal = "users/creategoal",
   stats = "users/stats",
+  associationSessions = "sessions/getAssociatedSessions/:association_id",
   venues = "sessions/getVenues",
   sessionGroups = "sessions/getSessionGroups",
   createSession = "sessions/createSessions/:session_group_id/:association_id",
-  createNote = "sessions/createNotes/:session_id"
+  createNote = "sessions/createNotes/:session_id",
+  session = "sessions/getSessionByID/:session_id"
 }
 
 const getAuthHeaders = (): {} => {
