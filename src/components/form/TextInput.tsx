@@ -19,7 +19,7 @@ export const TextInput: React.FC<GeneralInputProps & TextInputProps> = ({
   placeholderText,
   type = "text",
   initialValue,
-  isDisabled = false,
+  isDisabled = false
 }) => {
   const [value, setValue] = useState<string>(initialValue ?? "");
   const [isFocused, setIsFocused] = useState<Boolean>(false);
@@ -27,7 +27,7 @@ export const TextInput: React.FC<GeneralInputProps & TextInputProps> = ({
   const onFocus = (): void => setIsFocused(true);
   const onBlur = (): void => setIsFocused(false);
 
-  const onChange = (event: any) => setValue(event.target.vaue);
+  const onChange = (event: any) => setValue(event.target.value);
 
   return (
     <div

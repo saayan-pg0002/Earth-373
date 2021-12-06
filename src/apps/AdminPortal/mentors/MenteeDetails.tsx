@@ -1,7 +1,7 @@
 import { Route, Router } from "react-router-dom";
 import { MenteeHeader } from "../../../components/AdminPortal_Mentors/MenteeHeader";
 import MenteeGoals from "../../../components/mentee_profile/MenteeGoals";
-import { MenteeSessionList } from "../../../components/mentee_profile/MenteeSessionList";
+// import { MenteeSessionList } from "../../../components/mentee_profile/MenteeSessionList";
 import { QuestionnaireList } from "../../../components/mentee_profile/QuestionnaireList";
 import { TabNav, TabNavItemProps } from "../../../components/TabNav";
 import PageHelmet from "../../../util/PageHelmet";

@@ -30,11 +30,6 @@ export interface NewSessionProps {
   isCancelled: boolean;
 }
 
-interface VenueInterface {
-  venue_id: string;
-  name: string;
-}
-
 interface SessionGroupInterface {
   session_group_id: string;
   name: string;

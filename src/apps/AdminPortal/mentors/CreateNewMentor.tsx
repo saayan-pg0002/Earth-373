@@ -1,13 +1,16 @@
-import { DropdownMenu } from "../../../components/form/DropdownMenu";
+import {
+  DropdownMenu,
+  DropdownMenuOptionsProps
+} from "../../../components/form/DropdownMenu";
 import { FormField } from "../../../components/form/FormField";
 import { TextInput } from "../../../components/form/TextInput";
 import { IconName } from "../../../components/Icon";
 import PageHelmet from "../../../util/PageHelmet";
 
-export const MentorTypes: string[] = [
-  "IntoSchool Mentors",
-  "Youth Mentors",
-  "Women Mentor"
+const MentorTypes: DropdownMenuOptionsProps[] = [
+  { label: "IntoSchool Mentors", value: "into-school" },
+  { label: "Youth Mentors", value: "youth" },
+  { label: "Women Mentor", value: "women" }
 ];
 
 interface MentorInfoProp {
@@ -58,9 +61,9 @@ const CreateNewMentor: React.FC<MentorInfoProp> = ({
       </div>
 
       <form className="form" onSubmit={onSubmit}>
-        {/* <FormField labelText="Mentee">
+        <FormField labelText="Mentee">
           <DropdownMenu options={MentorTypes} />
-        </FormField> */}
+        </FormField>
 
         <FormField labelText="Email">
           <TextInput

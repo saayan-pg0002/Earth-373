@@ -1,11 +1,14 @@
 import React from "react";
-import { DropdownMenu } from "../form/DropdownMenu";
+import { DropdownMenu, DropdownMenuOptionsProps } from "../form/DropdownMenu";
 import { FormField } from "../form/FormField";
 import Link from "../Link";
 import PageHelmet from "../../util/PageHelmet";
 import { Paths } from "../../util/routes";
 
-const QuestionnaireType: string[] = ["IntoSchool Mentors", "Youth Mentors"];
+const QuestionnaireType: DropdownMenuOptionsProps[] = [
+  { label: "IntoSchool Mentors", value: "into-school" },
+  { label: "Youth Mentors", value: "youth" }
+];
 
 const NewQuestionnaire: React.FC<{}> = () => {
   return (
@@ -20,9 +23,9 @@ const NewQuestionnaire: React.FC<{}> = () => {
       </div>
 
       <form className="form">
-        {/* <FormField labelText="Questionnaire type">
+        <FormField labelText="Questionnaire type">
           <DropdownMenu options={QuestionnaireType} />
-        </FormField> */}
+        </FormField>
 
         <div className="actions">
           <button type="button" className="btn">
