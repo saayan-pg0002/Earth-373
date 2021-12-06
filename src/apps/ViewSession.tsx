@@ -48,76 +48,77 @@ const ViewSession: FC = () => {
   }, [session_id]);
 
   return (
-    <main className="container">
+    <main>
       <PageHelmet title="View Session" />
-
-      <h1 className="page-title">View Session</h1>
-      <form className="form">
-        <p className="subtext">
-          This is a view-only page. To change any fields, please contact an
-          admin
-        </p>
-        {isCancelled !== undefined && (
-          <Checkbox
-            isChecked={isCancelled}
-            label="Cancelled"
-            isDisabled={true}
-          />
-        )}
-
-        {name !== undefined && (
-          <FormField labelText="Mentee">
-            <TextInput
-              rightIconName={IconName.smiley}
-              initialValue={name}
-              placeholderText="Mentee Name"
+      <div className="container">
+        <h1 className="page-title">View Session</h1>
+        <form className="form">
+          <p className="subtext">
+            This is a view-only page. To change any fields, please contact an
+            admin
+          </p>
+          {isCancelled !== undefined && (
+            <Checkbox
+              isChecked={isCancelled}
+              label="Cancelled"
               isDisabled={true}
             />
-          </FormField>
-        )}
+          )}
 
-        {date !== undefined && (
-          <FormField labelText="Date">
-            <DateInput
-              name="date"
-              id="inputDate"
-              initialValue={date}
-              isDisabled={true}
-            />
-          </FormField>
-        )}
+          {name !== undefined && (
+            <FormField labelText="Mentee">
+              <TextInput
+                rightIconName={IconName.smiley}
+                initialValue={name}
+                placeholderText="Mentee Name"
+                isDisabled={true}
+              />
+            </FormField>
+          )}
 
-        {startTime !== undefined && (
-          <FormField labelText="Start Time">
-            <TimeInput
-              name="start_time"
-              initialValue={startTime}
-              isDisabled={true}
-            />
-          </FormField>
-        )}
+          {date !== undefined && (
+            <FormField labelText="Date">
+              <DateInput
+                name="date"
+                id="inputDate"
+                initialValue={date}
+                isDisabled={true}
+              />
+            </FormField>
+          )}
 
-        {endTime !== undefined && (
-          <FormField labelText="End Time">
-            <TimeInput
-              name="end_time"
-              initialValue={endTime}
-              isDisabled={true}
-            />
-          </FormField>
-        )}
+          {startTime !== undefined && (
+            <FormField labelText="Start Time">
+              <TimeInput
+                name="start_time"
+                initialValue={startTime}
+                isDisabled={true}
+              />
+            </FormField>
+          )}
 
-        {notes !== undefined && (
-          <FormField labelText="Notes">
-            <InputNotes
-              placeholderText="Add notes about your session..."
-              name="notes"
-              isDisabled={true}
-              initialValue={notes}
-            />
-          </FormField>
-        )}
-      </form>
+          {endTime !== undefined && (
+            <FormField labelText="End Time">
+              <TimeInput
+                name="end_time"
+                initialValue={endTime}
+                isDisabled={true}
+              />
+            </FormField>
+          )}
+
+          {notes !== undefined && (
+            <FormField labelText="Notes">
+              <InputNotes
+                placeholderText="Add notes about your session..."
+                name="notes"
+                isDisabled={true}
+                initialValue={notes}
+              />
+            </FormField>
+          )}
+        </form>
+      </div>
     </main>
   );
 };

@@ -2,18 +2,21 @@
 
 .app-container.private-path {
   @include viewport(desktop) {
-    display: grid;
-    grid-template-columns: 17.4375rem 1fr;
+    & > main {
+      margin-left: 15rem;
+    }
   }
 
   .nav {
+    background-color: $white;
+    position: fixed;
+
     .items {
       width: 100%;
       list-style: none;
     }
 
     @include viewport(mobile-tablet) {
-      position: fixed;
       bottom: 0;
       width: 100%;
       border-top: $border-thin-grey;

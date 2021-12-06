@@ -212,55 +212,57 @@ const NewSession: FC<{}> = () => {
   }, []);
 
   return (
-    <main className="container">
+    <main>
       <PageHelmet title="New Session" />
 
-      <h1 className="page-title">New Session</h1>
-      {menteeOptions && sessionGroupOptions && (
-        <form onSubmit={onSubmit} className="form">
-          <Checkbox isChecked={false} label="Cancelled" name="is_cancelled" />
+      <div className="container">
+        <h1 className="page-title">New Session</h1>
+        {menteeOptions && sessionGroupOptions && (
+          <form onSubmit={onSubmit} className="form">
+            <Checkbox isChecked={false} label="Cancelled" name="is_cancelled" />
 
-          {menteeOptions && (
-            <FormField labelText="Mentee">
-              <DropdownMenu options={menteeOptions} name="association_id" />
+            {menteeOptions && (
+              <FormField labelText="Mentee">
+                <DropdownMenu options={menteeOptions} name="association_id" />
+              </FormField>
+            )}
+
+            {sessionGroupOptions && (
+              <FormField labelText="Session Group">
+                <DropdownMenu
+                  options={sessionGroupOptions}
+                  name="session_group_id"
+                />
+              </FormField>
+            )}
+
+            <FormField labelText="Date">
+              <DateInput name="date" id="inputDate" initialValue={new Date()} />
             </FormField>
-          )}
 
-          {sessionGroupOptions && (
-            <FormField labelText="Session Group">
-              <DropdownMenu
-                options={sessionGroupOptions}
-                name="session_group_id"
+            <FormField labelText="Start Time">
+              <TimeInput name="start_time" initialValue={new Date()} />
+            </FormField>
+
+            <FormField labelText="End Time">
+              <TimeInput name="end_time" />
+            </FormField>
+
+            <FormField labelText="Notes">
+              <InputNotes
+                placeholderText="Add notes about your session..."
+                name="notes"
               />
             </FormField>
-          )}
 
-          <FormField labelText="Date">
-            <DateInput name="date" id="inputDate" initialValue={new Date()} />
-          </FormField>
-
-          <FormField labelText="Start Time">
-            <TimeInput name="start_time" initialValue={new Date()} />
-          </FormField>
-
-          <FormField labelText="End Time">
-            <TimeInput name="end_time" />
-          </FormField>
-
-          <FormField labelText="Notes">
-            <InputNotes
-              placeholderText="Add notes about your session..."
-              name="notes"
-            />
-          </FormField>
-
-          <div className="actions">
-            <button type="submit" className="btn">
-              Log Session
-            </button>
-          </div>
-        </form>
-      )}
+            <div className="actions">
+              <button type="submit" className="btn">
+                Log Session
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
     </main>
   );
 };
